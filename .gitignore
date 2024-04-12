@@ -29,6 +29,6 @@ dist-ssr
 #Virtual environment file (Python)
 .venv
 
-./.bookfiles/*
-./.bookimages/*
+.bookfiles/*
+.bookimages/*
 
