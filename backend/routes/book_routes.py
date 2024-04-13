@@ -169,3 +169,46 @@ def get_book_image(book_id):
             return send_file(image_path, as_attachment=False), 200
         else:
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+        
+@book_routes.route('/api/book-location', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def book_location_route():
+    if request.method == 'GET':
+        book_id = request.args.get('book_id')
+        try:
+            book_id = int(book_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, result, error = get_book_location(book_id)
+        return get_status_object_json(success, result, error)
+    elif request.method == 'POST':
+        book_id = request.form.get('book_id')
+        shelf_id = request.form.get('shelf_id')
+        room_id = request.form.get('room_id')
+        try:
+            book_id = int(book_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, result, error = add_book_location(book_id, room_id, shelf_id)
+        return get_status_object_json(success, result, error), 200
+    elif request.method == 'PUT':
+        book_location_id = request.form.get('book_location_id')
+        shelf_id = request.form.get('shelf_id')
+        room_id = request.form.get('room_id')
+        try:
+            book_location_id = int(book_location_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, result, error = change_book_location(book_location_id, room_id, shelf_id)
+        return get_status_object_json(success, result, error)
+    elif request.method == 'DELETE':
+        book_location_id = request.form.get('book_location_id')
+        try:
+            book_location_id = int(book_location_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        success, result, error = delete_book_location(book_location_id)
+        return get_status_object_json(success, result, error), 200
+    
