@@ -56,8 +56,25 @@ def comment_action_api():
         if current_user.is_authenticated:
             user_id = int(current_user.id)
             comment_id = request.form.get('comment_id')
-            comment = request.form.get('comment')
+            comment_str = request.form.get('comment')
             rating = request.form.get('rating')
+            try:
+                comment_id = int(comment_id)
+            except:
+                return  get_status_object_json(False, None, INVALID_ID), 400
+            comment = db.session.query(Comment).filter(Comment.id == comment_id).first()
+            #Not enough permission
+            if comment.userId != user_id:
+                return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+            else:
+                success, result, error = edit_comment(comment_id, comment_str, rating)
+                return get_status_object_json(success, result, error), 200
+        else:
+            return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    elif request.method == 'DELETE':
+        if current_user.is_authenticated:
+            user_id = int(current_user.id)
+            comment_id = request.form.get('comment_id')
             try:
                 comment_id = int(comment_id)
             except:
@@ -67,19 +84,8 @@ def comment_action_api():
             if (role == None or (role != 'admin' and role != 'staff')) and comment.userId != user_id:
                 return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
             else:
-                success, result, error = edit_comment(comment_id, comment, rating)
+                success, result, error = delete_comment(comment_id)
                 return get_status_object_json(success, result, error), 200
-    elif request.method == 'DELETE':
-        comment_id = request.form.get('comment_id')
-        try:
-            comment_id = int(comment_id)
-        except:
-            return  get_status_object_json(False, None, INVALID_ID), 400
-        comment = db.session.query(Comment).filter(Comment.id == comment_id).first()
-        #Not enough permission
-        if (role == None or (role != 'admin' and role != 'staff')) and comment.userId != user_id:
-            return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
         else:
-            success, result, error = delete_comment(comment_id)
-            return get_status_object_json(success, result, error), 200
+            return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
 
