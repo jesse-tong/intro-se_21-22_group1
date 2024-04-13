@@ -29,6 +29,7 @@ def delete_book(id: int):
     try:
         db.session.query(BookAuthor).filter(BookAuthor.bookId == id).delete()
         db.session.query(BookGenre).filter(BookGenre.bookId == id).delete()
+        db.session.query(BookLocation).filter(BookLocation.bookId == book.id).delete()
         db.session.commit()
         rows_deleted = db.session.query(Book).filter(Book.id == id).delete()
         db.session.commit()
@@ -74,6 +75,7 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, images:
         #Delete old genre and author data
         db.session.query(BookGenre).filter(BookGenre.bookId == book.id).delete()
         db.session.query(BookAuthor).filter(BookAuthor.bookId == book.id).delete()
+        
         db.session.commit()
 
         for genre_id in genre_ids:
@@ -237,7 +239,15 @@ def add_author(name: str, place: str=None):
         db.session.rollback()
         return False, None, ROW_EXISTS 
 
-def add_location(book_id: int, room_id: str, shelf_id: str):
+def get_book_location(book_id: int):
+    book = db.session.query(Book).filter(Book.id == book_id).first()
+    if not book:
+        return False, None, INVALID_ID
+    else:
+        result = db.session.query(BookLocation).filter(BookLocation.bookId == book_id).all()
+        return True, result, None
+
+def add_book_location(book_id: int, room_id: str, shelf_id: str):
     book = db.session.query(Book).filter(Book.id == book_id).first()
     if not book:
         return False, None, INVALID_ID
@@ -246,19 +256,33 @@ def add_location(book_id: int, room_id: str, shelf_id: str):
         book_location.bookId = book_id
         book_location.roomId = room_id
         book_location.shelfId = shelf_id
-        db.session.add(book_location)
-        db.session.commit()
+        try:
+            db.session.add(book_location)
+            db.session.commit()
+            return True, book_location, None
+        except:
+            db.session.rollback()
+            return False, None, ADD_ENTRY_ERROR
 
 def change_book_location(book_location_id: int, room_id: str, shelf_id: str):
     book_location = db.session.query(BookLocation).filter(BookLocation.id == book_location_id).first()
     if not book_location:
         return False, None, INVALID_ID
     else:
-        book_location.roomId = room_id; book_location.shelfId = shelf_id
-        db.session.commit()
+        try:
+            book_location.roomId = room_id; book_location.shelfId = shelf_id
+            db.session.commit()
+            return True, book_location, None
+        except:
+            db.session.rollback()
+            return False, None, EDIT_ERROR
 
 def delete_book_location(book_location_id: int):
-    deleted_row_count = db.session.query(BookLocation).filter(BookLocation.id == book_location_id).delete()
-    db.session.commit()
-    return True, deleted_row_count, None
+    try:
+        deleted_row_count = db.session.query(BookLocation).filter(BookLocation.id == book_location_id).delete()
+        db.session.commit()
+        return True, deleted_row_count, None
+    except:
+        db.session.rollback()
+        return False, None, DELETE_ERROR
 
