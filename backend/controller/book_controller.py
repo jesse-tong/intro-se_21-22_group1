@@ -261,3 +261,4 @@ def delete_book_location(book_location_id: int):
     deleted_row_count = db.session.query(BookLocation).filter(BookLocation.id == book_location_id).delete()
     db.session.commit()
     return True, deleted_row_count, None
+
