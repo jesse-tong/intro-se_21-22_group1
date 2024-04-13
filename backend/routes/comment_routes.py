@@ -63,6 +63,8 @@ def comment_action_api():
             except:
                 return  get_status_object_json(False, None, INVALID_ID), 400
             comment = db.session.query(Comment).filter(Comment.id == comment_id).first()
+            if not comment:
+                return get_status_object_json(False, None, ROW_NOT_EXISTS), 404
             #Not enough permission
             if comment.userId != user_id:
                 return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
@@ -80,6 +82,8 @@ def comment_action_api():
             except:
                 return  get_status_object_json(False, None, INVALID_ID), 400
             comment = db.session.query(Comment).filter(Comment.id == comment_id).first()
+            if not comment:
+                return get_status_object_json(False, None, ROW_NOT_EXISTS), 404
             #Not enough permission
             if (role == None or (role != 'admin' and role != 'staff')) and comment.userId != user_id:
                 return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
