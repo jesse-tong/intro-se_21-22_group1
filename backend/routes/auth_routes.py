@@ -1,5 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from global_vars.database_init import db
+from flask_login import logout_user
 import json
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
@@ -36,6 +37,11 @@ def login_route():
         return get_status_object_json(result, user_obj, error), 200
     else:
         return get_status_object_json(result, user_obj, error), 401
+
+@auth.route('/auth/logout', methods=['GET', 'POST'])
+def logout_route():
+    logout_user()
+    return get_status_object_json(True, None, None), 200
 
 @auth.route('/auth/register', methods=['POST'])
 def register_route():
