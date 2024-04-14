@@ -117,8 +117,9 @@ def change_book_stock(id: int, stock: int):
 
 def decrement_book_stock(id: int):
     try:
-        book = db.session.query(Book).filter(Book.id == id).update({Book.stock: Book.stock - 1 if Book.stock > 0 else 0})
+        book = db.session.query(Book).filter(Book.id == id).update({Book.stock: Book.stock - 1})
         db.session.commit()
+        print('Decrement')
         return True, book, None
     except:
         db.session.rollback()
@@ -134,7 +135,7 @@ def increment_book_stock(id: int):
         return False, None, EDIT_ERROR  
 
 def is_book_out_of_stock(id: int):
-    book = db.session.query(Book).filter(Book.id).first()
+    book = db.session.query(Book).filter(Book.id == id).first()
     if book.stock == None or book.stock == 0:
         return True
     else:

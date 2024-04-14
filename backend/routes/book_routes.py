@@ -51,10 +51,12 @@ def get_and_add_book_route():
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         isbn = book_data.get('isbn'); authors = book_data.get('authors'); genres = book_data.get('genres')
         stock = book_data.get('stock')
+        if title == None:
+            return get_current_user_role(False, None, INVALID_PARAM), 400
         try:
             publish_year = int(publish_year)
-            authors = list(json.loads(authors)) if authors != None else None
-            genres = list(json.loads(genres)) if genres != None else None
+            authors = list(json.loads(authors)) if authors != None else list()
+            genres = list(json.loads(genres)) if genres != None else list()
             stock = int(stock) if stock != 0 else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
@@ -81,14 +83,16 @@ def get_and_add_book_route():
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         authors = book_data.get('authors') #Author should be a JSON string from an array
         genres = book_data.get('genres'); isbn = book_data.get('isbn')
+        stock = book_data.get('stock')
         try:
             book_id = int(book_id)
             publish_year = int(publish_year)
-            authors = list(json.loads(authors)) if authors != None else None
-            genres = list(json.loads(genres))  if genres != None else None
+            authors = list(json.loads(authors)) if authors != None else list()
+            genres = list(json.loads(genres))  if genres != None else list()
+            stock = int(stock) if stock != None else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
-        success, edited_data, error = change_book_data(book_id, title, publish_year, description, authors, genres, isbn)
+        success, edited_data, error = change_book_data(book_id, title, publish_year, description, authors, genres, isbn, stock)
         return get_status_object_json(success, edited_data, error), 200
 
 
@@ -118,14 +122,15 @@ def edit_delete_book_route(bookId):
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         authors = book_data.get('authors') #Author should be a JSON string from an array
         genres = book_data.get('genres'); isbn = book_data.get('isbn')
-
+        stock = book_data.get('stock')
         try:
             publish_year = int(publish_year)
-            authors = list(json.loads(authors)) if authors != None else None
-            genres = list(json.loads(genres))  if genres != None else None
+            stock = int(stock) if stock != None else 0
+            authors = list(json.loads(authors)) if authors != None else list()
+            genres = list(json.loads(genres))  if genres != None else list()
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
-        success, edited_data, error = change_book_data(id, title, publish_year, description, authors, genres, isbn)
+        success, edited_data, error = change_book_data(id, title, publish_year, description, authors, genres, isbn, stock)
         return get_status_object_json(success, edited_data, error), 200
     elif request.method == 'DELETE':
         try:

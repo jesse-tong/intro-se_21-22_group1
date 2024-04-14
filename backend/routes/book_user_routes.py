@@ -1,6 +1,6 @@
 from flask import Blueprint, url_for, request, make_response
 from utils.get_status_object import get_status_object_json
-from controller.book_controller import get_book_data, increment_book_stock, decrement_book_stock, is_book_out_of_stock
+from controller.book_controller import get_book_data
 from controller.book_user_controller import *
 from controller.user_controller import get_current_user_role
 from models.book_model import Book
@@ -63,7 +63,7 @@ def borrow_book_current_user():
                     end_date = dateparse(request.form.get('end_borrow')) if request.form.get('end_borrow') != None else None
                 except:
                     end_date = None
-
+                
                 success, result, error = borrow_book(user_id, book_id, start_date, end_date)
                 return get_status_object_json(success, result, error), 200
     

@@ -36,7 +36,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
     if not user or not book:
         return False, None, INVALID_ID #No user or book with that ID exists
     
-    if is_book_out_of_stock(bookId) and do_not_decrement_book_stock == False:
+    if is_book_out_of_stock(bookId) == True:
         return False, None, BOOK_OUT_OF_STOCK
 
     borrow_book.bookId = bookId
@@ -83,6 +83,7 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
         borrow_book.bookId = bookId
     if userId != None:
         borrow_book.userId = userId
+    prev_return_state = borrow_book.hasReturned
     borrow_book.hasReturned = has_returned
     
     previous_book_status = borrow_book.isDamagedOrLost
@@ -90,10 +91,17 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
         borrow_book.isDamagedOrLost = damaged_or_lost
     new_book_status = damaged_or_lost
 
-    if previous_book_status != new_book_status and new_book_status == True:
-        #New book status change to being damaged/lost, reduce book stock
+    is_old_status_restockable =  (prev_return_state == True and previous_book_status == False)
+
+    if is_old_status_restockable == True and ((prev_return_state != has_returned and has_returned == False) or 
+        (previous_book_status != new_book_status and new_book_status == True)):
+        #New book status change to being damaged/lost, or return state change from has returned to not returned
+        # => reduce book stock
         decrement_book_stock(bookId)
-    elif previous_book_status != new_book_status and new_book_status == False:
+    elif is_old_status_restockable == False and((prev_return_state != has_returned and has_returned == True and new_book_status == False) or 
+    (has_returned == True and previous_book_status != new_book_status and new_book_status == False)):
+        #If new book status change from being damaged/lost to be being usable and has been returned,
+        #or the book change from being borrowed to being returned and still being usable => increase book stock
         increment_book_stock(bookId)
 
     try:
@@ -108,12 +116,15 @@ def return_book(userId: int, id: int, damagedOrLost: bool=False):
     borrow_book = db.session.query(BookBorrow).filter(BookBorrow.userId == userId) \
         .filter(BookBorrow.id == id).first()
     if borrow_book != None:
+        has_returned = borrow_book.hasReturned
+        if has_returned:
+            return False, None, BOOK_HAS_RETURNED
         borrow_book.hasReturned = True
         borrow_book.returnDate = datetime.now()
         borrow_book.isDamagedOrLost = damagedOrLost
         if damagedOrLost == False:
             increment_book_stock(borrow_book.bookId)
-            
+
         try:
             db.session.commit()
             return True, borrow_book, None
