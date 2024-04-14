@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse as dateparse
 from global_vars.constants import *
 from global_vars.init_env import *
+from controller.book_controller import increment_book_stock, decrement_book_stock, is_book_out_of_stock
 borrow_time = os.environ.get('DEFAULT_BORROW_TIMEOUT')
 overdue_fine = os.environ.get('OVERDUE_FINE_PER_DAY')
 overdue_limit_before_treated_as_lost = os.environ.get('OVERDUE_DAYS_LIMIT_BEFORE_LOST')
@@ -16,7 +17,7 @@ damage_and_lost_fine = os.environ.get('DAMAGE_AND_LOST_FINE')
 
 
 #Default if start_date is null is the current date
-def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None):
+def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, do_not_decrement_book_stock: bool=False):
     borrow_book = BookBorrow()
     if start_date != None:
         borrow_book.startBorrow = max([start_date, datetime.now()])
@@ -35,6 +36,9 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
     if not user or not book:
         return False, None, INVALID_ID #No user or book with that ID exists
     
+    if is_book_out_of_stock(bookId) and do_not_decrement_book_stock == False:
+        return False, None, BOOK_OUT_OF_STOCK
+
     borrow_book.bookId = bookId
     borrow_book.userId = userId
     borrow_book.hasReturned = False
@@ -42,6 +46,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
     try:
         db.session.add(borrow_book)
         db.session.commit()
+        decrement_book_stock(bookId)
         return True, borrow_book, None
     except:
         db.session.rollback()
@@ -80,8 +85,16 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
         borrow_book.userId = userId
     borrow_book.hasReturned = has_returned
     
+    previous_book_status = borrow_book.isDamagedOrLost
     if damaged_or_lost != None:
         borrow_book.isDamagedOrLost = damaged_or_lost
+    new_book_status = damaged_or_lost
+
+    if previous_book_status != new_book_status and new_book_status == True:
+        #New book status change to being damaged/lost, reduce book stock
+        decrement_book_stock(bookId)
+    elif previous_book_status != new_book_status and new_book_status == False:
+        increment_book_stock(bookId)
 
     try:
         db.session.add(borrow_book)
@@ -98,6 +111,9 @@ def return_book(userId: int, id: int, damagedOrLost: bool=False):
         borrow_book.hasReturned = True
         borrow_book.returnDate = datetime.now()
         borrow_book.isDamagedOrLost = damagedOrLost
+        if damagedOrLost == False:
+            increment_book_stock(borrow_book.bookId)
+            
         try:
             db.session.commit()
             return True, borrow_book, None
