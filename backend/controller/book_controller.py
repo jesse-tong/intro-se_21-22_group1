@@ -29,7 +29,7 @@ def delete_book(id: int):
     try:
         db.session.query(BookAuthor).filter(BookAuthor.bookId == id).delete()
         db.session.query(BookGenre).filter(BookGenre.bookId == id).delete()
-        db.session.query(BookLocation).filter(BookLocation.bookId == book.id).delete()
+        db.session.query(BookLocation).filter(BookLocation.bookId == id).delete()
         db.session.commit()
         rows_deleted = db.session.query(Book).filter(Book.id == id).delete()
         db.session.commit()
@@ -39,7 +39,7 @@ def delete_book(id: int):
         return False, 0, DELETE_ERROR
 
 def change_book_data(book_id: int, title: str=None, publish_year: int=None, 
-description: str=None, authors: list=None, genres: list=None, isbn=None, images: list[str]=None):
+description: str=None, authors: list=None, genres: list=None, isbn=None, stock: int=0):
     genre_ids = list()
     author_ids = list()
 
@@ -70,6 +70,8 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, images:
             book.description = description
         if isbn != None:
             book.isbn = isbn
+        if stock != None:
+            book.stock = stock
         db.session.commit()
 
         #Delete old genre and author data
@@ -97,16 +99,6 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, images:
                 db.session.commit()
             except:
                 db.session.rollback()
-
-        """ for image in images:
-            book_image = BookImage()
-            book_image.bookId = book.id
-            book_image.image = image
-            try:
-                db.session.add(book_author)
-                db.session.commit()
-            except:
-                db.session.rollback() """
         
         return True, book, None
     except:
@@ -114,32 +106,34 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, images:
         return False, None, EDIT_ERROR
 
 def change_book_stock(id: int, stock: int):
-    book = db.session.query(Book).filter(Book.id == id).first()
-    if book:
-        book.stock = stock
-        try:
-            db.session.commit()
-            return True, book, None
-        except:
-            db.session.rollback()
-            return False, None, EDIT_ERROR
-    else:
-        return False, None, ROW_NOT_EXISTS
+    try:
+        book = db.session.query(Book).filter(Book.id == id).update({Book.stock: stock})
+        db.session.commit()
+        return True, book, None
+    except:
+        db.session.rollback()
+        return False, None, EDIT_ERROR
+
 
 def decrement_book_stock(id: int):
-    book = db.session.query(Book).filter(Book.id).first()
-    if book:
-        book.stock = book.stock - 1 if book.stock != None else 0
-        try:
-            db.session.commit()
-            return True, book, None
-        except:
-            db.session.rollback()
-            return False, None, EDIT_ERROR
-    else:
-        return False, None, ROW_NOT_EXISTS      
+    try:
+        book = db.session.query(Book).filter(Book.id == id).update({Book.stock: Book.stock - 1 if Book.stock > 0 else 0})
+        db.session.commit()
+        return True, book, None
+    except:
+        db.session.rollback()
+        return False, None, EDIT_ERROR  
 
-def is_book_sellout(id: int):
+def increment_book_stock(id: int):
+    try:
+        book = db.session.query(Book).filter(Book.id == id).update({Book.stock: Book.stock + 1})
+        db.session.commit()
+        return True, book, None
+    except:
+        db.session.rollback()
+        return False, None, EDIT_ERROR  
+
+def is_book_out_of_stock(id: int):
     book = db.session.query(Book).filter(Book.id).first()
     if book.stock == None or book.stock == 0:
         return True

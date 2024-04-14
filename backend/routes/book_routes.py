@@ -50,11 +50,12 @@ def get_and_add_book_route():
         title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         isbn = book_data.get('isbn'); authors = book_data.get('authors'); genres = book_data.get('genres')
-
+        stock = book_data.get('stock')
         try:
             publish_year = int(publish_year)
             authors = list(json.loads(authors)) if authors != None else None
             genres = list(json.loads(genres)) if genres != None else None
+            stock = int(stock) if stock != 0 else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
