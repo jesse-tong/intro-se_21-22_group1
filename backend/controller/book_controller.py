@@ -143,8 +143,10 @@ def is_book_out_of_stock(id: int):
 
 #start_from: Where the return result index starts (from index 0)
 def search_book(title: str=None, start_publish: int=None, end_publish: int=None,
- description: str=None, start_from: int=None, limit: int=None, isbn: str=None):
+ description: str=None, start_from: int=None, limit: int=None, isbn: str=None, book_id: int=None):
     query = select(Book)
+    if book_id != None:
+        query = query.filter(Book.id == book_id)
     if title != None:
         query = query.filter(Book.title.like(title))
     if start_publish != None:
@@ -193,6 +195,48 @@ def get_book_data(id: int):
         return True, res, None
     else:
         return False, None, INVALID_ID
+
+def get_genres():
+    try:
+        genres = db.session.query(BookGenre).distinct().all()
+        return True, genres, None
+    except:
+        return False, None, DATABASE_ERROR
+
+def get_authors():
+    try:
+        genres = db.session.query(BookAuthor).distinct().all()
+        return True, genres, None
+    except:
+        return False, None, DATABASE_ERROR
+
+def get_books_genre(genre_id: int | list[int], page: int, limit: int):
+    if type(genre_id) == list:
+        try:
+            books_for_genres = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id.in_(genre_id)).all()
+            return True, books_for_genres, None
+        except:
+            return False, None, DATABASE_ERROR
+    else:
+        try:
+            books_for_genre = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id == genre_id).all()
+            return True, books_for_genre, None
+        except:
+            return False, None, DATABASE_ERROR
+    
+def get_books_author(author_id: int | list[int], page: int, limit: int):
+    if type(author_id) == list:
+        try:
+            books_for_authors = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id.in_(author_id)).all()
+            return True, books_for_authors, None
+        except:
+            return False, None, DATABASE_ERROR
+    else:
+        try:
+            books_for_author = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id == author_id).all()
+            return True, books_for_author, None
+        except:
+            return False, None, DATABASE_ERROR
 
 def get_book_images(book_id: int):
     book = db.session.query(Book).filter(Book.id == book_id).first()

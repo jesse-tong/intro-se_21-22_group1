@@ -22,8 +22,10 @@ def get_and_add_book_route():
         page = request.args.get('page')
         start_publish = request.args.get('start_publish') #Publish year search start
         end_publish = request.args.get('end_publish') #Publish year search end
+        book_id = request.args.get('book_id')
         try:
             page = int(page) if page != None else None
+            book_id = int(book_id) if book_id != None else None
             start_publish = int(start_publish) if start_publish != None else None
             end_publish = int(end_publish) if end_publish != None else None
         except:
@@ -36,7 +38,7 @@ def get_and_add_book_route():
             start_from = None
         description = request.args.get('description')
         result, query_result, error = search_book(title, start_publish, end_publish,
- description, start_from=start_from, limit=result_per_page)
+ description, start_from=start_from, limit=result_per_page, book_id=book_id)
         print(query_result)
         return get_status_object_json(result, query_result, error), 200
     
@@ -217,4 +219,39 @@ def book_location_route():
             return get_status_object_json(False, None, INVALID_PARAM), 400
         success, result, error = delete_book_location(book_location_id)
         return get_status_object_json(success, result, error), 200
-    
+
+@book_routes.route('/api/get-genres', methods=['GET'])
+def get_genres_api():
+    success, genres, error = get_genres()
+    return get_status_object_json(success, genres, error), 200
+
+@book_routes.route('/api/get-authors', methods=['GET'])
+def get_authors_api():
+    success, authors, error = get_authors()
+    return get_status_object_json(success, authors, error), 200
+
+@book_routes.route('/api/author/<author_id>/books', methods=['GET'])
+def get_books_of_author(author_id):
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        author_id = int(author_id)
+        page = int(page); limit= int(limit)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+
+    success, books, error = get_books_author(author_id, page, limit)
+    return get_status_object_json(success, books, error), 200
+
+@book_routes.route('/api/genre/<genre_id>/books', methods=['GET'])
+def get_books_of_genre(genre_id):
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        genre_id = int(genre_id)
+        page = int(page); limit= int(limit)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+
+    success, books, error = get_books_genre(genre_id, page, limit)
+    return get_status_object_json(success, books, error), 200
