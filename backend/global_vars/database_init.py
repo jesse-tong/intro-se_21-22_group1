@@ -1,4 +1,5 @@
-import pyodbc
+import pymssql
+import pymysql
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()

@@ -38,6 +38,8 @@ def login(email: str, password: str, remember: bool):
     login_user(user, remember=remember)
     return True, user, None
 
+#Note that this function will only allow you to change password if you have been logged in
+#I may make a function to recover lost password later though
 def change_password(old_password, new_password):
     if not current_user.is_authenticated:
         return False, None, NOT_AUTHENTICATED
