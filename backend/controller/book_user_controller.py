@@ -25,6 +25,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
         borrow_book.startBorrow = datetime.now()
     if end_date == None:
         end = datetime.now() + timedelta(days=int(borrow_time))
+        borrow_book.endBorrow = end
     elif end_date != None and end_date < start_date:
         return False, None, INVALID_DURATION
     else:
@@ -52,7 +53,8 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
         db.session.rollback()
         return False, None, EDIT_ERROR
 
-def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: datetime=None, end_date: datetime=None, has_returned: bool=False, return_date: datetime=None, damaged_or_lost: bool=None):
+def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: datetime=None, end_date: datetime=None, has_returned: bool=False, 
+                return_date: datetime=None, damaged_or_lost: bool=None, is_approved: bool=None):
     borrow_book = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).first()
     if not borrow_book:
         return False, None, ROW_NOT_EXISTS
@@ -103,7 +105,8 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
         #If new book status change from being damaged/lost to be being usable and has been returned,
         #or the book change from being borrowed to being returned and still being usable => increase book stock
         increment_book_stock(bookId)
-
+    if is_approved != None:
+        borrow_book.isApproved = is_approved
     try:
         db.session.add(borrow_book)
         db.session.commit()
@@ -135,32 +138,34 @@ def return_book(userId: int, id: int, damagedOrLost: bool=False):
 def get_borrow_book(userId: int, get_returned:bool = False):
     query = select(BookBorrow).filter(BookBorrow.userId == userId)
     if get_returned == False:
-        query.filter(BookBorrow.hasReturned == False)
+        query = query.filter(BookBorrow.hasReturned == False)
     
     result = db.session.execute(query)
     result = result.all()
     result = [query_result[0] for query_result in result]
     return True, result, None
 
-def search_borrow(userId: int=None, bookId: int=None, start_date: datetime = None, end_date: datetime=None, get_returned: bool=True, page: int = None, limit: int=None):
-    query = select(BookBorrow)
-    if userId != None:
-        query.filter(BookBorrow.userId == userId)
-    if bookId != None:
-        query.filter(BookBorrow.bookId == bookId)
+def search_borrow(user_id: int=None, book_id: int=None, start_date: datetime = None, end_date: datetime=None, get_returned: bool=True, page: int = None, limit: int=None):
+    query = db.session.query(BookBorrow)
+
+    if user_id != None:
+        query = query.filter(BookBorrow.userId == user_id)
+    if book_id != None:
+        query = query.filter(BookBorrow.bookId == book_id)
     if start_date != None:
-        query.filter(BookBorrow.startBorrow >= start_date)
+        query = query.filter(BookBorrow.startBorrow >= start_date)
     if end_date != None:
-        query.filter(BookBorrow.endBorrow <= end_date)
+        query = query.filter(BookBorrow.endBorrow <= end_date)
+    
+    if get_returned == False:
+        query = query.filter(BookBorrow.hasReturned == False)
     if page != None and limit != None and page >= 1 and limit >= 1:
         offset = (page - 1) * limit
-        print(offset)
-        query.offset(offset).limit(limit)
-    query.filter(BookBorrow.hasReturned == get_returned)
+        query = query.offset(offset).limit(limit)
 
-    result = db.session.execute(query)
-    result = result.all()
-    result = [query_result[0] for query_result in result]
+    result = query.all()
+    
+    #result = [query_result[0] for query_result in result]
     return True, result, None
 
 def delete_borrow(borrow_id: int):

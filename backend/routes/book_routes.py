@@ -3,6 +3,7 @@ from werkzeug.datastructures import FileStorage
 from models.user_model import User, Comment
 from global_vars.database_init import db
 from models.book_model import Book, BookAuthor, BookGenre
+from sqlalchemy import func, distinct
 import json, uuid
 from flask_login import current_user
 from flask_cors import CORS
@@ -15,8 +16,12 @@ book_routes = Blueprint('book_routes', __name__)
 CORS(book_routes, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
     expose_headers=['X-CSRFToken'])
 
+@book_routes.route('/hello-world', methods=['GET'])
+def hello_world_route():
+    return 'Hello world!', 200
 
-@book_routes.route('/api/book', methods=['GET', 'POST', 'PUT'])
+# GET: Search book, POST: add book (admin only), PUT: edit book, 
+@book_routes.route('/api/book', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def get_and_add_book_route():
     if request.method == 'GET':
         page = request.args.get('page')
@@ -32,13 +37,14 @@ def get_and_add_book_route():
             status = status_template
             return get_status_object_json(False, None, INVALID_PARAM), 400
         title = request.args.get('title')
+        isbn = request.args.get('isbn')
         if page != None:
             start_from = (page - 1)*result_per_page
         else:
             start_from = None
         description = request.args.get('description')
         result, query_result, error = search_book(title, start_publish, end_publish,
- description, start_from=start_from, limit=result_per_page, book_id=book_id)
+ description, start_from=start_from, limit=result_per_page, isbn=isbn, book_id=book_id)
         print(query_result)
         return get_status_object_json(result, query_result, error), 200
     
@@ -49,17 +55,19 @@ def get_and_add_book_route():
             return status, 200
         
         book_data = request.form
+        print(book_data)
         title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         isbn = book_data.get('isbn'); authors = book_data.get('authors'); genres = book_data.get('genres')
         stock = book_data.get('stock')
         if title == None:
+
             return get_current_user_role(False, None, INVALID_PARAM), 400
         try:
-            publish_year = int(publish_year)
-            authors = list(json.loads(authors)) if authors != None else list()
-            genres = list(json.loads(genres)) if genres != None else list()
-            stock = int(stock) if stock != 0 else 0
+            publish_year = int(publish_year) if publish_year != None else None
+            authors = json.loads(authors) if authors != None else list()
+            genres = json.loads(genres) if genres != None else list()
+            stock = int(stock) if stock != None or stock != 0 else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
@@ -96,6 +104,16 @@ def get_and_add_book_route():
             return get_status_object_json(False, None, INVALID_PARAM), 400
         success, edited_data, error = change_book_data(book_id, title, publish_year, description, authors, genres, isbn, stock)
         return get_status_object_json(success, edited_data, error), 200
+    elif request.method == 'DELETE':
+        bookId = request.form.get('book_id')
+        try:
+            id = int(bookId)
+        except:
+            error_status = get_status_object_json(False, None, INVALID_PARAM)
+            return error_status, 400
+        
+        success, status, error = delete_book(id)
+        return get_status_object_json(success, status, error), 200
 
 
 @book_routes.route('/api/book/<bookId>', methods=['GET', 'PUT', 'DELETE'])
@@ -139,7 +157,7 @@ def edit_delete_book_route(bookId):
             id = int(bookId)
         except:
             error_status = get_status_object_json(False, None, INVALID_ID)
-            return error_status, 200
+            return error_status, 400
         
         success, status, error = delete_book(id)
         return get_status_object_json(success, status, error), 200
@@ -248,10 +266,19 @@ def get_books_of_genre(genre_id):
     page = request.args.get('page')
     limit = request.args.get('limit')
     try:
-        genre_id = int(genre_id)
-        page = int(page); limit= int(limit)
+        genre_id = int(genre_id) if genre_id != None else None
+        page = int(page) if page != None else None; limit= int(limit) if limit != None else None
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
 
     success, books, error = get_books_genre(genre_id, page, limit)
     return get_status_object_json(success, books, error), 200
+
+@book_routes.route('/api/book-count', methods=['GET'])
+def book_count():
+    try:
+        book_counts = db.session.query(func.count(distinct(Book.id))).first()
+        return get_status_object_json(True, book_counts[0], None), 200
+    except:
+        return get_status_object_json(False, None, DATABASE_ERROR), 500
+    

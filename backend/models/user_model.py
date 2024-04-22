@@ -41,6 +41,7 @@ class UserInfo(db.Model):
     userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
     age: int = db.Column(db.Integer)
     gender:str = db.Column(db.String(10))
+    maxBorrow: int = db.Column(db.Integer)
     borrowLeft: int = db.Column(db.Integer)
     phone:str = db.Column(db.String(20))
     address: str = db.Column(db.String(500))

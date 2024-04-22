@@ -9,6 +9,7 @@ import json, uuid, datetime
 from dateutil.parser import parse as dateparse
 from flask_login import current_user
 from flask_cors import CORS
+from sqlalchemy import func, distinct
 
 book_user = Blueprint('book_user', __name__)
 CORS(book_user, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
@@ -75,20 +76,27 @@ def search_borrow_book_current_user():
         user_id = current_user.id 
         if request.method == 'GET':
             book_id = request.args.get('book_id')
-            start_date = request.args.get('start_date')
-            end_date = request.args.get('end_date')
+            start_date = request.args.get('start_borrow')
+            end_date = request.args.get('end_borrow')
+            page = request.args.get('page')
+            limit = request.args.get('limit')
         elif request.method == 'POST':
             book_id = request.form.get('book_id')
-            start_date = request.form.get('start_date')
-            end_date = request.form.get('end_date')
+            start_date = request.form.get('start_borrow')
+            end_date = request.form.get('end_borrow')
+            page = request.form.get('page')
+            limit = request.form.get('limit')
         try:
-            book_id = int(book_id)
-            start_date = dateparse(start_date)
-            end_date = dateparse(end_date)
+            book_id = int(book_id) if book_id != None else None
+            start_date = dateparse(start_date) if start_date != None else None
+            end_date = dateparse(end_date) if end_date != None else None
+            page = int(page) if page != None else None
+            limit = int(limit) if limit != None else None
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = search_borrow(user_id, book_id, start_date, end_date)
+        print('Search user: ', user_id); print('Search end date: ', end_date)
+        success, result, error = search_borrow(user_id, book_id, start_date, end_date, page=page, limit=limit)
         return get_status_object_json(success, result, error), 200
 
 @book_user.route('/api/get-borrow-fee', methods=['GET'])
@@ -115,14 +123,18 @@ def admin_book_borrow_manage():
         book_id = request.args.get('book_id')
         borrow_from = request.args.get('start_borrow') #find all loans that is after this date
         borrow_end = request.args.get('end_borrow')
+        page = request.args.get('page')
+        limit = request.args.get('limit')
         try:
-            user_id = int(user_id)
-            book_id = int(book_id)
-            borrow_from = dateparse(borrow_from)
-            borrow_end = dateparse(borrow_end)
+            user_id = int(user_id) if user_id != None else None
+            book_id = int(book_id) if book_id != None else None
+            borrow_from = dateparse(borrow_from) if borrow_from != None else None
+            borrow_end = dateparse(borrow_end) if borrow_end != None else None
+            page = int(page) if page != None else None
+            limit = int(limit) if limit != None else None
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
-        success, search_result, error = search_borrow(user_id, book_id, borrow_from, borrow_end)
+        success, search_result, error = search_borrow(user_id, book_id, borrow_from, borrow_end, page=page, limit=limit)
 
         return get_status_object_json(success, search_result, error), 200
 
@@ -154,6 +166,7 @@ def admin_book_borrow_manage():
         return_date = request.form.get('return_date')
         has_returned = True if return_date != None else False
         damaged_or_lost = request.form.get('damaged_or_lost')
+        is_approved = request.form.get('is_approved')
 
         if damaged_or_lost == None or damaged_or_lost.lower() == 'false' or damaged_or_lost == '0':
             damaged_or_lost = False
@@ -162,6 +175,15 @@ def admin_book_borrow_manage():
         else:
             return get_status_object_json(False, None, INVALID_PARAM)
 
+        if is_approved.lower() == 'false' or is_approved == '0':
+            is_approved = False
+        elif is_approved.lower() == 'true' or is_approved == '1':
+            is_approved = True
+        elif is_approved == None:
+            is_approved = None
+        else:
+            return get_status_object_json(False, None, INVALID_PARAM)
+        
         try:
             borrow_id = int(borrow_id)
             book_id = int(book_id) if book_id != None else None
@@ -172,7 +194,7 @@ def admin_book_borrow_manage():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = edit_borrow(borrow_id, user_id, book_id, start_borrow, end_borrow, has_returned, return_date, damaged_or_lost)
+        success, result, error = edit_borrow(borrow_id, user_id, book_id, start_borrow, end_borrow, has_returned, return_date, damaged_or_lost, is_approved)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'DELETE':
         borrow_id = request.form.get('borrow_id')
@@ -193,3 +215,10 @@ def return_book_current_user(borrow_id):
         success, result, error = return_book(user_id,  borrow_id)
         return get_status_object_json(success, result, error), 200
 
+@book_user.route('/api/borrow-count', methods=['GET'])
+def book_count():
+    try:
+        book_counts = db.session.query(func.count(distinct(BookBorrow.id))).first()
+        return get_status_object_json(True, book_counts[0], None), 200
+    except:
+        return get_status_object_json(False, None, DATABASE_ERROR), 500

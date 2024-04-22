@@ -15,6 +15,5 @@ def get_status_object_json(success:bool, obj, error: str | None):
         obj = [asdict(item) if is_dataclass(item) else item for item in obj]
     if is_dataclass(obj):
         obj = asdict(obj)
-    print(obj)
     status_obj = get_status_object(success, obj, error)
     return jsonify(status_obj)
