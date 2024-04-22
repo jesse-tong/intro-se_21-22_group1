@@ -14,6 +14,13 @@ class Book(db.Model):
     isbn:str = db.Column(db.String(100))
 
 @dataclass
+class BookLanguage(db.Model):
+    __tablename__ = 'booklanguage'
+    id:int = db.Column(db.Integer, primary_key=True)
+    bookId:int = db.Column(db.Integer, db.ForeignKey('book.id'))
+    language:str = db.Column(db.String(50))
+
+@dataclass
 class Genre(db.Model):
     __tablename__ = 'genre'
     id:int = db.Column(db.Integer, primary_key=True)

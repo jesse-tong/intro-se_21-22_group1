@@ -1,12 +1,14 @@
 from flask import Blueprint, request, make_response, jsonify
 from global_vars.database_init import db
-from flask_login import logout_user
+from flask_login import logout_user, current_user
 import json
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
-from controller.user_controller import login, register, isRestricted, change_password
+from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, user_profile
 from global_vars.errors import *
+from global_vars.constants import *
+from dataclasses import asdict
 
 auth = Blueprint('auth', __name__)
 
@@ -68,4 +70,36 @@ def is_user_restricted(userId):
     except:
         return get_status_object_json(False, None, INVALID_ID), 400
     
+@auth.route('/auth/update-user-info', methods=['POST', 'PUT'])
+def update_user_info():
+    if not current_user.is_authenticated:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    else:
+        user_id = current_user.id 
+        age = request.form.get('age')
+        gender = request.form.get('gender')
+        phone_number = request.form.get('phone_number')
+        address = request.form.get('address')
 
+        if gender != None and gender.lower() not in available_genders:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        try:
+            age = int(age) if age != None else None
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        if age < 0 or age > 125: 
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, result, error = add_update_user_infos(user_id, age, gender, borrow_left_default, phone_number, address)
+        return get_status_object_json(success, result, error), 200
+
+@auth.route('/auth/profile', methods=['GET'])
+def profile_route():
+    if not current_user.is_authenticated:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    else:
+        success, result, error = user_profile(current_user.id)
+        result = asdict(result[0]) | asdict(result[1])
+        return get_status_object_json(success, result, error), 200

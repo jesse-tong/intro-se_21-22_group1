@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user_model import User
-from models.book_model import Book, BookAuthor, BookGenre, Author, Genre, BookImage, BookLocation
+from models.book_model import Book, BookAuthor, BookGenre, Author, Genre, BookImage, BookLocation, BookFile
 from sqlalchemy import select
 from global_vars.database_init import db
 from utils.file_utils import *
@@ -30,6 +30,8 @@ def delete_book(id: int):
         db.session.query(BookAuthor).filter(BookAuthor.bookId == id).delete()
         db.session.query(BookGenre).filter(BookGenre.bookId == id).delete()
         db.session.query(BookLocation).filter(BookLocation.bookId == id).delete()
+        db.session.query(BookImage).filter(BookImage.bookId == id).delete()
+        db.session.query(BookFile).filter(BookFile.bookId == id).delete()
         db.session.commit()
         rows_deleted = db.session.query(Book).filter(Book.id == id).delete()
         db.session.commit()
@@ -119,7 +121,6 @@ def decrement_book_stock(id: int):
     try:
         book = db.session.query(Book).filter(Book.id == id).update({Book.stock: Book.stock - 1})
         db.session.commit()
-        print('Decrement')
         return True, book, None
     except:
         db.session.rollback()
@@ -148,19 +149,20 @@ def search_book(title: str=None, start_publish: int=None, end_publish: int=None,
     if book_id != None:
         query = query.filter(Book.id == book_id)
     if title != None:
-        query = query.filter(Book.title.like(title))
+        query = query.filter(Book.title.like('%{}%'.format(title)))
     if start_publish != None:
         query = query.filter(Book.publish_year >= start_publish)
     if end_publish != None:
         query = query.filter(Book.publish_year <= end_publish)
     if description != None:
-        query = query.filter(Book.description.like(description))
+        query = query.filter(Book.description.like('%{}%'.format(description)))
+    if isbn != None:
+        query = query.filter(Book.isbn == isbn)
     if start_from != None:
         query = query.offset(start_from)
     if limit != None:
         query = query.limit(limit)
-    if isbn != None:
-        query = query.filter(Book.isbn == isbn)
+    
     
     result = db.session.execute(query)
     result = result.all()
@@ -210,21 +212,32 @@ def get_authors():
     except:
         return False, None, DATABASE_ERROR
 
-def get_books_genre(genre_id: int | list[int], page: int, limit: int):
+def get_books_genre(genre_id: int | list[int], page: int =None, limit: int=None):
+    
     if type(genre_id) == list:
         try:
-            books_for_genres = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id.in_(genre_id)).all()
+            query = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id.in_(genre_id))
+            if page != None and limit != None and page > 0  and limit > 0:
+                offset = (page - 1)*limit
+                query = query.offset(offset).limit(limit)
+            books_for_genres = query.all()
+            
             return True, books_for_genres, None
         except:
             return False, None, DATABASE_ERROR
     else:
         try:
-            books_for_genre = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id == genre_id).all()
+            query = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id == genre_id)
+            if page != None and limit != None and page > 0  and limit > 0:
+                offset = (page - 1)*limit
+                query = query.offset(offset).limit(limit)
+            books_for_genre = query.all()
+
             return True, books_for_genre, None
         except:
             return False, None, DATABASE_ERROR
     
-def get_books_author(author_id: int | list[int], page: int, limit: int):
+def get_books_author(author_id: int | list[int], page: int=None, limit: int=None):
     if type(author_id) == list:
         try:
             books_for_authors = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id.in_(author_id)).all()

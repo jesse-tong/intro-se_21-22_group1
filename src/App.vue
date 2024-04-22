@@ -1,12 +1,17 @@
 <script setup>
 import PaginatedPage from './components/page_components/PaginatedPage.vue';
 import LoginPage from './components/views/LoginPage.vue';
-import DashboardChart from './components/page_components/DashboardChart.vue';
+import NavBar from './components/page_components/NavBar.vue';
+
+
 </script>
 
 <template>
+  <Notifications position="top right" duration="7000"/>
+  <NavBar />
   <PaginatedPage />
   <LoginPage />
+  
 
 </template>
 

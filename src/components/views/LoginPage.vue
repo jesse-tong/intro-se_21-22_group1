@@ -40,7 +40,7 @@
                 <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
               </div>
               <div class="text-center">
-                <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white">Sign in</button>
+                <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event =>notify()">Sign in</button>
               </div>
               <p class="mt-4 text-sm text-center">
                 Don't have an account? <a href="/register" class="text-decoration-none" style="color: #ec407a;">Sign up</a>
@@ -66,7 +66,9 @@
 
         },
         methods: {
-
+          notify(){
+            this.$notify("Hello user!");
+          }
         }
     }
 </script>
