@@ -128,3 +128,14 @@ def delete_notification(notification_ids_or_id: list[int] | int):
         db.session.commit()
         return True, row_deleted, None
 
+def search_user(user_id:int=None, name: str=None, email:str=None):
+    query = db.session.query(User)
+    if user_id != None:
+        query = query.filter(User.id == user_id)
+    if name != None:
+        query = query.filter(User.name.like('%{}%'.format(name)))
+    if email != None:
+        query = query.filter(User.email.like('%{}%'.format(email)))
+    
+    result = query.all()
+    return True, result, None

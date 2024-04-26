@@ -2,13 +2,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models.user_model import User
 from models.book_model import Book, BookFile
 from models.user_book import BookBorrow, BookFavorite
-from sqlalchemy import select
+from sqlalchemy import select, func, desc
 from global_vars.database_init import db
 from global_vars.errors import *
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dateutil.parser import parse as dateparse
 from global_vars.constants import *
 from global_vars.init_env import *
+from dataclasses import asdict
 from controller.book_controller import increment_book_stock, decrement_book_stock, is_book_out_of_stock
 borrow_time = os.environ.get('DEFAULT_BORROW_TIMEOUT')
 overdue_fine = os.environ.get('OVERDUE_FINE_PER_DAY')
@@ -20,7 +21,7 @@ damage_and_lost_fine = os.environ.get('DAMAGE_AND_LOST_FINE')
 def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, do_not_decrement_book_stock: bool=False):
     borrow_book = BookBorrow()
     if start_date != None:
-        borrow_book.startBorrow = max([start_date, datetime.now()])
+        borrow_book.startBorrow = max([start_date, datetime.now(timezone.utc)])
     else:
         borrow_book.startBorrow = datetime.now()
     if end_date == None:
@@ -120,8 +121,12 @@ def return_book(userId: int, id: int, damagedOrLost: bool=False):
         .filter(BookBorrow.id == id).first()
     if borrow_book != None:
         has_returned = borrow_book.hasReturned
+        is_approved = borrow_book.isApproved
         if has_returned:
             return False, None, BOOK_HAS_RETURNED
+        if not is_approved:
+            return False, None, BORROW_NOT_APPROVED
+        
         borrow_book.hasReturned = True
         borrow_book.returnDate = datetime.now()
         borrow_book.isDamagedOrLost = damagedOrLost
@@ -164,9 +169,14 @@ def search_borrow(user_id: int=None, book_id: int=None, start_date: datetime = N
         query = query.offset(offset).limit(limit)
 
     result = query.all()
-    
-    #result = [query_result[0] for query_result in result]
-    return True, result, None
+    return_obj = list()
+    for borrow in result:
+        borrow_dict = asdict(borrow)
+        success, fee, error = calculate_fee(borrow, 0.0)
+        borrow_dict['fee'] = fee
+        return_obj.append(borrow_dict)
+
+    return True, return_obj, None
 
 def delete_borrow(borrow_id: int):
     try:
@@ -184,14 +194,20 @@ def get_borrow_fee(borrow_id: int, other_fees: float):
 
     if not borrow:
         return False, None, INVALID_ID
-    
+    return calculate_fee(borrow, other_fees)
+
+def calculate_fee(borrow, other_fees):
     is_damaged_or_lost = borrow.isDamagedOrLost
     end_borrow = borrow.endBorrow
     return_date = borrow.returnDate
 
     if borrow.hasReturned == False or return_date == None:
         #Haven't return the book yet
-        return False, None, BOOK_NOT_RETURNED
+        return False, 0.0, BOOK_NOT_RETURNED
+    
+    if borrow.isApproved == False:
+        #Borrow haven't been approved yet
+        return False, 0.0, BORROW_NOT_APPROVED 
 
     time_difference = return_date - end_borrow
     #If return date is before end borrowing date, or overdue under 12 hours
@@ -206,7 +222,7 @@ def get_borrow_fee(borrow_id: int, other_fees: float):
         total = float(overdue) * float(overdue_fine)
     #If the book is irrecoverably damaged or lost
     if is_damaged_or_lost or overdue > int(overdue_limit_before_treated_as_lost):
-        total += damage_and_lost_fine 
+        total += float(damage_and_lost_fine)
     
     total += other_fees
     return True, total, None
@@ -248,3 +264,13 @@ def does_book_have_ebook(bookId: int):
 def get_ebook(bookId: int):
     bookpdf = db.session.query(BookFile).filter(bookId == BookFile.bookId).all()
     return bookpdf
+
+#This will get like (a number) of books that other users that borrow this book also borrow the most
+#Query: select b.bookId, count(b.bookId) as count_borrow from bookborrow b 
+#       where b.userId in (select distinct b2.userId from bookborrow b2 where b2.bookId = 4) 
+#       group by b.bookId order by count(b.bookId) desc limit 10
+def get_related_books_others_borrow_most(book_id: int):
+    subquery = db.session.query(BookBorrow.userId).filter(BookBorrow.bookId == book_id).subquery()
+    result = db.session.query(BookBorrow.bookId, func.count(BookBorrow.bookId)).filter(BookBorrow.userId.in_(subquery)).group_by(BookBorrow.bookId) \
+        .order_by(desc(BookBorrow.bookId)).limit(10).all()
+    return True, result, None

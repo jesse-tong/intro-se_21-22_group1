@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user_model import User
-from models.book_model import Book, BookAuthor, BookGenre, Author, Genre, BookImage, BookLocation, BookFile
-from sqlalchemy import select
+from models.book_model import Book, BookAuthor, BookGenre, Author, Genre, BookImage, BookLocation, BookFile, BookLanguage
+from sqlalchemy import select, func
 from global_vars.database_init import db
 from utils.file_utils import *
 from global_vars.errors import *
@@ -32,6 +32,7 @@ def delete_book(id: int):
         db.session.query(BookLocation).filter(BookLocation.bookId == id).delete()
         db.session.query(BookImage).filter(BookImage.bookId == id).delete()
         db.session.query(BookFile).filter(BookFile.bookId == id).delete()
+        db.session.query(BookLanguage).filter(BookLanguage.bookId == id).delete()
         db.session.commit()
         rows_deleted = db.session.query(Book).filter(Book.id == id).delete()
         db.session.commit()
@@ -41,22 +42,24 @@ def delete_book(id: int):
         return False, 0, DELETE_ERROR
 
 def change_book_data(book_id: int, title: str=None, publish_year: int=None, 
-description: str=None, authors: list=None, genres: list=None, isbn=None, stock: int=0):
+description: str=None, authors: list=None, genres: list=None, isbn=None, stock: int=0, languages:list[str]=None):
     genre_ids = list()
     author_ids = list()
 
-    for author in authors:
-        result, __, error = add_author(author)
-        row = db.session.query(Author).filter(Author.name == author).first()
-        if row:
-            author_ids.append(row.id)
+    if authors != None:
+        for author in authors:
+            result, __, error = add_author(author)
+            row = db.session.query(Author).filter(Author.name == author).first()
+            if row:
+                author_ids.append(row.id)
 
-    for genre in genres:
-        result, __, error = add_genre(genre)
-        row = db.session.query(Genre).filter(Genre.name == genre).first()
+    if genres != None:
+        for genre in genres:
+            result, __, error = add_genre(genre)
+            row = db.session.query(Genre).filter(Genre.name == genre).first()
 
-        if row != None:
-            genre_ids.append(row.id)
+            if row != None:
+                genre_ids.append(row.id)
 
 
     try:
@@ -77,31 +80,47 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, stock: 
         db.session.commit()
 
         #Delete old genre and author data
-        db.session.query(BookGenre).filter(BookGenre.bookId == book.id).delete()
-        db.session.query(BookAuthor).filter(BookAuthor.bookId == book.id).delete()
-        
+        if genres != None:
+            db.session.query(BookGenre).filter(BookGenre.bookId == book.id).delete()
+        if authors != None:
+            db.session.query(BookAuthor).filter(BookAuthor.bookId == book.id).delete()
+        if languages != None:
+            db.session.query(BookLanguage).filter(BookLanguage.bookId == book.id).delete()
         db.session.commit()
 
-        for genre_id in genre_ids:
-            book_genre = BookGenre()
-            book_genre.bookId = book.id
-            book_genre.genreId = genre_id
-            try:
-                db.session.add(book_genre)
-                db.session.commit()
-            except:
-                db.session.rollback()
-        
-        for author_id in author_ids:
-            book_author = BookAuthor()
-            book_author.bookId = book.id
-            book_author.authorId = author_id
-            try:
-                db.session.add(book_author)
-                db.session.commit()
-            except:
-                db.session.rollback()
-        
+        if genres != None:
+            for genre_id in genre_ids:
+                book_genre = BookGenre()
+                book_genre.bookId = book.id
+                book_genre.genreId = genre_id
+                try:
+                    db.session.add(book_genre)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+
+        if authors != None:
+            for author_id in author_ids:
+                book_author = BookAuthor()
+                book_author.bookId = book.id
+                book_author.authorId = author_id
+                try:
+                    db.session.add(book_author)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+
+        if languages != None:
+            for language in languages:
+                book_language = BookLanguage()
+                book_language.bookId = book.id
+                book_language.language = language
+                try:
+                    db.session.add(book_language)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+
         return True, book, None
     except:
         db.session.rollback()
@@ -182,17 +201,25 @@ def get_book_data(id: int):
         res['isbn'] = book.isbn
         res['authors'] = list()
         res['genres'] = list()
+        res['languages'] = list()
 
         authors = db.session.query(BookAuthor.bookId, BookAuthor.authorId, Author.id, Author.place, Author.name) \
         .filter(BookAuthor.bookId == book.id).filter(BookAuthor.authorId == Author.id).join(Author).all()
+
         genres = db.session.query(BookGenre.bookId, BookGenre.genreId, Genre.id, Genre.name) \
             .filter(BookGenre.bookId == book.id).filter(BookGenre.genreId == Genre.id).join(Genre).all()
+
+        languages = db.session.query(BookLanguage.bookId, BookLanguage.language) \
+            .filter(BookLanguage.bookId == book.id).all()
         
         for author in authors:         
             res['authors'].append(author.name)
 
         for genre in genres:
             res['genres'].append(genre.name)
+
+        for language in languages:
+            res['languages'].append(language.language)
 
         return True, res, None
     else:

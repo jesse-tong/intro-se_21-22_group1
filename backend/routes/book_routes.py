@@ -9,6 +9,7 @@ from flask_login import current_user
 from flask_cors import CORS
 from controller.book_controller import *
 from controller.user_controller import get_current_user_role
+from controller.comment_controller import get_book_avg_rating
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
 
@@ -28,8 +29,10 @@ def get_and_add_book_route():
         start_publish = request.args.get('start_publish') #Publish year search start
         end_publish = request.args.get('end_publish') #Publish year search end
         book_id = request.args.get('book_id')
+        limit = request.args.get('limit')
         try:
             page = int(page) if page != None else None
+            limit = int(limit) if limit != None else None
             book_id = int(book_id) if book_id != None else None
             start_publish = int(start_publish) if start_publish != None else None
             end_publish = int(end_publish) if end_publish != None else None
@@ -44,8 +47,8 @@ def get_and_add_book_route():
             start_from = None
         description = request.args.get('description')
         result, query_result, error = search_book(title, start_publish, end_publish,
- description, start_from=start_from, limit=result_per_page, isbn=isbn, book_id=book_id)
-        print(query_result)
+ description, start_from=start_from, limit=limit, isbn=isbn, book_id=book_id)
+
         return get_status_object_json(result, query_result, error), 200
     
     elif request.method == 'POST':
@@ -59,14 +62,14 @@ def get_and_add_book_route():
         title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         isbn = book_data.get('isbn'); authors = book_data.get('authors'); genres = book_data.get('genres')
-        stock = book_data.get('stock')
+        stock = book_data.get('stock'); languages = book_data.get('languages')
         if title == None:
-
             return get_current_user_role(False, None, INVALID_PARAM), 400
         try:
             publish_year = int(publish_year) if publish_year != None else None
             authors = json.loads(authors) if authors != None else list()
             genres = json.loads(genres) if genres != None else list()
+            languages = json.loads(languages) if languages != None else list()
             stock = int(stock) if stock != None or stock != 0 else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
@@ -78,7 +81,7 @@ def get_and_add_book_route():
         else:
             #If also add authors and genres, add them too
             if success == True:
-                success, updated, error = change_book_data(new_book.id, authors=authors, genres=genres, description=description, isbn=isbn)
+                success, updated, error = change_book_data(new_book.id, authors=authors, genres=genres, description=description, isbn=isbn, stock=stock, languages=languages)
                 return get_status_object_json(success, new_book, error), 200
             else:
                 return get_status_object_json(False, None, ADD_ENTRY_ERROR), 500
@@ -93,16 +96,17 @@ def get_and_add_book_route():
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         authors = book_data.get('authors') #Author should be a JSON string from an array
         genres = book_data.get('genres'); isbn = book_data.get('isbn')
-        stock = book_data.get('stock')
+        stock = book_data.get('stock'); languages = book_data.get('languages')
         try:
             book_id = int(book_id)
             publish_year = int(publish_year)
             authors = list(json.loads(authors)) if authors != None else list()
             genres = list(json.loads(genres))  if genres != None else list()
+            languages = list(json.loads(languages)) if languages != None else list()
             stock = int(stock) if stock != None else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
-        success, edited_data, error = change_book_data(book_id, title, publish_year, description, authors, genres, isbn, stock)
+        success, edited_data, error = change_book_data(book_id, title, publish_year, description, authors, genres, isbn, stock, languages)
         return get_status_object_json(success, edited_data, error), 200
     elif request.method == 'DELETE':
         bookId = request.form.get('book_id')
@@ -282,3 +286,11 @@ def book_count():
     except:
         return get_status_object_json(False, None, DATABASE_ERROR), 500
     
+@book_routes.route('/api/book-average-rating/<book_id>', methods=['GET'])
+def get_avg_book_rating(book_id):
+    try:
+        book_id = int(book_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, result, error = get_book_avg_rating(book_id)
+    return get_status_object_json(success, result, error)

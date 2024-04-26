@@ -8,19 +8,19 @@
               <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
               <div class="row mt-3">
                 <div class="col-2 text-center ms-auto">
-                  <a class="btn btn-link px-3" href="/login/facebook">
+                  <RouterLink class="btn btn-link px-3" to="/login/facebook">
                     <i class="fa fa-facebook text-white text-lg"></i>
-                  </a>
+                  </RouterLink>
                 </div>
                 <div class="col-2 text-center px-1">
-                  <a class="btn btn-link px-3" href="/login/github">
+                  <RouterLink class="btn btn-link px-3" to="/login/github">
                     <i class="fa fa-github text-white text-lg"></i>
-                  </a>
+                  </RouterLink>
                 </div>
                 <div class="col-2 text-center me-auto">
-                  <a class="btn btn-link px-3" href="/login/google">
+                  <RouterLink class="btn btn-link px-3" to="/login/google">
                     <i class="fa fa-google text-white text-lg"></i>
-                  </a>
+                  </RouterLink>
                 </div>
               </div>
             </div>
@@ -40,10 +40,10 @@
                 <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
               </div>
               <div class="text-center">
-                <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event =>notify()">Sign in</button>
+                <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => login()">Sign in</button>
               </div>
               <p class="mt-4 text-sm text-center">
-                Don't have an account? <a href="/register" class="text-decoration-none" style="color: #ec407a;">Sign up</a>
+                Don't have an account? <RouterLink to="/register" class="text-decoration-none" style="color: #ec407a;">Sign up</RouterLink>
               </p>
             </form>
           </div>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
     export default {
         data(){
             return {
@@ -62,12 +64,41 @@
                 rememberMe: '',
             }
         },
+        props: {
+          role: {
+            type: String,
+            default: 'user'
+          }
+        },
         watch: {
 
         },
         methods: {
           notify(){
             this.$notify("Hello user!");
+          },
+          login(){
+            axios.postForm('/auth/login', {
+              email: this.email,
+              password: this.password,
+              remember: (this.rememberMe !== '' && this.rememberMe !== null) ? true : false
+            }).then(response => {
+              if (response.data.success === true){
+
+                this.$router.push('/');
+              }else {
+                this.$notify({
+                  title: "Login error",
+                  text: "Login with error: " + response.data.error
+                })
+              }
+            }).catch(err=>{
+              this.$notify({
+                title: "Login error",
+                text: "Login with error: "+ err.response.data.error,
+                type: "error"
+              })
+            })
           }
         }
     }

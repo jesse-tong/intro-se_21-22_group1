@@ -7,11 +7,16 @@ import NavBar from './components/page_components/NavBar.vue';
 </script>
 
 <template>
-  <Notifications position="top right" duration="7000"/>
+  <Notifications position="top right" />
   <NavBar />
-  <PaginatedPage />
-  <LoginPage />
-  
+  <router-view />
+  <div class="container">
+    
+    
+  </div>
+  <footer>
+    
+  </footer>
 
 </template>
 
