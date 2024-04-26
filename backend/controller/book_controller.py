@@ -227,14 +227,14 @@ def get_book_data(id: int):
 
 def get_genres():
     try:
-        genres = db.session.query(BookGenre).distinct().all()
+        genres = db.session.query(Genre).distinct().all()
         return True, genres, None
     except:
         return False, None, DATABASE_ERROR
 
 def get_authors():
     try:
-        genres = db.session.query(BookAuthor).distinct().all()
+        genres = db.session.query(Author).distinct().all()
         return True, genres, None
     except:
         return False, None, DATABASE_ERROR
@@ -267,13 +267,21 @@ def get_books_genre(genre_id: int | list[int], page: int =None, limit: int=None)
 def get_books_author(author_id: int | list[int], page: int=None, limit: int=None):
     if type(author_id) == list:
         try:
-            books_for_authors = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id.in_(author_id)).all()
+            query = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id.in_(author_id))
+            if page != None and limit != None and page > 0  and limit > 0:
+                offset = (page - 1)*limit
+                query = query.offset(offset).limit(limit)
+            books_for_authors = query.all()
             return True, books_for_authors, None
         except:
             return False, None, DATABASE_ERROR
     else:
         try:
-            books_for_author = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id == author_id).all()
+            query = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id == author_id)
+            if page != None and limit != None and page > 0  and limit > 0:
+                offset = (page - 1)*limit
+                query = query.offset(offset).limit(limit)
+            books_for_author = query.all()
             return True, books_for_author, None
         except:
             return False, None, DATABASE_ERROR

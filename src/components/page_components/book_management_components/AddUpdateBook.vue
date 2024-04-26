@@ -1,16 +1,27 @@
 <template>
     <div>
+        <h4 v-if="$props.bookId !== null" class="mb-2 mt-3">Update book data</h4>
+        <h4 v-else class="mb-2 mt-3">Add book</h4>
         <div class="row">
             <div v-if="$props.bookId !== null" class="col-12 col-md-6 col-lg-4">
-                <label for="editBookId" class="form-label" v-if="$props.bookId !== null"><span>Book ID: </span></label>
-                <input type="text" :value="bookId" @input="$emit('update:bookId', $event.target.value)" 
-                 v-if="$props.bookId !== null" id="editBookId" disabled />
+                <div class="input-group my-2">
+                    <label for="editBookId" class="input-group-text" v-if="$props.bookId !== null"><span>Book ID: </span></label>
+                    <input type="text" :value="bookId" @input="$emit('update:bookId', $event.target.value)" 
+                     v-if="$props.bookId !== null" id="editBookId" disabled class="form-control"/>
+                </div>
+                
             </div>
             <div class="col">
                 <div class="input-group my-2">
                     <label for="editBookISBN" class=" input-group-text"><span>ISBN:</span></label>
                     <input type="text" v-model="bookIsbn" id="editBookISBN" class="form-control"/>
                 </div> 
+            </div>
+            <div class="col">
+                <div class="input-group my-2">
+                    <label for="editBookStock" class="input-group-text"><span>Book stock in library: </span></label>
+                    <input type="number" min="0" max="1000" id="editBookStock" v-model="stock" class="form-control"/>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -30,79 +41,94 @@
                 
             </div>
         </div>
-        <div >
-            <div class="row mt-2">
-                <label for="editAuthor" class="form-label"><span>Add author</span></label>
-                <input type="text" v-model="inputAuthor" class="form-control" id="editAuthor"/>
-                <button class="ms-2 btn btn-primary" @click="(e)=>pushAuthorToList(inputAuthor)" >Add author</button>
-                <button class="ms-3 btn btn-danger" @click="(e)=>clearEditAuthorList()">Clear all authors</button>                
-            </div>
-            <div class="form-check row">
-                <input class="form-check-input" type="checkbox" v-model="notUpdateAuthors" id="notUpdatingAuthors">
-                <label for="notUpdatingAuthors" class="form-check-label"><span>Not updating authors</span></label>
-            </div>
-            <div class="row">
-                <span>Authors: </span>
-                <h6 class="badge text-bg-secondary" v-for="author in authors">{{ author }}</h6>
-            </div>
-        </div>
-        <div >
-            <div class="row mt-2">
-                <label for="editGenre" class="form-label"><span>Add genre</span></label>
-                <input type="text" v-model="inputGenre" class="form-control" id="editGenre"/>
-                <button class="ms-2 btn btn-primary" @click="(e)=>pushGenreToList(inputGenre)" >Add genre</button>
-                <button class="ms-3 btn btn-danger" @click="(e)=>clearEditGenreList()">Clear all genres</button>
-            </div>
-            <div class="form-check row">
-                <input class="form-check-input" type="checkbox" v-model="notUpdateGenres" id="notUpdatingGenres">
-                <label for="notUpdatingGenres" class="form-check-label"><span>Not updating genres</span></label>
-            </div>
-            <div class="row">
-                <span>Genres: </span>
-                <h6 class="badge text-bg-secondary" v-for="genre in genres">{{ genre }}</h6>
-            </div>
-        </div>
-        <div class="col border border-2 rounded p-3">
-            <div class="row-6 mt-2">
-                <div class="col-rows-3">
-                    <label for="editLanguage" class="form-label mx-2"><h5>Add language</h5></label>
-                    <input type="text" v-model="inputLanguage" class="form-control mx-2" id="editLanguage"/>
-                    <div class="row gap-3 ms-2 mt-3">
-                        <button class=" btn btn-primary col-4" @click="(e)=>pushLanguageToList(inputLanguage)" >Add language</button>
-                        <button class=" btn btn-danger col-4" @click="(e)=>clearEditLanguageList()">Clear all languages</button>
-                        <div class="form-check col-3">
-                            <input class="form-check-input" type="checkbox" v-model="notUpdateLanguages" id="notUpdatingLanguages">
-                            <label for="notUpdatingLanguages" class="form-check-label"><span>Not updating languages</span></label>
+        <div class="row">
+            <div class="col-md-4 col-12">
+                <div class="col border border-2 rounded p-3">
+                    <div class="row-6 mt-2">
+                        <div class="col-rows-3">
+                            <label for="editAuthor" class="form-label"><h5>Add author</h5></label>
+                            <input type="text" v-model="inputAuthor" class="form-control" id="editAuthor"/>
+                            <div class="row gap-3 ms-2 mt-3">
+                                <button class="col-4 btn btn-primary" @click="(e)=>pushAuthorToList(inputAuthor)" >Add author</button>
+                                <button class="col-4 btn btn-danger" @click="(e)=>clearEditAuthorList()">Clear all authors</button>
+                                <div class="form-check col-3">
+                                    <input class="form-check-input" type="checkbox" v-model="notUpdateAuthors" id="notUpdatingAuthors">
+                                    <label for="notUpdatingAuthors" class="form-check-label"><span>Not updating authors</span></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>              
-            </div>     
-            <div class="row-6 mt-3 ms-1">
-                <div>
-                    <span><h5>Languages: </h5></span>
-                    <h6 class="badge text-bg-secondary" v-for="language in languages">{{ language }}</h6>
-                </div>     
+                    <div class="row-6 mt-3 ms-1">
+                        <span>Authors: </span>
+                        <h6 class="badge text-bg-secondary" v-for="author in authors">{{ author }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="col border border-2 rounded p-3">
+                    <div class="row-6 mt-2">
+                        <div class="col-rows-3">
+                            <label for="editGenre" class="form-label mx-2"><h5>Add genre</h5></label>
+                            <input type="text" v-model="inputGenre" class="form-control mx-2" id="editGenre"/>
+                            <div class="row gap-3 ms-2 mt-3">
+                                <button class="col-4 btn btn-primary" @click="(e)=>pushGenreToList(inputGenre)" >Add genre</button>
+                                <button class="col-4 btn btn-danger" @click="(e)=>clearEditGenreList()">Clear all genres</button>
+                                <div class="form-check col-3">
+                                    <input class="form-check-input" type="checkbox" v-model="notUpdateGenres" id="notUpdatingGenres">
+                                    <label for="notUpdatingGenres" class="form-check-label"><span>Not updating genres</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-6 mt-3 ms-1">
+                        <span>Genres: </span>
+                        <h6 class="badge text-bg-secondary" v-for="genre in genres">{{ genre }}</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="col border border-2 rounded p-3">
+                    <div class="row-6 mt-2">
+                        <div class="col-rows-3">
+                            <label for="editLanguage" class="form-label mx-2"><h5>Add language</h5></label>
+                            <input type="text" v-model="inputLanguage" class="form-control mx-2" id="editLanguage"/>
+                            <div class="row gap-3 ms-2 mt-3">
+                                <button class=" btn btn-primary col-4" @click="(e)=>pushLanguageToList(inputLanguage)" >Add language</button>
+                                <button class=" btn btn-danger col-4" @click="(e)=>clearEditLanguageList()">Clear all languages</button>
+                                <div class="form-check col-3">
+                                    <input class="form-check-input" type="checkbox" v-model="notUpdateLanguages" id="notUpdatingLanguages">
+                                    <label for="notUpdatingLanguages" class="form-check-label"><span>Not updating languages</span></label>
+                                </div>
+                            </div>
+                        </div>              
+                    </div>     
+                    <div class="row-6 mt-3 ms-1">
+                        <div>
+                            <span><h5>Languages: </h5></span>
+                            <h6 class="badge text-bg-secondary" v-for="language in languages">{{ language }}</h6>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-10">
+                <div class="form-floating mt-3">
+                    <textarea id="editDescription" v-model="description" placeholder="Book description here" style="height: 200px;" class="form-control"></textarea>
+                    <label for="editDescription" class><span>Book description:</span></label>
+                </div>
+            </div>
+            <div class="col m-auto">
+                <button class="btn btn-primary" @click="(e)=>onSubmitAddUpdateBook()">
+                    <span v-if="bookId == null">Add book</span>
+                    <span v-else>Edit book</span>
+                </button>
             </div>
         </div>
-
-        <div class="mt-2">
-
-            <label for="editDescription" class><span>Book description:</span></label>
-            <textarea id="editDescription" v-model="description" placeholder="Book description here..."></textarea>
-
-        </div>
-        <div class="mt-2 row g-2 align-items-center">
-            <div class="col-auto">
-                <label for="editBookStock" class="col-form-label"><span>Book stock in library: </span></label>
-            </div>
-            <div class="col-auto">
-                <input type="number" min="0" max="1000" id="editBookStock" v-model="stock"/>
-            </div>   
-        </div>
-        <button class="btn btn-primary" @click="(e)=>onSubmitAddUpdateBook()">
-            <span v-if="bookId == null">Add book</span>
-            <span v-else>Edit book</span>
-        </button>
+        
+        
+        
     </div>
 </template>
 

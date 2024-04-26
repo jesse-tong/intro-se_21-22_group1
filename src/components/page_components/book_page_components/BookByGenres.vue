@@ -1,14 +1,14 @@
 <template>
-    <div class="row mt-3 ms-2">
-        <div class="col-3 rounded g-0 "  >
+    <div class="row mt-3">
+        <div class="col-3 g-0 rounded"  >
             <ul class="list-group mt-2 rounded">
-                <li class="list-group-item" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>
+                <li class="list-group-item" v-for="genre in genres" @click="selectedId = parseInt(genre.id)"><span>{{ genre.name }}</span></li>
             </ul>
         </div>
-        <div class="bg-light col-9 my-2 rounded shadow-sm"  v-if="selectedId === null"></div>
+        <div class="bg-light col-9"  v-if="selectedId === null"></div>
         <div class="col-9 my-2 pe-3" v-else>
-            <div class="bg-light rounded shadow-sm p-1 border-1" >
-                <GetBookByAuthorOrGenreId :genreOrAuthorId="selectedId" :fetchGenre=false />
+            <div class="bg-light rounded shadow-sm p-1 border-1">
+                <GetBookByAuthorOrGenreId :genreOrAuthorId="selectedId" :fetchGenre=true />
             </div>
         </div>
         
@@ -21,13 +21,13 @@ import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
     export default {
         data(){
             return {
-                authors: [],
+                genres: [],
                 authorPage: 1,
                 selectedId: 0
             }
         },
         created() {
-            axios.get('/api/get-authors', {
+            axios.get('/api/get-genres', {
                 params: {
                     page: this.authorPage,
                     limit: 15
@@ -35,24 +35,24 @@ import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
             }).then(response=> {
                 if (!response.data || response.data == undefined || !response.data.success){
                     this.$notify({
-                        title: "Get book by authors failed!",
-                        text: "Get books by authors failed with unknown error, this can be from network or server",
+                        title: "Get book by genres failed!",
+                        text: "Get books by genres failed with unknown error, this can be from network or server",
                         type: "error"
                     });
                 }
                 if (response.data.success === true){
-                    this.authors = response.data.result;
+                    this.genres = response.data.result;
                 }else{
                     this.$notify({
-                        title: "Get book by authors failed!",
-                        text: "Get book by authors failed with error: " + response.data.error,
+                        title: "Get book by genres failed!",
+                        text: "Get book by genres failed with error: " + response.data.error,
                         type: "error"
                     });
                 }   
             }).catch(err=>{
                 this.$notify({
-                    title: "Get book by authors failed!",
-                    text: "Get book by authors failed failed with error: " + err.response.data.error,
+                    title: "Get book by genres failed!",
+                    text: "Get book by genres failed failed with error: " + err.response.data.error,
                     type: "error"
                 })
             }).finally(()=>{

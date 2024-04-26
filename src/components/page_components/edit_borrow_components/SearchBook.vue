@@ -8,7 +8,7 @@
         <label for="searchBookIsbn">Search Book ISBN (Optional):</label>
         <input :value="searchBookIsbn" @input="$emit('update:searchBookIsbn', $event.target.value)" type="text" class="form-control" id="searchBookIsbn" placeholder="Enter book ISBN">
       </div>
-      <button @click="$emit('search-book')" class="btn btn-primary">Search Book</button>
+      <button @click="$emit('search-book')" class="btn btn-primary mt-3">Search Book</button>
     </div>
   </template>
   

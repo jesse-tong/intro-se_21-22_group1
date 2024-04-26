@@ -8,12 +8,9 @@ import NavBar from './components/page_components/NavBar.vue';
 
 <template>
   <Notifications position="top right" />
-  <NavBar />
-  <router-view />
-  <div class="container">
-    
-    
-  </div>
+  <RouterView name="NavBar" />
+  <RouterView />
+  
   <footer>
     
   </footer>
