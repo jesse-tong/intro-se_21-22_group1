@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="borrow in borrows" :key="borrow.id">
+        <tr v-for="borrow in borrows" :key="borrow.id" >
           <td>{{ borrow.userId }}</td>
           <td>{{ borrow.bookId }}</td> 
           <td>{{ getDateString(borrow.startBorrow) }}</td>
@@ -24,9 +24,12 @@
           <td>{{ borrow.isDamagedOrLost ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.isApproved ? 'Yes' : 'No' }}</td>
           <td>
-            <button class="btn btn-sm btn-primary" @click="$emit('edit-borrow', borrow)">Edit</button>
-            <button class="btn btn-sm btn-danger" @click="$emit('delete-borrow', borrow.id)" >Delete</button>
+            <button class="btn btn-sm btn-primary" @click="$emit('editBorrow', borrow)">Edit</button>
+            <button class="btn btn-sm btn-danger" @click="$emit('deleteBorrow', borrow.id)" >Delete</button>
           </td>
+        </tr>
+        <tr v-if="borrows == null || borrows.length === 0" >
+          <td colspan="9" ><p class="text-center"><i>Currently no borrow status data</i></p></td>
         </tr>
       </tbody>
     </table>

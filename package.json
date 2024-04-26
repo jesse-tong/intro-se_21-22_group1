@@ -10,12 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
     "@kyvg/vue3-notification": "^3.2.1",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.2",
     "dotenv": "^16.4.5",
+    "font-awesome": "^4.7.0",
     "md-editor-v3": "^4.12.1",
     "pdfjs-dist": "^4.0.379",
     "vue": "^3.4.19",
@@ -23,6 +30,7 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
     "@vitejs/plugin-vue": "^5.0.4",
     "vite": "^5.2.3"
   }

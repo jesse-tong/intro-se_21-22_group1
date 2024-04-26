@@ -27,21 +27,23 @@ def borrow_book_current_user():
             limit = request.args.get('limit')
             try:
                 get_returned_book = request.args.get('get_returned')
-                if get_returned_book == True or get_returned_book == '1' or str(get_returned_book).lower() == 'true':
+                if get_returned_book != None and (get_returned_book == True or get_returned_book == '1' or str(get_returned_book).lower() == 'true'):
                     get_returned_book == True
                 else:
-                    get_returned_book == False
-                
+                    get_returned_book == False      
             except:
                 get_returned_book == False
+
             try:
                 page = int(page) if page != None else None
                 limit = int(limit) if limit != None else None
                 if page != None and limit != None and (page <= 0 or limit <= 0):
+                    
                     raise ValueError()
             except:
                 return get_status_object_json(False, None, INVALID_PARAM), 400
-            success, result, error = search_borrow(user_id, page=page, limit=limit)
+            print(get_returned_book)
+            success, result, error = search_borrow(user_id, page=page, limit=limit, get_returned=get_returned_book)
             if success == True:
                 return get_status_object_json(True, result, error), 200
             else:
@@ -59,12 +61,13 @@ def borrow_book_current_user():
                     start_date = dateparse(request.form.get('start_borrow')) if request.form.get('start_borrow') != None else None
                 except:
                     #Invalid start date, default current date (we don't need to use datetime.now(), the borrow_book() function already does it)
+                    print('Invalid start date')
                     start_date = None
                 try:
                     end_date = dateparse(request.form.get('end_borrow')) if request.form.get('end_borrow') != None else None
                 except:
                     end_date = None
-                
+
                 success, result, error = borrow_book(user_id, book_id, start_date, end_date)
                 return get_status_object_json(success, result, error), 200
     
@@ -105,7 +108,7 @@ def get_borrow_fee_route():
     additional_fees = request.args.get('additional_fees')
     try:
         borrow_id = int(borrow_id)
-        additional_fees = float(additional_fees)
+        additional_fees = float(additional_fees) if additional_fees != None else 0.0
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
     success, result, error = get_borrow_fee(borrow_id, additional_fees)
@@ -198,9 +201,23 @@ def admin_book_borrow_manage():
         return get_status_object_json(success, result, error), 200
     elif request.method == 'DELETE':
         borrow_id = request.form.get('borrow_id')
+        try:
+            borrow_id = int(borrow_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
         success, result, error = delete_borrow(borrow_id)
 
-        return get_status_object_json(success, result, error)
+        return get_status_object_json(success, result, error), 200
+
+@book_user.route('/api/manage-borrow-admin/<borrow_id>', methods=['DELETE'])
+def delete_borrow_route(borrow_id):
+    try:
+        borrow_id = int(borrow_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, result, error = delete_borrow(borrow_id)
+
+    return get_status_object_json(success, result, error), 200
 
 @book_user.route('/api/return/<borrow_id>', methods=['POST', 'GET'])
 def return_book_current_user(borrow_id):
@@ -209,11 +226,23 @@ def return_book_current_user(borrow_id):
     else:
         try:
             user_id = current_user.id
+            if request.method == 'POST':
+                damaged_or_lost = request.form.get('damaged_or_lost')
+            else:
+                damaged_or_lost = request.args.get('damaged_or_lost')
+            
+            if damaged_or_lost != None and (damaged_or_lost.lower() == 'true' or damaged_or_lost == '1'):
+                damaged_or_lost = True
+            elif damaged_or_lost != None and (damaged_or_lost.lower() == 'false' or damaged_or_lost == '0'):
+                damaged_or_lost = False
+            else:
+                return get_status_object_json(False, None, INVALID_PARAM) 
+            success, result, error = return_book(user_id,  borrow_id, damaged_or_lost)
+            return get_status_object_json(success, result, error), 200                                       
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
 
-        success, result, error = return_book(user_id,  borrow_id)
-        return get_status_object_json(success, result, error), 200
+        
 
 @book_user.route('/api/borrow-count', methods=['GET'])
 def book_count():
@@ -222,3 +251,15 @@ def book_count():
         return get_status_object_json(True, book_counts[0], None), 200
     except:
         return get_status_object_json(False, None, DATABASE_ERROR), 500
+
+@book_user.route('/api/related-books/<book_id>', methods=['GET'])
+def get_related_book_others_borrow_most_route(book_id):
+    try:
+        book_id = int(book_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    
+    success, result, error = get_related_books_others_borrow_most(book_id)
+    if result != None:
+        result = [book[0] for book in result]
+    return get_status_object_json(success, result, error), 200

@@ -5,9 +5,9 @@ import json
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
-from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, user_profile
-from global_vars.errors import *
+from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, user_profile, search_user
 from global_vars.constants import *
+from global_vars.errors import *
 from dataclasses import asdict
 
 auth = Blueprint('auth', __name__)
@@ -103,3 +103,16 @@ def profile_route():
         success, result, error = user_profile(current_user.id)
         result = asdict(result[0]) | asdict(result[1])
         return get_status_object_json(success, result, error), 200
+    
+@auth.route('/api/search-user', methods=['GET'])
+def search_user_route():
+    user_id = request.args.get('user_id')
+    name = request.args.get('name')
+    email = request.args.get('email')
+    try:
+        user_id = int(user_id) if user_id != None else None
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+
+    success, result, error = search_user(user_id, name, email)
+    return get_status_object_json(success, result, error)

@@ -63,6 +63,8 @@
                 <li>
                   <hr class="dropdown-divider">
                 </li>
+                <li><RouterLink class="dropdown-item" to="/login">Log in</RouterLink></li>
+                <li><RouterLink class="dropdown-item" to="/register">Register</RouterLink></li>
                 <li><RouterLink class="dropdown-item" to="/logout">Log out</RouterLink></li>
               </ul>
             </li>

@@ -3,7 +3,9 @@ import pymysql
 from flask_sqlalchemy import SQLAlchemy
 from multiprocessing import Value
 
-visit_counter = Value('i', 0)
+new_book_counter = Value('i', 0)
+deleted_book_counter = Value('i', 0)
+
 
 db = SQLAlchemy()
 

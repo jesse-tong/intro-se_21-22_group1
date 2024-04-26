@@ -4,7 +4,7 @@ import { VuePDF, usePDF } from "@tato30/vue-pdf";
 
 const page = ref(1);
 const scale = ref(1);
-const currentFileIdx = ref(0);
+
 
   const props =  defineProps({
       pdf: String,

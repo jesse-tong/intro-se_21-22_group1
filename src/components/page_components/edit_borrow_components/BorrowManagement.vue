@@ -3,13 +3,13 @@
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
-            <a :class="['nav-link', activeTab=='search' ? 'active': '']" href="#" @click="activeTab='search'">Search</a>
+            <a :class="['nav-link', activeTab=='search' ? 'active': '']" href="#searchTab" @click="activeTab='search'" id="searchTab">Search</a>
           </li>
           <li class="nav-item">
-            <a :class="['nav-link', activeTab=='addBorrow' ? 'active': '']" href="#" @click="activeTab='addBorrow'">Add Borrow</a>
+            <a :class="['nav-link', activeTab=='addBorrow' ? 'active': '']" href="#addBorrowTab" @click="activeTab='addBorrow'" id="addBorrowTab">Add Borrow</a>
           </li>
           <li class="nav-item">
-            <a :class="['nav-link', activeTab=='editBorrow' ? 'active': '']" href="#" @click="activeTab='editBorrow'">Add Borrow</a>
+            <a :class="['nav-link', activeTab=='editBorrow' ? 'active': '']" href="#editBorrowTab" @click="activeTab='editBorrow'" id="editBorrowTab" ref="editBorrowTab">Edit Borrow</a>
           </li>
         </ul>
       </div>
@@ -198,6 +198,17 @@
         <div v-if="borrows">
           <h3>Borrow List</h3>
           <BorrowTable :borrows="borrows" @editBorrow="(borrow_status) => editBorrowChanged(borrow_status)" @deleteBorrow="(borrow_id)=> deleteBorrowChanged(borrow_id)"/>
+            <ul class="pagination">
+            <li class="page-item">
+                <a href="#prevPage" id="prevPage" class="page-link" @click="currentPage = currentPage > 1 ? currentPage - 1 : 1"><span>Previous page</span></a>
+            </li>
+            <li class="page-item">
+                <input class="page-link" v-model.number="currentPage" type="number" min="1" :max="maxPage" style="max-width: 75px"/>
+            </li>
+            <li class="page-item">
+                <a href="#mextPage" id="nextPage" class="page-link" @click="currentPage = currentPage < maxPage ? currentPage + 1 : 1"><span>Next page</span></a>
+            </li>
+        </ul>
         </div>
       </div>
     </div>
@@ -219,7 +230,7 @@
       return {
         limitPerPage: 10,
         currentPage: 1,
-        maxPage: 1,
+        maxPage: 50,
         
         activeTab: 'addBorrow',
         searchUserEmail: '',
@@ -268,42 +279,88 @@
       fetchBorrow(page){
         let postParams = {};
         postParams.page = page; postParams.limit = this.limitPerPage;
-        if (this.selectedBookId !== '' || this.selectedBookId !== null){
+        if (this.selectedBookId !== '' && this.selectedBookId !== null){
           postParams.book_id = this.selectedBookId;
         }
-        if (this.selectedUserId !== '' || this.selectedUserId !== null){
+        if (this.selectedUserId !== '' && this.selectedUserId !== null){
           postParams.user_id = this.selectedUserId;
         }
-        axios.postForm(
-          '/api/manage-borrow-admin', postParams).then(response => {
-          console.log(response.data);
+        axios.get(
+          '/api/manage-borrow-admin', {
+            params: postParams
+          }).then(response => {
+
           if (response.data.success === true){
             this.borrows = response.data.result;
           }else {
             this.borrows = [];
             this.currentPage = 1;
-            alert('Failed to fetch borrow list with error' + response.data.error);
+            this.$notify('Failed to fetch borrow list with error' + response.data.error);
           }
           
           }).catch(err=> {
-            alert(err.responseText);
+            this.$notify('Fetch borrow with error: ' + err.response.data.error);
           })
       },
       
       searchUser() {
         // Implement API call to search user with email and username
-        if (this.searchUserId === '' || this.searchUserId === null) {
-          
+        if ((this.searchUserId === '' || this.searchUserId === null) 
+        && (this.searchUserEmail === '' || this.searchUserEmail === null)
+        && (this.searchUserName === '' || this.searchUserName === null)) {
+          this.$notify({
+            title: "No search value",
+            text: "No query to search for",
+            type: "error"
+          })
+          return;
         }
+        let searchParams = {};
+        if (this.searchUserId !== '' && this.searchUserId !== null){
+          searchParams.user_id = this.searchUserId;
+        }
+
+        if (this.searchUserName !== '' && this.searchUserName !== null){
+          searchParams.name = this.searchUserName;
+        }
+
+        if (this.searchUserEmail !== '' && this.searchUserEmail !== null){
+          searchParams.email = this.searchUserEmail;
+        }
+
         // Update searchResultUser and clear searchResultBooks
-        this.searchResultUser = [{
-          // Update with user data from API response
-          id: 2,
-          name: 'John Doe',
-          email: 'ejeyd@example.com',
-          role: 'admin',
-        }];
-        this.searchResultBooks = [];
+        axios.get('/api/search-user', {
+          params: searchParams
+        }).then(response => {
+          if (!response.data || !response.data.success){
+            this.$notify({
+              title: "Unknown error",
+              text: "Unknown error, this can be server or network error.",
+              type: "error"
+            });
+            return;
+          }
+          if (response.data.success === true){
+            this.searchResultUser = response.data.result;
+          }else {
+            this.$notify({
+              title: "Search user error",
+              text: "Search user with error: " + response.data.error,
+              type: "error"
+            });
+            return;
+          }
+        }).catch(err=>{
+          this.$notify({
+              title: "Search user error",
+              text: "Search user with error: " + err.response.data.error,
+              type: "error"
+          });
+          return;
+        }).finally(()=>{
+          //this.searchResultBooks = [];
+        })
+        
       },
       searchBook() {
         // Implement API call to search book with title and isbn
@@ -336,7 +393,11 @@
             if (response.data.success === true){
                 this.searchResultBooks = response.data.result;
             }else{
-
+              this.$notify({
+                title: "Search failed",
+                text: "Search failed with error: " + response.data.error,
+                type: "error"
+            });
             }
         }).catch(err=>{
             this.$notify({
@@ -345,7 +406,7 @@
                 type: "error"
             })
         }).finally(()=>{
-            this.searchResultUser = [];
+            //this.searchResultUser = [];
         })   
         
       },
@@ -433,14 +494,18 @@
         this.editedDamagedOrLost = borrow_status.isDamagedOrLost;
         this.editedIsApproved = borrow_status.isApproved;
   
-        
+        this.activeTab = 'editBorrow';
+        this.$refs.editBorrowTab.focus();
       },
       deleteBorrowChanged(borrow_id){
-        this.deleteBorrowId = borrow_id;
+        this.deletedBorrowId = borrow_id;
+
+        this.deleteBorrow(); //There should be a modal to give a warning first before this
+        
       },
       editBorrow(){
         axios.putForm('/api/manage-borrow-admin', {
-            id: this.editedBorrowId,
+            borrow_id: this.editedBorrowId,
             book_id: this.editedBorrowId,
             user_id: this.editedUserId,
             start_borrow: this.editedStartedBorrow,
@@ -481,27 +546,36 @@
         
       },
       deleteBorrow(){
-        if (this.deletedBorrowId == null){
-          alert('No borrow ID selected to delete!');
+        if (this.deletedBorrowId == null || this.deletedBorrowId == ''){
+          this.$notify({
+            title: 'No ID selected to delete!',
+            text: 'No borrow ID selected to delete!',
+            type: 'error'
+          });
           return;
         }
   
         axios.delete(
-          '/api/delete',{
+          '/api/manage-borrow-admin/' + this.deletedBorrowId,{
             data: {
-              'borrow_id': this.deletedBorrowId
+              borrow_id: this.deletedBorrowId
             }
           }).then((response)=>{
               const response_data = response.data;
               if (response.success == true) {
-                this.$notify('Borrow deleted successfully!');
+                this.$notify({
+                  title: 'Borrow deleted successfully!',
+                  text: 'Borrow instance with ID ' + this.deletedBorrowId + ' has been deleted successfully',
+                  type: 'success'
+                });
                 
               }
           }).catch((err)=> {
-            console.log(err);
+
             this.$notify("Borrow deleted with error:" + err.response.data.error);
           }).finally(()=>{
             this.deletedBorrowId = null;
+            this.fetchBorrow(this.currentPage);
           });
   
         
@@ -510,16 +584,24 @@
         let utcDate = new Date(date).toISOString();
       }
     },
+    watch: {
+      currentPage: {
+        handler(newCurrentPage){
+          this.fetchBorrow(newCurrentPage);
+        }
+      },
+      selectedBookId: {
+        handler(newBookId){
+          this.fetchBorrow(this.currentPage);
+        }
+      },
+      selectedUserId: {
+        handler(newUserId){
+          this.fetchBorrow(this.currentPage);
+        }
+      }
+    }
   };
   </script>
-  <!--
-  **Explanation:**
-  
-  - The component imports the `SearchUser`, `SearchBook`, and `BorrowTable` components for reusability.
-  - The `data` section holds properties for the active tab, search parameters, search results, selected user/book IDs, borrow dates, and borrow list.
-  - The `methods` section defines functions for searching users, searching books, selecting users/books, adding borrows, and updating the borrow list.
-  - Implement the logic for API calls within `searchUser`, `searchBook`, and `addBorrow` methods to interact with your backend API using libraries like Axios. Update the data accordingly based on the API responses.
-    - Remember to handle errors appropriately during API calls.
-  
-  **Note:** This is a basic implementation, and you'll need to fill in the API call logic and error handling based on your specific backend API.*/ -->
+
   

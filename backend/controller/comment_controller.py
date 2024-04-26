@@ -1,13 +1,15 @@
 from models.user_model import User, Comment
 from models.book_model import Book
 from models.user_book import BookBorrow, BookFavorite
-from sqlalchemy import select
+from sqlalchemy import select, func, distinct
 from global_vars.database_init import db
 import json
 from global_vars.errors import *
 from datetime import datetime, timedelta
 from flask_login import login_user, login_required, current_user, logout_user
 from global_vars.constants import *
+
+
 
 def add_comment(userId: int, bookId: int, comment: str, rating: int):
     user = db.session.query(User).filter(User.id == userId).first()
@@ -74,3 +76,12 @@ def get_book_comment(bookId: int, start_from: int=None, limit: int=None):
         result = db.session.execute(query).all()
         result = [val[0] for val in result]
         return True, result, None
+    
+def get_book_avg_rating(bookId: int):
+    try:
+        rating_sum, rating_count = db.session.query(func.sum(Comment.rating), func.count(distinct(Comment.bookId))).filter(Comment.bookId == bookId).first()
+        average_rating = rating_sum / rating_count
+        return True, average_rating, None
+    except:
+        return False, None, DATABASE_ERROR
+    
