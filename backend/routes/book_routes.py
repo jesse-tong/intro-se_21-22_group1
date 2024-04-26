@@ -258,7 +258,7 @@ def get_books_of_author(author_id):
     limit = request.args.get('limit')
     try:
         author_id = int(author_id)
-        page = int(page); limit= int(limit)
+        page = int(page) if page != None else None; limit= int(limit) if limit != None else None
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
 
