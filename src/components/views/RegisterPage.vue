@@ -112,17 +112,17 @@
                   role: this.$props.role
                 }).then(response => {
                   if (response.data.success === true){    
-                    this.$router.push('/');
+                    this.$router.push('/login');
                   }else {
                     this.$notify({
-                      title: "Login error",
-                      text: "Login with error: " + response.data.error
+                      title: "Register error",
+                      text: "Register failed with error: " + response.data.error
                     })
                   }
                 }).catch(err=>{
                   this.$notify({
-                    title: "Login error",
-                    text: "Login with error: "+ err.response.data.error,
+                    title: "Register error",
+                    text: "Register failed with error: "+ err.response.data.error,
                     type: "error"
                   })
                 })

@@ -1,7 +1,8 @@
 <template>
 <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
-      <RouterLink class="navbar-brand" to="/">Simple Library</RouterLink>
+      
+      <RouterLink class="navbar-brand" to="/"><img :src="EasyLibLogo" width="50" height="50" alt="EasyLib logo" />EasyLib</RouterLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavigation" aria-controls="offcanvasNavigation" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -23,11 +24,11 @@
               <RouterLink class="nav-link" to="/books/category">Categories</RouterLink>
             </li>
             
-            <hr class="hr" />
+            <hr class="hr" v-if="accountStore.isAdmin"/>
 
-            <li class="nav-item"><RouterLink class="nav-link" to="/admin/manage-books">Manage books</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/admin/manage-borrow">Manage borrow</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/admin/reports">Reports</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-books">Manage books</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-borrow">Manage borrow</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/reports">Reports</RouterLink></li>
             
             <hr class="hr" />
 
@@ -35,17 +36,17 @@
             <li class="nav-item"><RouterLink class="nav-link" to="/book/by-author">Authors</RouterLink></li>
             <li class="nav-item"><RouterLink class="nav-link" to="/books/advanced-search">Advanced search</RouterLink></li>
             
-            <hr class="hr" />
+            <hr class="hr" v-if="accountStore.loggedIn"/>
 
-            <li class="nav-item"><RouterLink class="nav-link" to="/user/borrows">Your borrows/return book</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/user/profile">User profile</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/user/settings">User settings</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/borrows">Your borrows/return book</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile">User profile</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings">User settings</RouterLink></li>
             
             <hr class="hr" />
-
-            <li class="nav-item"><RouterLink class="nav-link" to="/login">Log in</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/register">Register</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/logout">Log out</RouterLink></li>
+            
+            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/login">Log in</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register">Register</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn"><a class="nav-link" href="#">Log out</a></li>
 
           </ul>
         </div>
@@ -56,5 +57,8 @@
 </template>
 
 <script setup>
-    
+    import EasyLibLogo from './../../assets/EasyLib.svg';
+    import { useAccountStore } from '../stores/LoginInfoStore';
+    const accountStore = useAccountStore();
+    console.log('Role of account: ', accountStore.role);
 </script>

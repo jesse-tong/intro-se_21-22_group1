@@ -8,6 +8,7 @@
           <th>Publish year</th>
           <th>ISBN</th>
           <th>Stock</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +19,7 @@
           <td>{{ book.publish_year }}</td>
           <td>{{ book.isbn }}</td>
           <td>{{ book.stock }}</td>
+          <td><button class="btn btn-primary"><RouterLink :to="'/book/' + book.id" class="text-white">Details</RouterLink></button></td>
         </tr>
       </tbody>
     </table>
