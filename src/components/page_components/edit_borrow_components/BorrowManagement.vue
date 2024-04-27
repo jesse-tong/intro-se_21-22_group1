@@ -198,7 +198,7 @@
         <div v-if="borrows">
           <h3>Borrow List</h3>
           <BorrowTable :borrows="borrows" @editBorrow="(borrow_status) => editBorrowChanged(borrow_status)" @deleteBorrow="(borrow_id)=> deleteBorrowChanged(borrow_id)"/>
-            <ul class="pagination">
+          <ul class="pagination">
             <li class="page-item">
                 <a href="#prevPage" id="prevPage" class="page-link" @click="currentPage = currentPage > 1 ? currentPage - 1 : 1"><span>Previous page</span></a>
             </li>
@@ -390,6 +390,13 @@
         axios.get('/api/book', {
             params: search_params
         }).then(response =>{
+            if (!response.data || response.data == undefined || !response.data.success){
+              this.$notify({
+                title: "Search failed",
+                text: "Search failed with unknown error, this can be from network or server",
+                type: "error"
+              });
+            }
             if (response.data.success === true){
                 this.searchResultBooks = response.data.result;
             }else{
@@ -414,8 +421,6 @@
         this.selectedUserId = id;
         this.selectedUserName = name;
         this.selectedUserEmail = email;
-        //this.selectedUserId = this.searchUserId;
-  
       },
       selectBook(id, book_title, isbn) {
         this.selectedBookId = id;

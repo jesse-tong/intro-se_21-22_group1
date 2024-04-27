@@ -294,3 +294,27 @@ def get_avg_book_rating(book_id):
         return get_status_object_json(False, None, INVALID_PARAM), 400
     success, result, error = get_book_avg_rating(book_id)
     return get_status_object_json(success, result, error)
+
+@book_routes.route('/api/advanced-search', methods=['GET'])
+def advanced_search_route():
+    book_data = request.args
+    book_id = book_data.get('book_id'); title = book_data.get('title');
+    publish_year = book_data.get('publish_year'); description = book_data.get('description')
+    authors = book_data.get('authors') #Author should be a JSON string from an array
+    genres = book_data.get('genres'); isbn = book_data.get('isbn')
+    page = book_data.get('page'); limit = book_data.get('limit')
+    try:
+        book_id = int(book_id) if book_id != None else None
+        publish_year = int(publish_year) if publish_year != None else None
+        authors = list(json.loads(authors)) if authors != None else None
+        genres = list(json.loads(genres))  if genres != None else None
+        page = int(page) if page != None else None
+        limit = int(limit) if limit != None else None
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    
+    if page != None and limit != None and (page <= 0 or limit <= 0):
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    
+    success, edited_data, error = advanced_search(book_id, title, publish_year, description, authors, genres, isbn, page, limit)
+    return get_status_object_json(success, edited_data, error), 200

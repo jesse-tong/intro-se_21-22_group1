@@ -7,7 +7,13 @@ export const useAccountStore = defineStore('account', {
       role: null
     }),
     getters: {
-        isAdmin: (state) => state.role.includes('admin'),
+        isAdmin: (state) => {
+            if (state.role !== null){
+                return state.role.includes('admin');
+            }else {
+                return false;
+            }
+        },
         loggedIn: (state) => (state.userId !== null),
         notLoggedIn: (state) => (state.userId === null)
     },
