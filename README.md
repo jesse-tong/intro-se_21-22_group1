@@ -7,3 +7,9 @@ Member:
 - 21120416	Võ Quốc Bảo
 - 21120276	Nguyễn Huỳnh Khôi
 - 21120497	Nguyễn Hữu Lộc
+
+Frameworks:
+
+- Backend: Flask, SQL (SQLAlchemy)
+- Frontend: Vue.js
+- Database: MariaDB
