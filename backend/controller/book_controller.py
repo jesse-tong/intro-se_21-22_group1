@@ -373,3 +373,36 @@ def delete_book_location(book_location_id: int):
         db.session.rollback()
         return False, None, DELETE_ERROR
 
+def advanced_search(book_id: int=None, title: str=None, publish_year: int=None,
+                     description: str=None, authors: list[str]=None, genres: list[str]=None, isbn: str=None, page: int=None, limit: int=None):
+    query = db.session.query(Book)
+    if book_id != None:
+        query = query.filter(Book.id == book_id)
+        
+    if title != None:
+        print('Query has title')
+        query = query.filter(Book.title.like('%{}%'.format(title)))
+        
+    if publish_year != None:
+        print('Query has publish year')
+        query = query.filter(Book.publish_year == publish_year)
+        
+    if description != None:
+        print('Query has description')
+        query = query.filter(Book.description.like('%{}%'.format(description)))
+        res = query.all(); print(res)
+    if isbn != None:
+        print('Query has ISBN')
+        query = query.filter(Book.isbn.like('%{}%'.format(isbn)))
+    if authors != None:
+        subquery = db.session.query(Author.id).filter(Author.name.in_(authors))
+        query = query.join(BookAuthor).filter(BookAuthor.bookId == Book.id).filter(BookAuthor.authorId.in_(subquery))
+    if genres != None:
+        subquery = db.session.query(Genre.id).filter(Genre.name.in_(genres))
+        query = query.join(BookGenre).filter(BookGenre.bookId == Book.id).filter(BookGenre.genreId.in_(subquery))
+    if page != None and limit != None and page > 0 and limit > 0 :
+        offset = (page - 1)*limit 
+        query = query.offset(offset).limit(limit)
+    result = query.all()
+    
+    return True, result, None

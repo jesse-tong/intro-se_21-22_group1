@@ -11,6 +11,8 @@ import BookByAuthors from './components/page_components/book_page_components/Boo
 import BookByGenres from './components/page_components/book_page_components/BookByGenres.vue';
 import NavBar from './components/page_components/NavBar.vue';
 import RegisterPage from './components/views/RegisterPage.vue';
+import AdvancedSearch from './components/page_components/search_page_components/AdvancedSearch.vue';
+
 const routes = [
   { 
     path: '/', 
@@ -28,6 +30,13 @@ const routes = [
         components: {
           NavBar: NavBar,
           default: BookByGenres
+        }
+      },
+      {
+        path: '/book/advanced-search',
+        components: {
+          NavBar: NavBar,
+          default: AdvancedSearch
         }
       },
       {

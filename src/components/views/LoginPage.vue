@@ -94,7 +94,12 @@ import { useAccountStore } from '../stores/LoginInfoStore';
             }).then(response => {
               if (response.data.success === true){
                 console.log(response.data.result);
-                accountStore.setAccountInfo(response.data.result.id, response.data.result.name, response.data.result.role);
+                try{
+                  accountStore.setAccountInfo(response.data.result.id, response.data.result.name, response.data.result.role);
+                }catch(e){
+                  
+                }
+                
                 
                 if (this.rememberMe !== '' && this.rememberMe !== null){
                   //Since remember user = true, store logged in user info to localStorage

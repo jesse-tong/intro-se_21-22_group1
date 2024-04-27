@@ -34,7 +34,7 @@
 
             <li class="nav-item"><RouterLink class="nav-link" to="/book/by-genre">Genres/categories</RouterLink></li>
             <li class="nav-item"><RouterLink class="nav-link" to="/book/by-author">Authors</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/books/advanced-search">Advanced search</RouterLink></li>
+            <li class="nav-item"><RouterLink class="nav-link" to="/book/advanced-search">Advanced search</RouterLink></li>
             
             <hr class="hr" v-if="accountStore.loggedIn"/>
 
@@ -59,6 +59,10 @@
 <script setup>
     import EasyLibLogo from './../../assets/EasyLib.svg';
     import { useAccountStore } from '../stores/LoginInfoStore';
+    import { onBeforeMount } from 'vue';
+    onBeforeMount(()=>{
+
+    });
     const accountStore = useAccountStore();
     console.log('Role of account: ', accountStore.role);
 </script>
