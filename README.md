@@ -1,7 +1,9 @@
-# Vue 3 + Vite
+## Intro to Software Engineering Project - Library Management Software
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Member: 
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- 21120263	Tống Nguyễn Minh Khang
+- 21120213	Lê Đức Cường
+- 21120416	Võ Quốc Bảo
+- 21120276	Nguyễn Huỳnh Khôi
+- 21120497	Nguyễn Hữu Lộc
