@@ -9,3 +9,4 @@ deleted_book_counter = Value('i', 0)
 
 db = SQLAlchemy()
 
+

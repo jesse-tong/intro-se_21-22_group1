@@ -23,7 +23,7 @@ def get_book_comments_route(book_id):
     except:
         return get_status_object_json(False, None, INVALID_ID), 400
     
-    success, search_result, error = get_book_comment(book_id, page*limit, limit)
+    success, search_result, error = get_book_comment_2(book_id, page, limit)
     
     return get_status_object_json(success, search_result, error), 200
 

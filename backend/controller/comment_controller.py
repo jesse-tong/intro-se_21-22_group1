@@ -5,6 +5,7 @@ from sqlalchemy import select, func, distinct
 from global_vars.database_init import db
 import json
 from global_vars.errors import *
+from dataclasses import asdict
 from datetime import datetime, timedelta
 from flask_login import login_user, login_required, current_user, logout_user
 from global_vars.constants import *
@@ -76,7 +77,24 @@ def get_book_comment(bookId: int, start_from: int=None, limit: int=None):
         result = db.session.execute(query).all()
         result = [val[0] for val in result]
         return True, result, None
-    
+
+def get_book_comment_2(bookId: int, page: int=None, limit: int=None):
+    book = db.session.query(Book).filter(Book.id == bookId).first()
+    if not book:
+        return False, None, INVALID_ID
+    else:
+        query = db.session.query(Comment, User)
+        query = query.filter(Comment.bookId == book.id).filter(Comment.userId == User.id)
+        if page != None and limit != None and page > 0  and limit > 0:
+            start_from = (page - 1)*limit
+            query = query.offset(start_from)
+            query = query.limit(limit)
+        result = query.all()
+        result = [asdict(comment[0]) | {'name': comment[1].name, 'email': comment[1].email } for comment in result]
+        
+        return True, result, None
+
+
 def get_book_avg_rating(bookId: int):
     try:
         rating_sum, rating_count = db.session.query(func.sum(Comment.rating), func.count(distinct(Comment.bookId))).filter(Comment.bookId == bookId).first()
