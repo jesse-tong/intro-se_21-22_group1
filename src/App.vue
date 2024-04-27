@@ -2,6 +2,13 @@
 import PaginatedPage from './components/page_components/PaginatedPage.vue';
 import LoginPage from './components/views/LoginPage.vue';
 import NavBar from './components/page_components/NavBar.vue';
+import { onBeforeMount } from 'vue';
+import {useAccountStore} from './components/stores/LoginInfoStore';
+
+onBeforeMount(() => {
+  const store = useAccountStore();
+  store.setAccountFromLocal();
+});
 
 
 </script>

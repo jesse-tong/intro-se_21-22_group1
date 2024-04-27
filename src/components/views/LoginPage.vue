@@ -55,6 +55,7 @@
 
 <script>
 import axios from 'axios';
+import { useAccountStore } from '../stores/LoginInfoStore';
 
     export default {
         data(){
@@ -74,17 +75,31 @@ import axios from 'axios';
 
         },
         methods: {
-          notify(){
-            this.$notify("Hello user!");
+          storeLocal(userId, email, role){
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('email', email);
+            localStorage.setItem('role', role);
+          },
+          storeSession(userId, email, role){
+            sessionStorage.setItem('userId', userId);
+            sessionStorage.setItem('email', email);
+            sessionStorage.setItem('role', role);
           },
           login(){
+            const accountStore = useAccountStore();
             axios.postForm('/auth/login', {
               email: this.email,
               password: this.password,
               remember: (this.rememberMe !== '' && this.rememberMe !== null) ? true : false
             }).then(response => {
               if (response.data.success === true){
-
+                console.log(response.data.result);
+                accountStore.setAccountInfo(response.data.result.id, response.data.result.name, response.data.result.role);
+                
+                if (this.rememberMe !== '' && this.rememberMe !== null){
+                  //Since remember user = true, store logged in user info to localStorage
+                  accountStore.setLocalStorage();
+                }
                 this.$router.push('/');
               }else {
                 this.$notify({

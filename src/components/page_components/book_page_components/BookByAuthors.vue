@@ -2,7 +2,7 @@
     <div class="row mt-3 ms-2">
         <div class="col-3 rounded g-0 "  >
             <ul class="list-group mt-2 rounded">
-                <li class="list-group-item" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>
+                <li class="list-group-item" :class="{ active: isTabActive(author.id) }" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>
             </ul>
         </div>
         <div class="bg-light col-9 my-2 rounded shadow-sm"  v-if="selectedId === null"></div>
@@ -17,7 +17,7 @@
 </template>
 <script>
     import axios from 'axios';
-import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
+    import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
     export default {
         data(){
             return {
@@ -58,6 +58,15 @@ import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
             }).finally(()=>{
                 
             })   
+        },
+        methods: {
+            isTabActive(tabId){
+                if (this.selectedId === tabId){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
         },
         components: {
             GetBookByAuthorOrGenreId: GetBookByAuthorOrGenreId

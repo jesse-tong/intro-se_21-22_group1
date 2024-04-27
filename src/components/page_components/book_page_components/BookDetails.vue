@@ -28,10 +28,17 @@
           <button class="btn btn-secondary" style="width: 100%;">Favourite</button>
           </div>
           <div class="list-group-item">
-          <span class="d-flex mb-3">
+          <span class="d-flex mb-3 flex-column">
+            <div>
+              <span class="mx-2">Average rating: {{ rating }} </span>
+              <span v-if="getNumberOfStars !== null">
+                <i :class="['bi', i > getNumberOfStars ? 'bi-star' : 'bi-star-fill']" v-for="i in 5"></i>
+              </span>
+            </div>
+            <div>
+              <span class="mx-2">{{  'N/A' }} Favourites</span>
+            </div>
             
-            <span class="mx-2">{{ 'N/A' }} Ratings</span>
-            <span class="mx-2">{{  'N/A' }} Favourites</span>
           </span>
             </div>
           </div>
@@ -96,15 +103,22 @@
             },
             
         },
-        watch: {
-          
+        computed: {
+            getNumberOfStars(){
+              if (this.rating === 'N/A' || this.rating === '' || this.rating === null){
+                return null;
+              }else {
+                return Math.max(Math.round(this.rating / 2), 5);
+              }
+            }
         },
         created(){
-          this.getBookData(this.$props.bookId)
+          this.getBookData(this.$props.bookId);
+          this.getRating(this.$props.bookId);
         },
         methods: {
           getBookData(bookId){
-                axios.get('/api/book/' + bookId, {
+              axios.get('/api/book/' + bookId, {
                 params: {
 
                 }
@@ -118,6 +132,33 @@
                 }
               }).catch(err => {
                 alert('Unknown error');
+                return;
+              })
+          },
+          getRating(bookId){
+
+            axios.get('/api/book-average-rating/' + bookId, {
+                params: {
+
+                }
+              }).then(response => {
+                if (response.status !== 200 || !response.data || response.data.success === false){
+                  this.$notify({
+                    title: 'Failed to get average rating',
+                    text: 'Failed to get average rating',
+                    type: 'error'
+                  });
+                  return;
+                }
+                if (response.data.success == true){
+                  this.rating = response.data.result;
+                }
+              }).catch(err => {
+                this.$notify({
+                    title: 'Failed to get average rating',
+                    text: 'Failed to get average rating',
+                    type: 'error'
+                });
                 return;
               })
           }

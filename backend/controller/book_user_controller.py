@@ -252,6 +252,32 @@ def remove_favorite(userId: int, bookId: int, favoriteId: int):
             .filter(BookFavorite.id == favoriteId).delete()
         db.session.commit()
         return True, rows_deleted, None
+    
+def toggle_favourite(userId: int, bookId: int):
+    favourite = db.session.query(BookFavorite).filter(BookFavorite.userId == userId).filter(BookFavorite.bookId == bookId).first()
+    if favourite != None:
+        favorite = BookFavorite()
+        favorite.userId = userId
+        favorite.bookId = bookId
+        db.session.add(favorite)
+        try:
+            db.session.commit()
+            return True, favorite, None
+        except:
+            db.session.rollback()
+            return False, None, DATABASE_ERROR
+    else:
+        favoriteId = favourite.id
+        rows_deleted = db.session.query(BookFavorite).filter(BookFavorite.userId == userId).filter(BookFavorite.bookId == bookId) \
+            .filter(BookFavorite.id == favoriteId).delete()
+        try:
+            db.session.commit()
+            return True, rows_deleted, None
+        except:
+            db.session.rollback()
+            return False, None, DATABASE_ERROR
+        
+
 
 def does_book_have_ebook(bookId: int):
     bookpdf = db.session.query(BookFile).filter(bookId == BookFile.bookId).all()

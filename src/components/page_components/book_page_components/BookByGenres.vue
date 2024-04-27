@@ -2,7 +2,7 @@
     <div class="row mt-3">
         <div class="col-3 g-0 rounded"  >
             <ul class="list-group mt-2 rounded">
-                <li class="list-group-item" v-for="genre in genres" @click="selectedId = parseInt(genre.id)"><span>{{ genre.name }}</span></li>
+                <li class="list-group-item" :class="{ active: isTabActive(genre.id) }" v-for="genre in genres" @click="selectedId = parseInt(genre.id)"><span>{{ genre.name }}</span></li>
             </ul>
         </div>
         <div class="bg-light col-9"  v-if="selectedId === null"></div>
@@ -58,6 +58,15 @@ import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
             }).finally(()=>{
                 
             })   
+        },
+        methods: {
+            isTabActive(tabId){
+                if (this.selectedId === tabId){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
         },
         components: {
             GetBookByAuthorOrGenreId: GetBookByAuthorOrGenreId
