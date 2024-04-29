@@ -64,6 +64,7 @@
           </span>
           <div class="mt-5">
             <h2 id="comments"><b>Comment</b></h2>
+            <CommentSection :bookId="parseInt($props.bookId)" />
           </div>
         </div>
       </div>
@@ -76,6 +77,7 @@
     import { faBook, faStar as faStarFull, faStarHalf } from '@fortawesome/free-solid-svg-icons';
     import { faStar } from '@fortawesome/free-regular-svg-icons';
     import BorrowModal from '../user_borrow_components/BorrowModal.vue';
+    import CommentSection from '../comment_components/CommentSection.vue';
     export default {
         data() {
             return {
@@ -94,7 +96,8 @@
         },
         components: {
           FontAwesomeIcon,
-          BorrowModal
+          BorrowModal,
+          CommentSection
         },
         props: {
             bookId: {

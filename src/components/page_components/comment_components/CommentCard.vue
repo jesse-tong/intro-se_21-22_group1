@@ -1,20 +1,51 @@
 <template>
 <ul class="card" :key="comment.id">
     <li class="card-body">
-        <label :for="'commentId' + comment.id" class="input-group-text"><span>Comment ID:</span></label>
-        <input disabled type="number" class="form-control" v-model="commentId" :id="'commentId' + comment.id"/>
+        <div class="row">
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="input-group">
+                    <label :for="'commentId' + comment.id" class="input-group-text"><span>Comment ID:</span></label>
+                    <input disabled type="number" class="form-control" v-model="commentId" :id="'commentId' + comment.id"/>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="input-group">
+                    <label :for="'commentBookId' + comment.bookId" class="input-group-text"><span>Book ID:</span></label>
+                    <input disabled type="number" class="form-control" v-model="commentBookId" :id="'commentBookId' + comment.bookId"/>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="input-group">
+                    <label :for="'commentUserId' + comment.userId" class="input-group-text"><span>User ID:</span></label>
+                    <input disabled type="number" class="form-control" v-model="commentUserId" :id="'commentUserId' + comment.userId"/>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="input-group">
+                    <label :for="'commentUserName' + comment.name" class="input-group-text"><span>Username:</span></label>
+                    <input disabled type="number" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.name"/>
+                </div>
+            </div>
+        </div>
+        <div class="input-group">
+            <label :for="'commentRating' + comment.id" class="input-group-text" ><span>Rating:</span></label>
+            <input class="form-control" type="number" min="0" max="10" v-model="commentRating" :class="{ editable: editable}" />
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" v-model="commentContent"></textarea>
+            <label :for="'commentContent' + comment.id"></label>
+        </div>
         <div>
-            <div v-if="accountStore.userId && comment.userId === accountStore.userId">
-                <button class="btn btn-sm btn-primary me-2" @click="selectedCommentId = comment.id" v-if="editable === false">Edit</button>
+            <div v-if="accountStore.userId && accountStore.userId == commentUserId">
+                <button class="btn btn-sm btn-primary me-2" @click="editable = true" v-if="editable === false">Edit</button>
                 <button class="btn btn-sm btn-primary mx-3" @click="onConfirmEditComment()" v-else>Save</button>
                 <button class="btn btn-sm btn-danger" @click="onDeleteComment()">Delete</button>
             </div>
-        <div v-else-if="accountStore.isAdmin">
-            <button class="btn btn-sm btn-danger" @click="onDeleteComment()">Delete</button>
-        </div>
+            <div v-else-if="accountStore.isAdmin">
+                <button class="btn btn-sm btn-danger" @click="onDeleteComment()">Delete</button>
+            </div>
         </div>
 
-        <span class="badge bg-primary rounded-pill">Rating: {{ comment.rating }}</span>
     </li>
 </ul>
 </template>
@@ -78,9 +109,10 @@
                 }).catch(err=>{
                     this.$notify({
                         title: "Save comment failed",
-                        text: "Save comment failed with error: " + err.status,
+                        text: "Save comment failed with error: " + err.response.data.error,
                         type: "error"
-                    })
+                    });
+                    this.$emit('updateCommentList');
                 }).finally(()=>{
                     this.$emit('updateCommentList');
                 })   
@@ -88,7 +120,7 @@
             onDeleteComment(){
                 let params = new FormData()
                 params.set('comment_id', this.commentId);
-                axios.delete('/api/book', {
+                axios.delete('/api/comment', {
                     data: params
                 }).then(response=> {
                     if (!response.data || response.data == undefined || !response.data.success){
@@ -118,7 +150,7 @@
                 }).catch(err=>{
                     this.$notify({
                         title: "Delete comment failed",
-                        text: "Delete comment failed with error: " + err.status,
+                        text: "Delete comment failed with error: " + err.response.data.error,
                         type: "error"
                     })
                 }).finally(()=>{
