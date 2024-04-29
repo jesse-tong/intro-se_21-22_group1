@@ -17,8 +17,8 @@
         <tr v-for="borrow in borrows" :key="borrow.id" >
           <td>{{ borrow.userId }}</td>
           <td>{{ borrow.bookId }}</td> 
-          <td>{{ getDateString(borrow.startBorrow) }}</td>
-          <td>{{ getDateString(borrow.endBorrow) }}</td>
+          <td>{{ borrow.startBorrow ? getDateString(borrow.startBorrow): 'N/A' }}</td>
+          <td>{{ borrow.endBorrow ? getDateString(borrow.endBorrow): 'N/A' }}</td>
           <td>{{ borrow.hasReturned ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.returnDate ? getDateString(borrow.returnDate) : 'N/A'}}</td>
           <td>{{ borrow.isDamagedOrLost ? 'Yes' : 'No' }}</td>
@@ -42,7 +42,8 @@
     },
     methods: {
       getDateString(date){
-        return Date(date).toLocaleString();
+        //console.log('Original date', date);
+        return new Date(Date.parse(date)).toString();
       }
     },
     emits: ['deleteBorrow', 'editBorrow'],

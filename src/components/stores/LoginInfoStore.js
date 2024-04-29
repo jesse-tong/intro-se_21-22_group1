@@ -36,11 +36,33 @@ export const useAccountStore = defineStore('account', {
             localStorage.setItem('role', this.$state.role);
         } 
       },
-      setAccountFromLocal(){
-        this.$state.userId = localStorage.getItem('userId');
-        this.$state.name = localStorage.getItem('name');
-        this.$state.role = localStorage.getItem('role');
+      setSessionStorage(){
+        if (this.$state.userId !== null){
+          sessionStorage.setItem('userId', this.$state.userId);
+        }
+        
+        if (this.$state.name !== null){
+            sessionStorage.setItem('name', this.$state.name);
+        }
+        if (this.$state.role !== null){
+            sessionStorage.setItem('role', this.$state.role);
+        } 
       },
-     
+      setAccountFromLocal(){
+        this.$state.userId = sessionStorage.getItem('userId');
+        this.$state.name = sessionStorage.getItem('name');
+        this.$state.role = sessionStorage.getItem('role');
+        if (this.$state.userId === null && this.$state.name === null && this.$state.role === null){
+          localStorage.setItem('userId', this.$state.userId);
+          localStorage.setItem('name', this.$state.name);
+          localStorage.setItem('role', this.$state.role);
+        }
+      },
+      clearSessionStorage(){
+        sessionStorage.clear();
+      },
+      clearLocalStorage(){
+        localStorage.clear();
+      }
     },
 });

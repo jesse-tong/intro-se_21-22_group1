@@ -104,6 +104,10 @@ import { useAccountStore } from '../stores/LoginInfoStore';
                 if (this.rememberMe !== '' && this.rememberMe !== null){
                   //Since remember user = true, store logged in user info to localStorage
                   accountStore.setLocalStorage();
+                  accountStore.clearSessionStorage();
+                }else {
+                  accountStore.setSessionStorage();
+                  accountStore.clearLocalStorage();
                 }
                 this.$router.push('/');
               }else {

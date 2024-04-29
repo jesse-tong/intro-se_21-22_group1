@@ -21,7 +21,7 @@ damage_and_lost_fine = os.environ.get('DAMAGE_AND_LOST_FINE')
 def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, do_not_decrement_book_stock: bool=False):
     borrow_book = BookBorrow()
     if start_date != None:
-        borrow_book.startBorrow = max([start_date, datetime.now(timezone.utc)])
+        borrow_book.startBorrow = start_date
     else:
         borrow_book.startBorrow = datetime.now()
     if end_date == None:
