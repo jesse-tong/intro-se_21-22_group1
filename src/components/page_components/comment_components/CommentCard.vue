@@ -2,32 +2,32 @@
 <ul class="card" :key="comment.id">
     <li class="card-body">
         <div class="row">
-            <div class="col-6 col-md-4 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentId' + comment.id" class="input-group-text"><span>Comment ID:</span></label>
                     <input disabled type="number" class="form-control" v-model="commentId" :id="'commentId' + comment.id"/>
                 </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentBookId' + comment.bookId" class="input-group-text"><span>Book ID:</span></label>
                     <input disabled type="number" class="form-control" v-model="commentBookId" :id="'commentBookId' + comment.bookId"/>
                 </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentUserId' + comment.userId" class="input-group-text"><span>User ID:</span></label>
                     <input disabled type="number" class="form-control" v-model="commentUserId" :id="'commentUserId' + comment.userId"/>
                 </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-12 mt-2 mb-2">
                 <div class="input-group">
                     <label :for="'commentUserName' + comment.name" class="input-group-text"><span>Username:</span></label>
-                    <input disabled type="number" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.name"/>
+                    <input disabled type="text" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.id"/>
                 </div>
             </div>
         </div>
-        <div class="input-group">
+        <div class="input-group mb-2">
             <label :for="'commentRating' + comment.id" class="input-group-text" ><span>Rating:</span></label>
             <input class="form-control" type="number" min="0" max="10" v-model="commentRating" :class="{ editable: editable}" />
         </div>

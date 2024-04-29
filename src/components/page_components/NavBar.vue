@@ -46,7 +46,7 @@
             
             <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/login">Log in</RouterLink></li>
             <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register">Register</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.loggedIn"><a class="nav-link" href="#">Log out</a></li>
+            <li class="nav-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#">Log out</a></li>
 
           </ul>
         </div>
@@ -60,9 +60,42 @@
     import EasyLibLogo from './../../assets/EasyLib.svg';
     import { useAccountStore } from '../stores/LoginInfoStore';
     import { onBeforeMount } from 'vue';
+    import axios from 'axios';
     onBeforeMount(()=>{
 
     });
     const accountStore = useAccountStore();
     console.log('Role of account: ', accountStore.role);
+    const logoutUser = function(){
+      axios.get('/auth/logout').then(response => {
+                  if (response.data.success === undefined){
+                    /* this.$notify({
+                      title: "Logout with unknown error",
+                      text: "Logout with unknown error",
+                    }) */
+                  }
+                  if (response.data.success === true){  
+                    /* this.$notify({
+                      title: "Logout successfully",
+                      text: "Logout successfully"
+                    }) */
+                    this.$router.push('/login');
+                  }else {
+                    this.$notify({
+                      title: "Logout error",
+                      text: "Logout failed with error: " + response.data.error
+                    })
+                  }
+                }).catch(err=>{
+                  /* this.$notify({
+                    title: "Logout error",
+                    text: "Logout failed with error: "+ err.response.data.error,
+                    type: "error"
+                  }) */
+                }).finally(()=>{
+                  accountStore.clearLocalStorage();
+                  accountStore.clearSessionStorage();
+                  this.$router.push('/login');
+                })
+    }
 </script>

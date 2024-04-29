@@ -44,10 +44,16 @@ import axios from 'axios';
             
         },
         methods: {
+            convertLocalDatetimeToISOString(localDatetimeString){
+                //Since the value of <input type="datetime-local" /> is always YYYY-mm-ddThh:ss
+                //and does not denotes any timezone, so parse it with new Date() and use toISOString() method will not work correctly
+                let timeWithTimezone = new Date(localDatetimeString);
+                return timeWithTimezone.toISOString();
+            },
             onReturnBook(){
                 let returnParams = {};
                 if (this.returnDate !== '' && this.returnDate !== null){
-                    returnParams.return_date = this.returnDate;        
+                    returnParams.return_date = this.convertLocalDatetimeToISOString(this.returnDate);        
                 }
                 returnParams.damaged_or_lost = this.isDamagedOrLost;
                 axios.get('/api/return/' + this.$props.borrowId, {

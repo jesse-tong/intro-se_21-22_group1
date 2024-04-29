@@ -302,7 +302,12 @@
             this.$notify('Fetch borrow with error: ' + err.response.data.error);
           })
       },
-      
+      convertLocalDatetimeToISOString(localDatetimeString){
+                //Since the value of <input type="datetime-local" /> is always YYYY-mm-ddThh:ss
+                //and does not denotes any timezone, so parse it with new Date() and use toISOString() method will not work correctly
+                let timeWithTimezone = new Date(localDatetimeString);
+                return timeWithTimezone.toISOString();
+      },
       searchUser() {
         // Implement API call to search user with email and username
         if ((this.searchUserId === '' || this.searchUserId === null) 
@@ -431,7 +436,7 @@
       addBorrow() {
         // Implement API call to create a new borrow record
         // Update borrows data and clear selected user/book and dates
-        console.log(this.startBorrow); console.log(this.endBorrow);
+
         const startBorrow = Date.parse(this.startBorrow);
         const endBorrow = Date.parse(this.endBorrow);
         const bookID = parseInt(this.selectedBookId);
@@ -455,8 +460,8 @@
         axios.postForm('/api/manage-borrow-admin', {
             book_id: bookID,
             user_id: userID,
-            start_borrow: this.startBorrow,
-            end_borrow: this.endBorrow,
+            start_borrow: this.convertLocalDatetimeToISOString(this.startBorrow),
+            end_borrow: this.convertLocalDatetimeToISOString(this.endBorrow),
             return_date: returnDate,
             damaged_or_lost: isDamagedOrLost,
             is_approved: isApproved
@@ -513,9 +518,9 @@
             borrow_id: this.editedBorrowId,
             book_id: this.editedBorrowId,
             user_id: this.editedUserId,
-            start_borrow: this.editedStartedBorrow,
-            end_borrow: this.editedEndBorrow,
-            return_date: (this.editedReturnDate === null || this.editedReturnDate === '') ? null : this.editedReturnDate,
+            start_borrow: this.convertLocalDatetimeToISOString(this.editedStartedBorrow),
+            end_borrow: this.convertLocalDatetimeToISOString(this.editedEndBorrow),
+            return_date: (this.editedReturnDate === null || this.editedReturnDate === '') ? null :this.convertLocalDatetimeToISOString(this.editedReturnDate),
             damaged_or_lost: (this.damagedOrLost !== null || this.damagedOrLost !== '') ? true : false,
             is_approved: (this.isApproved !== null || this.isApproved !== '') ? true : false
         }).then(response => {
@@ -547,6 +552,8 @@
             this.editedReturnDate = null;
             this.editedDamagedOrLost = null;
             this.editedIsApproved = '';
+            console.log(this.borrows);
+            this.fetchBorrow(this.currentPage);
         })
         
       },
