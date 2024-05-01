@@ -375,6 +375,7 @@ def delete_book_location(book_location_id: int):
 
 def advanced_search(book_id: int=None, title: str=None, publish_year: int=None,
                      description: str=None, authors: list[str]=None, genres: list[str]=None, isbn: str=None, page: int=None, limit: int=None):
+    
     query = db.session.query(Book)
     if book_id != None:
         query = query.filter(Book.id == book_id)

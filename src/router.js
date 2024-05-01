@@ -12,6 +12,9 @@ import BookByGenres from './components/page_components/book_page_components/Book
 import NavBar from './components/page_components/NavBar.vue';
 import RegisterPage from './components/views/RegisterPage.vue';
 import AdvancedSearch from './components/page_components/search_page_components/AdvancedSearch.vue';
+import UpdateProfile from './components/views/UpdateProfile.vue';
+import UserProfile from './components/views/UserProfile.vue';
+import UserSettings from './components/views/UserSettings.vue';
 
 const routes = [
   { 
@@ -93,6 +96,20 @@ const routes = [
         components: {
           NavBar: NavBar,
           default: BorrowTableUser
+        }
+      },
+      {
+        path: 'user/profile',
+        components:{
+          NavBar: NavBar,
+          default: UserProfile
+        }
+      },
+      {
+        path: 'user/settings',
+        components:{
+          NavBar: NavBar,
+          default: UserSettings
         }
       },
       {
