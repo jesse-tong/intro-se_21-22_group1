@@ -14,14 +14,11 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
             <form class="d-flex mt-3" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery">
+              <button class="btn btn-outline-success" type="submit" @click="searchTitle()">Search</button>
             </form>
             <li class="nav-item">
               <RouterLink class="nav-link active" aria-current="page" to="#">Home</RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link" to="/books/category">Categories</RouterLink>
             </li>
             
             <hr class="hr" v-if="accountStore.isAdmin"/>
@@ -42,6 +39,8 @@
             <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile">User profile</RouterLink></li>
             <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings">User settings</RouterLink></li>
             
+            <hr class="hr" v-if="accountStore.loggedIn"/>
+            <li class="nav-item" ><RouterLink class="nav-link" to="/library-policies">Library's policies</RouterLink></li>
             <hr class="hr" />
             
             <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/login">Log in</RouterLink></li>
@@ -59,7 +58,7 @@
 <script setup>
     import EasyLibLogo from './../../assets/EasyLib.svg';
     import { useAccountStore } from '../stores/LoginInfoStore';
-    import { onBeforeMount } from 'vue';
+    import { onBeforeMount, ref } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import { useNotification } from '@kyvg/vue3-notification';
 
@@ -72,6 +71,12 @@
     });
     const accountStore = useAccountStore();
     console.log('Role of account: ', accountStore.role);
+
+    const searchQuery = ref('');
+    const searchTitle = function(){
+      router.push({ path: '/book/advanced-search', query: { title: searchQuery.value } });
+    }
+
     const logoutUser = function(){
       axios.get('/auth/logout').then(response => {
                   if (response.data.success === undefined){

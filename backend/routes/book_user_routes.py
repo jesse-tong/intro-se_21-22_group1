@@ -263,3 +263,13 @@ def get_related_book_others_borrow_most_route(book_id):
     if result != None:
         result = [book[0] for book in result]
     return get_status_object_json(success, result, error), 200
+
+@book_user.route('/api/borrow-count-by-month', methods=['GET'])
+def get_borrow_count_by_month():
+    success, result, error = group_borrow_by_start_borrow_month()
+    return get_status_object_json(success, result, error), 200
+
+@book_user.route('/api/borrow-policies', methods=['GET'])
+def get_borrow_policies():
+    success, result, error = get_borrow_policy_constants()
+    return get_status_object_json(success, result, error), 200

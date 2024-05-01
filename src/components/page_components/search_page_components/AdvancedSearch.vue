@@ -94,7 +94,7 @@ import axios from 'axios';
                 searchTitle: Object.hasOwn(this.$route.query, 'title') ? this.$route.query.title : '',
                 searchId: Object.hasOwn(this.$route.query, 'bookId') ? this.$route.query.bookId : '',
                 searchIsbn: Object.hasOwn(this.$route.query, 'isbn') ? this.$route.query.isbn: '',
-                searchDescription: Object.hasOwn(this.$route.query, 'isbn') ? this.$route.query.isbn: '',
+                searchDescription: Object.hasOwn(this.$route.query, 'description') ? this.$route.query.description : '',
                 searchAuthors: '',
                 searchGenres: '',
                 currentPage: 1,
@@ -166,11 +166,23 @@ import axios from 'axios';
             },
             submitSearch(){
                 this.fetchSearchResult();
-            }
+            },
+            
         },
         watch: {
             currentPage(newPage, oldPage){
                 this.fetchSearchResult();
+            }
+        },
+        created() {
+
+            if ((this.searchTitle !== '' && this.searchTitle !== null) 
+            || (this.searchId !== null && this.searchId !== '' && this.searchId > 0) 
+            || (this.searchIsbn !== null && this.searchIsbn !== '') 
+            ||(this.searchDescription !== null && this.searchDescription !== '')){
+                //If one of title, id, isbn or description is not empty because of query parameters, fetch without user input
+                console.log('Fetch immediately');
+                this.fetchSearchResult(); 
             }
         }
     }
