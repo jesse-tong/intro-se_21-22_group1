@@ -3,8 +3,35 @@
         <h3 class="mt-2" >
             Policies when using library services
         </h3>
-        <div class="collapse" id="serviceUsagePolicyText">
-
+        <div class="" id="serviceUsagePolicyText">
+            <ul>
+                <li>Customers shall engage in activities associated with the use of a public
+                library. Customers not reading, studying or using library materials may be
+                required to leave the building, library program or approved community
+                event.</li>
+                <li>Any customer not abiding by these or other regulations and regulations of
+                the library may be required to leave the library premises and may forfeit
+                their library privileges. Library employees will contact the police if
+                deemed advisable.</li>
+                <li>The library board of trustees authorizes library staff and law enforcement
+                officers to enforce the library’s published code of conduct policy up to
+                and including long-term suspension of library privileges, permanent
+                banning from the library or prosecution.</li>
+                <li>Customers shall not assault, harass or annoy others in the library. This
+                includes noisy or boisterous activities, staring at another person with the
+                intent to annoy that person, following another person about the building
+                with the intent to annoy that person, playing audio equipment so that
+                others can hear it, singing or talking loudly to others or in monologues,
+                using profanity, displaying print or nonprint materials of an offensive
+                nature to others or by behaving in a manner that can be reasonably
+                expected to disturb others.</li>
+                <li>Customers shall not interfere with the use of the library by other
+                customers or with library employees’ performance of their duties.</li>
+                <li>Customers shall not deface or mar library materials including books,
+                magazines, newspapers, recordings or other items of the library
+                collection. Nor shall they deface, mar or in any way destroy or damage
+                library furnishings, walls, machines, or other library property.</li>
+            </ul>
         </div>
         <h3 class="mt-2" >
             Overdue policies and fines
@@ -38,6 +65,7 @@
 </template>
 
 <script>
+    //Most of the above text are based on these policies: https://www.ala.org/united/trustees/policies
     import axios from 'axios';
     export default {
         data(){

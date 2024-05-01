@@ -101,7 +101,8 @@ def profile_route():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     else:
         success, result, error = user_profile(current_user.id)
-        result = asdict(result[0]) | asdict(result[1])
+        if result != None:
+            result = asdict(result[0]) | asdict(result[1])
         return get_status_object_json(success, result, error), 200
     
 @auth.route('/api/search-user', methods=['GET'])

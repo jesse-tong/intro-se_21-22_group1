@@ -2,6 +2,7 @@
 
 import LoginPage from './components/views/LoginPage.vue';
 import NavBar from './components/page_components/NavBar.vue';
+import EasyLibLogo from './assets/EasyLib.svg';
 import { onBeforeMount } from 'vue';
 import {useAccountStore} from './components/stores/LoginInfoStore';
 
@@ -14,13 +15,11 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <Notifications position="top right" />
+  <Notifications position="top right" :duration=8000 />
   <RouterView name="NavBar" />
   <RouterView />
+  <RouterView name="footer" />
   
-  <footer>
-    
-  </footer>
 
 </template>
 
