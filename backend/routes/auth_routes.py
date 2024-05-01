@@ -89,7 +89,7 @@ def update_user_info():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        if age < 0 or age > 125: 
+        if age != None and (age < 0 or age > 125): 
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
         success, result, error = add_update_user_infos(user_id, age, gender, borrow_left_default, phone_number, address)
@@ -109,6 +109,7 @@ def search_user_route():
     user_id = request.args.get('user_id')
     name = request.args.get('name')
     email = request.args.get('email')
+    
     try:
         user_id = int(user_id) if user_id != None else None
     except:

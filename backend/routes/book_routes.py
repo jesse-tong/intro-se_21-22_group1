@@ -297,19 +297,24 @@ def get_avg_book_rating(book_id):
 
 @book_routes.route('/api/advanced-search', methods=['GET'])
 def advanced_search_route():
-    book_data = request.args
+    book_data = request.args.to_dict(flat=False)
+    print(book_data)
     book_id = book_data.get('book_id'); title = book_data.get('title');
     publish_year = book_data.get('publish_year'); description = book_data.get('description')
-    authors = book_data.get('authors') #Author should be a JSON string from an array
-    genres = book_data.get('genres'); isbn = book_data.get('isbn')
+    authors = book_data.get('authors[]') #Author should be a JSON string from an array
+    genres = book_data.get('genres[]'); isbn = book_data.get('isbn')
     page = book_data.get('page'); limit = book_data.get('limit')
+    print(authors); print(genres); print(type(genres))
     try:
-        book_id = int(book_id) if book_id != None else None
-        publish_year = int(publish_year) if publish_year != None else None
-        authors = list(json.loads(authors)) if authors != None else None
-        genres = list(json.loads(genres))  if genres != None else None
-        page = int(page) if page != None else None
-        limit = int(limit) if limit != None else None
+        book_id = int(book_id[0]) if book_id != None else None
+        publish_year = int(publish_year[0]) if publish_year != None else None
+        authors = authors if authors != None else None
+        genres = genres  if genres != None else None
+        page = int(page[0]) if page != None else None
+        limit = int(limit[0]) if limit != None else None
+        description = description[0] if description != None else None
+        title = title[0] if title != None else None
+        isbn = isbn[0] if isbn != None else None
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
     

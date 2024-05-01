@@ -1,5 +1,9 @@
 <template>
-    <div>
+    <div class="row">
+    <div :class="['col-12', 'col-lg-3']" v-if="$props.bookId !== null">
+        <UpdateImage :bookId="$props.bookId" v-if="$props.bookId !== null"/>
+    </div>
+    <div :class="['col-12', $props.bookId !== null ? 'col-lg-9' : 'col-12']">
         <h4 v-if="$props.bookId !== null" class="mb-2 mt-3">Update book data</h4>
         <h4 v-else class="mb-2 mt-3">Add book</h4>
         <div class="row">
@@ -125,16 +129,14 @@
                     <span v-else>Edit book</span>
                 </button>
             </div>
-        </div>
-        
-        
-        
+        </div>   
+    </div>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
-
+    import UpdateImage from './UpdateImage.vue';
     export default {
         props: {
             bookId: {
@@ -299,5 +301,8 @@
             }
         },
         emits: ['update:bookId', 'addUpdateBookCallback'],
+        components: {
+            UpdateImage: UpdateImage
+        }
     }
 </script>

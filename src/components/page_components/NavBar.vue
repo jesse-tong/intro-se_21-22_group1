@@ -60,6 +60,12 @@
     import EasyLibLogo from './../../assets/EasyLib.svg';
     import { useAccountStore } from '../stores/LoginInfoStore';
     import { onBeforeMount } from 'vue';
+    import { useRouter, useRoute } from 'vue-router';
+    import { useNotification } from '@kyvg/vue3-notification';
+
+    const router = useRouter();
+    const route = useRoute();
+    const notify = useNotification();
     import axios from 'axios';
     onBeforeMount(()=>{
 
@@ -69,33 +75,33 @@
     const logoutUser = function(){
       axios.get('/auth/logout').then(response => {
                   if (response.data.success === undefined){
-                    /* this.$notify({
+                    notify({
                       title: "Logout with unknown error",
                       text: "Logout with unknown error",
-                    }) */
+                    }) 
                   }
                   if (response.data.success === true){  
-                    /* this.$notify({
+                    notify({
                       title: "Logout successfully",
                       text: "Logout successfully"
-                    }) */
-                    this.$router.push('/login');
+                    }) 
+                    router.push('/login');
                   }else {
-                    this.$notify({
+                    notify({
                       title: "Logout error",
                       text: "Logout failed with error: " + response.data.error
                     })
                   }
                 }).catch(err=>{
-                  /* this.$notify({
+                  notify({
                     title: "Logout error",
                     text: "Logout failed with error: "+ err.response.data.error,
                     type: "error"
-                  }) */
+                  }) 
                 }).finally(()=>{
                   accountStore.clearLocalStorage();
                   accountStore.clearSessionStorage();
-                  this.$router.push('/login');
+                  router.push('/login');
                 })
     }
 </script>
