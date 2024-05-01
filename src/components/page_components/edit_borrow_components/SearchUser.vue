@@ -13,8 +13,8 @@
         </div>
         <div class="col-12 col-md-4">
           <div class="form-group">
-            <label for="searchUserId">Search User Id (Optional):</label>
-            <input :value="searchUserId" type="number" min="1" @input="$emit('update:searchUserId', $event.target.value)"  class="form-control" id="searchUserId" placeholder="Enter user name">
+            <label for="searchUserId">Search User ID (Optional):</label>
+            <input :value="searchUserId" type="number" min="1" @input="$emit('update:searchUserId', $event.target.value)"  class="form-control" id="searchUserId" placeholder="Enter user ID">
           </div>
           <button @click="$emit('search-user')" class="btn btn-primary mt-4">Search User</button>
         </div>

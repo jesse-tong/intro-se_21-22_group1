@@ -17,9 +17,9 @@
         <div v-if="activeTab === 'search'">
           <div class="col">
             <SearchUser v-model:searchUserEmail="searchUserEmail" v-model:searchUserName="searchUserName" v-model:searchUserId="searchUserId" @search-user="searchUser" />
-            <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" @search-book="searchBook" />
+            <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" v-model:searchBookId="searchBookId" @search-book="searchBook" class="mt-2" />
           </div>
-          <div v-if="searchResultUser">
+          <div v-if="searchResultUser" class="mt-3">
             <h3>User Search Result</h3>
             <table class="table table-striped">
               <thead>
@@ -314,9 +314,9 @@
         && (this.searchUserEmail === '' || this.searchUserEmail === null)
         && (this.searchUserName === '' || this.searchUserName === null)) {
           this.$notify({
-            title: "No search value",
-            text: "No query to search for",
-            type: "error"
+            title: "No search query",
+            text: "No user ID, email or name to search for",
+            type: "warn"
           })
           return;
         }
@@ -489,7 +489,11 @@
             this.fetchBorrow(this.currentPage);
             
             this.selectedUserId = '';
+            this.selectedUserEmail = '';
+            this.selectedUserName = '';
             this.selectedBookId = '';
+            this.selectedBookIsbn = '';
+            this.selectedBookTitle = '';
             this.startBorrow = '';
             this.endBorrow = '';
         })

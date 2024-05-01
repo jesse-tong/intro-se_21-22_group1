@@ -15,7 +15,11 @@ borrow_time = os.environ.get('DEFAULT_BORROW_TIMEOUT')
 overdue_fine = os.environ.get('OVERDUE_FINE_PER_DAY')
 overdue_limit_before_treated_as_lost = os.environ.get('OVERDUE_DAYS_LIMIT_BEFORE_LOST')
 damage_and_lost_fine = os.environ.get('DAMAGE_AND_LOST_FINE')
+currency = os.environ.get('CURRENCY')
 
+def get_borrow_policy_constants():
+    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency}
+    return True, result, None
 
 #Default if start_date is null is the current date
 def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, do_not_decrement_book_stock: bool=False):
@@ -299,4 +303,12 @@ def get_related_books_others_borrow_most(book_id: int):
     subquery = db.session.query(BookBorrow.userId).filter(BookBorrow.bookId == book_id).subquery()
     result = db.session.query(BookBorrow.bookId, func.count(BookBorrow.bookId)).filter(BookBorrow.userId.in_(subquery)).group_by(BookBorrow.bookId) \
         .order_by(desc(BookBorrow.bookId)).limit(10).all()
+    return True, result, None
+
+def group_borrow_by_start_borrow_month():
+    result = db.session.query(func.month(BookBorrow.startBorrow), func.year(BookBorrow.startBorrow), func.count(BookBorrow.id))\
+   .group_by(func.year(BookBorrow.startBorrow), func.month(BookBorrow.startBorrow))\
+   .all()
+    
+    result = [{'month': obj[0], 'year':obj[1], 'borrow_count': obj[2]} for obj in result]
     return True, result, None
