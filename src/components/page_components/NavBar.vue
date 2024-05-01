@@ -18,7 +18,7 @@
               <button class="btn btn-outline-success" type="submit" @click="searchTitle()">Search</button>
             </form>
             <li class="nav-item">
-              <RouterLink class="nav-link active" aria-current="page" to="#">Home</RouterLink>
+              <RouterLink class="nav-link active" aria-current="page" to="/">Home</RouterLink>
             </li>
             
             <hr class="hr" v-if="accountStore.isAdmin"/>

@@ -15,11 +15,15 @@ import AdvancedSearch from './components/page_components/search_page_components/
 import UserProfile from './components/views/UserProfile.vue';
 import UserSettings from './components/views/UserSettings.vue';
 import LibraryPolicyPage from './components/views/LibraryPolicyPage.vue';
+import Footer from './components/views/Footer.vue';
 
 const routes = [
   { 
     path: '/', 
-    component: App,
+    components: {
+      footer: Footer,
+      default: App
+    },
     children: [
       {
         path: 'book/by-author',

@@ -39,7 +39,7 @@
         
         <div class="col-12 col-md-7 col-lg-9 my-2 pe-3">
             <div class="bg-light rounded shadow-sm p-1 border-1" >
-                <table class="table table-striped">
+                <table class="table table-striped table-responsive-md">
                     <thead>
                         <tr>
                         <th>Image</th>
