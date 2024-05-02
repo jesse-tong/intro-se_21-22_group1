@@ -8,26 +8,32 @@
         <h3 class="mt-3 ms-3 mb-3">Highest rating books</h3>
         <BookCarousel :books="highestRatingBooks" :apiSite="'http://localhost:5000'" />
     </div>
-    <div class="row-7">
+    <div class="row">
+        <hr class="hr" />
+    </div>
+    <div class="row-5">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
-                <table class="table ps-2 table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="table-active text-center" colspan="2">LIBRARY STATISTICS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span>Number of books:</span></td>
-                            <td><span>{{ bookCount }}</span></td>
-                        </tr>
-                        <tr>
-                            <td><span>Number of borrows:</span></td>
-                            <td><span>{{ borrowCount }}</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="ps-4">
+                    <table class="table ps-2 table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="table-active text-center" colspan="2">LIBRARY STATISTICS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span>Number of books:</span></td>
+                                <td><span>{{ bookCount }}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>Number of borrows:</span></td>
+                                <td><span>{{ borrowCount }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
             <div class="col-12 col-md-2 col-lg-4">
                 
@@ -62,6 +68,9 @@
             </div>
 
         </div>
+    </div>
+    <div class="row">
+        <hr class="hr" />
     </div>
 </div>
 </template>
