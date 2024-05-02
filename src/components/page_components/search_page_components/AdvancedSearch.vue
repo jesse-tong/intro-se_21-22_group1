@@ -99,7 +99,7 @@ import axios from 'axios';
                 searchGenres: '',
                 currentPage: 1,
                 limitPerPage: 10,
-                apiSite: 'http://localhost:5000',
+
 
                 searchResults: []
             }

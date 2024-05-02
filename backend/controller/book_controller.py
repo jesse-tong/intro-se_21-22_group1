@@ -393,15 +393,12 @@ def advanced_search(book_id: int=None, title: str=None, publish_year: int=None,
         query = query.filter(Book.title.like('%{}%'.format(title)))
         
     if publish_year != None:
-        print('Query has publish year')
         query = query.filter(Book.publish_year == publish_year)
         
     if description != None:
-        print('Query has description')
         query = query.filter(Book.description.like('%{}%'.format(description)))
         res = query.all(); print(res)
     if isbn != None:
-        print('Query has ISBN')
         query = query.filter(Book.isbn.like('%{}%'.format(isbn)))
     if authors != None:
         subquery = db.session.query(Author.id).filter(Author.name.in_(authors))

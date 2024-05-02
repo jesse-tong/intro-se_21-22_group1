@@ -12,7 +12,7 @@
           </div>
           <div class="form-floating">
               <textarea class="form-control" v-model="commentContent"></textarea>
-              <label for="commentContent"></label>
+              <label for="commentContent">Comment text (max 3000 characters):</label>
           </div>
           <button class="btn btn-primary mt-2" @click="addComment"><span>Add comment</span></button>
           <hr class="hr" />

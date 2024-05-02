@@ -33,7 +33,7 @@
         </div>
         <div class="form-floating">
             <textarea class="form-control" v-model="commentContent"></textarea>
-            <label :for="'commentContent' + comment.id"></label>
+            <label :for="'commentContent' + comment.id">Comment:</label>
         </div>
         <div>
             <div v-if="accountStore.userId && accountStore.userId == commentUserId">
