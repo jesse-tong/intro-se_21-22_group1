@@ -248,10 +248,9 @@ def get_authors(page: int = None, limit: int=None):
         return False, None, DATABASE_ERROR
 
 def get_books_genre(genre_id: int | list[int], page: int =None, limit: int=None):
-    
     if type(genre_id) == list:
         try:
-            query = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id.in_(genre_id))
+            query = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.genreId.in_(genre_id))
             if page != None and limit != None and page > 0  and limit > 0:
                 offset = (page - 1)*limit
                 query = query.offset(offset).limit(limit)
@@ -262,7 +261,7 @@ def get_books_genre(genre_id: int | list[int], page: int =None, limit: int=None)
             return False, None, DATABASE_ERROR
     else:
         try:
-            query = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.id == genre_id)
+            query = db.session.query(Book).join(BookGenre).filter(Book.id == BookGenre.bookId).filter(BookGenre.genreId == genre_id)
             if page != None and limit != None and page > 0  and limit > 0:
                 offset = (page - 1)*limit
                 query = query.offset(offset).limit(limit)
@@ -275,7 +274,7 @@ def get_books_genre(genre_id: int | list[int], page: int =None, limit: int=None)
 def get_books_author(author_id: int | list[int], page: int=None, limit: int=None):
     if type(author_id) == list:
         try:
-            query = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id.in_(author_id))
+            query = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.authorId.in_(author_id))
             if page != None and limit != None and page > 0  and limit > 0:
                 offset = (page - 1)*limit
                 query = query.offset(offset).limit(limit)
@@ -285,7 +284,7 @@ def get_books_author(author_id: int | list[int], page: int=None, limit: int=None
             return False, None, DATABASE_ERROR
     else:
         try:
-            query = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.id == author_id)
+            query = db.session.query(Book).join(BookAuthor).filter(Book.id == BookAuthor.bookId).filter(BookAuthor.authorId == author_id)
             if page != None and limit != None and page > 0  and limit > 0:
                 offset = (page - 1)*limit
                 query = query.offset(offset).limit(limit)
