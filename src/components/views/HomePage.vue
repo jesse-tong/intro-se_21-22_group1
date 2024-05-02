@@ -2,7 +2,7 @@
 <div class="col">
     <div class="row-5">
         <div class="library-homepage-container">
-            <img :src="LibraryImage" style="width: 100%; max-height: 80vh;" alt="Library image"/>
+            <img :src="LibraryImage" style="width: 100%; max-height: 300px;" alt="Library image"/>
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
         <h3 class="mt-3 ms-3 mb-3">Highest rating books</h3>
@@ -61,7 +61,11 @@
                             <th colspan="2" class="text-center"><span>CONTACT US:</span></th>
                         </tr>
                         <tr>
-                            <td colspan="2">Some address, some email, some phone number</td>
+                            <td colspan="2">
+                                <span style="white-space: pre-wrap;">
+                                   {{ "Address: 224 Hoang Hoa Tham, Phu Nhuan District\nEmail: Aaliyah23@hotmail.com\nPhone number: 313 711-5064" }} 
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,6 +93,7 @@
         },
         created(){
             this.getHighestRatingBooks();
+            this.getBookCount(); this.getBorrowCount();
         },
         methods: {
             getHighestRatingBooks(){
@@ -126,6 +131,74 @@
                     
                 }).finally(()=>{
                 })   
+            },
+            getBookCount(){
+                axios.get('/api/book-count').then(response=> {
+                    if (!response.data || response.data == undefined || !response.data.success){
+                        this.$notify({
+                            title: "Fetch book count failed",
+                            text: "Fetch book count failed with unknown error, this can be from network or server",
+                            type: "error"
+                        });
+  
+                        return;
+                    }
+                    if (response.data.success === true){
+                        /* this.$notify({
+                            title: "Fetch highest rating books successfully!",
+                            text: "Fetch highest rating books successfully!",
+                            type: "success"
+                        }); */
+                        this.bookCount = response.data.result;
+                    }else{
+                        this.$notify({
+                            title: "Fetch book count failed",
+                            text: "Fetch book count failed with error: " + response.data.error,
+                            type: "error"
+                        });
+                        
+                    }   
+                }).catch(err=>{
+                    this.$notify({
+                        title: "Fetch book count failed",
+                        text: "Fetch book count failed with error: " + err.response.data.error,
+                        type: "error"
+                    });
+                    
+                }).finally(()=>{
+                })  
+            },
+            getBorrowCount(){
+                axios.get('/api/borrow-count').then(response=> {
+                    if (!response.data || response.data == undefined || !response.data.success){
+                        this.$notify({
+                            title: "Fetch borrow count failed",
+                            text: "Fetch borrow count failed with unknown error, this can be from network or server",
+                            type: "error"
+                        });
+  
+                        return;
+                    }
+                    if (response.data.success === true){
+                        
+                        this.borrowCount = response.data.result;
+                    }else{
+                        this.$notify({
+                            title: "Fetch borrow count failed",
+                            text: "Fetch borrow count failed with error: " + response.data.error,
+                            type: "error"
+                        });
+                        
+                    }   
+                }).catch(err=>{
+                    this.$notify({
+                        title: "Fetch borrow count failed",
+                        text: "Fetch borrow count failed with error: " + err.response.data.error,
+                        type: "error"
+                    });
+                    
+                }).finally(()=>{
+                }) 
             }
         },
         components: {

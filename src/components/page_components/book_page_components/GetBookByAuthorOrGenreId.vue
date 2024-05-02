@@ -54,7 +54,6 @@
             return {
                 currentPage: 1,
                 data: [],
-                apiSite: 'http://localhost:5000'
             }
         },
         methods: {

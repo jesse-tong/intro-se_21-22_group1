@@ -25,7 +25,7 @@
                 newImage: null,
                 emptyImage,
                 image: null,
-                apiSite: 'http://localhost:5000'
+                
             }
         },
         methods: {

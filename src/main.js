@@ -18,6 +18,9 @@ axios.defaults.withCredentials = true;
 const pinia = createPinia()
 
 const app = createApp(App)
+app.config.globalProperties = {
+    apiSite: 'http://localhost:5000'
+}
 app.use(Notifications)
 app.use(router)
 app.use(pinia)

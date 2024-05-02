@@ -45,10 +45,10 @@ export default {
       required: true,
       default: []
     },
-    apiSite: {
+    /* apiSite: {
       type: String,
       default: 'http://localhost:5000', 
-    },
+    }, */
   },
   computed: {
     numSlides() {

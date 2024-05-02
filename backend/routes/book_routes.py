@@ -57,20 +57,22 @@ def get_and_add_book_route():
             status = get_status_object_json(False, None, error)
             return status, 200
         
-        book_data = request.form
+        book_data = request.form.to_dict(flat=False)
         print(book_data)
         title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
-        isbn = book_data.get('isbn'); authors = book_data.get('authors'); genres = book_data.get('genres')
-        stock = book_data.get('stock'); languages = book_data.get('languages')
+        isbn = book_data.get('isbn'); authors = book_data.get('authors[]'); genres = book_data.get('genres[]')
+        stock = book_data.get('stock'); languages = book_data.get('languages[]')
         if title == None:
             return get_current_user_role(False, None, INVALID_PARAM), 400
         try:
-            publish_year = int(publish_year) if publish_year != None else None
-            authors = json.loads(authors) if authors != None else list()
-            genres = json.loads(genres) if genres != None else list()
-            languages = json.loads(languages) if languages != None else list()
-            stock = int(stock) if stock != None or stock != 0 else 0
+            title = title[0]; isbn = isbn[0] if isbn != None else None
+            description = description[0] if description != None else None
+            publish_year = int(publish_year[0]) if publish_year != None else None
+            authors = authors if authors != None else list()
+            genres = genres if genres != None else list()
+            languages = languages if languages != None else list()
+            stock = int(stock[0]) if stock != None or stock != 0 else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
@@ -91,19 +93,23 @@ def get_and_add_book_route():
         if result == False or role != 'admin':
             status = get_status_object_json(False, None, error)
             return status, 200
-        book_data = request.form
+        book_data = request.form.to_dict(flat=False)
         book_id = book_data.get('id'); title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
-        authors = book_data.get('authors') #Author should be a JSON string from an array
-        genres = book_data.get('genres'); isbn = book_data.get('isbn')
-        stock = book_data.get('stock'); languages = book_data.get('languages')
+        authors = book_data.get('authors[]') #Author should be a JSON string from an array
+        genres = book_data.get('genres[]'); isbn = book_data.get('isbn')
+        stock = book_data.get('stock'); languages = book_data.get('languages[]')
+        if book_id == None or title == None:
+            return get_status_object_json(False, None, INVALID_PARAM)
         try:
-            book_id = int(book_id)
-            publish_year = int(publish_year)
-            authors = list(json.loads(authors)) if authors != None else list()
-            genres = list(json.loads(genres))  if genres != None else list()
-            languages = list(json.loads(languages)) if languages != None else list()
-            stock = int(stock) if stock != None else 0
+            book_id = int(book_id[0])
+            title = title[0]; description = description[0] if description != None else None
+            isbn = isbn[0] if isbn != None else None
+            publish_year = int(publish_year[0]) if publish_year != None else None
+            authors = authors if authors != None else list()
+            genres = genres  if genres != None else list()
+            languages = languages if languages != None else list()
+            stock = int(stock[0]) if stock != None else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         success, edited_data, error = change_book_data(book_id, title, publish_year, description, authors, genres, isbn, stock, languages)
@@ -335,3 +341,4 @@ def advanced_search_route():
     
     success, edited_data, error = advanced_search(book_id, title, publish_year, description, authors, genres, isbn, page, limit)
     return get_status_object_json(success, edited_data, error), 200
+
