@@ -273,3 +273,13 @@ def get_borrow_count_by_month():
 def get_borrow_policies():
     success, result, error = get_borrow_policy_constants()
     return get_status_object_json(success, result, error), 200
+
+@book_user.route('/api/highest-rating-books', methods=['GET'])
+def highest_rating_books():
+    limit = request.args.get('limit')
+    try:
+        limit = int(limit) if limit != None else 15
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, result, error = get_highest_rated_books(limit)
+    return get_status_object_json(success, result, error)

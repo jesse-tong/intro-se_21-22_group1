@@ -42,7 +42,7 @@ def create_app(test_config=None):
     @login_manager.user_loader
     def load_user(user_id):
         # since the user_id is just the primary key of our user table, use it in the query for the user
-        return db.session.query(User).get(int(user_id))
+        return db.session.query(User).filter(User.id == int(user_id)).first()
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
