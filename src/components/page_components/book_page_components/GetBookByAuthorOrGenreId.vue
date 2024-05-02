@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-striped table-responsive-md">
+    <table class="table table-striped table-responsive-sm">
       <thead>
         <tr>
           <th>Image</th>

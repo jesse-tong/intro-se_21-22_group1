@@ -2,6 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models.user_model import User
 from models.book_model import Book, BookFile
 from models.user_book import BookBorrow, BookFavorite
+from models.user_model import Comment
 from sqlalchemy import select, func, desc
 from global_vars.database_init import db
 from global_vars.errors import *
@@ -311,4 +312,9 @@ def group_borrow_by_start_borrow_month():
    .all()
     
     result = [{'month': obj[0], 'year':obj[1], 'borrow_count': obj[2]} for obj in result]
+    return True, result, None
+
+def get_highest_rated_books(limit: int=15):
+    result = db.session.query(Book).join(Comment, Book.id == Comment.bookId).group_by(Book.id) \
+            .order_by(desc(func.avg(Comment.rating))).limit(limit).all()
     return True, result, None

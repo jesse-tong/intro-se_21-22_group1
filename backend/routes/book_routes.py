@@ -244,12 +244,24 @@ def book_location_route():
 
 @book_routes.route('/api/get-genres', methods=['GET'])
 def get_genres_api():
-    success, genres, error = get_genres()
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        page = int(page) if page != None else None; limit= int(limit) if limit != None else None
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, genres, error = get_genres(page, limit)
     return get_status_object_json(success, genres, error), 200
 
 @book_routes.route('/api/get-authors', methods=['GET'])
 def get_authors_api():
-    success, authors, error = get_authors()
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        page = int(page) if page != None else None; limit= int(limit) if limit != None else None
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, authors, error = get_authors(page, limit)
     return get_status_object_json(success, authors, error), 200
 
 @book_routes.route('/api/author/<author_id>/books', methods=['GET'])

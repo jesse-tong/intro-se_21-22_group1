@@ -17,6 +17,9 @@
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery">
               <button class="btn btn-outline-success" type="submit" @click="searchTitle()">Search</button>
             </form>
+            <li class="nav-item mt-3" v-if="accountStore.loggedIn">
+              <span>Welcome, {{ accountStore.name }}</span>
+            </li>
             <li class="nav-item">
               <RouterLink class="nav-link active" aria-current="page" to="/">Home</RouterLink>
             </li>

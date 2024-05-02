@@ -16,6 +16,8 @@ import UserProfile from './components/views/UserProfile.vue';
 import UserSettings from './components/views/UserSettings.vue';
 import LibraryPolicyPage from './components/views/LibraryPolicyPage.vue';
 import Footer from './components/views/Footer.vue';
+import HomePage from './components/views/HomePage.vue';
+import BookCarousel from './components/page_components/homepage_components/BookCarousel.vue';
 
 const routes = [
   { 
@@ -127,7 +129,7 @@ const routes = [
         path: '',
         components: {
           NavBar: NavBar,
-          default: BorrowManagement
+          default: HomePage
         },
         
       },

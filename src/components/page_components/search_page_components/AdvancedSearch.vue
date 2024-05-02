@@ -1,6 +1,6 @@
 <template>
     <div class="row mt-3 ms-2">
-        <div class="col-12 col-md-5 col-lg-3 g-0 pe-3">
+        <div class="col-12 col-md-3 col-lg-3 g-0 pe-3 pe-md-0 pe-lg-2">
             <div class="card mb-3">
                 <div class="card-header">
                     Advanced Search
@@ -37,7 +37,7 @@
             </div>
         </div>
         
-        <div class="col-12 col-md-7 col-lg-9 my-2 pe-3">
+        <div class="col-12 col-md-9 col-lg-9 my-2 pe-3">
             <div class="bg-light rounded shadow-sm p-1 border-1" >
                 <table class="table table-striped table-responsive-md">
                     <thead>
