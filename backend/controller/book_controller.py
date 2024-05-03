@@ -61,7 +61,6 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, stock: 
             if row != None:
                 genre_ids.append(row.id)
 
-
     try:
         book = db.session.query(Book).filter(Book.id == book_id).first()
 
