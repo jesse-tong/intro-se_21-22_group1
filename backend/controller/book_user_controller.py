@@ -302,8 +302,8 @@ def get_ebook(bookId: int):
 #       group by b.bookId order by count(b.bookId) desc limit 10
 def get_related_books_others_borrow_most(book_id: int):
     subquery = db.session.query(BookBorrow.userId).filter(BookBorrow.bookId == book_id).subquery()
-    result = db.session.query(BookBorrow.bookId, func.count(BookBorrow.bookId)).filter(BookBorrow.userId.in_(subquery)).group_by(BookBorrow.bookId) \
-        .order_by(desc(BookBorrow.bookId)).limit(10).all()
+    result = db.session.query(Book, BookBorrow.bookId, func.count(BookBorrow.bookId)).filter(BookBorrow.userId.in_(subquery)).group_by(BookBorrow.bookId) \
+        .order_by(desc(BookBorrow.bookId)).join(Book, Book.id == BookBorrow.bookId).limit(10).all()
     return True, result, None
 
 def group_borrow_by_start_borrow_month():

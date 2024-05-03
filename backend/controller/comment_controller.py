@@ -97,8 +97,8 @@ def get_book_comment_2(bookId: int, page: int=None, limit: int=None):
 
 def get_book_avg_rating(bookId: int):
     try:
-        rating_sum, rating_count = db.session.query(func.sum(Comment.rating), func.count(distinct(Comment.bookId))).filter(Comment.bookId == bookId).first()
-        average_rating = rating_sum / rating_count
+        average_rating = db.session.query(func.avg(Comment.rating)).filter(Comment.bookId == bookId).first()
+        average_rating = average_rating[0] #Since the query returns a tuple
         return True, average_rating, None
     except:
         return False, None, DATABASE_ERROR

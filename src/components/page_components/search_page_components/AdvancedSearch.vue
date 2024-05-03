@@ -174,7 +174,7 @@ import axios from 'axios';
                 this.fetchSearchResult();
             }
         },
-        created() {
+        onMounted() {
 
             if ((this.searchTitle !== '' && this.searchTitle !== null) 
             || (this.searchId !== null && this.searchId !== '' && this.searchId > 0) 

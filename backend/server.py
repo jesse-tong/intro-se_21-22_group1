@@ -6,6 +6,7 @@ from flask_cors import CORS
 from global_vars.database_init import db
 from global_vars.init_env import *
 from flask_login import LoginManager
+from sqlalchemy_utils import database_exists, create_database
 import pytest
 
 print(os.environ.get('SQL_URL'))
@@ -18,7 +19,9 @@ def create_app(test_config=None):
      , supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
      expose_headers=['X-CSRFToken'])
     
-    
+    if not database_exists(os.environ.get('SQL_URL')): 
+        create_database(os.environ.get('SQL_URL'))
+        
     app.config.from_mapping(
         SECRET_KEY='dev',
         SQLALCHEMY_DATABASE_URI=os.environ.get('SQL_URL'),
