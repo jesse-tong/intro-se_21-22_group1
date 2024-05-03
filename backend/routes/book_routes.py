@@ -69,9 +69,9 @@ def get_and_add_book_route():
             title = title[0]; isbn = isbn[0] if isbn != None else None
             description = description[0] if description != None else None
             publish_year = int(publish_year[0]) if publish_year != None else None
-            authors = authors if authors != None else list()
-            genres = genres if genres != None else list()
-            languages = languages if languages != None else list()
+            authors = authors if authors != None else None
+            genres = genres if genres != None else None
+            languages = languages if languages != None else None
             stock = int(stock[0]) if stock != None or stock != 0 else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
@@ -94,21 +94,21 @@ def get_and_add_book_route():
             status = get_status_object_json(False, None, error)
             return status, 200
         book_data = request.form.to_dict(flat=False)
-        book_id = book_data.get('id'); title = book_data.get('title');
+        book_id = book_data.get('book_id'); title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         authors = book_data.get('authors[]') #Author should be a JSON string from an array
         genres = book_data.get('genres[]'); isbn = book_data.get('isbn')
         stock = book_data.get('stock'); languages = book_data.get('languages[]')
         if book_id == None or title == None:
-            return get_status_object_json(False, None, INVALID_PARAM)
+            return get_status_object_json(False, None, INVALID_PARAM), 400
         try:
             book_id = int(book_id[0])
             title = title[0]; description = description[0] if description != None else None
             isbn = isbn[0] if isbn != None else None
             publish_year = int(publish_year[0]) if publish_year != None else None
-            authors = authors if authors != None else list()
-            genres = genres  if genres != None else list()
-            languages = languages if languages != None else list()
+            authors = authors if authors != None else None
+            genres = genres  if genres != None else None
+            languages = languages if languages != None else None
             stock = int(stock[0]) if stock != None else 0
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400

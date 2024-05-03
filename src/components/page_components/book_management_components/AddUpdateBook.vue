@@ -245,17 +245,31 @@
                     //Add new book
                     axios.postForm('/api/book', bookUpdateObject)
                         .then(response => {
-                            if (!response.data){
+                            if (response.status !== 200 || !response.data || response.data.success === undefined ){
                                 this.$notify({
                                     title: "Unknown error or network error",
                                     text: "Unknown error from server or network error, please check your network connection",
                                     type: "error"
                                 });
                             }
+                            if (response.data.success === true ){
+                                this.$notify({
+                                    title: "Add book successfully!",
+                                    text: "Add book successfully!",
+                                    type: "success"
+                                })
+                            }else {
+                                this.$notify({
+                                    title: "Add book failed!",
+                                    text: "Add book failed with error: " + response.data.error,
+                                    type: "error"
+                                })
+                            }
                         }).catch(err => {
                             this.$notify({
                                 title: "Error adding new book",
-
+                                text: "Add book failed with error" + err.response.data.error,
+                                type: "error"
                             })
                         }).finally(()=>{
                             this.$emit('addUpdateBookCallback')
@@ -264,17 +278,31 @@
                     //Update book with id bookId
                     axios.putForm('/api/book', bookUpdateObject)
                         .then(response => {
-                            if (!response.data){
+                            if (response.status !== 200 || !response.data || response.data.success === undefined ){
                                 this.$notify({
                                     title: "Unknown error or network error",
                                     text: "Unknown error from server or network error, please check your network connection",
                                     type: "error"
                                 });
                             }
+                            if (response.data.success === true ){
+                                this.$notify({
+                                    title: "Edit book details successfully!",
+                                    text: "Edit book successfully!",
+                                    type: "success"
+                                })
+                            }else {
+                                this.$notify({
+                                    title: "Edit book details failed!",
+                                    text: "Edit book failed with error: " + response.data.error,
+                                    type: "error"
+                                })
+                            }
                         }).catch(err => {
                             this.$notify({
-                                title: "Error adding new book",
-
+                                title: "Error editing book details",
+                                text: "Editing book data failed with error" + err.response.data.error,
+                                type: "error"
                             })
                         }).finally(()=>{
                             this.$emit('addUpdateBookCallback')
