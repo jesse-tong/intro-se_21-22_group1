@@ -53,6 +53,7 @@
                   <th>Title</th>
                   <th>Publish Year</th>
                   <th>ISBN</th>
+                  <th>Stock</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -62,6 +63,7 @@
                   <td>{{ book.title }}</td>
                   <td>{{ book.publish_year }}</td>
                   <td>{{ book.isbn }}</td>
+                  <td>{{ book.stock }}</td>
                   <td>
                     <button @click="selectBook(book.id, book.title, book.isbn)" class="btn btn-sm btn-success">Select</button>
                   </td>
