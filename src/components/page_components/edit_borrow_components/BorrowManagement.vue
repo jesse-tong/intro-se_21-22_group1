@@ -184,11 +184,11 @@
               <div class="mt-4">
                 <div class="form-check ">
                   <label for="isDamaged" class="form-check-label">Is damaged or lost</label>
-                  <input type="checkbox" v-model="damagedOrLost" class="form-check-input" id="isDamaged" value="true">
+                  <input type="checkbox" v-model="damagedOrLost" class="form-check-input" id="isDamaged" >
                 </div>
                 <div class="form-check mt-3">
                   <label for="isApproved" class="form-check-label">Is approved</label>
-                  <input type="checkbox" v-model="isApproved" class="form-check-input" id="isApproved" value="true">
+                  <input type="checkbox" v-model="isApproved" class="form-check-input" id="isApproved" >
                 </div>
               </div>
             </div>
@@ -255,8 +255,8 @@
         startBorrow: '',
         endBorrow: '',
         returnDate: '',
-        damagedOrLost: '',
-        isApproved: '',
+        damagedOrLost: null,
+        isApproved: null,
         otherBookStatus: '',
         additionalFees: 0.0,
   
@@ -266,8 +266,8 @@
         editedStartedBorrow: null,
         editedEndBorrow: null,
         editedReturnDate: null,
-        editedDamagedOrLost: '',
-        editedIsApproved: '',
+        editedDamagedOrLost: null,
+        editedIsApproved: null,
   
         deletedBorrowId: null,
         
@@ -522,13 +522,13 @@
       editBorrow(){
         axios.putForm('/api/manage-borrow-admin', {
             borrow_id: this.editedBorrowId,
-            book_id: this.editedBorrowId,
+            book_id: this.editedBookId,
             user_id: this.editedUserId,
             start_borrow: this.convertLocalDatetimeToISOString(this.editedStartedBorrow),
             end_borrow: this.convertLocalDatetimeToISOString(this.editedEndBorrow),
             return_date: (this.editedReturnDate === null || this.editedReturnDate === '') ? null :this.convertLocalDatetimeToISOString(this.editedReturnDate),
-            damaged_or_lost: (this.damagedOrLost !== null || this.damagedOrLost !== '') ? true : false,
-            is_approved: (this.isApproved !== null || this.isApproved !== '') ? true : false
+            damaged_or_lost: (this.editedDamagedOrLost !== null || this.editedDamagedOrLost !== '') ? this.editedDamagedOrLost : false,
+            is_approved: (this.editedIsApproved !== null || this.editedIsApproved !== '') ? this.editedIsApproved : false
         }).then(response => {
             if (response.data.success !== true){
                 this.$notify({

@@ -176,7 +176,9 @@ def admin_book_borrow_manage():
         elif damaged_or_lost.lower() == 'true' or damaged_or_lost == '1':
             damaged_or_lost = True
         else:
-            return get_status_object_json(False, None, INVALID_PARAM)
+            print('Invalid is_damaged')
+            print(damaged_or_lost)
+            return get_status_object_json(False, None, INVALID_PARAM), 400
 
         if is_approved.lower() == 'false' or is_approved == '0':
             is_approved = False
@@ -185,7 +187,7 @@ def admin_book_borrow_manage():
         elif is_approved == None:
             is_approved = None
         else:
-            return get_status_object_json(False, None, INVALID_PARAM)
+            return get_status_object_json(False, None, INVALID_PARAM), 400
         
         try:
             borrow_id = int(borrow_id)
