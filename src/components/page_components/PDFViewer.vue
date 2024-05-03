@@ -6,12 +6,12 @@ const page = ref(1);
 const scale = ref(1);
 
 
-  const props =  defineProps({
-      pdf: String,
-   });
-  const { pdf, pages } = usePDF(
-    props.pdf,
-  );
+const props =  defineProps({
+    pdf: String,
+  });
+const { pdf, pages } = usePDF(
+  props.pdf,
+);
 
   
 </script>
@@ -28,7 +28,7 @@ const scale = ref(1);
           -
         </button>
         <span>{{ scale * 100 }}%</span>
-        <button @click="scale = scale < 2 ? scale + 0.25 : scale" class="btn btn-secondary">
+        <button @click="scale = scale < 3 ? scale + 0.25 : scale" class="btn btn-secondary">
           +
         </button>
       </div>

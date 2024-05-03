@@ -133,6 +133,22 @@ const routes = [
         },
         
       },
+      {
+        path: ':pathMatch(.*)*',
+        name: 'not-found-inner',
+        components: {
+          NavBar: NavBar,
+          default: PageNotFound
+        }
+      },
+      {
+        path: ':pathMatch(.*)',
+        name: 'bad-not-found-inner',
+        components: {
+          NavBar: NavBar,
+          default: PageNotFound
+        }
+      },
     ]
   },
   

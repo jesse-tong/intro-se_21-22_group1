@@ -1,3 +1,4 @@
+<!-- A component to display book data in a carousel -->
 <template>
     <div class="carousel slide" data-bs-ride="carousel" data-bs-theme="dark" id="myCarousel"  >
         <div class="carousel-indicators">
@@ -12,7 +13,7 @@
                             <div v-if="(i - 1) * 3 + (j - 1) <= books.length - 1">
                                 <div class="card mb-3">
                                     <img :src="apiSite + '/image/' + $props.books[(i - 1) * 3 + (j - 1)].id" class="card-img-top" 
-                                    style="min-height: 375px; max-height: 375px;" :alt="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title" :title="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title"/>
+                                    :style="{ minHeight: $props.imgHeight + 'px', maxHeight: $props.imgHeight + 'px'} " :alt="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title" :title="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title"/>
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $props.books[(i - 1) * 3 + (j - 1)].title }}</h5>
                                         <RouterLink :to="'/book/' + $props.books[(i - 1) * 3 + (j - 1)].id" class="btn btn-primary">View Book</RouterLink>
@@ -45,10 +46,10 @@ export default {
       required: true,
       default: []
     },
-    /* apiSite: {
-      type: String,
-      default: 'http://localhost:5000', 
-    }, */
+    imgHeight: {
+      type: Number,
+      default: 375
+    }
   },
   computed: {
     numSlides() {
