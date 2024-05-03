@@ -13,3 +13,5 @@ Frameworks:
 - Backend: Flask, SQL (SQLAlchemy)
 - Frontend: Vue.js
 - Database: MariaDB
+- Testing: Pytest, Postman, Firefox DevTools, Selenium (planned)
+- Others: Docker (planned), Jenkins (planned), Inkscape (icons)
