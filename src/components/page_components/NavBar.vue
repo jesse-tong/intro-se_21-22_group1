@@ -15,7 +15,7 @@
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
             <form class="d-flex mt-3" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery">
-              <button class="btn btn-outline-success" type="submit" @click="$router.push({ path: '/book/advanced-search', query: { title: searchQuery } })">Search</button>
+              <button class="btn btn-outline-success" type="submit" @click="searchTitle()">Search</button>
             </form>
             <li class="nav-item mt-3" v-if="accountStore.loggedIn">
               <span>Welcome, {{ accountStore.name }}</span>
@@ -64,10 +64,12 @@
     import { onBeforeMount, ref } from 'vue';
     import { useRouter, useRoute } from 'vue-router';
     import { useNotification } from '@kyvg/vue3-notification';
+    import { useSearchQueryStore } from '../stores/SearchQueryStore';
 
     const router = useRouter();
     const route = useRoute();
     const notify = useNotification();
+    const searchQueryStore = useSearchQueryStore();
     import axios from 'axios';
     onBeforeMount(()=>{
 
@@ -77,39 +79,49 @@
 
     const searchQuery = ref('');
     const searchTitle = function(){
-      router.push({ path: '/book/advanced-search', query: { title: searchQuery.value } });
+      searchQueryStore.saveSearchQuery(searchQuery.value, '', '');
+      router.push('/book/advanced-search');
     }
+
+    
 
     //Logout callback method
     const logoutUser = function(){
       axios.get('/auth/logout').then(response => {
-                  if (response.data.success === undefined){
-                    notify({
+                  if (response.data === null || response.data === undefined ||
+                  response.data.success === undefined){
+                    notify.notify({
                       title: "Logout with unknown error",
                       text: "Logout with unknown error",
-                    }) 
+                    });
+                    return;
                   }
                   if (response.data.success === true){  
-                    notify({
-                      title: "Logout successfully",
-                      text: "Logout successfully"
+                    notify.notify({
+                      title: "Logout successfully!",
+                      text: "Logout successfully!",
+                      type: 'primary'
                     }) 
-                    router.push('/login');
+                    return;
                   }else {
                     notify({
                       title: "Logout error",
-                      text: "Logout failed with error: " + response.data.error
+                      text: "Logout failed with error: " + response.data.error,
+                      type: 'error'
                     })
+                    return;
                   }
                 }).catch(err=>{
-                  notify({
+                  notify.notify({
                     title: "Logout error",
-                    text: "Logout failed with error: "+ err.response.data.error,
+                    text: "Logout failed with error",
                     type: "error"
-                  }) 
+                  });
+                  return;
                 }).finally(()=>{
                   accountStore.clearLocalStorage();
                   accountStore.clearSessionStorage();
+                  accountStore.clearStoredData();
                   router.push('/login');
                 })
     }

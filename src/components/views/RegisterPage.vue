@@ -81,11 +81,19 @@
             methods: {
               
               register(){
+                if (this.email === null || this.email === ''){
+                  this.$notify({
+                        title: 'Empty email!',
+                        text: 'Empty email!',
+                        type: 'error'
+                    });
+                    return;
+                }
                 if (this.password === null || this.password === ''){
                     this.$notify({
                         title: 'Empty password!',
                         text: 'Empty password!',
-                        type: error
+                        type: 'error'
                     });
                     return;
                 }
@@ -93,7 +101,7 @@
                     this.$notify({
                         title: 'Password should have length >= 8!',
                         text: 'Password should have length >= 8!',
-                        type: error
+                        type: 'error'
                     });
                     return;
                 }
@@ -101,7 +109,7 @@
                     this.$notify({
                         title: 'Incorrect reentering password!',
                         text: 'Incorrect reentering password!',
-                        type: error
+                        type: 'error'
                     });
                     return;
                 }

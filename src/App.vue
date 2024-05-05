@@ -15,7 +15,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <Notifications position="top right" :duration=8000 />
+  <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true />
   <RouterView name="NavBar" />
   <RouterView />
   <RouterView name="footer" />

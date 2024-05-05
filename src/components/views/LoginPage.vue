@@ -28,19 +28,19 @@
           <div class="card-body">
             <form role="form" class="text-start">
               <div class="input-group  my-3">
-                <label class=" input-group-text">Email: </label>
-                <input type="email" class="form-control" v-model="email">
+                <label class=" input-group-text" for="emailInput">Email: </label>
+                <input type="email" class="form-control" id="emailInput" v-model="email">
               </div>
               <div class="input-group mb-3">
-                <label class="input-group-text">Password: </label>
-                <input type="password" class="form-control" v-model="password">
+                <label class="input-group-text" for="passwordInput" >Password: </label>
+                <input type="password" class="form-control" id="passwordInput" v-model="password">
               </div>
               <div class="form-check form-switch d-flex align-items-center mb-3">
                 <input class="form-check-input" type="checkbox" id="rememberMe" checked v-model="rememberMe">
                 <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
               </div>
               <div class="text-center">
-                <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => login()">Sign in</button>
+                <button id="loginSubmitButton" type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => login()">Sign in</button>
               </div>
               <p class="mt-4 text-sm text-center">
                 Don't have an account? <RouterLink to="/register" class="text-decoration-none" style="color: #ec407a;">Sign up</RouterLink>
@@ -99,7 +99,11 @@ import { useAccountStore } from '../stores/LoginInfoStore';
                 }catch(e){
                   
                 }
-                
+                this.$notify({
+                  title: 'Login successfully!',
+                  text: 'Login successfully!',
+                  type: 'success'
+                });
                 
                 if (this.rememberMe !== '' && this.rememberMe !== null){
                   //Since remember user = true, store logged in user info to localStorage
@@ -113,7 +117,8 @@ import { useAccountStore } from '../stores/LoginInfoStore';
               }else {
                 this.$notify({
                   title: "Login error",
-                  text: "Login with error: " + response.data.error
+                  text: "Login with error: " + response.data.error,
+                  type: "error"
                 })
               }
             }).catch(err=>{

@@ -15,7 +15,7 @@
           <AddUpdateBook @addUpdateBookCallback="addUpdateBookCallback()"/>
         </div>
         <div v-else-if="activeTab == 'editBook'">
-          <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" @search-book="searchBook(currentPage)"/>
+          <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" v-model:searchBookId="searchBookId" @search-book="searchBook(currentPage)"/>
           <AddUpdateBook :bookId="editBookId" @addUpdateBookCallback="addUpdateBookCallback()" ref="editBookSubtab"/>
           <BookTable @update:currentPage="(page)=>onCurrentPageChanged(page)" :books="searchResult" :currentPage="currentPage" @deleteBook="(bookId)=>onSelectDeleteBook(bookId)" @editBook="(bookId)=>{ onSelectEditBook(bookId);}" />
         </div>
@@ -34,6 +34,7 @@
                 activeTab: 'addBook',
                 searchBookTitle: '',
                 searchBookIsbn: '',
+                searchBookId: null,
 
                 searchResult: [],
                 currentPage: 1,
@@ -51,6 +52,7 @@
             this.searchResult = [];
             this.searchBookTitle = '';
             this.searchBookIsbn = '';
+            this.searchBookId = null;
           },
           searchBook(page){
             //this.currentPage = 1;
@@ -65,6 +67,11 @@
             if (this.searchBookIsbn !== '' && this.searchBookIsbn !== null){
               searchParams.isbn = this.searchBookIsbn;
             }
+
+            if (this.searchBookId !== null && this.searchBookId > 0){
+              searchParams.book_id = this.searchBookId;
+            }
+            
             searchParams.page = this.currentPage; searchParams.limit = 10;
             console.log(searchParams);
             axios.get('/api/book', {
