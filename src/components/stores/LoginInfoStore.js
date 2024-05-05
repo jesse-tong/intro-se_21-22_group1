@@ -63,6 +63,9 @@ export const useAccountStore = defineStore('account', {
       },
       clearLocalStorage(){
         localStorage.clear();
-      }
+      },
+      clearStoredData(){
+        this.$state.userId = null; this.$state.name = null; this.$state.role = null;
+      },
     },
 });

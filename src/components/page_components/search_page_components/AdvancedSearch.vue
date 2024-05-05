@@ -87,14 +87,16 @@
 </template>
 <script>
 import axios from 'axios';
+import { mapStores } from 'pinia';
+import { useSearchQueryStore } from '../../stores/SearchQueryStore';
 
     export default {
         data(){
             return {
-                searchTitle: Object.hasOwn(this.$route.query, 'title') ? this.$route.query.title : '',
-                searchId: Object.hasOwn(this.$route.query, 'bookId') ? this.$route.query.bookId : '',
-                searchIsbn: Object.hasOwn(this.$route.query, 'isbn') ? this.$route.query.isbn: '',
-                searchDescription: Object.hasOwn(this.$route.query, 'description') ? this.$route.query.description : '',
+                searchTitle:  '',
+                searchId: '',
+                searchIsbn: '',
+                searchDescription: '',
                 searchAuthors: '',
                 searchGenres: '',
                 currentPage: 1,
@@ -174,12 +176,19 @@ import axios from 'axios';
                 this.fetchSearchResult();
             }
         },
-        onMounted() {
+        computed: {
+            ...mapStores(useSearchQueryStore)
+        },
+        created() {
+            this.searchTitle = this.searchQueryStore.title;
+            this.searchIsbn = this.searchQueryStore.isbn;
+            this.searchDescription = this.searchQueryStore.description;
+
+            this.searchQueryStore.clearQueries(); //clear search query
 
             if ((this.searchTitle !== '' && this.searchTitle !== null) 
             || (this.searchId !== null && this.searchId !== '' && this.searchId > 0) 
-            || (this.searchIsbn !== null && this.searchIsbn !== '') 
-            ||(this.searchDescription !== null && this.searchDescription !== '')){
+            || (this.searchIsbn !== null && this.searchIsbn !== '') ){
                 //If one of title, id, isbn or description is not empty because of query parameters, fetch without user input
                 console.log('Fetch immediately');
                 this.fetchSearchResult(); 
