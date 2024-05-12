@@ -57,6 +57,10 @@ async function loginTestWithoutEmail(driver, password){
   assert.equal("Login with error: Invalid authentication", notificationContentText);
 }
 
+async function loginTestWithoutEmail(){
+  
+}
+
 (async function loginTests() {
     let driver;
     

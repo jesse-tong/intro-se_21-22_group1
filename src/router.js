@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 import App from './App.vue';
 import BookDetails from './components/page_components/book_page_components/BookDetails.vue';
-import BorrowManagement from './components/page_components/edit_borrow_components/BorrowManagement.vue';
+import BorrowManagement from './components/page_components/borrow_management_components/BorrowManagement.vue';
 import PageNotFound from './components/views/PageNotFound.vue';
 import LoginPage from './components/views/LoginPage.vue';
 import BookManagement from './components/page_components/book_management_components/BookManagement.vue';

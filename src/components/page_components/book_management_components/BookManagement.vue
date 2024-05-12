@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-    import SearchBook from '../edit_borrow_components/SearchBook.vue';
+    import SearchBook from '../borrow_management_components/SearchBook.vue';
     import AddUpdateBook from './AddUpdateBook.vue';
     import BookTable from './BookTable.vue';
     import axios from 'axios';
