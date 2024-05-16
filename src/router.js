@@ -24,34 +24,31 @@ const routes = [
     path: '/', 
     components: {
       footer: Footer,
-      default: App
+      default: App,
+      NavBar: NavBar
     },
     children: [
       {
         path: 'book/by-author',
         components: {
-          NavBar: NavBar,
           default: BookByAuthors
         }
       },
       {
         path: 'book/by-genre',
         components: {
-          NavBar: NavBar,
           default: BookByGenres
         }
       },
       {
         path: '/book/advanced-search',
         components: {
-          NavBar: NavBar,
           default: AdvancedSearch
         }
       },
       {
         path: 'book/:bookId',
         components: {
-          NavBar: NavBar,
           default: BookDetails
         },
         props: {
@@ -61,35 +58,30 @@ const routes = [
       {
         path: 'admin/manage-borrow',
         components: {
-          NavBar: NavBar,
           default: BorrowManagement
         }
       },
       {
         path: 'admin/manage-books',
         components: {
-          NavBar: NavBar,
           default: BookManagement
         }
       },
       {
         path: 'login',
         components: {
-          NavBar: NavBar,
           default: LoginPage
         }
       },
       {
         path: 'register',
         components: {
-          NavBar: NavBar,
           default: RegisterPage
         }
       },
       {
         path: 'register/:role',
         components: {
-          NavBar: NavBar,
           default: RegisterPage,
 
         },
@@ -100,35 +92,30 @@ const routes = [
       {
         path: 'user/borrows',
         components: {
-          NavBar: NavBar,
           default: BorrowTableUser
         }
       },
       {
         path: 'user/profile',
         components:{
-          NavBar: NavBar,
           default: UserProfile
         }
       },
       {
         path: 'user/settings',
         components:{
-          NavBar: NavBar,
           default: UserSettings
         }
       },
       {
         path: 'library-policies',
         components:{
-          NavBar: NavBar,
           default: LibraryPolicyPage
         }
       },
       {
         path: '',
         components: {
-          NavBar: NavBar,
           default: HomePage
         },
         
@@ -137,7 +124,6 @@ const routes = [
         path: ':pathMatch(.*)*',
         name: 'not-found-inner',
         components: {
-          NavBar: NavBar,
           default: PageNotFound
         }
       },
@@ -145,7 +131,6 @@ const routes = [
         path: ':pathMatch(.*)',
         name: 'bad-not-found-inner',
         components: {
-          NavBar: NavBar,
           default: PageNotFound
         }
       },
