@@ -205,7 +205,85 @@ def get_book_image(book_id):
             return send_file(image_path, as_attachment=False), 200
         else:
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+
+@book_routes.route('/api/upload-ebook/<book_id>', methods=['GET', 'POST'])
+def upload_ebook(book_id):
+    if request.method == 'GET':
+        #This one to check if there is an ebook for that book with book_id ID
+        try:
+            book_id = int(book_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        book = db.session.query(Book).filter(Book.id == book_id).first()
+        if not book:
+            return get_status_object_json(False, None, INVALID_ID), 400
+        saved_ebook_file_location = db.session.query(BookFile).filter(BookFile.bookId == book_id).first()
+
+        if saved_ebook_file_location == None:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+        return get_status_object_json(True, saved_ebook_file_location, None), 200
+    elif request.method == 'POST':
+        try:
+            book_id = int(book_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        book = db.session.query(Book).filter(Book.id == book_id).first()
+        if not book:
+            return get_status_object_json(False, None, INVALID_ID), 400
+        file = request.files.get('ebook')
+        if not file:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 400
+        ebook_filename = file.filename
+        try:
+            ebook_extension = file.content_type.split('/')[-1]
+            if ebook_extension != 'pdf':
+                return get_status_object_json(False, None, INVALID_FILE)
+        except:
+            return get_status_object_json(False, None, INVALID_FILE)
         
+        ebook_bytes = file.read()
+        save_ebook_file(ebook_bytes, book_id, ebook_filename)
+        saved_ebook_data = db.session.query(BookFile).filter(BookFile.bookId == book_id).first()
+        if saved_ebook_data != None and saved_ebook_data.fileSrc != None:
+            delete_ebook_file(book_id, saved_ebook_data.fileSrc)
+        
+        if saved_ebook_data == None:
+            create_new = True
+            saved_ebook_data = BookFile()
+            saved_ebook_data.bookId = book_id
+        else:
+            create_new = False
+        if create_new == True:
+            db.session.add(saved_ebook_data)
+        saved_ebook_data.fileSrc = ebook_filename
+        db.session.commit()
+
+        return get_status_object_json(True, True, None)
+
+@book_routes.route('/ebook/<book_id>', methods=['GET'])
+def get_ebook(book_id):
+    if request.method == 'GET':
+        try:
+            book_id = int(book_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 404
+        book = db.session.query(Book).filter(Book.id == book_id).first()
+        if not book:
+            return get_status_object_json(False, None, INVALID_ID), 404
+        
+        saved_ebook_file_path = db.session.query(BookFile).filter(BookFile.bookId == book_id).first()
+
+        if saved_ebook_file_path == None:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+        ebook_file_name = saved_ebook_file_path.fileSrc
+
+        book_path = get_save_ebook_path(book_id, ebook_file_name)
+
+        if os.path.isfile(book_path):
+            return send_file(book_path, as_attachment=False), 200
+        else:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+
 @book_routes.route('/api/book-location', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def book_location_route():
     if request.method == 'GET':

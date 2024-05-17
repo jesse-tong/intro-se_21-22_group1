@@ -30,7 +30,7 @@
         },
         methods: {
             setEmptyImage(){
-
+                this.newImage = this.emptyImage;
             },
             previewFiles(event) {
 

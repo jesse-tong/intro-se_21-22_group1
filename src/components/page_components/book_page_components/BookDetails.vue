@@ -3,6 +3,7 @@
   <div class="book-detail">
     
     <BorrowModal :showModal="borrowModalShow" @closeModal="borrowModalShow = false" ref="borrowModal" :bookId="$props.bookId"/>
+    <EbookModal :showModal="ebookModalShow" @closeEbookModal="ebookModalShow = false" ref="ebookModal" :bookId="$props.bookId" />
     <div class="container bg-light rounded-3">
       <nav class="navbar navbar-light sticky-top shadow-sm flex-wrap bg-light rounded-3 px-3">
         <a class="nav-link" href="#overview">Overview</a>
@@ -18,7 +19,7 @@
             </div>
           <div class="list-group-item">
            <div class="btn-group" role="group" style="width: 100%;">
-            <button class="btn btn-secondary me-1">
+            <button class="btn btn-secondary me-1" @click="ebookModalShow = !ebookModalShow">
               <i class="bi bi-book"></i>
             </button> 
             <button class="btn btn-primary" @click="$refs.borrowModal.modalActive()" v-if="book.stock !== null && book.stock !== 0">Borrow ({{ book.stock }} left)</button>
@@ -86,6 +87,7 @@
     import BookCarousel from '../homepage_components/BookCarousel.vue';
     import BorrowModal from '../user_borrow_components/BorrowModal.vue';
     import CommentSection from '../comment_components/CommentSection.vue';
+    import EbookModal from '../EbookModal.vue';
     export default {
         data() {
             return {
@@ -101,6 +103,7 @@
                   stock: null
                 },
                 borrowModalShow: false,
+                ebookModalShow: false,
                 relatedBooks: []
             }
         },
@@ -108,7 +111,8 @@
           FontAwesomeIcon,
           BorrowModal,
           CommentSection,
-          BookCarousel
+          BookCarousel,
+          EbookModal
         },
         props: {
             bookId: {
@@ -144,6 +148,8 @@
                 }
                 if (response.data.success == true){
                   this.book = response.data.result
+                }else {
+                  this.$router.push({name: 'not-found-inner'});
                 }
               }).catch(err => {
                 alert('Unknown error');
