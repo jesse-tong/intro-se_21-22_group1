@@ -5,6 +5,10 @@ import os, shutil
 book_files_save_directory = os.environ.get('FILE_STORAGE_PATH') if os.environ.get('FILE_STORAGE_PATH')!=None else './.ebook_files'
 book_images_save_directory = os.environ.get('IMAGE_STORAGE_PATH') if os.environ.get('IMAGE_STORAGE_PATH')!=None else './.book_images'
 
+def get_save_ebook_path(id: int, name: str):
+    save_dir = os.path.join(os.path.abspath(book_files_save_directory), str(id))
+    save_dir = os.path.join(save_dir, name)
+    return save_dir
 
 def add_book_file_with_name(file: bytes, id: int, name: str, save_directory:str):
     save_dir = os.path.join(os.path.abspath(save_directory), str(id))

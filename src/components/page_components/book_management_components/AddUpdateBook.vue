@@ -1,6 +1,7 @@
 <template>
     <div class="row">
     <div :class="['col-12', 'col-lg-3']" v-if="$props.bookId !== null">
+        <UpdateEbook :bookId="$props.bookId" v-if="$props.bookId !== null" />
         <UpdateImage :bookId="$props.bookId" v-if="$props.bookId !== null"/>
     </div>
     <div :class="['col-12', $props.bookId !== null ? 'col-lg-9' : 'col-12']">
@@ -137,6 +138,7 @@
 <script>
     import axios from 'axios';
     import UpdateImage from './UpdateImage.vue';
+    import UpdateEbook from './UpdateEbook.vue';
     export default {
         props: {
             bookId: {
@@ -330,7 +332,8 @@
         },
         emits: ['update:bookId', 'addUpdateBookCallback'],
         components: {
-            UpdateImage: UpdateImage
+            UpdateImage: UpdateImage,
+            UpdateEbook: UpdateEbook
         }
     }
 </script>

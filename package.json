@@ -17,6 +17,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "@kyvg/vue3-notification": "^3.2.1",
     "@popperjs/core": "^2.11.8",
+    "@tato30/vue-pdf": "^1.9.7",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
