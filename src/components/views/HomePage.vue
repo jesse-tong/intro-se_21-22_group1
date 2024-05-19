@@ -6,7 +6,9 @@
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
         <h3 class="mt-3 ms-3 mb-3">Highest rating books</h3>
-        <BookCarousel :books="highestRatingBooks" :apiSite="'http://localhost:5000'" />
+        <BookCarousel :books="highestRatingBooks" :apiSite="apiSite" :carouselId="'highestRatingBooks'" />
+        <h3 class="mt-4 ms-3 mb-3">Most borrowed books</h3>
+        <BookCarousel :books="mostBorrowedBooks" :apiSite="apiSite" :carouselId="'mostBorrowedBooks'"/>
     </div>
     <div class="row">
         <hr class="hr" />
@@ -88,11 +90,13 @@
                 bookCount: 'N/A',
                 borrowCount: 'N/A',
                 highestRatingBooks: [],
+                mostBorrowedBooks: [],
                 LibraryImage
             }
         },
         created(){
             this.getHighestRatingBooks();
+            this.getMostBorrowedBooks();
             this.getBookCount(); this.getBorrowCount();
         },
         methods: {
@@ -114,6 +118,42 @@
                             type: "success"
                         }); */
                         this.highestRatingBooks = response.data.result;
+                    }else{
+                        this.$notify({
+                            title: "Fetch highest rating books failed",
+                            text: "Fetch highest rating books failed with error: " + response.data.error,
+                            type: "error"
+                        });
+                        
+                    }   
+                }).catch(err=>{
+                    this.$notify({
+                        title: "Fetch highest rating books failed",
+                        text: "Fetch highest rating books failed with error: " + err.response.data.error,
+                        type: "error"
+                    });
+                    
+                }).finally(()=>{
+                })   
+            },
+            getMostBorrowedBooks(){
+                axios.get('/api/most-borrowed-books').then(response=> {
+                    if (!response.data || response.data == undefined || !response.data.success){
+                        this.$notify({
+                            title: "Fetch highest rating books failed",
+                            text: "Fetch highest rating books failed with unknown error, this can be from network or server",
+                            type: "error"
+                        });
+  
+                        return;
+                    }
+                    if (response.data.success === true){
+                        /* this.$notify({
+                            title: "Fetch highest rating books successfully!",
+                            text: "Fetch highest rating books successfully!",
+                            type: "success"
+                        }); */
+                        this.mostBorrowedBooks = response.data.result;
                     }else{
                         this.$notify({
                             title: "Fetch highest rating books failed",

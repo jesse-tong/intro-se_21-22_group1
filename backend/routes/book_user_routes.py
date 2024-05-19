@@ -285,3 +285,23 @@ def highest_rating_books():
         return get_status_object_json(False, None, INVALID_PARAM), 400
     success, result, error = get_highest_rated_books(limit)
     return get_status_object_json(success, result, error)
+
+@book_user.route('/api/most-borrowed-books', methods=['GET'])
+def most_borrow_books_route():
+    limit = request.args.get('limit')
+    try:
+        limit = int(limit) if limit != None else 15
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, result, error = most_borrowed_books(limit)
+    return get_status_object_json(success, result, error)
+
+@book_user.route('/api/most-recent-borrows', methods=['GET'])
+def most_recent_borrow_route():
+    limit = request.args.get('limit')
+    try:
+        limit = int(limit) if limit != None else 15
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, result, error = most_recent_borrows(limit)
+    return get_status_object_json(success, result, error)

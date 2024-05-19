@@ -309,7 +309,7 @@ def get_related_books_others_borrow_most(book_id: int):
 def group_borrow_by_start_borrow_month():
     result = db.session.query(func.month(BookBorrow.startBorrow), func.year(BookBorrow.startBorrow), func.count(BookBorrow.id))\
    .group_by(func.year(BookBorrow.startBorrow), func.month(BookBorrow.startBorrow))\
-   .all()
+   .order_by(desc(func.year(BookBorrow.startBorrow)), desc(func.month(BookBorrow.startBorrow))).limit(24).all()
     
     result = [{'month': obj[0], 'year':obj[1], 'borrow_count': obj[2]} for obj in result]
     return True, result, None
@@ -317,4 +317,15 @@ def group_borrow_by_start_borrow_month():
 def get_highest_rated_books(limit: int=15):
     result = db.session.query(Book).join(Comment, Book.id == Comment.bookId).group_by(Book.id) \
             .order_by(desc(func.avg(Comment.rating))).limit(limit).all()
+    return True, result, None
+
+def most_borrowed_books(limit: int=15):
+    result = db.session.query(Book).join(BookBorrow, BookBorrow.bookId == Book.id).group_by(Book.id) \
+            .order_by(desc(func.count(BookBorrow.id))).limit(limit).all()
+    return True, result, None
+
+def most_recent_borrows(limit: int=10):
+    result = db.session.query(BookBorrow, User.name, Book.title).join(User, BookBorrow.userId == User.id).join(Book, BookBorrow.bookId == Book.id) \
+    .group_by(BookBorrow.id).order_by(desc(BookBorrow.startBorrow)).limit(limit).all()
+    result = [asdict(item[0]) |{'username': item[1], 'title': item[2] } for item in result]
     return True, result, None

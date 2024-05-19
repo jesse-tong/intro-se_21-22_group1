@@ -17,7 +17,7 @@ import UserSettings from './components/views/UserSettings.vue';
 import LibraryPolicyPage from './components/views/LibraryPolicyPage.vue';
 import Footer from './components/views/Footer.vue';
 import HomePage from './components/views/HomePage.vue';
-import BookCarousel from './components/page_components/homepage_components/BookCarousel.vue';
+import ReportPage from './components/page_components/report_page_components/ReportPage.vue';
 
 const routes = [
   { 
@@ -111,6 +111,12 @@ const routes = [
         path: 'library-policies',
         components:{
           default: LibraryPolicyPage
+        }
+      },
+      {
+        path: 'reports',
+        components: {
+          default: ReportPage
         }
       },
       {

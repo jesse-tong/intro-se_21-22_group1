@@ -1,8 +1,8 @@
 <!-- A component to display book data in a carousel -->
 <template>
-    <div class="carousel slide" data-bs-ride="carousel" data-bs-theme="dark" id="myCarousel"  >
+    <div class="carousel slide" data-bs-ride="carousel" data-bs-theme="dark" :id="'myCarousel' + $props.carouselId"  >
         <div class="carousel-indicators">
-            <button v-for="i in numSlides" :key="i" type="button" data-bs-target="#myCarousel" :data-bs-slide-to="(i-1)" :class="{ active: i === 1 }" :aria-label="'Slide ' + i"></button>        
+            <button v-for="i in numSlides" :key="i" type="button" :data-bs-target="'#myCarousel' + $props.carouselId" :data-bs-slide-to="(i-1)" :class="{ active: i === 1 }" :aria-label="'Slide ' + i"></button>        
         </div>
 
         <div class="carousel-inner" >
@@ -25,11 +25,11 @@
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" :data-bs-target="'#myCarousel' + $props.carouselId" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel"  data-bs-slide="next">
+        <button class="carousel-control-next" type="button" :data-bs-target="'#myCarousel' + $props.carouselId"  data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
@@ -49,6 +49,10 @@ export default {
     imgHeight: {
       type: Number,
       default: 375
+    },
+    carouselId: {
+      type: String,
+      default: ''
     }
   },
   computed: {
