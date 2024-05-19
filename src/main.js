@@ -11,6 +11,9 @@ import { createPinia } from 'pinia'
 import Notifications from '@kyvg/vue3-notification';
 import { router } from './router';
 
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
+  
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
 
 axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.withCredentials = true;
@@ -24,4 +27,5 @@ app.config.globalProperties = {
 app.use(Notifications)
 app.use(router)
 app.use(pinia)
+
 app.mount('#app')
