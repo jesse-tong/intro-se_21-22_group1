@@ -6,12 +6,12 @@
             </div>
             <div class="row-7">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="p-2 p-lg-3">
                             <BorrowCountChart id="borrowCountChart" />
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col">
                         <div class="p-2 p-lg-3">
                             <MostRecentBorrow id="mostRecentBorrow" />
                         </div>

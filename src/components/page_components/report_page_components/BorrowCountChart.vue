@@ -10,7 +10,7 @@
                 :data="chartData"
                 v-if="loaded"
             />
-            <h5 class="card-text mt-2">Borrow count: {{ borrowCount }}</h5>
+            <h5 class="card-text mt-2">{{ 'Borrow count from ' + startDate + ' to ' + endDate + ': ' + borrowCount }}</h5>
         </div>
     </div>  
 </template>
@@ -26,6 +26,8 @@
       return {
         loaded: false,
         borrowCount: 'N/A',
+        startDate: 'N/A',
+        endDate: 'N/A',
         chartData: {
           labels: [],
           datasets: [
@@ -45,12 +47,13 @@
     },
     methods: {
         splitFetchData(fetchResult){
-            var borrowCount = [], timeLabels = [];
+            var borrowCount = [], timeLabels = [], sum = 0;
             fetchResult.forEach((item)=> {
                 borrowCount.push(item.borrow_count);
+                sum = sum + item.borrow_count;
                 timeLabels.push(item.month + '/' + item.year);
             });
-            return [timeLabels, borrowCount];
+            return [timeLabels, borrowCount, sum];
         },
         nextMonth(month, year){
             if (month < 12 && month >= 1){
@@ -79,9 +82,12 @@
                     
                     var data = response.data.result;
                     data.reverse();
-        
+                    this.startDate = data.at(0).month + '/' + data.at(0).year;
+                    this.endDate = data.at(-1).month + '/' + data.at(-1).year;
+
                     var chartData = this.splitFetchData(data);
-                    var timeLabels = chartData[0], borrowCount = chartData[1];
+                    var timeLabels = chartData[0], borrowCount = chartData[1], totalBorrowCount = chartData[2];
+                    this.borrowCount = totalBorrowCount;
                     this.chartData.labels = timeLabels; this.chartData.datasets[0].data = borrowCount;
                     this.loaded = true;
                 }else{
