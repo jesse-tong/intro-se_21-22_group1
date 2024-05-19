@@ -7,7 +7,7 @@
         <div v-for="borrow, idx in mostRecentBorrows" class="card-text">
             <p class="mb-0 pb-0 ms-0 ps-0" ><i :class="['bi', 'bi-circle-fill', 'text-' + colorClasses[idx % 6]]"></i> 
                 <span class="ms-1">
-                    {{ 'User with ID ' + borrow.userId + '(' + borrow.username + ') has sent a borrow request to borrow book with ID ' + borrow.bookId + '(' + borrow.title + ')'}}
+                    {{ 'User with ID ' + borrow.userId + ' (' + borrow.username + ') has sent a borrow request to borrow book with ID ' + borrow.bookId + ' (' + borrow.title + ')'}}
                 </span>
             </p>
             <div class="vr ms-2" v-if="idx !== mostRecentBorrows.length - 1"></div>
