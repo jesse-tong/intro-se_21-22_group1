@@ -188,6 +188,7 @@
                             let bookDataForId = response.data.result;
                             this.bookTitle = bookDataForId.title;
                             this.bookIsbn = bookDataForId.isbn;
+                            this.stock = bookDataForId.stock;
                             this.publishYear = bookDataForId.publish_year;
                             this.description = bookDataForId.description;
                             this.authors = bookDataForId.authors;
@@ -274,6 +275,8 @@
                                 type: "error"
                             })
                         }).finally(()=>{
+                            this.bookTitle = ''; this.bookIsbn = ''; this.publishYear = '';
+                            this.genres = []; this.authors =[]; this.languages = [];
                             this.$emit('addUpdateBookCallback')
                         })
                 }else {
@@ -307,7 +310,10 @@
                                 type: "error"
                             })
                         }).finally(()=>{
-                            this.$emit('addUpdateBookCallback')
+                            this.bookTitle = ''; this.bookIsbn = ''; this.publishYear = '';
+                            this.genres = []; this.authors =[]; this.languages = [];
+                            
+                            this.$emit('addUpdateBookCallback');
                         })
                 }
             },

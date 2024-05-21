@@ -114,7 +114,7 @@ const routes = [
         }
       },
       {
-        path: 'reports',
+        path: 'admin/reports',
         components: {
           default: ReportPage
         }
