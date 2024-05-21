@@ -1,5 +1,6 @@
 <template>
-    <table class="table table-striped table-responsive-md">
+  <div class="table-reponsive-lg">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Book ID</th>
@@ -36,6 +37,7 @@
             </li>
         </ul>
     </nav>
+  </div>
   </template>
   
   <script>

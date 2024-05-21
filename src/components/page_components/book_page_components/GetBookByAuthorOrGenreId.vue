@@ -1,41 +1,44 @@
 <template>
-    <table class="table table-striped table-responsive-sm">
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Book ID</th>
-          <th>Book Title</th>
-          <th>Publish year</th>
-          <th>ISBN</th>
-          <th>Stock</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="book in data" :key="book.id">
-          <td><img :src="apiSite + '/image/' + book.id" :alt="'Image for book with title: ' + book.title" style="max-height: 90px;"/></td>
-          <td>{{ book.id }}</td>
-          <td>{{ book.title }}</td> 
-          <td>{{ book.publish_year }}</td>
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.stock }}</td>
-          <td><button class="btn btn-primary"><RouterLink :to="'/book/' + book.id" class="text-white">Details</RouterLink></button></td>
-        </tr>
-      </tbody>
-    </table>
-    <nav aria-label="Book table navigation">
-        <ul class="pagination">
-            <li class="page-item">
-                <a href="#prevPageButton" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><span>Previous page</span></a>
-            </li>
-            <li class="page-item">
-                <input @input="(e)=> {currentPage = e.target.value}" type="number" min="1"  class="page-link" style="max-width: 95px" :value="currentPage">
-            </li>
-            <li class="page-item">
-                <a href="#nextPageButton" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><span >Next page</span></a>
-            </li>
-        </ul>
-    </nav>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Book ID</th>
+                    <th>Book Title</th>
+                    <th>Publish year</th>
+                    <th>ISBN</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr v-for="book in data" :key="book.id">
+                <td><img :src="apiSite + '/image/' + book.id" :alt="'Image for book with title: ' + book.title" style="max-height: 90px;"/></td>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td> 
+                <td>{{ book.publish_year }}</td>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.stock }}</td>
+                <td><button class="btn btn-primary"><RouterLink :to="'/book/' + book.id" class="text-white">Details</RouterLink></button></td>
+            </tr>
+        </tbody>
+        </table>
+        <nav aria-label="Book table navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a href="#prevPageButton" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><span>Previous page</span></a>
+                </li>
+                <li class="page-item">
+                    <input @input="(e)=> {currentPage = e.target.value}" type="number" min="1"  class="page-link" style="max-width: 95px" :value="currentPage">
+                </li>
+                <li class="page-item">
+                    <a href="#nextPageButton" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><span >Next page</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
 </template>
 <script>
     import axios from 'axios';
