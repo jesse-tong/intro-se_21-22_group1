@@ -307,10 +307,21 @@
           })
       },
       convertLocalDatetimeToISOString(localDatetimeString){
-                //Since the value of <input type="datetime-local" /> is always YYYY-mm-ddThh:ss
-                //and does not denotes any timezone, so parse it with new Date() and use toISOString() method will not work correctly
-                let timeWithTimezone = new Date(localDatetimeString);
-                return timeWithTimezone.toISOString();
+          //Since the value of <input type="datetime-local" /> is always YYYY-mm-ddThh:ss
+          //and does not denotes any timezone, so parse it with new Date() and use toISOString() method will not work correctly
+          let timeWithTimezone = new Date(localDatetimeString);
+          return timeWithTimezone.toISOString();
+      },
+      convertLocalDatetimeToLocalInputString(localDatetimeString){
+          //Since input="local-datetime" only accept YYYY-mm-ddThh:ss, not YYYY-mm-ddThh:ssZ of ISO string
+          let currentLocalDate = new Date();
+          let localTimeOffset = currentLocalDate.getTimezoneOffset() * 60 * 1000; //Get local timezone offset to GMT by milliseconds
+
+          let gmtTime = new Date(localDatetimeString); 
+          let localTime = gmtTime - localTimeOffset; localTime = new Date(localTime);
+          let localISOString = localTime.toISOString();
+
+          return localISOString.slice(0, -1); //Remove the last character of local string in ISO format
       },
       searchUser() {
         // Implement API call to search user with email and username
@@ -506,9 +517,16 @@
         this.editedBorrowId = borrow_status.id;
         this.editedUserId = borrow_status.userId;
         this.editedBookId = borrow_status.bookId;
-        this.editedStartedBorrow = borrow_status.startBorrow;
-        this.editedEndBorrow = borrow_status.endBorrow;
-        this.editedReturnDate = borrow_status.returnDate;
+
+        this.editedStartedBorrow = borrow_status.startBorrow !== '' && borrow_status.startBorrow !== null 
+        ? this.convertLocalDatetimeToLocalInputString(borrow_status.startBorrow) : borrow_status.startBorrow;
+        
+        this.editedEndBorrow = borrow_status.endBorrow !== '' && borrow_status.endBorrow !== null
+        ? this.convertLocalDatetimeToLocalInputString(borrow_status.endBorrow): borrow_status.endBorrow;
+
+        this.editedReturnDate = borrow_status.returnDate !== '' && borrow_status.returnDate !== null ? 
+        this.convertLocalDatetimeToLocalInputString(borrow_status.returnDate): borrow_status.returnDate;
+
         this.editedDamagedOrLost = borrow_status.isDamagedOrLost;
         this.editedIsApproved = borrow_status.isApproved;
   

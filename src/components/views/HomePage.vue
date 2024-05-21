@@ -148,11 +148,7 @@
                         return;
                     }
                     if (response.data.success === true){
-                        /* this.$notify({
-                            title: "Fetch highest rating books successfully!",
-                            text: "Fetch highest rating books successfully!",
-                            type: "success"
-                        }); */
+                        
                         this.mostBorrowedBooks = response.data.result;
                     }else{
                         this.$notify({
@@ -180,15 +176,9 @@
                             text: "Fetch book count failed with unknown error, this can be from network or server",
                             type: "error"
                         });
-  
                         return;
                     }
-                    if (response.data.success === true){
-                        /* this.$notify({
-                            title: "Fetch highest rating books successfully!",
-                            text: "Fetch highest rating books successfully!",
-                            type: "success"
-                        }); */
+                    if (response.data.success === true){    
                         this.bookCount = response.data.result;
                     }else{
                         this.$notify({
@@ -220,7 +210,6 @@
                         return;
                     }
                     if (response.data.success === true){
-                        
                         this.borrowCount = response.data.result;
                     }else{
                         this.$notify({

@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": ". ./.venv/Scripts/activate && cd backend && python server.py"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
