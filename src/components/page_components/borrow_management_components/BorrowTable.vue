@@ -1,5 +1,6 @@
 <template>
-    <table class="table table-striped table-responsive-md">
+  <div class="table-responsive">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Borrow ID</th>
@@ -35,9 +36,10 @@
         </tr>
       </tbody>
     </table>
-  </template>
+  </div>
+</template>
   
-  <script>
+<script>
   export default {
     props: {
       borrows: Array,
@@ -50,5 +52,5 @@
     },
     emits: ['deleteBorrow', 'editBorrow'],
   };
-  </script>
+</script>
   

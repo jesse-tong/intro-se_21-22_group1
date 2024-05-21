@@ -21,55 +21,61 @@
           </div>
           <div v-if="searchResultUser" class="mt-3">
             <h3>User Search Result</h3>
-            <table class="table table-striped table-responsive-md">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="user in searchResultUser" :key="user.id">
-                  <td>{{ user.id }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.role }}</td>
-                  <td>
-                    <button @click="selectUser(user.id, user.name, user.email)" class="btn btn-sm btn-success">Select</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="user in searchResultUser" :key="user.id">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                      <button @click="selectUser(user.id, user.name, user.email)" class="btn btn-sm btn-success">Select</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
           </div>
           <div v-if="searchResultBooks">
             <h3>Book Search Results</h3>
-            <table class="table table-striped table-responsive-md">
-              <thead>
-                <tr>
-                  <th>Book ID</th>
-                  <th>Title</th>
-                  <th>Publish Year</th>
-                  <th>ISBN</th>
-                  <th>Stock</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="book in searchResultBooks" :key="book.id">
-                  <td>{{ book.id }}</td>
-                  <td>{{ book.title }}</td>
-                  <td>{{ book.publish_year }}</td>
-                  <td>{{ book.isbn }}</td>
-                  <td>{{ book.stock }}</td>
-                  <td>
-                    <button @click="selectBook(book.id, book.title, book.isbn)" class="btn btn-sm btn-success">Select</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Book ID</th>
+                    <th>Title</th>
+                    <th>Publish Year</th>
+                    <th>ISBN</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="book in searchResultBooks" :key="book.id">
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publish_year }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.stock }}</td>
+                    <td>
+                      <button @click="selectBook(book.id, book.title, book.isbn)" class="btn btn-sm btn-success">Select</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
           </div>
         </div>
 

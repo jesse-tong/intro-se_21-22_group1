@@ -6,7 +6,7 @@
             </div>
             <div class="row-7">
                 <div class="row">
-                    <div class="col-7">
+                    <div class="col-12 col-md-7">
                         <div class="p-2 p-lg-3">
                             <BorrowCountChart id="borrowCountChart" />
                         </div>

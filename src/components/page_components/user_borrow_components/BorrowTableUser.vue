@@ -1,5 +1,6 @@
 <template>
-    <table class="table table-striped table-responsive-md">
+  <div class="table-responsive">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>User ID</th>
@@ -45,7 +46,8 @@
             <a href="#mextPage" id="nextPage" class="page-link" @click="currentPage = currentPage < maxPage ? currentPage + 1 : 1"><span>Next page</span></a>
         </li>
     </ul>
-    <ReturnModal ref="returnModal" :borrowId="returnBorrowId" @update:borrowList="currentPage = 1"/>
+  </div>
+  <ReturnModal ref="returnModal" :borrowId="returnBorrowId" @update:borrowList="currentPage = 1"/>
 </template>
   
 <script>
