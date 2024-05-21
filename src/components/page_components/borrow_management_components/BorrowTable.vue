@@ -2,8 +2,9 @@
     <table class="table table-striped table-responsive-md">
       <thead>
         <tr>
+          <th>Borrow ID</th>
           <th>User ID</th>
-          <th>Book Title</th>
+          <th>Book ID</th>
           <th>Start Borrow</th>
           <th>End Borrow</th>
           <th>Returned</th>
@@ -15,6 +16,7 @@
       </thead>
       <tbody>
         <tr v-for="borrow in borrows" :key="borrow.id" >
+          <td>{{ borrow.id }}</td>
           <td>{{ borrow.userId }}</td>
           <td>{{ borrow.bookId }}</td> 
           <td>{{ borrow.startBorrow ? getDateString(borrow.startBorrow): 'N/A' }}</td>
@@ -24,7 +26,7 @@
           <td>{{ borrow.isDamagedOrLost ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.isApproved ? 'Yes' : 'No' }}</td>
           <td>
-            <button class="btn btn-sm btn-primary" @click="$emit('editBorrow', borrow)">Edit</button>
+            <button class="btn btn-sm btn-primary me-1 mb-1" @click="$emit('editBorrow', borrow)">Edit</button>
             <button class="btn btn-sm btn-danger" @click="$emit('deleteBorrow', borrow.id)" >Delete</button>
           </td>
         </tr>
