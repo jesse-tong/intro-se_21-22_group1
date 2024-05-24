@@ -1,4 +1,3 @@
-import pymssql
 import pymysql
 from flask_sqlalchemy import SQLAlchemy
 from multiprocessing import Value
