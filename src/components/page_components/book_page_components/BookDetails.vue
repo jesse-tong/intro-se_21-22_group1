@@ -144,6 +144,7 @@
               }).then(response => {
                 if (response.status !== 200){
                   this.$notify('Failed book fetching with status' + response.status);
+                  this.$router.push({name: 'not-found-inner'});
                   return;
                 }
                 if (response.data.success == true){
@@ -152,7 +153,8 @@
                   this.$router.push({name: 'not-found-inner'});
                 }
               }).catch(err => {
-                alert('Unknown error');
+                
+                this.$router.push({name: 'not-found-inner'});
                 return;
               })
           },

@@ -57,8 +57,16 @@ async function loginTestWithoutEmail(driver, password){
   assert.equal("Login with error: Invalid authentication", notificationContentText);
 }
 
-async function loginTestWithoutEmail(){
-  
+async function loginTestWithIncorrectEmail(driver, email, password){
+  await testInputLogin(driver, email, password);
+    let notificationTitle = await driver.findElement(By.xpath("(//div[@class='notification-title'])[2]"));
+    let notificationTitleText = await notificationTitle.getText();
+    console.log(notificationTitleText);
+    assert.equal("Login error", notificationTitleText);
+
+    let notificationContent = await driver.findElement(By.xpath("(//div[@class='notification-content'])[2]"));
+    let notificationContentText = await notificationContent.getText();
+    assert.equal("Login with error: Invalid authentication", notificationContentText);
 }
 
 (async function loginTests() {
@@ -91,6 +99,16 @@ async function loginTestWithoutEmail(){
       closeButton = await driver.findElement(By.className('btn-close'));
       await closeButton.click();
       await loginTestWithoutEmail(driver, 'Password1');
+
+      await driver.get('http://localhost:5173');
+      sidebarToggler = await driver.findElement(By.className('navbar-toggler-icon'));
+      await sidebarToggler.click();
+      loginLink = await driver.findElement(By.linkText('Log in'));
+      await loginLink.click();
+      //click on close button on sidebar
+      closeButton = await driver.findElement(By.className('btn-close'));
+      await closeButton.click();
+      await loginTestWithIncorrectEmail(driver, 'falseemail@gmail.com', 'Password1');
       
     } catch (e) {
       console.log(e)
