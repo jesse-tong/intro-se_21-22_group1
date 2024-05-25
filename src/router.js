@@ -11,7 +11,7 @@ import BookByAuthors from './components/page_components/book_page_components/Boo
 import BookByGenres from './components/page_components/book_page_components/BookByGenres.vue';
 import NavBar from './components/page_components/NavBar.vue';
 import RegisterPage from './components/views/RegisterPage.vue';
-import AdvancedSearch from './components/page_components/search_page_components/AdvancedSearch.vue';
+import AdvancedSearch from './components/page_components/advanced_search_components/AdvancedSearch.vue';
 import UserProfile from './components/views/UserProfile.vue';
 import UserSettings from './components/views/UserSettings.vue';
 import LibraryPolicyPage from './components/views/LibraryPolicyPage.vue';

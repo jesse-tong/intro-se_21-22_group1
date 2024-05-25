@@ -8,6 +8,7 @@ from global_vars.init_env import *
 from flask_login import LoginManager
 from sqlalchemy_utils import database_exists, create_database
 import pytest
+from waitress import serve
 
 print(os.environ.get('SQL_URL'))
 
@@ -73,7 +74,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-        
 
     return app
 
@@ -84,5 +84,8 @@ if __name__ == '__main__':
     from controller.comment_controller import *
     app = create_app()
     
-    app.run(debug=True, use_reloader=True)
+    #app.run(debug=True, use_reloader=True) #Debug only
+
+    #This below is for production using waitress
+    serve(app, host='0.0.0.0', port=5000)
     
