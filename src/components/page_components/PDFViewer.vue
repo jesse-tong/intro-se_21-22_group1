@@ -4,6 +4,7 @@ import { VuePDF, usePDF } from "@tato30/vue-pdf";
 import { useNotification } from '@kyvg/vue3-notification';
 const page = ref(1);
 const scale = ref(1);
+const pdfLoadable = ref(true);
 
 const notify = useNotification();
 
@@ -24,6 +25,7 @@ function onError(reason) {
     text: "Cannot open ebook file with reason: " + reason,
     type: "error"
   });
+  pdfLoadable.value 
 }
 
 

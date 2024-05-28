@@ -3,18 +3,18 @@
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
-            <a :class="['nav-link', activeTab=='addBook' ? 'active': '']" href="#" @click="activeTab='addBook'">Add Book</a>
+            <a :class="['nav-link', activeTab=='addBook' ? 'active': '']" href="#" @click="activeTab='addBook'" id="addBookTab">Add Book</a>
           </li>
           <li class="nav-item">
-            <a :class="['nav-link', activeTab=='editBook' ? 'active': '']" href="#" @click="activeTab='editBook'">Edit Book</a>
+            <a :class="['nav-link', activeTab=='editBook' ? 'active': '']" href="#" @click="activeTab='editBook'" id="editBookTab">Edit Book</a>
           </li>
         </ul>
       </div>
       <div class="card-body">
-        <div v-if="activeTab == 'addBook'">
+        <div v-if="activeTab == 'addBook'" >
           <AddUpdateBook @addUpdateBookCallback="addUpdateBookCallback()"/>
         </div>
-        <div v-else-if="activeTab == 'editBook'">
+        <div v-else-if="activeTab == 'editBook'" >
           <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" v-model:searchBookId="searchBookId" @search-book="searchBook(currentPage)"/>
           <AddUpdateBook :bookId="editBookId" @addUpdateBookCallback="addUpdateBookCallback()" ref="editBookSubtab"/>
           <BookTable @update:currentPage="(page)=>onCurrentPageChanged(page)" :books="searchResult" :currentPage="currentPage" @deleteBook="(bookId)=>onSelectDeleteBook(bookId)" @editBook="(bookId)=>{ onSelectEditBook(bookId);}" />

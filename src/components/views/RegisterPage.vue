@@ -29,22 +29,22 @@
                 <form role="form" class="text-start">
                   <div class="input-group  my-3">
                     <label class=" input-group-text">Email: </label>
-                    <input type="email" class="form-control" v-model="email">
+                    <input type="email" class="form-control" v-model="email" id="emailInput">
                   </div>
                   <div class="input-group  my-3">
                     <label class=" input-group-text">Name: </label>
-                    <input type="email" class="form-control" v-model="name">
+                    <input type="email" class="form-control" v-model="name" id="usernameInput">
                   </div>
                   <div class="input-group mb-3">
                     <label class="input-group-text">Password: </label>
-                    <input type="password" class="form-control" v-model="password">
+                    <input type="password" class="form-control" v-model="password" id="passwordInput">
                   </div>
                   <div class="input-group  my-3">
                     <label class=" input-group-text">Reenter password: </label>
-                    <input type="password" class="form-control" v-model="passwordRepeat">
+                    <input type="password" class="form-control" v-model="passwordRepeat" id="passwordRepeatInput">
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => register()">Sign up</button>
+                    <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => register()" data-testid="registerButton" id="registerButton">Sign up</button>
                   </div>
                   <p class="mt-4 text-sm text-center">
                      Already have an account? <RouterLink to="/login" class="text-decoration-none" style="color: #ec407a;">Login</RouterLink>

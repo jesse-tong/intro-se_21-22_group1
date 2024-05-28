@@ -54,8 +54,8 @@
                             <label for="editAuthor" class="form-label"><h5>Add author</h5></label>
                             <input type="text" v-model="inputAuthor" class="form-control" id="editAuthor"/>
                             <div class="row gap-3 ms-2 mt-3">
-                                <button class="col-4 btn btn-primary" @click="(e)=>pushAuthorToList(inputAuthor)" >Add author</button>
-                                <button class="col-4 btn btn-danger" @click="(e)=>clearEditAuthorList()">Clear all authors</button>
+                                <button class="col-4 btn btn-primary" @click="(e)=>pushAuthorToList(inputAuthor)" id="addAuthorButton">Add author</button>
+                                <button class="col-4 btn btn-danger" @click="(e)=>clearEditAuthorList()" id="clearAllAuthorButton">Clear all authors</button>
                                 <div class="form-check col-3">
                                     <input class="form-check-input" type="checkbox" v-model="notUpdateAuthors" id="notUpdatingAuthors">
                                     <label for="notUpdatingAuthors" class="form-check-label"><span>Not updating authors</span></label>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="row-6 mt-3 ms-1">
                         <span>Authors: </span>
-                        <h6 class="badge text-bg-secondary" v-for="author in authors">{{ author }}</h6>
+                        <h6 class="badge text-bg-secondary" data-testid="authorBadge" v-for="author in authors">{{ author }}</h6>
                     </div>
                 </div>
             </div>
@@ -76,8 +76,8 @@
                             <label for="editGenre" class="form-label mx-2"><h5>Add genre</h5></label>
                             <input type="text" v-model="inputGenre" class="form-control mx-2" id="editGenre"/>
                             <div class="row gap-3 ms-2 mt-3">
-                                <button class="col-4 btn btn-primary" @click="(e)=>pushGenreToList(inputGenre)" >Add genre</button>
-                                <button class="col-4 btn btn-danger" @click="(e)=>clearEditGenreList()">Clear all genres</button>
+                                <button class="col-4 btn btn-primary" @click="(e)=>pushGenreToList(inputGenre)" id="addGenreButton">Add genre</button>
+                                <button class="col-4 btn btn-danger" @click="(e)=>clearEditGenreList()" id="clearAllGenresButton">Clear all genres</button>
                                 <div class="form-check col-3">
                                     <input class="form-check-input" type="checkbox" v-model="notUpdateGenres" id="notUpdatingGenres">
                                     <label for="notUpdatingGenres" class="form-check-label"><span>Not updating genres</span></label>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="row-6 mt-3 ms-1">
                         <span>Genres: </span>
-                        <h6 class="badge text-bg-secondary" v-for="genre in genres">{{ genre }}</h6>
+                        <h6 class="badge text-bg-secondary" data-testid="genreBadge" v-for="genre in genres">{{ genre }}</h6>
                     </div>
                 </div>
             </div>
@@ -98,8 +98,8 @@
                             <label for="editLanguage" class="form-label mx-2"><h5>Add language</h5></label>
                             <input type="text" v-model="inputLanguage" class="form-control mx-2" id="editLanguage"/>
                             <div class="row gap-3 ms-2 mt-3">
-                                <button class=" btn btn-primary col-4" @click="(e)=>pushLanguageToList(inputLanguage)" >Add language</button>
-                                <button class=" btn btn-danger col-4" @click="(e)=>clearEditLanguageList()">Clear all languages</button>
+                                <button class=" btn btn-primary col-4" @click="(e)=>pushLanguageToList(inputLanguage)" id="addLanguageButton">Add language</button>
+                                <button class=" btn btn-danger col-4" @click="(e)=>clearEditLanguageList()" id="clearAllLanguagesButton">Clear all languages</button>
                                 <div class="form-check col-3">
                                     <input class="form-check-input" type="checkbox" v-model="notUpdateLanguages" id="notUpdatingLanguages">
                                     <label for="notUpdatingLanguages" class="form-check-label"><span>Not updating languages</span></label>
@@ -110,7 +110,7 @@
                     <div class="row-6 mt-3 ms-1">
                         <div>
                             <span><h5>Languages: </h5></span>
-                            <h6 class="badge text-bg-secondary" v-for="language in languages">{{ language }}</h6>
+                            <h6 class="badge text-bg-secondary" data-testid="languageBadge" v-for="language in languages">{{ language }}</h6>
                         </div>     
                     </div>
                 </div>
@@ -120,14 +120,14 @@
         <div class="row">
             <div class="col-10">
                 <div class="form-floating mt-3">
-                    <textarea id="editDescription" v-model="description" placeholder="Book description here" style="height: 200px;" class="form-control"></textarea>
+                    <textarea id="editDescription" v-model="description" placeholder="Book description here" style="height: 200px;" class="form-control" ></textarea>
                     <label for="editDescription" class><span>Book description:</span></label>
                 </div>
             </div>
             <div class="col m-auto">
                 <button class="btn btn-primary" @click="(e)=>onSubmitAddUpdateBook()">
-                    <span v-if="bookId == null">Add book</span>
-                    <span v-else>Edit book</span>
+                    <span v-if="bookId == null" id="addBookButton">Add book</span>
+                    <span v-else id="editBookButton">Edit book</span>
                 </button>
             </div>
         </div>   
