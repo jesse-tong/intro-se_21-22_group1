@@ -15,7 +15,6 @@ def test_register(app, client):
     })
     response = json.loads(register_result.get_data(as_text=True))
     success = response.get('success'); result = response.get('result'); error = response.get('error')
-    print('Register success:', success); print('Register error', error)
     assert success == True
     assert result.get('email') == "some-email@gmail.com"
     assert result.get('name') == "Test user"

@@ -1,10 +1,12 @@
 import {By, Builder, Browser} from 'selenium-webdriver';
 import assert from 'assert';
+import { log } from 'console';
 
 async function testInputLogin(driver, email, password){
     let sidebarToggler = await driver.findElement(By.className('navbar-toggler-icon'));
     await sidebarToggler.click();
-    let loginLink = await driver.findElement(By.linkText('Log in'));
+    let loginLink = await driver.findElement(By.id('login-link'));
+    await loginLink.scrollIntoView();
     await loginLink.click();
     //click on close button on sidebar
     let closeButton = await driver.findElement(By.className('btn-close'));
@@ -21,7 +23,7 @@ async function testInputLogin(driver, email, password){
     await loginButton.click();
 }
 
-async function loginTestWithCorrectPassword(driver, email, password){
+export async function loginTestWithCorrectPassword(driver, email, password){
     await testInputLogin(driver, email, password)
     let notificationTitle = await driver.findElement(By.className('notification-title'));
     let notificationTitleText = await notificationTitle.getText();
@@ -83,7 +85,7 @@ async function loginTestWithIncorrectEmail(driver, email, password){
       await driver.get('http://localhost:5173');
       let sidebarToggler = await driver.findElement(By.className('navbar-toggler-icon'));
       await sidebarToggler.click();
-      let loginLink = await driver.findElement(By.linkText('Log out'));
+      let loginLink = await driver.findElement(By.id('logout-link'));
       await loginLink.click();
       //click on close button on sidebar
       let closeButton = await driver.findElement(By.className('btn-close'));
@@ -93,7 +95,8 @@ async function loginTestWithIncorrectEmail(driver, email, password){
       await driver.get('http://localhost:5173');
       sidebarToggler = await driver.findElement(By.className('navbar-toggler-icon'));
       await sidebarToggler.click();
-      loginLink = await driver.findElement(By.linkText('Log in'));
+      loginLink = await driver.findElement(By.id('login-link'));
+      await loginLink.scrollIntoView();
       await loginLink.click();
       //click on close button on sidebar
       closeButton = await driver.findElement(By.className('btn-close'));
@@ -103,7 +106,8 @@ async function loginTestWithIncorrectEmail(driver, email, password){
       await driver.get('http://localhost:5173');
       sidebarToggler = await driver.findElement(By.className('navbar-toggler-icon'));
       await sidebarToggler.click();
-      loginLink = await driver.findElement(By.linkText('Log in'));
+      loginLink = await driver.findElement(By.id('login-link'));
+      await loginLink.scrollIntoView();
       await loginLink.click();
       //click on close button on sidebar
       closeButton = await driver.findElement(By.className('btn-close'));
@@ -117,3 +121,6 @@ async function loginTestWithIncorrectEmail(driver, email, password){
     }
   }())
 
+export default {
+  loginTestWithCorrectPassword
+}

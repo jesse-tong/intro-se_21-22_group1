@@ -25,7 +25,6 @@ def add_book(title, publish_year: int=None, description=None, isbn=None):
         return False, None, ADD_ENTRY_ERROR
 
 def delete_book(id: int):
-    print(id)
     try:
         db.session.query(BookAuthor).filter(BookAuthor.bookId == id).delete()
         db.session.query(BookGenre).filter(BookGenre.bookId == id).delete()
@@ -319,7 +318,6 @@ def add_genre(genre_name: str):
 
 def add_author(name: str, place: str=None):
     author = db.session.query(Author).filter(Author.name == name).first()
-    print(author.name if author != None else 'No author found')
     if author == None:
         author = Author()
         author.name = name
@@ -387,7 +385,6 @@ def advanced_search(book_id: int=None, title: str=None, publish_year: int=None,
         query = query.filter(Book.id == book_id)
         
     if title != None:
-        print('Query has title')
         query = query.filter(Book.title.like('%{}%'.format(title)))
         
     if publish_year != None:
@@ -395,7 +392,7 @@ def advanced_search(book_id: int=None, title: str=None, publish_year: int=None,
         
     if description != None:
         query = query.filter(Book.description.like('%{}%'.format(description)))
-        res = query.all(); print(res)
+        res = query.all();
     if isbn != None:
         query = query.filter(Book.isbn.like('%{}%'.format(isbn)))
     if authors != None:

@@ -46,9 +46,9 @@
             <li class="nav-item" ><RouterLink class="nav-link" to="/library-policies">Library's policies</RouterLink></li>
             <hr class="hr" />
             
-            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/login">Log in</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register">Register</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#">Log out</a></li>
+            <li class="nav-item" v-if="accountStore.notLoggedIn" ><RouterLink class="nav-link" to="/login" id="login-link">Log in</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link">Register</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link">Log out</a></li>
 
           </ul>
         </div>

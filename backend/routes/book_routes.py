@@ -14,8 +14,7 @@ from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
 
 book_routes = Blueprint('book_routes', __name__)
-CORS(book_routes, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
-    expose_headers=['X-CSRFToken'])
+CORS(book_routes, supports_credentials=True, expose_headers=['X-CSRFToken'])
 
 @book_routes.route('/hello-world', methods=['GET'])
 def hello_world_route():
@@ -58,7 +57,6 @@ def get_and_add_book_route():
             return status, 200
         
         book_data = request.form.to_dict(flat=False)
-        print(book_data)
         title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
         isbn = book_data.get('isbn'); authors = book_data.get('authors[]'); genres = book_data.get('genres[]')
@@ -394,13 +392,11 @@ def get_avg_book_rating(book_id):
 @book_routes.route('/api/advanced-search', methods=['GET'])
 def advanced_search_route():
     book_data = request.args.to_dict(flat=False)
-    print(book_data)
     book_id = book_data.get('book_id'); title = book_data.get('title');
     publish_year = book_data.get('publish_year'); description = book_data.get('description')
     authors = book_data.get('authors[]') #Author should be a JSON string from an array
     genres = book_data.get('genres[]'); isbn = book_data.get('isbn')
     page = book_data.get('page'); limit = book_data.get('limit')
-    print(authors); print(genres); print(type(genres))
     try:
         book_id = int(book_id[0]) if book_id != None else None
         publish_year = int(publish_year[0]) if publish_year != None else None
