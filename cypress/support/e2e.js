@@ -18,3 +18,16 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(()=> {
+    Cypress.session.clearAllSavedSessions();
+    cy.session('login', ()=>{
+        cy.once('uncaught:exception', () => false);
+        cy.visit('http://localhost:5000/login');
+        cy.get('#emailInput').type('jesse-tong3@gmail.com');
+        cy.get('#passwordInput').type('Password2');
+        cy.get('#rememberMe').check();
+        cy.get('#loginSubmitButton').click();
+        cy.wait(200);
+    }, { cacheAcrossSpecs: true })
+})
