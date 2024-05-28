@@ -1,14 +1,15 @@
 {
   "name": "simple_library",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": ". ./.venv/Scripts/activate && cd backend && python server.py"
+    "server": ". ./.venv/Scripts/activate && cd backend && python server.py",
+    "cypress_open": "cypress open"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -34,8 +35,11 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.44.1",
     "@types/bootstrap": "^5.2.10",
+    "@types/node": "^20.12.12",
     "@vitejs/plugin-vue": "^5.0.4",
+    "cypress": "^13.10.0",
     "selenium-webdriver": "^4.20.0",
     "vite": "^5.2.3"
   }

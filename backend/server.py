@@ -1,7 +1,7 @@
 import os
 import flask
 import simplejson as json
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_cors import CORS
 from global_vars.database_init import db
 from global_vars.init_env import *
@@ -15,7 +15,7 @@ print(os.environ.get('SQL_URL'))
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, static_folder="../dist/assets", template_folder="../dist", static_url_path="/assets")
     CORS(app
      , supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
      expose_headers=['X-CSRFToken'])
@@ -74,7 +74,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    @app.route("/", defaults={"path": ""})
 
+    @app.route("/<path:path>")
+    def index(path):
+        return render_template("index.html")
+    
     return app
 
 if __name__ == '__main__':

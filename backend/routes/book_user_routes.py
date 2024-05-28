@@ -12,8 +12,7 @@ from flask_cors import CORS
 from sqlalchemy import func, distinct
 
 book_user = Blueprint('book_user', __name__)
-CORS(book_user, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
-    expose_headers=['X-CSRFToken'])
+CORS(book_user, supports_credentials=True, expose_headers=['X-CSRFToken'])
 
 @book_user.route('/api/borrow', methods=['GET', 'POST'])
 def borrow_book_current_user():
@@ -42,7 +41,6 @@ def borrow_book_current_user():
                     raise ValueError()
             except:
                 return get_status_object_json(False, None, INVALID_PARAM), 400
-            print(get_returned_book)
             success, result, error = search_borrow(user_id, page=page, limit=limit, get_returned=get_returned_book)
             if success == True:
                 return get_status_object_json(True, result, error), 200
@@ -61,7 +59,6 @@ def borrow_book_current_user():
                     start_date = dateparse(request.form.get('start_borrow')) if request.form.get('start_borrow') != None else None
                 except:
                     #Invalid start date, default current date (we don't need to use datetime.now(), the borrow_book() function already does it)
-                    print('Invalid start date')
                     start_date = None
                 try:
                     end_date = dateparse(request.form.get('end_borrow')) if request.form.get('end_borrow') != None else None
@@ -176,8 +173,6 @@ def admin_book_borrow_manage():
         elif damaged_or_lost.lower() == 'true' or damaged_or_lost == '1':
             damaged_or_lost = True
         else:
-            print('Invalid is_damaged')
-            print(damaged_or_lost)
             return get_status_object_json(False, None, INVALID_PARAM), 400
 
         if is_approved.lower() == 'false' or is_approved == '0':
