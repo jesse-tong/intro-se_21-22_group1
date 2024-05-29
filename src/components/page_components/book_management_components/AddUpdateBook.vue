@@ -241,7 +241,7 @@
                 bookUpdateObject.isbn = this.bookIsbn;
                 bookUpdateObject.publish_year = this.publishYear;
                 bookUpdateObject.description = this.description;
-                bookUpdateObject.stock = this.stock;
+                bookUpdateObject.stock = this.stock !== null && this.stock !== '' && this.stock !== 0 ? this.stock : 0;
 
                 //Use axios to send request here
                 if (this.$props.bookId === null){
