@@ -30,4 +30,5 @@ beforeEach(()=> {
         cy.get('#loginSubmitButton').click();
         cy.wait(200);
     }, { cacheAcrossSpecs: true })
-})
+});
+

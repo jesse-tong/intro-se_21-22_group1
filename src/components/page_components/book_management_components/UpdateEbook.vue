@@ -32,7 +32,9 @@
                     && response.data.result !== undefined && response.data.result !== null){
                         this.uploadedEbookFileName = response.data.result.fileSrc;
                     }
-                })
+                }).catch(err => {
+
+                });
             },
             setEmptyImage(){
                 this.newImage = this.emptyImage;

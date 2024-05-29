@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="book in books" :key="book.id">
+        <tr v-for="book in books" :key="book.id" data-testid="bookTableRow">
           <td>{{ book.id }}</td>
           <td>{{ book.title }}</td> 
           <td>{{ book.publish_year }}</td>

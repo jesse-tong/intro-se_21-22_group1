@@ -16,7 +16,7 @@
             <label for="searchUserId">Search User ID (Optional):</label>
             <input :value="searchUserId" type="number" min="1" @input="$emit('update:searchUserId', $event.target.value)"  class="form-control" id="searchUserId" placeholder="Enter user ID">
           </div>
-          <button @click="$emit('search-user')" class="btn btn-primary mt-4">Search User</button>
+          <button @click="$emit('search-user')" class="btn btn-primary mt-4" id="searchUserButton">Search User</button>
         </div>
       </div>
       
@@ -35,8 +35,8 @@
         default: '',
       },
       searchUserId: {
-        type: [Number, String],
-        default: 1,
+        type: [Number, null],
+        default: null,
         required: false
       }
     },
