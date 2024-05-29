@@ -16,7 +16,7 @@
             <label for="searchBookId">Search Book ID (Optional):</label>
             <input :value="searchBookId" type="number" min="1" @input="$emit('update:searchBookId', $event.target.value)"  class="form-control" id="searchBookId" placeholder="Enter book ID">
           </div>
-          <button @click="$emit('search-book')" class="btn btn-primary mt-4">Search Book</button>
+          <button @click="$emit('search-book')" class="btn btn-primary mt-4" id="searchBookButton">Search Book</button>
         </div>
       </div>
       
