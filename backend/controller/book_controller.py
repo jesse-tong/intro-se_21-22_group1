@@ -7,7 +7,7 @@ from utils.file_utils import *
 from global_vars.errors import *
 from flask_login import login_user, login_required, current_user, logout_user
 
-def add_book(title, publish_year: int=None, description=None, isbn=None):
+def add_book(title, publish_year: int=None, description=None, isbn=None, stock=None):
     new_book = Book()
     if publish_year != None:
         new_book.publish_year = publish_year
@@ -15,6 +15,8 @@ def add_book(title, publish_year: int=None, description=None, isbn=None):
         new_book.description = description
     if isbn != None:
         new_book.isbn = isbn
+    if stock != None:
+        new_book.stock = stock
     new_book.title = title
     try:
         db.session.add(new_book)

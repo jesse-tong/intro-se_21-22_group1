@@ -74,7 +74,7 @@ def get_and_add_book_route():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, new_book, error = add_book(title, publish_year, description, isbn)
+        success, new_book, error = add_book(title, publish_year, description, isbn, stock)
         
         if authors == None and genres == None:
             return get_status_object_json(success, new_book, error), 200

@@ -33,7 +33,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="user in searchResultUser" :key="user.id">
+                  <tr v-for="user in searchResultUser" :key="user.id" data-testid="searchUserResultRow">
                     <td>{{ user.id }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
@@ -62,7 +62,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="book in searchResultBooks" :key="book.id">
+                  <tr v-for="book in searchResultBooks" :key="book.id" data-testid="searchBookResultRow">
                     <td>{{ book.id }}</td>
                     <td>{{ book.title }}</td>
                     <td>{{ book.publish_year }}</td>
@@ -129,7 +129,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-4">
-              <button @click="editBorrow" class="btn btn-primary">Submit Edit Borrow</button>
+              <button @click="editBorrow" class="btn btn-primary" id="editBorrowButton">Submit Edit Borrow</button>
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-4">
-              <button @click="addBorrow" class="btn btn-primary">Add Borrow</button>
+              <button @click="addBorrow" class="btn btn-primary" id="addBorrowButton">Add Borrow</button>
             </div>
           </div>
         </div>
@@ -245,7 +245,7 @@
         activeTab: 'addBorrow',
         searchUserEmail: '',
         searchUserName: '',
-        searchUserId: 1,
+        searchUserId: null,
         
         searchBookTitle: '',
         searchBookIsbn: '',
