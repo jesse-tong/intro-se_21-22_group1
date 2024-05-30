@@ -29,9 +29,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="genres" class="form-label">Genres</label>
-                            <input type="text" class="form-control" id="genres"placeholder="Enter Genres (comma separated)" v-model="searchGenres">
+                            <input type="text" class="form-control" id="genres" placeholder="Enter Genres (comma separated)" v-model="searchGenres">
                         </div>
-                        <button class="btn btn-primary" @click="submitSearch">Search</button>
+                        <button class="btn btn-primary" @click="submitSearch" id="searchButton">Search</button>
                     </div>
                 </div>
             </div>
