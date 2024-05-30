@@ -119,12 +119,18 @@
                   name: this.name,
                   role: this.$props.role
                 }).then(response => {
-                  if (response.data.success === true){    
+                  if (response.data.success === true){ 
+                    this.$notify({
+                      title: "Register successfully!",
+                      text: "Register successfully!",
+                      type: "success"
+                    });
                     this.$router.push('/login');
                   }else {
                     this.$notify({
                       title: "Register error",
-                      text: "Register failed with error: " + response.data.error
+                      text: "Register failed with error: " + response.data.error,
+                      type: "error"
                     })
                   }
                 }).catch(err=>{

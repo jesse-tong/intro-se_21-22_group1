@@ -122,6 +122,14 @@
           });
           return;
         }
+        if (this.commentContent.length > 3000){
+          this.$notify({
+            title: "Comment's length is too much!",
+            text: "Comment's length is too much!",
+            type: error
+          });
+          return;
+        }
         axios.postForm("/api/comment", {
           book_id: this.$props.bookId,
           comment: this.commentContent,

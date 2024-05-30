@@ -1,5 +1,5 @@
 <template>
-<ul class="card" :key="comment.id">
+<ul class="card" :key="comment.id" data-testid="commentCard">
     <li class="card-body">
         <div class="row">
             <div class="col-6 col-md-6 col-lg-4 mt-2">
@@ -29,20 +29,23 @@
         </div>
         <div class="input-group mb-2">
             <label :for="'commentRating' + comment.id" class="input-group-text" ><span>Rating:</span></label>
-            <input class="form-control" type="number" min="0" max="10" v-model="commentRating" :class="{ editable: editable}" />
+            <input class="form-control" type="number" min="0" max="10" v-model="commentRating" :class="{ disabled: editable}" :aria-disabled="!editable" :disabled="!editable"/>
         </div>
         <div class="form-floating">
-            <textarea class="form-control" v-model="commentContent"></textarea>
+            <textarea class="form-control bg-white" v-model="commentContent" :class="{ disabled: editable}" :aria-disabled="!editable" :disabled="!editable"></textarea>
             <label :for="'commentContent' + comment.id">Comment:</label>
         </div>
-        <div>
+        <div class="d-flex justify-content-between mt-2">
             <div v-if="accountStore.userId && accountStore.userId == commentUserId">
-                <button class="btn btn-sm btn-primary me-2" @click="editable = true" v-if="editable === false">Edit</button>
-                <button class="btn btn-sm btn-primary mx-3" @click="onConfirmEditComment()" v-else>Save</button>
-                <button class="btn btn-sm btn-danger" @click="onDeleteComment()">Delete</button>
+                <button class="btn btn-sm btn-primary me-2" @click="editable = true" v-if="editable === false" data-testid="editCommentButton">Edit</button>
+                <button class="btn btn-sm btn-primary me-2" @click="onConfirmEditComment()" data-testid="saveCommentButton" v-else>Save</button>
+                <button class="btn btn-sm btn-danger" @click="onDeleteComment()" data-testid="deleteCommentButton">Delete</button>
             </div>
             <div v-else-if="accountStore.isAdmin">
-                <button class="btn btn-sm btn-danger" @click="onDeleteComment()">Delete</button>
+                <button class="btn btn-sm btn-danger" @click="onDeleteComment()" data-testid="deleteCommentButton">Delete</button>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-primary me-2" @click="() => { editable = false; $emit('updateCommentList'); }" v-if="editable === true" data-testid="cancelEditCommentButton">Cancel</button>
             </div>
         </div>
 
