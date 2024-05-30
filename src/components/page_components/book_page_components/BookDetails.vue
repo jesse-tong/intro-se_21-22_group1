@@ -52,12 +52,14 @@
           <p class="text-muted">by <span v-for="author in book.authors">{{ author + ', ' }}</span></p>
           <ul class="list-group list-group-horizontal-md">
             <p class="list-group-item">Languages: 
-              <span class="badge text-bg-secondary me-2" v-for="language in book.languages">{{ language }}</span>
+              <span class="badge text-bg-secondary me-2" v-for="language in book.languages" data-testid="languageBadge">{{ language }}</span>
             </p>
             <p class="list-group-item">Author(s): 
-              <span class="badge bg-secondary me-2" v-for="author in book.authors">{{ author }}</span>
+              <span class="badge bg-secondary me-2" v-for="author in book.authors" data-testid="authorBadge">{{ author }}</span>
             </p>
-            <p class="list-group-item">Genres: <span class="badge text-bg-secondary me-2" v-for="genre in book.genres">{{ genre }}</span></p>
+            <p class="list-group-item">Genre(s): 
+              <span class="badge text-bg-secondary me-2" v-for="genre in book.genres" data-testid="genreBadge">{{ genre }}</span>
+            </p>
             
           </ul> 
           <br class="br"/>
