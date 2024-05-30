@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="book in searchResults" :key="book.id">
+                        <tr v-for="book in searchResults" :key="book.id" data-testid="searchResultRow">
                             <td><img :src="apiSite + '/image/' + book.id" :alt="'Image for book with title: ' + book.title" style="max-height: 90px;"/></td>
                             <td>{{ book.id }}</td>
                             <td>{{ book.title }}</td> 
