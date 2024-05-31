@@ -14,8 +14,8 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
             <div class="d-flex mt-3" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery">
-              <button class="btn btn-outline-success" type="submit" @click="searchTitle()">Search</button>
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search input" v-model="searchQuery">
+              <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button">Search</button>
             </div>
             <li class="nav-item mt-3" v-if="accountStore.loggedIn">
               <span>Welcome, {{ accountStore.name }}</span>

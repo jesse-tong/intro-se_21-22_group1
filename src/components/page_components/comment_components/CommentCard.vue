@@ -11,13 +11,13 @@
             <div class="col-6 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentBookId' + comment.bookId" class="input-group-text"><span>Book ID:</span></label>
-                    <input disabled type="number" class="form-control" v-model="commentBookId" :id="'commentBookId' + comment.bookId"/>
+                    <input disabled type="number" class="form-control" v-model="commentBookId" :id="'commentBookId' + comment.bookId" aria-label="Comment's book ID"/>
                 </div>
             </div>
             <div class="col-6 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentUserId' + comment.userId" class="input-group-text"><span>User ID:</span></label>
-                    <input disabled type="number" class="form-control" v-model="commentUserId" :id="'commentUserId' + comment.userId"/>
+                    <input disabled type="number" class="form-control" v-model="commentUserId" :id="'commentUserId' + comment.userId" aria-label="Comment's user ID"/>
                 </div>
             </div>
             <div class="col-6 col-md-6 col-lg-12 mt-2 mb-2">
