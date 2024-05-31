@@ -11,13 +11,14 @@
               <input class="form-control" type="number" min="0" max="10" v-model.number="commentRating" id="addCommentRating"/>
           </div>
           <div class="form-floating">
-              <textarea class="form-control" v-model="commentContent"></textarea>
+              <textarea class="form-control" v-model="commentContent" id="addCommentContent"></textarea>
               <label for="commentContent">Comment text (max 3000 characters):</label>
           </div>
-          <button class="btn btn-primary mt-2" @click="addComment"><span>Add comment</span></button>
+          <button class="btn btn-primary mt-2" @click="addComment" id="addCommentButton"><span>Add comment</span></button>
           <hr class="hr" />
         </div>
         <div class="col">
+          
           <CommentCard v-for="comment in comments" :comment="comment" @updateCommentList="()=>fetchComments(currentPage)" />
           
           <ul class="pagination">
@@ -118,7 +119,7 @@
           this.$notify({
             title: "No rating or invalid comment rating!",
             text: "No rating or invalid comment rating",
-            type: error
+            type: "error"
           });
           return;
         }
@@ -126,7 +127,7 @@
           this.$notify({
             title: "Comment's length is too much!",
             text: "Comment's length is too much!",
-            type: error
+            type: "error"
           });
           return;
         }
