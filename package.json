@@ -19,7 +19,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "@kyvg/vue3-notification": "^3.2.1",
     "@popperjs/core": "^2.11.8",
-    "@tato30/vue-pdf": "^1.9.7",
+    "@tato30/vue-pdf": "^1.10.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@playwright/test": "^1.44.1",
     "@types/bootstrap": "^5.2.10",
     "@types/node": "^20.12.12",
     "@vitejs/plugin-vue": "^5.0.4",
