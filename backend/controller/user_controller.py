@@ -10,6 +10,12 @@ def register(email: str, password: str, name: str, role: str):
     if (user):
         return False, None, EMAIL_EXISTS
     
+    #Reference: https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
+    email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+
+    if re.fullmatch(email_regex, email) == None:
+        return False, None, INVALID_EMAIL
+
     new_user = User(email = email, name = name, role = role, password = generate_password_hash(password=password))
     try:
         db.session.add(new_user)
