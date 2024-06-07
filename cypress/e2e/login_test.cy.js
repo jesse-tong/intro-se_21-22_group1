@@ -32,7 +32,7 @@ describe('Login with invalid email format', () => {
     cy.get('#passwordInput').type('incorrectpassword');
     cy.get('#loginSubmitButton').click();
     cy.get('.notification-title').should('contain', 'Login error')
-    cy.get('.notification-content').should('contain', 'Login with error: Invalid authentication')
+    cy.get('.notification-content').should('contain', 'Login with error: Invalid email')
     
   })
 })

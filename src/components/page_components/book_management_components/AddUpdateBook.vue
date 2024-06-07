@@ -312,6 +312,7 @@
                         }).finally(()=>{
                             this.bookTitle = ''; this.bookIsbn = ''; this.publishYear = '';
                             this.genres = []; this.authors =[]; this.languages = [];
+                            this.description = ''; this.stock = null;
                             
                             this.$emit('addUpdateBookCallback');
                         })
