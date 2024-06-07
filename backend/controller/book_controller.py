@@ -1,13 +1,19 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user_model import User
 from models.book_model import Book, BookAuthor, BookGenre, Author, Genre, BookImage, BookLocation, BookFile, BookLanguage
-from sqlalchemy import select, func
+from sqlalchemy import select, func, exists
 from global_vars.database_init import db
 from utils.file_utils import *
 from global_vars.errors import *
 from flask_login import login_user, login_required, current_user, logout_user
 
 def add_book(title, publish_year: int=None, description=None, isbn=None, stock=None):
+    #Find if any with that title and isbn exist
+    if isbn != None:
+        exist_book_with_same_title_isbn = db.session.query(Book).filter(Book.title == title).filter(Book.isbn == isbn).first()
+        if exist_book_with_same_title_isbn:
+            return False, None, BOOK_TITLE_ISBN_EXISTS
+        
     new_book = Book()
     if publish_year != None:
         new_book.publish_year = publish_year
@@ -34,6 +40,15 @@ def delete_book(id: int):
         db.session.query(BookImage).filter(BookImage.bookId == id).delete()
         db.session.query(BookFile).filter(BookFile.bookId == id).delete()
         db.session.query(BookLanguage).filter(BookLanguage.bookId == id).delete()
+
+        #Delete genres without a book references it
+        delete_genre_subquery = ~db.session.query(BookGenre).filter(BookGenre.genreId == Genre.id).exists()
+        db.session.query(Genre).filter(delete_genre_subquery).delete()
+
+        #Delete authors that are without a book referencing it
+        delete_author_subquery = ~db.session.query(BookAuthor).filter(BookAuthor.authorId == Author.id).exists()
+        db.session.query(Author).filter(delete_author_subquery).delete()
+
         db.session.commit()
         rows_deleted = db.session.query(Book).filter(Book.id == id).delete()
         db.session.commit()

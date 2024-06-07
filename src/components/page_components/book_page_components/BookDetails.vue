@@ -60,7 +60,7 @@
             <p class="list-group-item">Genre(s): 
               <span class="badge text-bg-secondary me-2" v-for="genre in book.genres" data-testid="genreBadge">{{ genre }}</span>
             </p>
-            
+            <p class="list-group-item">ISBN: {{ book.isbn }}</p>
           </ul> 
           <br class="br"/>
           <h4><b>Book Description</b></h4>

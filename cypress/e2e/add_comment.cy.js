@@ -19,6 +19,18 @@ describe('Add and edit comment tests', () => {
 
     });
 
+    it('Add comment without content', () => {
+        cy.visit('http://localhost:5000/book/' + bookId); //Go to a book detail page
+        cy.get('#addCommentBookId').should('have.value', bookId);
+        cy.get('#addCommentRating').clear().type(rating);
+        cy.get('#addCommentContent').clear();
+        cy.get('#addCommentButton').click();
+        cy.get('.notification-title').should('contain', 'Add comment successfully');
+        cy.get('.notification-content').should('contain', 'Add comment successfully');
+        cy.wait(100);
+
+    });
+
     it('Add comment without rating', () => {
         cy.visit('http://localhost:5000/book/' + bookId); //Go to a book detail page
         cy.get('#addCommentBookId').should('have.value', bookId);
