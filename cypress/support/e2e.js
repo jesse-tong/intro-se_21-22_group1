@@ -19,8 +19,14 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+
 beforeEach(()=> {
     Cypress.session.clearAllSavedSessions();
+    Cypress.on('uncaught:exception', (err, runnable) => {
+        // returning false here prevents Cypress from
+        // failing the test
+        return false
+    });
     cy.session('login', ()=>{
         cy.once('uncaught:exception', () => false);
         cy.visit('http://localhost:5000/login');

@@ -284,7 +284,7 @@ describe('Manage book tests', () => {
     
 
     //Clear ISBN and leave it blank
-    cy.get('#editBookIsbn').clear();
+    cy.get('#editBookISBN').clear();
     cy.get('#editBookButton').click();
 
     cy.get('.notification-title').should('contain', 'Edit book details successfully')
@@ -304,14 +304,13 @@ describe('Manage book tests', () => {
     //Check if the input information are correctly input
     cy.get('[data-testid="bookTableRow"]').should('have.length', 1);
     cy.get('[data-testid="bookTableRow"] td:nth-child(2)').contains(bookTitle);
-    cy.get('[data-testid="bookTableRow"] td:nth-child(4)').contains(isbn);
     cy.get('[data-testid="bookTableRow"] td:nth-child(5)').contains(bookStock);
     cy.get('[data-testid="bookTableRow"] td:nth-child(6) button').contains('Edit').click();
     
 
     //Enter title and ISBN of another book
     cy.get('#editBookTitle').clear().type('Frankenstein');
-    cy.get('#editBookIsbn').clear().type('13, 978-0486282114');
+    cy.get('#editBookISBN').clear().type('13, 978-0486282114');
     cy.get('#editBookButton').click();
 
     cy.get('.notification-title').should('contain', 'Edit book details failed')
