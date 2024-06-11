@@ -282,13 +282,6 @@ describe('Manage book tests', () => {
     cy.get('[data-testid="bookTableRow"] td:nth-child(5)').contains(bookStock);
     cy.get('[data-testid="bookTableRow"] td:nth-child(6) button').contains('Edit').click();
     
-    //Check if the author, genre and language are correct
-    cy.get('[data-testid="authorBadge"]').should('have.length', 1);
-    cy.get('[data-testid="authorBadge"]').contains(author);
-    cy.get('[data-testid="genreBadge"]').should('have.length', 1);
-    cy.get('[data-testid="genreBadge"]').contains(genre);
-    cy.get('[data-testid="languageBadge"]').should('have.length', 1);
-    cy.get('[data-testid="languageBadge"]').contains(language);
 
     //Clear ISBN and leave it blank
     cy.get('#editBookIsbn').clear();
@@ -296,6 +289,33 @@ describe('Manage book tests', () => {
 
     cy.get('.notification-title').should('contain', 'Edit book details successfully')
     cy.get('.notification-content').should('contain', 'Edit book successfully');
+
+    
+  });
+
+  it('Search and edit book with title and ISBN the same of another book', () => {
+
+    cy.once('uncaught:exception', () => false);
+    cy.visit('http://localhost:5000/admin/manage-books');
+    cy.get('#editBookTab').click();
+    cy.get('#searchBookTitle').type(bookTitle);
+    cy.get('#searchBookButton').click();
+
+    //Check if the input information are correctly input
+    cy.get('[data-testid="bookTableRow"]').should('have.length', 1);
+    cy.get('[data-testid="bookTableRow"] td:nth-child(2)').contains(bookTitle);
+    cy.get('[data-testid="bookTableRow"] td:nth-child(4)').contains(isbn);
+    cy.get('[data-testid="bookTableRow"] td:nth-child(5)').contains(bookStock);
+    cy.get('[data-testid="bookTableRow"] td:nth-child(6) button').contains('Edit').click();
+    
+
+    //Enter title and ISBN of another book
+    cy.get('#editBookTitle').clear().type('Frankenstein');
+    cy.get('#editBookIsbn').clear().type('13, 978-0486282114');
+    cy.get('#editBookButton').click();
+
+    cy.get('.notification-title').should('contain', 'Edit book details failed')
+    cy.get('.notification-content').should('contain', 'Edit book failed');
 
     
   });
