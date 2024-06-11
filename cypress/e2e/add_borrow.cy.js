@@ -57,7 +57,7 @@ describe('Manage borrow tests', () => {
 
         cy.get('[data-testid="searchUserResultRow"] td:nth-child(5)').contains('Select').click();
 
-        cy.get('#searchBookTitle').type('Test book 2');
+        cy.get('#searchBookTitle').type('Test book 1');
         cy.get('#searchBookButton').click();
 
         cy.get('[data-testid="searchBookResultRow"]:nth-child(1) td:nth-child(1)').then(($value)=> {

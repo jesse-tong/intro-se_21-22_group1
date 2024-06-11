@@ -77,6 +77,11 @@ description: str=None, authors: list=None, genres: list=None, isbn=None, stock: 
             if row != None:
                 genre_ids.append(row.id)
 
+    if isbn != None:
+        exist_book_with_same_title_isbn = db.session.query(Book).filter(Book.title == title).filter(Book.isbn == isbn).filter(Book.id != book_id).first()
+        if exist_book_with_same_title_isbn:
+            return False, None, BOOK_TITLE_ISBN_EXISTS
+        
     try:
         book = db.session.query(Book).filter(Book.id == book_id).first()
 
