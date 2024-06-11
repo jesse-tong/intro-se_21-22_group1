@@ -1,0 +1,17 @@
+Install MariaDB, create an account that can create, read/write on a database.
+Also install latest version of Node.js and Python as well.
+
+In the .env file in the backend directory, there will be a line like this
+SQL_URL="mariadb+pymysql://username:password@database_url:3306/library"
+Change it to the corresponding in your MariaDB setup
+You can also change other variables in the .env file as well, there's another .env file in the project root path for reference (path from backend directory)
+
+Then create a Python virtual environment, install required packages: 
+python -m venv .venv
+. .\.venv\Scripts\activate (for Windows) or . ./.venv/bin/activate (for Linux and MacOS)
+
+Install Node.js packages, in the project directory: npm install
+Build the project frontend: npm run Build
+Run the project: npm run server_windows (Windows) or npm run server_unix
+
+We planned to create a Dockerfile or migrate to SQLite3 for easier usage, but we didn't have enough time for that
