@@ -5,6 +5,17 @@ import os, shutil
 book_files_save_directory = os.environ.get('FILE_STORAGE_PATH') if os.environ.get('FILE_STORAGE_PATH')!=None else './.ebook_files'
 book_images_save_directory = os.environ.get('IMAGE_STORAGE_PATH') if os.environ.get('IMAGE_STORAGE_PATH')!=None else './.book_images'
 
+#Try to create directory for ebooks and images
+try:
+    os.mkdir(book_files_save_directory)
+except FileExistsError:
+    pass
+
+try:
+    os.mkdir(book_images_save_directory)
+except FileExistsError:
+    pass
+
 def get_save_ebook_path(id: int, name: str):
     save_dir = os.path.join(os.path.abspath(book_files_save_directory), str(id))
     save_dir = os.path.join(save_dir, name)
