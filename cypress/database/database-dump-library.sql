@@ -16,28 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `alembic_version`
---
-
-DROP TABLE IF EXISTS `alembic_version`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `alembic_version` (
-  `version_num` varchar(32) NOT NULL,
-  PRIMARY KEY (`version_num`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `alembic_version`
---
-
-LOCK TABLES `alembic_version` WRITE;
-/*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
-/*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `author`
 --
 
@@ -582,4 +560,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-16 23:02:47
+-- Dump completed on 2024-06-16 23:04:57
