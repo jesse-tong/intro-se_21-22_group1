@@ -8,6 +8,7 @@ from global_vars.init_env import *
 from flask_login import LoginManager
 from sqlalchemy_utils import database_exists, create_database
 import pytest
+from flask_migrate import Migrate
 from waitress import serve
 
 print(os.environ.get('SQL_URL'))
@@ -28,6 +29,8 @@ def create_app(test_config=None):
         SQLALCHEMY_DATABASE_URI=os.environ.get('SQL_URL'),
     )
     db.init_app(app)
+    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
 
     from models.user_model import User
 
@@ -88,7 +91,7 @@ if __name__ == '__main__':
     from controller.book_user_controller import *
     from controller.comment_controller import *
     app = create_app()
-    
+
     #app.run(debug=True, use_reloader=True) #Debug only
 
     #This below is for production using waitress

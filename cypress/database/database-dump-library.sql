@@ -1,6 +1,6 @@
 -- MariaDB dump 10.19-11.3.2-MariaDB, for Win64 (AMD64)
 --
--- Host: localhost    Database: bookstore
+-- Host: localhost    Database: library
 -- ------------------------------------------------------
 -- Server version	11.3.2-MariaDB
 
@@ -16,6 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `alembic_version`
+--
+
+DROP TABLE IF EXISTS `alembic_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `alembic_version` (
+  `version_num` varchar(32) NOT NULL,
+  PRIMARY KEY (`version_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alembic_version`
+--
+
+LOCK TABLES `alembic_version` WRITE;
+/*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
+/*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `author`
 --
 
@@ -27,7 +49,7 @@ CREATE TABLE `author` (
   `name` varchar(150) DEFAULT NULL,
   `place` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,55 +61,9 @@ LOCK TABLES `author` WRITE;
 INSERT INTO `author` VALUES
 (1,'Miguel de Cervantes',NULL),
 (2,'Mary Shelley',NULL),
-(3,'Author 1',NULL),
-(4,'Author 2',NULL),
 (5,'Dustin Stevens',NULL),
-(6,'Test author',NULL),
-(7,'Test author 2',NULL),
-(8,'Tyler Collins',NULL),
-(9,'Alfredo Lakin',NULL),
-(10,'Jonathan Schultz',NULL),
-(11,'Guy Hermann',NULL),
-(12,'Nick Mertz',NULL),
-(13,'Mae Torp',NULL),
-(14,'Katie Dach',NULL),
-(15,'Derrick Reilly',NULL),
-(16,'Miriam Ankunding',NULL),
-(17,'Walter Trantow',NULL),
-(18,'Mitchell Brakus',NULL),
-(19,'Lynne Turcotte',NULL),
-(20,'Pamela Cartwright',NULL),
-(21,'Mr. Calvin Schuster',NULL),
-(22,'Bridget Sipes',NULL),
-(23,'Edith Hessel III',NULL),
-(24,'Sherri Stiedemann',NULL),
-(25,'Billie Dibbert',NULL),
-(26,'Neal Johns',NULL),
-(27,'Eugene Kuphal',NULL),
-(28,'Louise Kuhlman',NULL),
-(29,'Ms. Bonnie Kuhic',NULL),
-(30,'Lloyd Douglas',NULL),
-(31,'Sherri Thiel',NULL),
-(32,'Suzanne Rohan II',NULL),
-(33,'Evelyn Osinski',NULL),
-(34,'Cedric Kris-Bode',NULL),
-(35,'Cody Greenfelder I',NULL),
-(36,'Douglas Bartoletti',NULL),
-(37,'Myrtle Bailey',NULL),
-(38,'Henrietta Schmitt',NULL),
-(39,'Dr. Tony Reichel',NULL),
-(40,'Dr. Harvey Homenick',NULL),
-(41,'Roosevelt Donnelly-Pfannerstill',NULL),
-(42,'Ernesto Bernier III',NULL),
-(43,'Dr. Preston Rippin-Dickinson',NULL),
-(44,'Sylvester Wilderman',NULL),
-(45,'Allison Moen-Feeney',NULL),
-(46,'Mr. Christopher Ward PhD',NULL),
-(47,'Mrs. Dorothy Wisoky',NULL),
-(48,'Levi Altenwerth',NULL),
-(49,'Gustavo Kreiger',NULL),
-(50,'Gwen Bergnaum',NULL),
-(51,'Jasmine Schiller',NULL);
+(52,'Sarah J. Maas',NULL),
+(54,'Test author',NULL);
 /*!40000 ALTER TABLE `author` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +82,7 @@ CREATE TABLE `book` (
   `description` varchar(1000) DEFAULT NULL,
   `isbn` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,14 +92,14 @@ CREATE TABLE `book` (
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
 INSERT INTO `book` VALUES
-(1,4,'Don Quixote',1605,'Don Quixote, novel published in two parts (part 1, 1605, and part 2, 1615) by Spanish writer Miguel de Cervantes, one of the most widely read classics of Western literature. Originally conceived as a parody of the chivalric romances that had long been in literary vogue, it describes realistically what befalls an aging knight who, his head bemused by reading such romances, sets out on his old horse Rocinante, with his pragmatic squire, Sancho Panza, to seek adventure. Widely and immediately translated (first English translation 1612), the novel was a great and continuing success and is considered a prototype of the modern novel.',''),
-(4,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, ‎978-0486282114'),
-(15,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, ‎978-0486282114'),
+(1,2,'Don Quixote',1605,'Don Quixote, novel published in two parts (part 1, 1605, and part 2, 1615) by Spanish writer Miguel de Cervantes, one of the most widely read classics of Western literature. Originally conceived as a parody of the chivalric romances that had long been in literary vogue, it describes realistically what befalls an aging knight who, his head bemused by reading such romances, sets out on his old horse Rocinante, with his pragmatic squire, Sancho Panza, to seek adventure. Widely and immediately translated (first English translation 1612), the novel was a great and continuing success and is considered a prototype of the modern novel.','1716619041010'),
+(4,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, 978-0486282114'),
+(15,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13-0486282114'),
 (17,2,'A Court of Thorns and Roses',2015,' The sexy, action-packed first book in the #1 New York Times bestselling Court of Thorns and Roses series from Sarah J. Maas.\r\n\r\nWhen nineteen-year-old huntress Feyre kills a wolf in the woods, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she knows about only from legends, Feyre discovers that her captor is not truly a beast, but one of the lethal, immortal faeries who once ruled her world.\r\n','1526605392'),
 (20,0,'Cold Fire',2015,'As a DEA agent, Jeremiah “Hawk” Tate was one of the best at taking down drug traffickers. Then the cartels struck back—and destroyed everything he held dear.\r\n\r\nFive years later, Hawk has retreated from society and is living a quiet life as a Montana wilderness guide. He’s done with the DEA, done with the criminals, and done with the pain left over from his past. But his past isn’t done with him.',' ‎B00QKUW8UO'),
 (24,0,'Cold Fire',2015,'','1222131414141'),
-(58,3,'Intelligent Soft Pizza',103,'The Football Is Good For Training And Recreational Purposes','978-0-02-442488-4'),
-(61,995,'Test book',2024,'Test description','1111111111111');
+(61,99998,'Test book 2',2024,'Test description','1111111111111'),
+(74,0,'Test book 1',2024,'Test description','1111111');
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +119,7 @@ CREATE TABLE `bookauthor` (
   KEY `authorId` (`authorId`),
   CONSTRAINT `bookauthor_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookauthor_ibfk_2` FOREIGN KEY (`authorId`) REFERENCES `author` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,10 +129,11 @@ CREATE TABLE `bookauthor` (
 LOCK TABLES `bookauthor` WRITE;
 /*!40000 ALTER TABLE `bookauthor` DISABLE KEYS */;
 INSERT INTO `bookauthor` VALUES
-(41,4,2),
 (49,24,5),
-(83,58,39),
-(98,1,1);
+(99,1,1),
+(100,17,52),
+(103,74,54),
+(108,4,2);
 /*!40000 ALTER TABLE `bookauthor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +159,7 @@ CREATE TABLE `bookborrow` (
   KEY `userId` (`userId`),
   CONSTRAINT `bookborrow_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookborrow_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +180,21 @@ INSERT INTO `bookborrow` VALUES
 (26,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (27,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (28,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(29,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0);
+(29,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(31,17,22,'2024-06-09 14:51:50','2024-06-23 16:59:59',1,'2024-06-10 02:15:00',0,1),
+(32,1,21,'2024-06-10 03:00:00','2024-06-18 15:00:00',0,NULL,0,0),
+(33,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(34,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(35,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(36,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(37,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(38,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(39,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(40,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(41,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(42,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(43,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(44,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0);
 /*!40000 ALTER TABLE `bookborrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +240,7 @@ CREATE TABLE `bookfile` (
   PRIMARY KEY (`id`),
   KEY `bookId` (`bookId`),
   CONSTRAINT `bookfile_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -280,7 +271,7 @@ CREATE TABLE `bookgenre` (
   KEY `genreId` (`genreId`),
   CONSTRAINT `bookgenre_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookgenre_ibfk_2` FOREIGN KEY (`genreId`) REFERENCES `genre` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,17 +281,19 @@ CREATE TABLE `bookgenre` (
 LOCK TABLES `bookgenre` WRITE;
 /*!40000 ALTER TABLE `bookgenre` DISABLE KEYS */;
 INSERT INTO `bookgenre` VALUES
-(71,4,4),
-(72,4,5),
-(73,4,6),
-(74,4,7),
 (79,24,10),
 (80,24,11),
-(114,58,21),
-(135,1,1),
-(136,1,2),
-(137,1,3),
-(138,1,4);
+(139,1,1),
+(140,1,2),
+(141,1,3),
+(142,1,4),
+(143,17,30),
+(144,17,31),
+(147,74,33),
+(151,4,4),
+(152,4,5),
+(153,4,6),
+(154,4,7);
 /*!40000 ALTER TABLE `bookgenre` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +337,7 @@ CREATE TABLE `booklanguage` (
   PRIMARY KEY (`id`),
   KEY `bookId` (`bookId`),
   CONSTRAINT `booklanguage_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,8 +347,8 @@ CREATE TABLE `booklanguage` (
 LOCK TABLES `booklanguage` WRITE;
 /*!40000 ALTER TABLE `booklanguage` DISABLE KEYS */;
 INSERT INTO `booklanguage` VALUES
-(16,4,'English'),
-(46,58,'English');
+(61,74,'English'),
+(65,4,'English');
 /*!40000 ALTER TABLE `booklanguage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -406,7 +399,7 @@ CREATE TABLE `comment` (
   KEY `bookId` (`bookId`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -442,7 +435,7 @@ CREATE TABLE `genre` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -459,28 +452,11 @@ INSERT INTO `genre` VALUES
 (5,'Horror'),
 (6,'Science Fiction'),
 (7,'Gothic Novel'),
-(8,'Genre 1'),
-(9,'Genre 2'),
 (10,'Conspiracy Thriller'),
 (11,'War & Millitary Fiction'),
-(12,'Test genre 2'),
-(13,'Test genre'),
-(14,'Folk'),
-(15,'Reggae'),
-(16,'Non Music'),
-(17,'Rock'),
-(18,'Country'),
-(19,'Funk'),
-(20,'Rap'),
-(21,'World'),
-(22,'Blues'),
-(23,'Hip Hop'),
-(24,'Jazz'),
-(25,'Latin'),
-(26,'Electronic'),
-(27,'Soul'),
-(28,'Classical'),
-(29,'Metal');
+(30,'Romance'),
+(31,'Fantasy'),
+(33,'Test genre');
 /*!40000 ALTER TABLE `genre` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +476,7 @@ CREATE TABLE `user` (
   `isRestricted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -519,7 +495,15 @@ INSERT INTO `user` VALUES
 (15,'Laurine_Hand45','scrypt:32768:8:1$YlyT2bd6V41FhIFm$3035d2833ad81efb9e0a29ad0c93ce39944dd3fb20b28b3b1a8c36bb4606036c21a73b85c194e3ad3b6f4b7eef1850a9307ca5c2c5a343cf8262797ec8432b95','Crystal87','user',0),
 (16,'jesse-tong4@gmail.com','scrypt:32768:8:1$6Y586WSlXl0pA7rV$d6db2c2d26fd95d93fb6a75c217550760a8b056c0d4be7427b1579510d1d1dc556a34dea92740e9eaecfb8d04251334e1cca372a696339b5f3df789f9db80422','User 4','user',0),
 (17,'\'a@gmail.com\' or 1 = 1','scrypt:32768:8:1$cZXq5PK6aPgZ0fzg$75f4792617c540128f9e77cda9eb19441a2bf1b696a4047a8c8d04e3d3a9b7f3cf81096517167072b4de3b6efb0f53c9a95ad2feaebbe360314e96ef70bd532e','User 7','user',0),
-(18,'\"abc@gmail.com\" or user.email = user.email','scrypt:32768:8:1$ucCBl3r9y5qHR3WG$bb1e8e075e16f79147fbc8495d199bd5b63bc28c60cb117ffd98cf871a465ca48de2e1b56ebfac5abb6d4f0fb8786e21d1c7d32437dfcb48c17eb58c037f3a63','jesse-tong3@gmail.com','user',0);
+(18,'\"abc@gmail.com\" or user.email = user.email','scrypt:32768:8:1$ucCBl3r9y5qHR3WG$bb1e8e075e16f79147fbc8495d199bd5b63bc28c60cb117ffd98cf871a465ca48de2e1b56ebfac5abb6d4f0fb8786e21d1c7d32437dfcb48c17eb58c037f3a63','jesse-tong3@gmail.com','user',0),
+(19,'ttttt@gmail.com','scrypt:32768:8:1$XZO0l1jJGguH3xIp$b6d908f2f97e181308319935f541d2488a56ab557b8c9e398266a1aa167aad06d91b136bb363764a20a6d83e33e68919fb248559a83c16f3febca7752b583651','ttttttt','user',0),
+(20,'t@gmail.com','scrypt:32768:8:1$HR6BjSGDkW1eacUc$b89586bd3e6a6e6b6239ab1cb1106a44fd58b60b0e68185c9c379761b4deb04f511f4240d34610211dfa473eb06f8def9922b44e520ba6663858aeade0538e61','ttttt','user',0),
+(21,'test2@gmail.com','scrypt:32768:8:1$j0Zx3eChNifCiYd3$cddacb25cb04645d2d9b460f7f385830062bcbf903266c4fcbf8044411df9782e2f232a739abd820efa0c1b77f0ec46846ca4d85a05d3ffc3947826a6726ba43','Test user','user',0),
+(22,'test3@gmail.com','scrypt:32768:8:1$A3bLMuLgJ1MNRRk0$c30ef771c8cbd649e442129566531d3f1c56957b3c7987179a127cca7b7e57258825c1ff761b145b4877e6dc49b868cc2631eef1a287ab34914a02bee48da0c9','Test user 3','admin',0),
+(23,'Jerald55@hotmail.com','scrypt:32768:8:1$6PjabneNjI0Dkcak$14369e40e1c5a8f2349ea5ea1d2c3d9a27ae82bb43fb671b1f067644bcaf9340be74e4b294783bf97f5269a0d36e4d34faedb0b166ba21f6f06aa3c9a763d991','Leonie43','user',0),
+(24,'Tierra44@gmail.com','scrypt:32768:8:1$itNq4HcgCjRDmGsq$123b1062276b46f29e3678655a0151e5dfc1b1d2f17a6311a6ea0dfd16a1c663de95f3dd99033b2bb790be48382c557f2ac33ff0950f7b9eb530a10b115c7fd1','Karina44','user',0),
+(25,'Bertram.Mills@yahoo.com','scrypt:32768:8:1$samtTcvbwq8dSBVn$c8b0c835d520e263394890ee8953de622dfb0ae56e548ac2c38a49a8f33cd44ccb1814bbd989ea5afb980518b4a23674d3c560cfc3a06d2218f66b764bba27f1','Napoleon_Russel','admin',0),
+(26,'test@gmail.com','scrypt:32768:8:1$gmhXb5e0xSyhHax6$e2a57d9a04c0fd6b6a593555abf036ec169d7af5e64dadbda11db1213c659e8a716a53f2f9c0d8554dbd5129f1cf4de4010c681eb37864b0a5747dcc7f44125e','User 2','admin',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -542,7 +526,7 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -553,7 +537,8 @@ LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` VALUES
 (1,1,21,'other',5,5,'0888888888','Some address'),
-(2,4,21,'other',5,5,'0988888888','Some address');
+(2,4,21,'other',5,5,'0988888888','Some address'),
+(3,22,21,'male',5,5,'089777777','Some address, HCM City');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -568,6 +553,7 @@ CREATE TABLE `user_notification` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) DEFAULT NULL,
   `notification` varchar(3000) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_notification_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
@@ -582,6 +568,10 @@ LOCK TABLES `user_notification` WRITE;
 /*!40000 ALTER TABLE `user_notification` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_notification` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'library'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -592,4 +582,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-07 23:24:39
+-- Dump completed on 2024-06-16 23:02:47
