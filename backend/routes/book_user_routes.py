@@ -95,7 +95,6 @@ def search_borrow_book_current_user():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        print('Search user: ', user_id); print('Search end date: ', end_date)
         success, result, error = search_borrow(user_id, book_id, start_date, end_date, page=page, limit=limit)
         return get_status_object_json(success, result, error), 200
 
@@ -266,10 +265,33 @@ def get_borrow_count_by_month():
     success, result, error = group_borrow_by_start_borrow_month()
     return get_status_object_json(success, result, error), 200
 
-@book_user.route('/api/borrow-policies', methods=['GET'])
+@book_user.route('/api/borrow-policies', methods=['GET', 'POST', 'PUT'])
 def get_borrow_policies():
-    success, result, error = get_borrow_policy_constants()
-    return get_status_object_json(success, result, error), 200
+    if request.method == 'GET':
+        success, result, error = get_borrow_policy_constants()
+        return get_status_object_json(success, result, error), 200
+    elif request.method == 'POST' or request.method == 'PUT':
+        overdue_fine = request.form.get('overdue_fine')
+        overdue_limit = request.form.get('overdue_limit')
+        default_borrow_days = request.form.get('default_borrow_days')
+        damage_and_lost_fine = request.form.get('damage_and_lost_fine')
+        currency = request.form.get('currency')
+
+        try:
+            overdue_fine = float(overdue_fine) if overdue_fine != None else None
+            overdue_limit = int(overdue_limit) if overdue_limit != None else None
+            default_borrow_days = int(default_borrow_days) if default_borrow_days != None else None
+            damage_and_lost_fine = float(damage_and_lost_fine) if damage_and_lost_fine != None else None
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, result, error = set_policies(default_borrow_time=default_borrow_days, 
+                                              overdue_fine_per_day= overdue_fine,
+                                              overdue_limit=overdue_limit,
+                                              damage_lost_fine=damage_and_lost_fine,
+                                              new_currency=currency)
+        
+        return get_status_object_json(success, result, error), 200
 
 @book_user.route('/api/highest-rating-books', methods=['GET'])
 def highest_rating_books():

@@ -1,16 +1,16 @@
 <template>
-    <h3 class="ms-3 me-3 mt-2 ">Reset password</h3>
+    <h4 class="ms-3 me-3 mt-2 ">Reset password</h4>
     <div class=" ms-3 me-3">
-        <div class="input-group mb-2">
-            <label for="currentPassword" class="input-group-text"><span>Current password: </span></label>
+        <div class="mb-2">
+            <label for="currentPassword" class="form-label"><span>Current password: </span></label>
             <input type="password" class="form-control" id="currentPassword" v-model="currentPassword"/>
         </div>
-        <div class="input-group mb-2">
-            <label for="newPassword" class="input-group-text"><span>New password: </span></label>
+        <div class="mb-2">
+            <label for="newPassword" class="form-label"><span>New password: </span></label>
             <input type="password" class="form-control" id="newPassword" v-model="newPassword"/>
         </div>
-        <div class="input-group mb-2">
-            <label for="newPasswordReenter" class="input-group-text"><span>Repeat new password: </span></label>
+        <div class="mb-2">
+            <label for="newPasswordReenter" class="form-label"><span>Repeat new password: </span></label>
             <input type="password" class="form-control" id="newPasswordReenter" v-model="newPasswordReenter"/>
         </div>
         <button @click="updatePassword" class=" mb-2 btn btn-success"><span>Update password</span></button>

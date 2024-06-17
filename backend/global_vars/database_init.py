@@ -5,7 +5,6 @@ from multiprocessing import Value
 new_book_counter = Value('i', 0)
 deleted_book_counter = Value('i', 0)
 
-
 db = SQLAlchemy()
 
 
