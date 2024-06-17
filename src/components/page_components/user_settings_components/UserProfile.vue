@@ -57,7 +57,7 @@
 <script>
     import axios from 'axios';
     import { mapStores } from 'pinia';
-    import { useAccountStore } from '../stores/LoginInfoStore';
+    import { useAccountStore } from '../../stores/LoginInfoStore';
     export default {
         data(){
             return {

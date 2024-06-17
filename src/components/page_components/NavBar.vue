@@ -38,7 +38,7 @@
             
             <hr class="hr" v-if="accountStore.loggedIn"/>
 
-            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/borrows">Your borrows/return book</RouterLink></li>
+            <!--<li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/borrows">Your borrows/return book</RouterLink></li> -->
             <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile">User profile</RouterLink></li>
             <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings">User settings</RouterLink></li>
             
