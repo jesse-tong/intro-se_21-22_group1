@@ -29,6 +29,7 @@
             <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-books">Manage books</RouterLink></li>
             <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-borrow">Manage borrow</RouterLink></li>
             <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/reports">Reports</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/policies-settings">Policies settings</RouterLink></li>
             
             <hr class="hr" />
 
