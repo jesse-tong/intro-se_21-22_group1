@@ -19,7 +19,7 @@
         </div>
         <div class=" mb-2">
             <label for="userGender" class="form-label"><span>Gender: </span></label>
-            <select v-model="gender" class="form-control" id="userGender">
+            <select v-model="gender" class="form-control" id="userGender" role="select">
                 <option value="male" >Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>

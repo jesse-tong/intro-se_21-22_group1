@@ -1,6 +1,9 @@
 <template>
     <div class="row">
         <div class="col-12">
+            <h3 class="ms-3 mt-2">User settings</h3>
+        </div>
+        <div class="col-12">
             <div class="mt-3 mx-3">
                 <h4>Your current borrows</h4>
                 <BorrowTableUser />
