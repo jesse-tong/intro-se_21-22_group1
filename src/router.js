@@ -18,6 +18,7 @@ import LibraryPolicyPage from './components/views/LibraryPolicyPage.vue';
 import Footer from './components/views/Footer.vue';
 import HomePage from './components/views/HomePage.vue';
 import ReportPage from './components/page_components/report_page_components/ReportPage.vue';
+import LibraryPoliciesSettings from './components/page_components/library_policies_settings_components/LibraryPoliciesSettings.vue';
 
 const routes = [
   { 
@@ -65,6 +66,12 @@ const routes = [
         path: 'admin/manage-books',
         components: {
           default: BookManagement
+        }
+      },
+      {
+        path: 'admin/policies-settings',
+        components: {
+          default: LibraryPoliciesSettings
         }
       },
       {
