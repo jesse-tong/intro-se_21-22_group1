@@ -1,24 +1,24 @@
 <template>
-    <h3 class="ms-3 me-3 mt-2 ">Update user information</h3>
+    <h4 class="ms-3 me-3 mt-2 ">Update user information</h4>
     <div class=" ms-3 me-3">
-        <div class="input-group mb-2">
-            <label for="userId" class="input-group-text"><span>User ID: </span></label>
+        <div class=" mb-2">
+            <label for="userId" class="form-label"><span>User ID: </span></label>
             <input type="text" disabled :value="accountStore.userId" class="form-control" id="userId"/>
         </div>
-        <div class="input-group mb-2">
-            <label for="userAge" class="input-group-text"><span>Age: </span></label>
+        <div class=" mb-2">
+            <label for="userAge" class="form-label"><span>Age: </span></label>
             <input type="number" v-model.number="age" class="form-control" id="userAge" min="0" max="124"/>
         </div>
-        <div class="input-group mb-2">
-            <label for="userAddress" class="input-group-text"><span>Address: </span></label>
+        <div class=" mb-2">
+            <label for="userAddress" class="form-label"><span>Address: </span></label>
             <input type="text" v-model="address" class="form-control" id="userAddress"/>
         </div>
-        <div class="input-group mb-2">
-            <label for="userPhone" class="input-group-text"><span>Phone number: </span></label>
+        <div class=" mb-2">
+            <label for="userPhone" class="form-label"><span>Phone number: </span></label>
             <input type="text" v-model="phoneNumber" class="form-control" id="userPhone"/>
         </div>
-        <div class="input-group mb-2">
-            <label for="userGender" class="input-group-text"><span>Gender: </span></label>
+        <div class=" mb-2">
+            <label for="userGender" class="form-label"><span>Gender: </span></label>
             <select v-model="gender" class="form-control" id="userGender">
                 <option value="male" >Male</option>
                 <option value="female">Female</option>

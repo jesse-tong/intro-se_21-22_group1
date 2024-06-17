@@ -1,47 +1,55 @@
 <template>
     <h3 class="mt-2 ms-3 me-3">User profile:</h3>
     <div class="row ms-3 me-3">
-        <div class=" col-12 col-md-5">
-            <div class="input-group mb-2">
-                <label for="userId" class="input-group-text"><span>User ID: </span></label>
-                <input type="text" disabled :value="userInfo.id" class="form-control" id="userId"/>
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <span class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</span>
+                <span class="text-black-50">{{ userInfo !== null ? (userInfo.email !== null ? userInfo.email : 'N/A') : 'N/A' }}</span>
+                <router-link class="btn btn-secondary mt-3 " role="button" to="/user/settings"><span>User settings</span></router-link>
             </div>
-            <div class="input-group mb-2">
-                <label for="userEmail" class="input-group-text"><span>Email: </span></label>
-                <input type="text" disabled :value="userInfo.id" class="form-control" id="userEmail"/>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class=" mb-2">
+                <label for="userId" class="form-label"><span>User ID: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.id : 'N/A' " class="form-control" id="userId"/>
             </div>
-            <div class="input-group mb-2">
-                <label for="userName" class="input-group-text"><span>Username: </span></label>
-                <input type="text" disabled :value="userInfo.name" class="form-control" id="userName"/>
+            <div class=" mb-2">
+                <label for="userEmail" class="form-label"><span>Email: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.email : 'N/A'" class="form-control" id="userEmail"/>
             </div>
-            <div class="input-group mb-2">
-                <label for="userAddress" class="input-group-text"><span>Address: </span></label>
-                <input type="text" disabled :value="userInfo.address" class="form-control" id="userAddress"/>
+            <div class=" mb-2">
+                <label for="userName" class="form-label"><span>Username: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.name : 'N/A'" class="form-control" id="userName"/>
+            </div>
+            <div class=" mb-2">
+                <label for="userAddress" class="form-label"><span>Address: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.address : 'N/A'" class="form-control" id="userAddress"/>
             </div>
             
-            <div class="input-group mb-2">
-                <label for="userRole" class="input-group-text"><span>Account role: </span></label>
-                <input type="text" disabled :value="userInfo.role" class="form-control" id="userRole"/>
+            <div class=" mb-2">
+                <label for="userRole" class="form-label"><span>Account role: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.role : 'N/A'" class="form-control" id="userRole"/>
             </div>
             
         </div>
-        <div class="col-12 col-md-6">
-            <div class="input-group mb-2">
-                <label for="userAge" class="input-group-text"><span>Age: </span></label>
-                <input type="text" disabled :value="userInfo.age" class="form-control" id="userAge"/>
+        <div class="col-12 col-md-4">
+            <div class=" mb-2">
+                <label for="userAge" class="form-label"><span>Age: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.age : 'N/A'" class="form-control" id="userAge"/>
             </div>
-            <div class="input-group mb-2">
-                <label for="userGender" class="input-group-text"><span>Gender: </span></label>
-                <input type="text" disabled :value="userInfo.gender ? userInfo.gender : 'Prefer not to say'" class="form-control" id="userGender"/>
+            <div class="mb-2">
+                <label for="userGender" class="form-label"><span>Gender: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? (userInfo.gender ? userInfo.gender : 'Prefer not to say') : 'N/A' " class="form-control" id="userGender"/>
             </div>
-            <div class="input-group mb-2">
-                <label for="userPhoneNumber" class="input-group-text"><span>Phone number: </span></label>
-                <input type="text" disabled :value="userInfo.phone" class="form-control" id="userPhoneNumber"/>
+            <div class=" mb-2">
+                <label for="userPhoneNumber" class="form-label"><span>Phone number: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.phone: 'N/A'" class="form-control" id="userPhoneNumber"/>
             </div>
-            <div class="input-group mb-2">
-                <label for="userBorrowCount" class="input-group-text"><span>Borrow: </span></label>
-                <input type="text" disabled :value="userInfo.borrowLeft + ' / ' + userInfo.maxBorrow" class="form-control" id="userBorrowCount"/>
-            </div>
+            <!--<div class=" mb-2">
+                <label for="userBorrowCount" class="form-label"><span>Borrow: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? (userInfo.borrowLeft + ' / ' + userInfo.maxBorrow) : 'N/A'" class="form-control" id="userBorrowCount"/>
+            </div> -->
         </div>
     </div>
     

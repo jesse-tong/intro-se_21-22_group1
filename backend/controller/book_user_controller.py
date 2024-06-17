@@ -11,12 +11,20 @@ from dateutil.parser import parse as dateparse
 from global_vars.constants import *
 from global_vars.init_env import *
 from dataclasses import asdict
+from dotenv import set_key, load_dotenv
+from threading import Thread, Lock
 from controller.book_controller import increment_book_stock, decrement_book_stock, is_book_out_of_stock
-borrow_time = os.environ.get('DEFAULT_BORROW_TIMEOUT')
-overdue_fine = os.environ.get('OVERDUE_FINE_PER_DAY')
-overdue_limit_before_treated_as_lost = os.environ.get('OVERDUE_DAYS_LIMIT_BEFORE_LOST')
-damage_and_lost_fine = os.environ.get('DAMAGE_AND_LOST_FINE')
-currency = os.environ.get('CURRENCY')
+
+try:
+    borrow_time = float(os.environ.get('DEFAULT_BORROW_TIMEOUT')) #Default borrow days
+    overdue_fine = float(os.environ.get('OVERDUE_FINE_PER_DAY'))
+    overdue_limit_before_treated_as_lost = int(os.environ.get('OVERDUE_DAYS_LIMIT_BEFORE_LOST'))
+    damage_and_lost_fine = float(os.environ.get('DAMAGE_AND_LOST_FINE'))
+    currency = os.environ.get('CURRENCY')
+except:
+    raise ValueError('Cannot find variables in the environment file, please check again')
+
+env_lock = Lock()
 
 def get_borrow_policy_constants():
     result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency}
@@ -91,30 +99,44 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
         borrow_book.bookId = bookId
     if userId != None:
         borrow_book.userId = userId
+
     prev_return_state = borrow_book.hasReturned
     borrow_book.hasReturned = has_returned
+    new_return_state = borrow_book.hasReturned
     
-    previous_book_status = borrow_book.isDamagedOrLost
+    prev_damage_lost_status = borrow_book.isDamagedOrLost
     if damaged_or_lost != None:
         borrow_book.isDamagedOrLost = damaged_or_lost
-    new_book_status = damaged_or_lost
+    new_damage_lost_status = damaged_or_lost
 
-    is_old_status_restockable =  (prev_return_state == True and previous_book_status == False)
-
-    if is_old_status_restockable == True and ((prev_return_state != has_returned and has_returned == False) or 
-        (previous_book_status != new_book_status and new_book_status == True)):
-        #New book status change to being damaged/lost, or return state change from has returned to not returned
-        # => reduce book stock
-        decrement_book_stock(bookId)
-    elif is_old_status_restockable == False and((prev_return_state != has_returned and has_returned == True and new_book_status == False) or 
-    (has_returned == True and previous_book_status != new_book_status and new_book_status == False)):
-        #If new book status change from being damaged/lost to be being usable and has been returned,
-        #or the book change from being borrowed to being returned and still being usable => increase book stock
-        increment_book_stock(bookId)
+    prev_approve_state = borrow_book.isApproved
     if is_approved != None:
         borrow_book.isApproved = is_approved
+    new_approve_state = borrow_book.isApproved
+
+    #Restockable mean a book has been returned and not irrecoverable damaged/lost
+    prev_status_restockable =  (prev_return_state == True and prev_damage_lost_status == False)
+    new_status_restockable =  (new_return_state == True and new_damage_lost_status == False)
+
+    #We have four scenarios for changing borrow status
+    # unapproved -> approved & not restockable (either not returned or returned but damaged/lost) -1
+    # approved & not restockable -> unapproved       +1
+    # approved & not restockable -> approved & restockable     +1
+    # approved & restockable -> approved & not restockable     -1
+    
+    if prev_approve_state == False and new_approve_state == True and new_status_restockable == False:
+        db.session.query(Book).filter(Book.id == bookId).update({Book.stock: Book.stock - 1})
+
+    if prev_approve_state == True and prev_status_restockable == False and new_approve_state == False:
+        db.session.query(Book).filter(Book.id == bookId).update({Book.stock: Book.stock + 1})
+
+    if prev_approve_state == True and prev_status_restockable == False and new_approve_state == True and new_status_restockable == True:
+        db.session.query(Book).filter(Book.id == bookId).update({Book.stock: Book.stock + 1})
+
+    if prev_approve_state == True and prev_status_restockable == True and new_approve_state == True and new_status_restockable == False:
+        db.session.query(Book).filter(Book.id == bookId).update({Book.stock: Book.stock - 1})
+
     try:
-        db.session.add(borrow_book)
         db.session.commit()
         return True, borrow_book, None
     except:
@@ -184,6 +206,18 @@ def search_borrow(user_id: int=None, book_id: int=None, start_date: datetime = N
     return True, return_obj, None
 
 def delete_borrow(borrow_id: int):
+    borrow = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).first()
+    if borrow != None:
+        #If the borrow request is not approved, increase the book stock
+        if borrow.isApproved == False:
+            db.session.query(Book).filter(Book.id == borrow.bookId).update({Book.stock: Book.stock + 1})
+        elif borrow.hasReturned and not borrow.isDamagedOrLost: #Book has been returned and no irrecoverable damage or lost
+            db.session.query(Book).filter(Book.id == borrow.bookId).update({Book.stock: Book.stock + 1})
+        elif borrow.hasReturned and borrow.isDamagedOrLost: #Book has been returned and with irrecoverable damage or the book has been lost
+            #Since after borrowing the stock has already decremented by 1
+            db.session.query(Book).filter(Book.id == borrow.bookId).update({Book.stock: Book.stock})
+        else:
+            return False, None, BOOK_NOT_RETURNED_NOT_DELETABLE
     try:
         delete_status = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).delete()
         db.session.commit()
@@ -328,4 +362,29 @@ def most_recent_borrows(limit: int=10):
     result = db.session.query(BookBorrow, User.name, Book.title).join(User, BookBorrow.userId == User.id).join(Book, BookBorrow.bookId == Book.id) \
     .group_by(BookBorrow.id).order_by(desc(BookBorrow.startBorrow)).limit(limit).all()
     result = [asdict(item[0]) |{'username': item[1], 'title': item[2] } for item in result]
+    return True, result, None
+
+def set_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None):
+    with env_lock:
+        if default_borrow_time != None:
+            global borrow_time
+            set_key('./.env', 'DEFAULT_BORROW_TIMEOUT', str(default_borrow_time))
+            borrow_time = default_borrow_time
+        if overdue_fine_per_day != None:
+            global overdue_fine
+            set_key('./.env', 'OVERDUE_FINE_PER_DAY', str(overdue_fine_per_day))
+            overdue_fine = overdue_fine_per_day
+        if overdue_limit != None:
+            global overdue_limit_before_treated_as_lost
+            set_key('./.env', 'OVERDUE_DAYS_LIMIT_BEFORE_LOST', str(overdue_limit))
+            overdue_limit_before_treated_as_lost = overdue_limit
+        if damage_lost_fine != None:
+            global damage_and_lost_fine
+            set_key('./.env', 'DAMAGE_AND_LOST_FINE', str(damage_lost_fine))
+            damage_and_lost_fine = damage_lost_fine
+        if new_currency != None:
+            global currency
+            set_key('./.env', 'CURRENCY', str(new_currency))
+            currency = new_currency
+    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency}
     return True, result, None
