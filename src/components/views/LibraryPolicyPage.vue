@@ -14,7 +14,7 @@
         </h3>
         <div class="" id="overduePolicyText">
             <ul v-if="borrow_policy_constants !== null">
-                <li><span>Overdue fines will be applicable if the item(s) is/are not returned before 1 hours after the end borrow date.
+                <li><span>Overdue fines will be applicable if the item(s) is/are not returned before 12 hours after the end borrow date.
                 </span></li>
                 <li><span>For each day overdue (the 12 first hours overdue is also counted if the items aren't returned before that time)
                     will be {{ borrow_policy_constants.currency + " " + borrow_policy_constants.overdue_fine }}/day.
