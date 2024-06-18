@@ -271,6 +271,10 @@ def get_borrow_policies():
         success, result, error = get_borrow_policy_constants()
         return get_status_object_json(success, result, error), 200
     elif request.method == 'POST' or request.method == 'PUT':
+        success, role, error = get_current_user_role()
+        if not success or role != 'admin':
+            return get_status_object_json(success, role, error), 403
+        
         overdue_fine = request.form.get('overdue_fine')
         overdue_limit = request.form.get('overdue_limit')
         default_borrow_days = request.form.get('default_borrow_days')
