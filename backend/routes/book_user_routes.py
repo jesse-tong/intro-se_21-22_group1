@@ -276,7 +276,7 @@ def get_borrow_policies():
         default_borrow_days = request.form.get('default_borrow_days')
         damage_and_lost_fine = request.form.get('damage_and_lost_fine')
         currency = request.form.get('currency')
-
+        other_policies = request.form.get('other_policies')
         try:
             overdue_fine = float(overdue_fine) if overdue_fine != None else None
             overdue_limit = int(overdue_limit) if overdue_limit != None else None
@@ -285,11 +285,11 @@ def get_borrow_policies():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = set_policies(default_borrow_time=default_borrow_days, 
+        success, result, error = set_library_policies_controller(default_borrow_time=default_borrow_days, 
                                               overdue_fine_per_day= overdue_fine,
                                               overdue_limit=overdue_limit,
                                               damage_lost_fine=damage_and_lost_fine,
-                                              new_currency=currency)
+                                              new_currency=currency, new_other_policies=other_policies)
         
         return get_status_object_json(success, result, error), 200
 

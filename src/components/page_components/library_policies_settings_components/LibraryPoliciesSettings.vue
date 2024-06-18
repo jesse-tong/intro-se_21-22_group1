@@ -34,12 +34,13 @@
                 <option value="VND">Vietnamese Dong (VND)</option>
             </select>
         </div>
-        <div class="col-12 mt-2">
-            <button @click="updateBorrowSettings" class="mb-2 btn btn-success"><span>Update borrow policies</span></button>
-        </div>
         <div class="col-12 mt-3">
             <MdEditor v-model="libraryPolicyText" :language="en-US" :codeTheme="a11y"/>
         </div>
+        <div class="col-12 mt-2">
+            <button @click="updateBorrowSettings" class="mb-2 btn btn-success"><span>Update borrow policies</span></button>
+        </div>
+        
     </div>
 </template>
 <script>
@@ -67,6 +68,7 @@
                     this.overdueLimit = response.data.result.overdue_time_limit;
                     this.damageAndLostFine = response.data.result.damage_and_lost_fine;
                     this.currency = response.data.result.currency;
+                    this.libraryPolicyText = response.data.result.other_policies;
                   }else {
                     this.$notify({
                       title: "Get current borrow settings failed",
@@ -124,6 +126,7 @@
                 }
 
                 borrowSettings.currency = this.currency;
+                borrowSettings.other_policies = this.libraryPolicyText;
 
                 axios.postForm('/api/borrow-policies', borrowSettings).then(response => {
                     if (response.data != undefined && response.data.success != undefined 
@@ -147,6 +150,9 @@
                             type: "success"
                     });
                 })
+            },
+            updateOtherPolicies(){
+
             }
         },
         created(){
