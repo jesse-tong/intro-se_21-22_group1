@@ -31,6 +31,7 @@
     "font-awesome": "^4.7.0",
     "marked": "^13.0.0",
     "md-editor-v3": "^4.16.9",
+    "mermaid": "^10.9.1",
     "mocha": "^10.4.0",
     "pdfjs-dist": "^4.0.379",
     "pinia": "^2.1.7",

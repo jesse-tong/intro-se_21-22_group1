@@ -10,24 +10,25 @@ from datetime import datetime, timedelta, timezone
 from dateutil.parser import parse as dateparse
 from global_vars.constants import *
 from global_vars.init_env import *
+from controller.library_controller import update_policies, get_policies
 from dataclasses import asdict
 from dotenv import set_key, load_dotenv
 from threading import Thread, Lock
 from controller.book_controller import increment_book_stock, decrement_book_stock, is_book_out_of_stock
 
 try:
-    borrow_time = float(os.environ.get('DEFAULT_BORROW_TIMEOUT')) #Default borrow days
-    overdue_fine = float(os.environ.get('OVERDUE_FINE_PER_DAY'))
-    overdue_limit_before_treated_as_lost = int(os.environ.get('OVERDUE_DAYS_LIMIT_BEFORE_LOST'))
-    damage_and_lost_fine = float(os.environ.get('DAMAGE_AND_LOST_FINE'))
-    currency = os.environ.get('CURRENCY')
+    library_policies = get_policies()
+    if library_policies != None:
+        id, borrow_time, overdue_fine, overdue_limit_before_treated_as_lost, \
+            damage_and_lost_fine, currency, other_policies = library_policies
 except:
-    raise ValueError('Cannot find variables in the environment file, please check again')
+    raise ValueError('Error getting variables in the library policies database, please check the server.')
 
 env_lock = Lock()
 
 def get_borrow_policy_constants():
-    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency}
+    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 
+              'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency, 'other_policies': other_policies}
     return True, result, None
 
 #Default if start_date is null is the current date
@@ -364,27 +365,15 @@ def most_recent_borrows(limit: int=10):
     result = [asdict(item[0]) |{'username': item[1], 'title': item[2] } for item in result]
     return True, result, None
 
-def set_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None):
+def set_library_policies_controller(default_borrow_time: int=None, overdue_fine_per_day: float=None, overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None, new_other_policies: str=None):
+    global id, borrow_time, overdue_fine, overdue_limit_before_treated_as_lost, damage_and_lost_fine, currency, other_policies
     with env_lock:
-        if default_borrow_time != None:
-            global borrow_time
-            set_key('./.env', 'DEFAULT_BORROW_TIMEOUT', str(default_borrow_time))
-            borrow_time = default_borrow_time
-        if overdue_fine_per_day != None:
-            global overdue_fine
-            set_key('./.env', 'OVERDUE_FINE_PER_DAY', str(overdue_fine_per_day))
-            overdue_fine = overdue_fine_per_day
-        if overdue_limit != None:
-            global overdue_limit_before_treated_as_lost
-            set_key('./.env', 'OVERDUE_DAYS_LIMIT_BEFORE_LOST', str(overdue_limit))
-            overdue_limit_before_treated_as_lost = overdue_limit
-        if damage_lost_fine != None:
-            global damage_and_lost_fine
-            set_key('./.env', 'DAMAGE_AND_LOST_FINE', str(damage_lost_fine))
-            damage_and_lost_fine = damage_lost_fine
-        if new_currency != None:
-            global currency
-            set_key('./.env', 'CURRENCY', str(new_currency))
-            currency = new_currency
-    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency}
+        success, error_code = update_policies(default_borrow_time, overdue_fine_per_day, overdue_limit, damage_lost_fine, new_currency, new_other_policies)
+        if success == True:
+            library_policies = get_policies()
+            id, borrow_time, overdue_fine, overdue_limit_before_treated_as_lost, \
+            damage_and_lost_fine, currency, other_policies = library_policies
+            
+    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 
+              'currency': currency, 'other_policies': other_policies}
     return True, result, None
