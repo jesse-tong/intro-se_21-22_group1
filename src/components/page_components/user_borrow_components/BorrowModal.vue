@@ -50,7 +50,7 @@
             },
             data(){
                 return{
-                    endBorrow: 1,
+                    endBorrow: 14,
                     borrowBookId: this.$props.bookId,
                     modalInstance: null,
                 }
