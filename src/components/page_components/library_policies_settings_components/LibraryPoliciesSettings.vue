@@ -35,10 +35,43 @@
             </select>
         </div>
         <div class="col-12 mt-3">
+            <p class="form-text">Enter other policy text (such as other borrow policies, data policies, policies when using library,...) here</p>
             <MdEditor v-model="libraryPolicyText" :language="en-US" :codeTheme="a11y"/>
         </div>
         <div class="col-12 mt-2">
             <button @click="updateBorrowSettings" class="mb-2 btn btn-success"><span>Update borrow policies</span></button>
+        </div>
+        
+    </div>
+    <h4 class="ms-4 me-3 mt-2 ">Contact information</h4>
+    <div class="row ms-3 me-3">
+        <div class="col-12 col-xl-6 mb-2">
+            <label for="contactEmail" class="form-label"><span>Contact email </span></label>
+            <input type="text" class="form-control" id="contactEmail" v-model="contactEmail"/>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" v-model="notUpdateContactEmail" id="notUpdateContactEmail">
+                <label for="notUpdateContactEmail" class="form-check-label"><span>Not updating contact email</span></label>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6 mb-2">
+            <label for="contactAddress" class="form-label"><span>Contact address </span></label>
+            <input type="text" class="form-control" id="contactAddress" v-model="contactAddress"/>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" v-model="notUpdateContactAddress" id="notUpdateContactAddress">
+                <label for="notUpdateContactAddress" class="form-check-label"><span>Not updating contact address</span></label>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6 mb-2">
+            <label for="contactPhoneNumber" class="form-label"><span>Contact phone number: </span></label>
+            <input type="text" class="form-control" id="contactPhoneNumber" v-model="contactPhoneNumber"/>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" v-model="notUpdateContactPhoneNumber" id="notUpdateContactPhoneNumber">
+                <label for="notUpdateContactPhoneNumber" class="form-check-label"><span>Not updating contact phone number</span></label>
+            </div>
+        </div>
+        
+        <div class="col-12 mt-2">
+            <button @click="updateContacts" class="mb-2 btn btn-success"><span>Update borrow policies</span></button>
         </div>
         
     </div>
@@ -54,7 +87,14 @@
                 overdueLimit: null,
                 damageAndLostFine: null,
                 currency: null,
-                libraryPolicyText: 'Enter other policy text (such as other borrow policies, data policies, policies when using library,...) here'
+                libraryPolicyText: '',
+
+                contactEmail: '',
+                contactPhoneNumber: '',
+                contactAddress: '',
+                notUpdateContactEmail: false,
+                notUpdateContactAddress: false,
+                notUpdateContactPhoneNumber: false
             } 
         },
         components: {
@@ -140,23 +180,86 @@
                         this.$notify({
                             title: "Update borrow policies failed!",
                             text: "Update borrow policies failed!",
-                            type: "success"
+                            type: "error"
                         });
                     }
                 }).catch(err => {
                     this.$notify({
                             title: "Update borrow policies failed!",
                             text: "Update borrow policies failed!",
-                            type: "success"
+                            type: "error"
                     });
                 })
             },
-            updateOtherPolicies(){
+            getContacts(){
+                axios.get('/api/contacts').then(response => {
+                  if (response.data.success === true){    
+                    this.contactAddress = response.data.result.address;
+                    this.contactEmail = response.data.result.email;
+                    this.contactPhoneNumber = response.data.result.phone_number;
+                  }else {
+                    this.$notify({
+                      title: "Get contacts failed",
+                      text: "Get contacts failed",
+                      type: "error"
+                    });
+                  }
+                }).catch(err=>{
+                    this.$notify({
+                      title: "Get contacts failed",
+                      text: "Get contacts failed",
+                      type: "error"
+                    });
+                })
+            },
+            updateContacts(){
+                var contactSettings = {};
 
-            }
+                if (this.notUpdateContactAddress){
+                    contactSettings.address = null;
+                }else {
+                    contactSettings.address = this.contactAddress;
+                }
+
+                if (this.notUpdateContactEmail){
+                    contactSettings.email = null;
+                }else {
+                    contactSettings.email = this.contactEmail;
+                }
+                
+                if (this.notUpdateContactPhoneNumber){
+                    contactSettings.phone_number = null;
+                }else {
+                    contactSettings.phone_number = this.contactPhoneNumber;
+                }
+
+                axios.postForm('/api/contacts', contactSettings).then(response => {
+                    if (response.data != undefined && response.data.success != undefined 
+                    && response.data !== null && response.data.success === true){
+                        this.$notify({
+                            title: "Update library contacts successfully!",
+                            text: "Update library contacts successfully!",
+                            type: "success"
+                        });
+                    }else {
+                        this.$notify({
+                            title: "Update library contacts failed!",
+                            text: "Update library contacts failed!",
+                            type: "error"
+                        });
+                    }
+                }).catch(err => {
+                    this.$notify({
+                            title: "Update library contacts failed!",
+                            text: "Update library contacts failed!",
+                            type: "error"
+                    });
+                })
+            },
         },
         created(){
             this.getBorrowSettings();
+            this.getContacts();
         }
     }
 </script>

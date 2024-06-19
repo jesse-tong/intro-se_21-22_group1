@@ -71,6 +71,9 @@ def create_app(test_config=None):
     from routes.book_user_routes import book_user as book_user_blueprint
     app.register_blueprint(book_user_blueprint)
 
+    from routes.library_settings_route import library_settings_routes as library_settings_blueprint
+    app.register_blueprint(library_settings_blueprint)
+
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)

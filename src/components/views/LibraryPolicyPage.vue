@@ -32,7 +32,6 @@
 <script>
     //Most of the above text are based on these policies: https://www.ala.org/united/trustees/policies
     import axios from 'axios';
-    import { MdPreview, MdCatalog } from 'md-editor-v3';
     import 'md-editor-v3/lib/preview.css';
     import { marked } from 'marked';
     export default {
@@ -53,15 +52,15 @@
                     this.otherPolicies = policies;
                   }else {
                     this.$notify({
-                      title: "Get borrow policies failed, some part may be unavailable",
-                      text: "Get borrow policies failed, some part may be unavailable",
+                      title: "Get borrow policies failed, some parts may be unavailable",
+                      text: "Get borrow policies failed, some parts may be unavailable",
                       type: "error"
                     });
                   }
                 }).catch(err=>{
                     this.$notify({
-                      title: "Get borrow policies failed, some part may be unavailable",
-                      text: "Get borrow policies failed, some part may be unavailable",
+                      title: "Get borrow policies failed, some parts may be unavailable",
+                      text: "Get borrow policies failed, some parts may be unavailable",
                       type: "error"
                     });
                 })
