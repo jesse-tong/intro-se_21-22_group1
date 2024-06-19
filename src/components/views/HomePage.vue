@@ -65,9 +65,9 @@
                         <tr>
                             <td colspan="2">
                                 <span style="white-space: pre-wrap;">
-                                   Address: {{ contactAddress }} 
-                                   Email: {{ contactEmail }}
-                                   Phone number: {{ contactPhoneNumber }}
+                                    {{ 'Address: ' + contactAddress +'\n'
+                                    +  'Email: ' + contactEmail + '\n' 
+                                    +  'Phone number: ' + contactPhoneNumber + '\n' }}
                                 </span>
                             </td>
                         </tr>
