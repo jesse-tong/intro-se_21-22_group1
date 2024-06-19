@@ -326,3 +326,27 @@ def most_recent_borrow_route():
         return get_status_object_json(False, None, INVALID_PARAM), 400
     success, result, error = most_recent_borrows(limit)
     return get_status_object_json(success, result, error)
+
+@book_user.route('/api/favorite/<book_id>', methods=['GET', 'POST', 'DELETE'])
+def favourite_book(book_id):
+    try:
+        book_id = int(book_id)
+    except:
+        return get_status_object_json(False, None, INVALID_ID), 404
+    
+    if request.method == 'GET':
+        success, favorite_status, error = get_favorite(book_id)
+        return get_status_object_json(success, favorite_status, error), 200
+    elif request.method == 'POST':
+        if not current_user.is_authenticated:
+            return get_status_object_json(False, None, NOT_AUTHENTICATED)
+        
+        success, favorite_status, error = add_favorite(current_user.id, book_id)
+        return get_status_object_json(success, favorite_status, error), 200
+    
+    elif request.method == 'DELETE':
+        if not current_user.is_authenticated:
+            return get_status_object_json(False, None, NOT_AUTHENTICATED)
+        
+        success, favorite_status, error = remove_favorite(current_user.id, book_id)
+        return get_status_object_json(success, favorite_status, error), 200

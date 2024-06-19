@@ -3,7 +3,7 @@ from models.user_model import User
 from models.book_model import Book, BookFile
 from models.user_book import BookBorrow, BookFavorite
 from models.user_model import Comment
-from sqlalchemy import select, func, desc
+from sqlalchemy import select, func, desc, distinct
 from global_vars.database_init import db
 from global_vars.errors import *
 from datetime import datetime, timedelta, timezone
@@ -12,7 +12,7 @@ from global_vars.constants import *
 from global_vars.init_env import *
 from controller.library_controller import update_policies, get_policies
 from dataclasses import asdict
-from dotenv import set_key, load_dotenv
+from flask_login import current_user
 from threading import Thread, Lock
 from controller.book_controller import increment_book_stock, decrement_book_stock, is_book_out_of_stock
 
@@ -275,6 +275,10 @@ def add_favorite(userId: int, bookId: int):
     if not user or not book:
         return False, None, ADD_ENTRY_ERROR
     else:
+        favorite = db.session.query(BookFavorite).filter(BookFavorite.bookId == bookId) \
+        .filter(BookFavorite.userId == userId).first()
+        if favorite:
+            return True, favorite, None
         favorite = BookFavorite()
         favorite.userId = userId
         favorite.bookId = bookId
@@ -282,20 +286,19 @@ def add_favorite(userId: int, bookId: int):
         db.session.commit()
         return True, favorite, None
 
-def remove_favorite(userId: int, bookId: int, favoriteId: int):
+def remove_favorite(userId: int, bookId: int):
     user = db.session.query(User).filter(User.id == userId).first()
     book = db.session.query(Book).filter(Book.id == bookId).first()
     if not user or not book:
         return False, None, ADD_ENTRY_ERROR
     else:
-        rows_deleted = db.session.query(BookFavorite).filter(BookFavorite.userId == userId).filter(BookFavorite.bookId == bookId) \
-            .filter(BookFavorite.id == favoriteId).delete()
+        rows_deleted = db.session.query(BookFavorite).filter(BookFavorite.userId == userId).filter(BookFavorite.bookId == bookId).delete()
         db.session.commit()
         return True, rows_deleted, None
     
 def toggle_favourite(userId: int, bookId: int):
     favourite = db.session.query(BookFavorite).filter(BookFavorite.userId == userId).filter(BookFavorite.bookId == bookId).first()
-    if favourite != None:
+    if favourite == None:
         favorite = BookFavorite()
         favorite.userId = userId
         favorite.bookId = bookId
@@ -317,7 +320,17 @@ def toggle_favourite(userId: int, bookId: int):
             db.session.rollback()
             return False, None, DATABASE_ERROR
         
-
+def get_favorite(bookId: int):
+    is_user_mark_book_favorite = None
+    if current_user.is_authenticated:
+        favourite = db.session.query(BookFavorite).filter(BookFavorite.userId == current_user.id).filter(BookFavorite.bookId == bookId).first()
+        if favourite != None:
+            is_user_mark_book_favorite = True
+        else:
+            is_user_mark_book_favorite = False
+    
+    favourite_count_for_book = db.session.query(func.count(distinct(BookFavorite.userId))).filter(BookFavorite.bookId == bookId).first()[0]
+    return True, { 'favorite_count': favourite_count_for_book, 'is_book_favorite_by_user': is_user_mark_book_favorite },None
 
 def does_book_have_ebook(bookId: int):
     bookpdf = db.session.query(BookFile).filter(bookId == BookFile.bookId).all()

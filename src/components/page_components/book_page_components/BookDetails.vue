@@ -7,7 +7,7 @@
     <div class="container bg-light rounded-3">
       <nav class="navbar navbar-light sticky-top shadow-sm flex-wrap bg-light rounded-3 px-3">
         <a class="nav-link" href="#overview">Overview</a>
-        <a class="nav-link" href="#details">Details</a>
+        <a class="nav-link" href="#description">Description</a>
         <a class="nav-link" href="#comments">Comments/Reviews</a>
         <a class="nav-link" href="#related-books">Related Books</a>
       </nav>
@@ -15,7 +15,7 @@
         <div class="col col-12 col-md-4" >
           <div class="list-group">
             <div class="list-group-item d-flex justify-content-between align-items-center">
-                <img :src="apiSite + '/image/' + $props.bookId" style="max-height: 350px;" :alt="'Image for book: ' + book.title" class="m-auto">          
+                <img :src="apiSite + '/image/' + $props.bookId" style="max-height: 350px;" :alt="'Image for book: ' + book.title" class="m-auto book-img">          
             </div>
           <div class="list-group-item">
            <div class="btn-group" role="group" style="width: 100%;">
@@ -28,7 +28,8 @@
             </div>
          </div>
           <div class="list-group-item">
-          <button class="btn btn-secondary" style="width: 100%;">Favourite</button>
+          <button class="btn btn-secondary" style="width: 100%;" @click="favoriteBook" v-if="doesUserFavoriteBook == false">Favourite</button>
+          <button class="btn btn-secondary" style="width: 100%;" @click="unfavoriteBook" v-else>Unfavourite book</button>
           </div>
           <div class="list-group-item">
           <span class="d-flex mb-3 flex-column">
@@ -39,7 +40,7 @@
               </span>
             </div>
             <div>
-              <span class="mx-2">{{  'N/A' }} Favourites</span>
+              <span class="mx-2">{{  favoriteCount !== null ? favoriteCount : 'N/A' }} Favourites</span>
             </div>
             
           </span>
@@ -47,8 +48,8 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-8">
-          <h1 class="mb-3" style="font-family: Calibri;"><b>{{ book.title }}</b></h1>
+        <div class="col-12 col-md-8" id="overview">
+          <h1 class="mb-3" style="font-family: 'Calibri', 'Helvetica';"><b>{{ book.title }}</b></h1>
           <p class="text-muted">by <span v-for="author in book.authors">{{ author + ', ' }}</span></p>
           <ul class="list-group list-group-horizontal-md">
             <p class="list-group-item">Languages: 
@@ -63,7 +64,7 @@
             <p class="list-group-item">ISBN: {{ book.isbn }}</p>
           </ul> 
           <br class="br"/>
-          <h4><b>Book Description</b></h4>
+          <h4 id="description"><b>Book Description</b></h4>
           <span style="white-space: pre-wrap;">
             {{ book.description }}
           </span>
@@ -106,7 +107,9 @@
                 },
                 borrowModalShow: false,
                 ebookModalShow: false,
-                relatedBooks: []
+                relatedBooks: [],
+                favoriteCount: null,
+                doesUserFavoriteBook: false
             }
         },
         components: {
@@ -128,7 +131,9 @@
               if (this.rating === 'N/A' || this.rating === '' || this.rating === null){
                 return null;
               }else {
-                return Math.max(Math.round(parseFloat(this.rating) / 2), 5);
+                var stars = Math.round(parseFloat(this.rating) / 2);
+                if (stars > 5){ stars = 5; } else if (stars < 0) { stars = 0; }
+                return stars;
               }
             }
         },
@@ -136,6 +141,7 @@
           this.getBookData(this.$props.bookId);
           this.getRating(this.$props.bookId);
           this.getRelatedBooksByBorrow(this.$props.bookId);
+          this.getFavoriteCount();
         },
         methods: {
           getBookData(bookId){
@@ -209,7 +215,81 @@
                 });
                 return;
               })
+          },
+          getFavoriteCount(){
+            axios.get('/api/favorite/' + this.$props.bookId).then(response => {
+              if (response.data !== undefined && response.data !== null 
+              && response.status === 200 && response.data.success === true){
+                this.favoriteCount = response.data.result.favorite_count;
+                this.doesUserFavoriteBook = response.data.result.is_book_favorite_by_user;
+              }else {
+                this.$notify({
+                  title: 'Failed to get favorite counts',
+                    text: 'Failed to get favorite counts',
+                    type: 'error'
+                });
+              }
+            }).catch(err => {
+              this.$notify({
+                  title: 'Failed to get favorite counts',
+                    text: 'Failed to get favorite counts',
+                    type: 'error'
+              });
+            })
+          },
+          favoriteBook(){
+            axios.post('/api/favorite/' + this.$props.bookId).then(response => {
+              if (response.data !== undefined && response.data !== null 
+              && response.status === 200 && response.data.success === true){
+                this.$notify({
+                  title: 'Favorite book successfully!',
+                    text: 'Favorite book successfully!',
+                    type: 'success'
+                });
+              }else {
+                this.$notify({
+                    title: 'Failed to favorite book',
+                    text: 'Failed to favorite book.',
+                    type: 'error'
+                });
+              }
+            }).catch(err => {
+              this.$notify({
+                    title: 'Failed to favorite book',
+                    text: 'Failed to favorite book.',
+                    type: 'error'
+                });
+            }).finally(() => {
+              this.getFavoriteCount();
+            });
+          },
+          unfavoriteBook(){
+            axios.delete('/api/favorite/' + this.$props.bookId).then(response => {
+              if (response.data !== undefined && response.data !== null 
+              && response.status === 200 && response.data.success === true){
+                this.$notify({
+                  title: 'Unfavorite book successfully!',
+                    text: 'Unfavorite book successfully!',
+                    type: 'success'
+                });
+              }else {
+                this.$notify({
+                    title: 'Failed to unfavorite book',
+                    text: 'Failed to unfavorite book.',
+                    type: 'error'
+                });
+              }
+            }).catch(err => {
+              this.$notify({
+                    title: 'Failed to unfavorite book',
+                    text: 'Failed to unfavorite book.',
+                    type: 'error'
+                });
+            }).finally(() => {
+              this.getFavoriteCount();
+            });
           }
+
         },
     }
 </script>
