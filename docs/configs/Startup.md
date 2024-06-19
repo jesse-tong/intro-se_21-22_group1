@@ -34,3 +34,6 @@ All APIs through the backend follow this structure:
 
 Note that success is a boolean, result and error can be either a string (for result it must be a valid JSON object string) or null. 
 
+### Import data for testing
+
+If you use DBeaver or some management software for MariaDB, just connect to the database, open database-dump-library.sql and click on 'Run'
