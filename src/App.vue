@@ -16,11 +16,11 @@ onBeforeMount(() => {
 
 <template>
   <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true data-testid="notification"/>
-  <RouterView name="NavBar" />
-  <RouterView />
-  <RouterView name="footer" />
-  
-
+  <div>
+    <RouterView name="NavBar" />
+    <RouterView />
+    <RouterView name="footer" />
+  </div>
 </template>
 
 <style scoped>
