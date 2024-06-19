@@ -8,6 +8,7 @@ deleted_book_counter = Value('i', 0)
 
 db = SQLAlchemy()
 
+# Init the SQLite server that is used
 library_pols_db = sqlite3.connect('library_pols.db')
 
 library_pols_db.execute('''create table if not exists LIB_POLICIES 
@@ -20,10 +21,22 @@ library_pols_db.execute('''create table if not exists LIB_POLICIES
                         OTHER_POLICIES TEXT NOT NULL
                         )''')
 
+library_pols_db.execute('''create table if not exists LIB_CONTACTS 
+                        (ID INT PRIMARY KEY NOT NULL, 
+                        ADDRESS TEXT,
+                        PHONE_NUMBER TEXT,
+                        EMAIL TEXT
+                        )''')
+
 no_of_policies = library_pols_db.execute('SELECT COUNT(ID) FROM LIB_POLICIES').fetchone()[0]
+
+no_of_contacts = library_pols_db.execute('SELECT COUNT(ID) FROM LIB_CONTACTS').fetchone()[0]
 
 if no_of_policies == 0:
     library_pols_db.execute("INSERT INTO LIB_POLICIES VALUES (1, 14, 3000, 30, 50000, 'VND', ' ')")
+
+if no_of_contacts == 0:
+    library_pols_db.execute("INSERT INTO LIB_CONTACTS VALUES (1, '', '', '')")
 
 library_pols_db.commit()
 library_pols_db.close()

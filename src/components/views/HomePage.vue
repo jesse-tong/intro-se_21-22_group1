@@ -65,7 +65,9 @@
                         <tr>
                             <td colspan="2">
                                 <span style="white-space: pre-wrap;">
-                                   {{ "Address: 224 Hoang Hoa Tham, Phu Nhuan District\nEmail: Aaliyah23@hotmail.com\nPhone number: 313 711-5064" }} 
+                                   Address: {{ contactAddress }} 
+                                   Email: {{ contactEmail }}
+                                   Phone number: {{ contactPhoneNumber }}
                                 </span>
                             </td>
                         </tr>
@@ -91,6 +93,9 @@
                 borrowCount: 'N/A',
                 highestRatingBooks: [],
                 mostBorrowedBooks: [],
+                contactEmail: 'N/A',
+                contactAddress: 'N/A',
+                contactPhoneNumber: 'N/A',
                 LibraryImage
             }
         },
@@ -98,6 +103,7 @@
             this.getHighestRatingBooks();
             this.getMostBorrowedBooks();
             this.getBookCount(); this.getBorrowCount();
+            this.getContacts();
         },
         methods: {
             getHighestRatingBooks(){
@@ -228,6 +234,27 @@
                     
                 }).finally(()=>{
                 }) 
+            },
+            getContacts(){
+                axios.get('/api/contacts').then(response => {
+                  if (response.data.success === true){    
+                    this.contactAddress = response.data.result.address;
+                    this.contactEmail = response.data.result.email;
+                    this.contactPhoneNumber = response.data.result.phone_number;
+                  }else {
+                    this.$notify({
+                      title: "Get contacts failed",
+                      text: "Get contacts failed",
+                      type: "error"
+                    });
+                  }
+                }).catch(err=>{
+                    this.$notify({
+                      title: "Get contacts failed",
+                      text: "Get contacts failed",
+                      type: "error"
+                    });
+                })
             }
         },
         components: {
