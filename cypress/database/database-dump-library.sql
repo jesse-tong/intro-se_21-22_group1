@@ -70,13 +70,13 @@ CREATE TABLE `book` (
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
 INSERT INTO `book` VALUES
-(1,2,'Don Quixote',1605,'Don Quixote, novel published in two parts (part 1, 1605, and part 2, 1615) by Spanish writer Miguel de Cervantes, one of the most widely read classics of Western literature. Originally conceived as a parody of the chivalric romances that had long been in literary vogue, it describes realistically what befalls an aging knight who, his head bemused by reading such romances, sets out on his old horse Rocinante, with his pragmatic squire, Sancho Panza, to seek adventure. Widely and immediately translated (first English translation 1612), the novel was a great and continuing success and is considered a prototype of the modern novel.','1716619041010'),
-(4,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, 978-0486282114'),
+(1,3,'Don Quixote',1605,'Don Quixote, novel published in two parts (part 1, 1605, and part 2, 1615) by Spanish writer Miguel de Cervantes, one of the most widely read classics of Western literature. Originally conceived as a parody of the chivalric romances that had long been in literary vogue, it describes realistically what befalls an aging knight who, his head bemused by reading such romances, sets out on his old horse Rocinante, with his pragmatic squire, Sancho Panza, to seek adventure. Widely and immediately translated (first English translation 1612), the novel was a great and continuing success and is considered a prototype of the modern novel.','1716619041010'),
+(4,1,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, 978-0486282114'),
 (15,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13-0486282114'),
-(17,2,'A Court of Thorns and Roses',2015,' The sexy, action-packed first book in the #1 New York Times bestselling Court of Thorns and Roses series from Sarah J. Maas.\r\n\r\nWhen nineteen-year-old huntress Feyre kills a wolf in the woods, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she knows about only from legends, Feyre discovers that her captor is not truly a beast, but one of the lethal, immortal faeries who once ruled her world.\r\n','1526605392'),
+(17,4,'A Court of Thorns and Roses',2015,' The sexy, action-packed first book in the #1 New York Times bestselling Court of Thorns and Roses series from Sarah J. Maas.\r\n\r\nWhen nineteen-year-old huntress Feyre kills a wolf in the woods, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she knows about only from legends, Feyre discovers that her captor is not truly a beast, but one of the lethal, immortal faeries who once ruled her world.\r\n','1526605392'),
 (20,0,'Cold Fire',2015,'As a DEA agent, Jeremiah “Hawk” Tate was one of the best at taking down drug traffickers. Then the cartels struck back—and destroyed everything he held dear.\r\n\r\nFive years later, Hawk has retreated from society and is living a quiet life as a Montana wilderness guide. He’s done with the DEA, done with the criminals, and done with the pain left over from his past. But his past isn’t done with him.',' ‎B00QKUW8UO'),
 (24,0,'Cold Fire',2015,'','1222131414141'),
-(61,99998,'Test book 2',2024,'Test description','1111111111111'),
+(61,100000,'Test book 2',2024,'Test description','1111111111111'),
 (74,0,'Test book 1',2024,'Test description','1111111');
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -137,7 +137,7 @@ CREATE TABLE `bookborrow` (
   KEY `userId` (`userId`),
   CONSTRAINT `bookborrow_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookborrow_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,21 +147,17 @@ CREATE TABLE `bookborrow` (
 LOCK TABLES `bookborrow` WRITE;
 /*!40000 ALTER TABLE `bookborrow` DISABLE KEYS */;
 INSERT INTO `bookborrow` VALUES
-(17,4,1,'2024-04-25 19:41:56','2024-04-30 12:00:00',1,'2024-05-25 19:42:58',0,1),
-(18,4,1,'2024-04-04 03:00:00','2024-06-06 03:00:00',1,'2024-05-05 03:00:00',0,1),
+(18,4,1,'2024-04-04 03:00:00','2024-06-06 03:00:00',1,'2024-07-09 03:00:00',0,1),
 (19,17,1,'2024-04-04 04:11:00','2024-06-06 04:11:00',1,'2024-05-24 04:11:00',0,1),
 (20,1,1,'2024-05-06 03:00:00','2024-06-06 03:00:00',1,'2024-05-22 02:00:00',0,1),
 (21,1,1,'2024-04-26 11:07:20','2024-04-30 12:00:00',1,'2024-05-29 00:00:00',0,1),
-(22,17,1,'2024-05-01 12:33:15','2024-05-07 16:59:59',0,NULL,0,0),
-(24,1,4,'2024-05-25 11:42:53','2024-06-29 16:59:59',0,NULL,0,1),
-(25,17,4,'2024-05-27 10:40:42','2024-06-10 16:59:59',0,NULL,0,0),
-(26,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(27,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(22,17,1,'2024-05-01 12:33:15','2024-05-07 16:59:59',1,'2024-06-17 04:10:00',0,1),
+(24,1,4,'2024-05-25 11:42:53','2024-06-29 16:59:59',1,'2024-06-17 03:00:00',0,1),
+(27,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',1,'2024-06-16 03:00:00',0,1),
 (28,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (29,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (31,17,22,'2024-06-09 14:51:50','2024-06-23 16:59:59',1,'2024-06-10 02:15:00',0,1),
-(32,1,21,'2024-06-10 03:00:00','2024-06-18 15:00:00',0,NULL,0,0),
-(33,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
+(32,1,21,'2024-06-10 03:00:00','2024-06-18 15:00:00',1,'2024-06-16 04:01:00',0,1),
 (34,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (35,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (36,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
@@ -171,8 +167,7 @@ INSERT INTO `bookborrow` VALUES
 (40,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (41,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
 (42,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(43,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(44,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0);
+(43,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0);
 /*!40000 ALTER TABLE `bookborrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +187,7 @@ CREATE TABLE `bookfavorite` (
   KEY `userId` (`userId`),
   CONSTRAINT `bookfavorite_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookfavorite_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,6 +196,8 @@ CREATE TABLE `bookfavorite` (
 
 LOCK TABLES `bookfavorite` WRITE;
 /*!40000 ALTER TABLE `bookfavorite` DISABLE KEYS */;
+INSERT INTO `bookfavorite` VALUES
+(7,61,4);
 /*!40000 ALTER TABLE `bookfavorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +374,7 @@ CREATE TABLE `comment` (
   KEY `bookId` (`bookId`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +395,9 @@ INSERT INTO `comment` VALUES
 (13,4,'test',9,1),
 (14,4,'Test content',9,1),
 (15,4,'Test content',8,1),
-(16,16,'Test comment',7,1);
+(16,16,'Test comment',7,1),
+(18,21,'Test book',1,61),
+(19,4,'',0,61);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,6 +500,7 @@ CREATE TABLE `user_info` (
   `borrowLeft` int(11) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `address` varchar(500) DEFAULT NULL,
+  `imagePath` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
@@ -514,9 +514,9 @@ CREATE TABLE `user_info` (
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` VALUES
-(1,1,21,'other',5,5,'0888888888','Some address'),
-(2,4,21,'other',5,5,'0988888888','Some address'),
-(3,22,21,'male',5,5,'089777777','Some address, HCM City');
+(1,1,21,'other',5,5,'0888888888','Some address',NULL),
+(2,4,21,'male',5,5,'0988888888','Some address',NULL),
+(3,22,21,'male',5,5,'089777777','Some address, HCM City',NULL);
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -560,4 +560,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-16 23:04:57
+-- Dump completed on 2024-06-20 20:24:51

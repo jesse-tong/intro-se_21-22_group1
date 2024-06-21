@@ -12,6 +12,7 @@ from controller.user_controller import get_current_user_role
 from controller.comment_controller import get_book_avg_rating
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
+from utils.file_utils import get_save_book_image_path
 
 book_routes = Blueprint('book_routes', __name__)
 CORS(book_routes, supports_credentials=True, expose_headers=['X-CSRFToken'])
@@ -197,14 +198,13 @@ def get_book_image(book_id):
         book = db.session.query(Book).filter(Book.id == book_id).first()
         if not book:
             return get_status_object_json(False, None, INVALID_ID), 404
-        image_path = os.path.join(os.path.abspath(os.environ.get('IMAGE_STORAGE_PATH')), str(book_id))
-        image_path = os.path.join(image_path, 'main_image')
+        image_path = get_save_book_image_path(book_id, 'main_image')
         if os.path.isfile(image_path):
             return send_file(image_path, as_attachment=False), 200
         else:
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
 
-@book_routes.route('/api/upload-ebook/<book_id>', methods=['GET', 'POST'])
+@book_routes.route('/api/upload-ebook/<book_id>', methods=['GET', 'POST', 'DELETE'])
 def upload_ebook(book_id):
     if request.method == 'GET':
         #This one to check if there is an ebook for that book with book_id ID
@@ -233,7 +233,7 @@ def upload_ebook(book_id):
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 400
         ebook_filename = file.filename
         try:
-            ebook_extension = file.content_type.split('/')[-1]
+            ebook_extension = file.mimetype.split('/')[-1]
             if ebook_extension != 'pdf':
                 return get_status_object_json(False, None, INVALID_FILE)
         except:
@@ -251,12 +251,32 @@ def upload_ebook(book_id):
             saved_ebook_data.bookId = book_id
         else:
             create_new = False
+        
         if create_new == True:
             db.session.add(saved_ebook_data)
         saved_ebook_data.fileSrc = ebook_filename
         db.session.commit()
 
         return get_status_object_json(True, True, None)
+    elif request.method == 'DELETE':
+        try:
+            book_id = int(book_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        book = db.session.query(Book).filter(Book.id == book_id).first()
+        if not book:
+            return get_status_object_json(False, None, INVALID_ID), 400
+
+        try:
+            saved_ebook_data = db.session.query(BookFile).filter(BookFile.bookId == book_id).first()
+            if saved_ebook_data != None and saved_ebook_data.fileSrc != None:
+                delete_ebook_file(book_id, saved_ebook_data.fileSrc)
+            db.session.query(BookFile).filter(BookFile.bookId == book_id).delete()
+            db.session.commit()
+            return get_status_object_json(True, None, None), 200
+        except:
+            return get_status_object_json(False, None, DELETE_ERROR), 409
+
 
 @book_routes.route('/ebook/<book_id>', methods=['GET'])
 def get_ebook(book_id):

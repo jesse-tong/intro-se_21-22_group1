@@ -1,7 +1,9 @@
-from flask import Blueprint, request, make_response, jsonify
+import os
+from flask import Blueprint, request, make_response, jsonify, send_file
 from global_vars.database_init import db
+from models.user_model import User, UserInfo
 from flask_login import logout_user, current_user
-import json
+from utils.file_utils import save_user_image, delete_user_image, delete_user_image_dir, get_save_user_image_path
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
@@ -117,3 +119,86 @@ def search_user_route():
 
     success, result, error = search_user(user_id, name, email)
     return get_status_object_json(success, result, error)
+
+@auth.route('/api/profile_image/<user_id>', methods=['GET', 'POST', 'DELETE'])
+def profile_image_routes(user_id):
+    if request.method == 'GET':
+        try:
+            user_id = int(user_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 404
+        user = db.session.query(User).filter(User.id == user_id).first()
+        if not user:
+            return get_status_object_json(False, None, INVALID_ID), 404
+        
+        saved_user_image_path = db.session.query(UserInfo).filter(UserInfo.imagePath).first()
+
+        if saved_user_image_path == None:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+        user_image_name = saved_user_image_path.imagePath
+
+        user_image_path = get_save_user_image_path(user_id, user_image_name)
+
+        if os.path.isfile(user_image_path):
+            return send_file(user_image_path, as_attachment=False), 200
+        else:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+    elif request.method == 'POST':
+        try:
+            user_id = int(user_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        user = db.session.query(User).filter(User.id == user_id).first()
+
+        if not user:
+            return get_status_object_json(False, None, INVALID_ID), 400
+        file = request.files.get('user_image')
+        if not file:
+            return get_status_object_json(False, None, NO_FILE_UPLOADED), 400
+        user_image_name = file.filename
+        try:
+            user_image_extension = file.mimetype.split('/')[0]
+            if user_image_extension != 'image':
+                return get_status_object_json(False, None, INVALID_FILE)
+        except:
+            return get_status_object_json(False, None, INVALID_FILE)
+        
+        image_bytes = file.read()
+        save_user_image(image_bytes, user_id, user_image_name)
+        saved_user_info = db.session.query(UserInfo).filter(UserInfo.userId == user_id).first()
+        if saved_user_info != None and saved_user_info.imagePath != None:
+            delete_user_image(user_id, saved_user_info.imagePath)
+        
+        if saved_user_info == None:
+            create_new = True
+            saved_user_info = UserInfo()
+            saved_user_info.userId == user_id
+        else:
+            create_new = False
+        
+        if create_new == True:
+            db.session.add(saved_user_info)
+        saved_user_info.imagePath = user_image_name
+        db.session.commit()
+
+        return get_status_object_json(True, True, None)
+    elif request.method == 'DELETE':
+        try:
+            user_id = int(user_id)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        user = db.session.query(User).filter(User.id == user_id).first()
+        if not user:
+            return get_status_object_json(False, None, INVALID_ID), 400
+
+        try:
+            saved_user_info = db.session.query(UserInfo).filter(UserInfo.userId == user_id).first()
+            if saved_user_info != None and saved_user_info.imagePath != None:
+                delete_user_image(user_id, saved_user_info.imagePath)
+                delete_user_image_dir(user_id)
+
+            db.session.query(UserInfo).filter(UserInfo.userId == user_id).delete()
+            db.session.commit()
+            return get_status_object_json(True, None, None), 200
+        except:
+            return get_status_object_json(False, None, DELETE_ERROR), 409
