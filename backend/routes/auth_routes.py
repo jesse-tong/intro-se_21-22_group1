@@ -133,12 +133,12 @@ def profile_image_routes(user_id):
         
         saved_user_image_path = db.session.query(UserInfo).filter(UserInfo.imagePath).first()
 
-        if saved_user_image_path == None:
+        if saved_user_image_path == None or saved_user_image_path.imagePath == None:
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
         user_image_name = saved_user_image_path.imagePath
-
+        print(user_image_name)
         user_image_path = get_save_user_image_path(user_id, user_image_name)
-
+        print(user_image_path)
         if os.path.isfile(user_image_path):
             return send_file(user_image_path, as_attachment=False), 200
         else:
