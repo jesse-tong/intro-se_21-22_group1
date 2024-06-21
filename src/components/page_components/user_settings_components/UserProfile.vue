@@ -3,7 +3,7 @@
     <div class="row ms-3 me-3">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <img class="rounded-circle mt-5" width="150px" :src="apiSite + '/api/profile_image/' + userInfo.id || 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'">
                 <span class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</span>
                 <span class="text-black-50">{{ userInfo !== null ? (userInfo.email !== null ? userInfo.email : 'N/A') : 'N/A' }}</span>
                 <router-link class="btn btn-secondary mt-3 " role="button" to="/user/settings"><span>User settings</span></router-link>
