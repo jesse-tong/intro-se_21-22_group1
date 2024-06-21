@@ -45,3 +45,4 @@ class UserInfo(db.Model):
     borrowLeft: int = db.Column(db.Integer)
     phone:str = db.Column(db.String(20))
     address: str = db.Column(db.String(500))
+    imagePath: str = db.Column(db.String(300)) 

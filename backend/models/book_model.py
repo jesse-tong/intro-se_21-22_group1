@@ -3,6 +3,9 @@ from flask_login import UserMixin
 from sqlalchemy import CheckConstraint
 from dataclasses import dataclass
 
+#Since Linux, MacOS,... support maximum file name length of 255-257 characters, 
+# 500 characters file name should be enough, though later Windows versions (since Windows 10)
+#now have 32767 characters maximum file name length
 @dataclass
 class Book(db.Model):
     __tablename__ = 'book'
