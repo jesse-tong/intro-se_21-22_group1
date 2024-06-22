@@ -15,7 +15,7 @@
         <div class="col col-12 col-md-4" >
           <div class="list-group">
             <div class="list-group-item d-flex justify-content-between align-items-center">
-                <img :src="apiSite + '/image/' + $props.bookId" style="max-height: 350px;" :alt="'Image for book: ' + book.title" class="m-auto book-img">          
+                <img :src="apiSite + '/image/' + $props.bookId + '?id=' + getRandomId" style="max-height: 350px; max-width: 100%" :alt="'Image for book: ' + book.title" class="m-auto book-img">          
             </div>
           <div class="list-group-item">
            <div class="btn-group" role="group" style="width: 100%;">
@@ -91,6 +91,7 @@
     import BorrowModal from '../user_borrow_components/BorrowModal.vue';
     import CommentSection from '../comment_components/CommentSection.vue';
     import EbookModal from '../EbookModal.vue';
+    import {faker} from '@faker-js/faker';
     export default {
         data() {
             return {
@@ -135,6 +136,11 @@
                 if (stars > 5){ stars = 5; } else if (stars < 0) { stars = 0; }
                 return stars;
               }
+            },
+            getRandomId(){
+              //This will generated a random uuid and added to img src as a query 
+              //so that Vue will not use the cached image but the updated one instead
+                return faker.string.uuid();
             }
         },
         created(){

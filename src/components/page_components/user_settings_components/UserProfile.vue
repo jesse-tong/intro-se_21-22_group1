@@ -5,7 +5,9 @@
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <div class="rounded-circle mt-5" width="150px" height="150px">
-                    <img class="rounded-circle mt-5 border border-2" width="150px" height="150px" :src="apiSite + '/api/profile_image/' + ($props.userId !== null ? $props.userId : accountStore.userId) || emptyImage" @click="imageModalShow = true">
+                    <img class="rounded-circle mt-5 border border-2" width="150px" height="150px" 
+                    :src="apiSite + '/api/profile_image/' + ($props.userId !== null ? $props.userId : accountStore.userId) + '?session=' + getRandomId || emptyImage" 
+                    @click="imageModalShow = true">
                 </div>
                 
                 <span class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</span>
@@ -65,6 +67,7 @@
     import { useAccountStore } from '../../stores/LoginInfoStore';
     import emptyImage from '../../../assets/BlankImage.svg';
     import ImageUpdateModal from './ImageUpdateModal.vue';
+    import { Faker, faker } from '@faker-js/faker';
     
     export default {
         data(){
@@ -126,6 +129,12 @@
                     type: "error"
                   })
                 })
+            }
+        },
+        computed: {
+            ...mapStores(useAccountStore),
+            getRandomId(){
+                return faker.string.uuid();
             }
         }
     }

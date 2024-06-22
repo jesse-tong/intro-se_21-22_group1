@@ -12,8 +12,9 @@
                         <div class="col-md-4" v-for="j in 3" :key="j">
                             <div v-if="(i - 1) * 3 + (j - 1) <= books.length - 1">
                                 <div class="card mb-3">
-                                    <img :src="apiSite + '/image/' + $props.books[(i - 1) * 3 + (j - 1)].id" class="card-img-top" 
-                                    :style="{ minHeight: $props.imgHeight + 'px', maxHeight: $props.imgHeight + 'px'} " :alt="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title" :title="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title"/>
+                                    <img :src="apiSite + '/image/' + $props.books[(i - 1) * 3 + (j - 1)].id + '?id=' + getRandomId" class="card-img-top" 
+                                    :style="{ minHeight: $props.imgHeight + 'px', maxHeight: $props.imgHeight + 'px'} " :alt="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title" 
+                                    :title="'Book Cover for ' + books[(i - 1) * 3 + (j - 1)].title"/>
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $props.books[(i - 1) * 3 + (j - 1)].title }}</h5>
                                         <RouterLink :to="'/book/' + $props.books[(i - 1) * 3 + (j - 1)].id" class="btn btn-primary">View Book</RouterLink>
@@ -38,6 +39,7 @@
 
 <script>
 import { RouterLink } from 'vue-router';
+import { faker } from '@faker-js/faker';
 
 export default {
   props: {
@@ -59,6 +61,11 @@ export default {
     numSlides() {
         let numSlides = Math.ceil(this.$props.books.length / 3);
         return numSlides;
+    },
+    getRandomId(){
+        //This will generated a random uuid and added to img src as a query 
+        //so that Vue will not use the cached image but the updated one instead
+        return faker.string.uuid();
     }
   }
 };
