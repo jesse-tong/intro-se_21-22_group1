@@ -1,18 +1,23 @@
 <template>
+    <ImageUpdateModal :showModal="imageModalShow" @closeModal="imageModalShow = false" ref="updateImageModal" :userId="$props.userId !== null ? $props.userId : accountStore.userId" />
     <h3 class="mt-2 ms-3 me-3">User profile:</h3>
     <div class="row ms-3 me-3">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" :src="apiSite + '/api/profile_image/' + userInfo.id || 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'">
+                <div class="rounded-circle mt-5" width="150px" height="150px">
+                    <img class="rounded-circle mt-5 border border-2" width="150px" height="150px" :src="apiSite + '/api/profile_image/' + ($props.userId !== null ? $props.userId : accountStore.userId) || emptyImage" @click="imageModalShow = true">
+                </div>
+                
                 <span class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</span>
                 <span class="text-black-50">{{ userInfo !== null ? (userInfo.email !== null ? userInfo.email : 'N/A') : 'N/A' }}</span>
                 <router-link class="btn btn-secondary mt-3 " role="button" to="/user/settings"><span>User settings</span></router-link>
+                <button class="btn btn-secondary mt-1" role="button" @click="imageModalShow = true"><span>Change user image</span></button>
             </div>
         </div>
         <div class="col-12 col-md-4">
             <div class=" mb-2">
                 <label for="userId" class="form-label"><span>User ID: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.id : 'N/A' " class="form-control" id="userId"/>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.userId : 'N/A' " class="form-control" id="userId"/>
             </div>
             <div class=" mb-2">
                 <label for="userEmail" class="form-label"><span>Email: </span></label>
@@ -58,6 +63,9 @@
     import axios from 'axios';
     import { mapStores } from 'pinia';
     import { useAccountStore } from '../../stores/LoginInfoStore';
+    import emptyImage from '../../../assets/BlankImage.svg';
+    import ImageUpdateModal from './ImageUpdateModal.vue';
+    
     export default {
         data(){
             return {
@@ -68,12 +76,23 @@
                     email: 'N/A',
                     gender: 'N/A',
                     email: 'N/A',
-                    id: 'N/A',
+                    userId: 'N/A',
                     maxBorrow: 'N/A',
                     name: 'N/A',
                     phone: 'N/A',
                     role: 'N/A'
-                }
+                },
+                emptyImage,
+                imageModalShow: false
+            }
+        },
+        components: {
+            ImageUpdateModal
+        },
+        props: {
+            userId: {
+                type: [String, null],
+                default: null
             }
         },
         created(){
@@ -89,8 +108,8 @@
         },
         methods: {
             getUserProfile(){
-                
-                axios.get('/auth/profile').then(response => {
+                //Default will get current logged user profile userId prop is null
+                axios.get('/auth/profile' + (this.$props.userId !== null ? '/' + this.$props.userId : '')).then(response => {
                   if (response.data.success === true){    
                     this.userInfo = response.data.result;
                   }else {

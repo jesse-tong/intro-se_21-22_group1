@@ -106,6 +106,17 @@ def profile_route():
             result = asdict(result[0]) | asdict(result[1])
         return get_status_object_json(success, result, error), 200
     
+@auth.route('/auth/profile/<user_id>', methods=['GET'])
+def profile_route_with_id(user_id):
+    try:
+        user_id = int(user_id)
+        success, result, error = user_profile(user_id)
+        if result != None:
+            result = asdict(result[0]) | asdict(result[1])
+        return get_status_object_json(success, result, error), 200
+    except:
+        return get_status_object_json(False, None, USER_NOT_EXIST), 404
+    
 @auth.route('/api/search-user', methods=['GET'])
 def search_user_route():
     user_id = request.args.get('user_id')
@@ -131,14 +142,14 @@ def profile_image_routes(user_id):
         if not user:
             return get_status_object_json(False, None, INVALID_ID), 404
         
-        saved_user_image_path = db.session.query(UserInfo).filter(UserInfo.imagePath).first()
+        saved_user_image_path = db.session.query(UserInfo).filter(UserInfo.userId == user_id).first()
 
         if saved_user_image_path == None or saved_user_image_path.imagePath == None:
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
         user_image_name = saved_user_image_path.imagePath
-        print(user_image_name)
+
         user_image_path = get_save_user_image_path(user_id, user_image_name)
-        print(user_image_path)
+
         if os.path.isfile(user_image_path):
             return send_file(user_image_path, as_attachment=False), 200
         else:
@@ -166,6 +177,7 @@ def profile_image_routes(user_id):
         image_bytes = file.read()
         save_user_image(image_bytes, user_id, user_image_name)
         saved_user_info = db.session.query(UserInfo).filter(UserInfo.userId == user_id).first()
+
         if saved_user_info != None and saved_user_info.imagePath != None:
             delete_user_image(user_id, saved_user_info.imagePath)
         

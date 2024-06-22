@@ -99,6 +99,15 @@ const routes = [
         }
       },
       {
+        path: 'user/profile/:userId',
+        components:{
+          default: UserProfile
+        },
+        props: {
+          default: true
+        }
+      },
+      {
         path: 'user/profile',
         components:{
           default: UserProfile
