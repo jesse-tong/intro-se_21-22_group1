@@ -15,7 +15,7 @@
         </div>
         <div class="col mb-2">
             <label for="currency" class="form-label"><span>Currency: </span></label>
-            <select class="form-control" id="currency" v-model="currency">
+            <select class="form-select" id="currency" v-model="currency">
                 <option value="USD">US Dollar (USD)</option>
                 <option value="EUR">Euro (EUR)</option>
                 <option value="JPY">Japanese Yen (JPY)</option>
@@ -43,6 +43,42 @@
         </div>
         
     </div>
+    <h4 class="ms-4 me-3 mt-2 ">Library timings</h4>
+    <div class="row ms-3 me-3">
+        <div class="col-12 col-md-6 col-xl-3 mb-2">
+            <label for="normalDayOpen" class="form-label"><span>Normal day open time: </span></label>
+            <input type="time" step="60" class="form-control" id="normalDayOpen" v-model="normalDayOpen"/>
+            
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mb-2">
+            <label for="normalDayClose" class="form-label"><span>Normal day close time: </span></label>
+            <input type="time" step="60" class="form-control" id="normalDayClose" v-model="normalDayClose"/>
+            
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mb-2">
+            <label for="weekendOpen" class="form-label"><span>Weekend open time: </span></label>
+            <input type="time" step="60" class="form-control" id="weekendOpen" v-model="weekendOpen"/>    
+        </div>
+
+        <div class="col-12 col-md-6">
+            <label for="weekendStart" class="form-label"><span>Weekend start at: </span></label>
+            <select class="form-select" id="weekendStart" v-model.number="weekendStart">
+                <option :value="index + 2" v-for="(dayName, index) in daysOfWeek">{{ dayName }}</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-6">
+            <label for="weekendEnd" class="form-label"><span>Weekend end at: </span></label>
+            <select class="form-select" id="weekendEnd" v-model.number="weekendEnd">
+                <option :value="index + 2" v-for="(dayName, index) in daysOfWeek">{{ dayName }}</option>
+            </select>
+        </div>
+        
+        <div class="col-12 mt-2">
+            <button @click="updateLibraryTimings" class="mb-2 btn btn-success"><span>Update library timings</span></button>
+        </div>
+        
+    </div>
+
     <h4 class="ms-4 me-3 mt-2 ">Contact information</h4>
     <div class="row ms-3 me-3">
         <div class="col-12 col-xl-6 mb-2">
@@ -71,7 +107,7 @@
         </div>
         
         <div class="col-12 mt-2">
-            <button @click="updateContacts" class="mb-2 btn btn-success"><span>Update borrow policies</span></button>
+            <button @click="updateContacts" class="mb-2 btn btn-success"><span>Update contacts</span></button>
         </div>
         
     </div>
@@ -94,7 +130,15 @@
                 contactAddress: '',
                 notUpdateContactEmail: false,
                 notUpdateContactAddress: false,
-                notUpdateContactPhoneNumber: false
+                notUpdateContactPhoneNumber: false,
+
+                normalDayOpen: null,
+                normalDayClose: null,
+                weekendOpen: null,
+                weekendClose: null,
+                weekendStart: null,
+                weekendEnd: null,
+
             } 
         },
         components: {
@@ -256,10 +300,79 @@
                     });
                 })
             },
+            getLibraryTimings(){
+                axios.get('/api/timings').then(response => {
+                  if (response.data.success === true){    
+                    this.normalDayOpen = response.data.result.normal_open;
+                    this.normalDayClose = response.data.result.normal_close;
+                    this.weekendOpen = response.data.result.weekend_open;
+                    this.weekendClose = response.data.result.weekend_close;
+                    this.weekendStart = response.data.result.weekend_start;
+                    this.weekendEnd = response.data.result.weekend_end;
+
+                  }else {
+                    this.$notify({
+                      title: "Get library timings failed",
+                      text: "Get library timings failed",
+                      type: "error"
+                    });
+                  }
+                }).catch(err=>{
+                    this.$notify({
+                      title: "Get library timings failed",
+                      text: "Get library timings failed",
+                      type: "error"
+                    });
+                })
+            },
+            updateLibraryTimings(){
+                var libraryTimings = {};
+                if (this.normalDayOpen !== null && this.normalDayOpen !== ''){
+                    libraryTimings.normal_open = this.normalDayOpen;
+                }
+                if (this.normalDayClose !== null && this.normalDayClose !== ''){
+                    libraryTimings.normal_close = this.normalDayClose;
+                }
+                if (this.weekendOpen !== null && this.weekendOpen !== ''){
+                    libraryTimings.weekend_open = this.weekendOpen;
+                }
+                if (this.weekendClose !== null && this.weekendClose !== ''){
+                    libraryTimings.weekend_close = this.weekendClose;
+                }
+                if (this.weekendStart !== null && this.weekendStart !== ''){
+                    libraryTimings.weekend_start = this.weekendStart;
+                }
+                if (this.weekendEnd !== null && this.weekendEnd !== ''){
+                    libraryTimings.weekend_end = this.weekendEnd;
+                }
+                axios.postForm('/api/timings', libraryTimings).then(response => {
+                    if (response.data != undefined && response.data.success != undefined 
+                    && response.data !== null && response.data.success === true){
+                        this.$notify({
+                            title: "Update library timings successfully!",
+                            text: "Update library timings successfully!",
+                            type: "success"
+                        });
+                    }else {
+                        this.$notify({
+                            title: "Update library timings failed!",
+                            text: "Update library timings failed!",
+                            type: "error"
+                        });
+                    }
+                }).catch(err => {
+                    this.$notify({
+                            title: "Update library contacts failed!",
+                            text: "Update library contacts failed!",
+                            type: "error"
+                    });
+                })
+            }
         },
+
         created(){
             this.getBorrowSettings();
-            this.getContacts();
+            this.getContacts(); this.getLibraryTimings();
         }
     }
 </script>

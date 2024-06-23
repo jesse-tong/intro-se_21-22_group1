@@ -26,7 +26,7 @@ def create_app(test_config=None):
         
     app.config.from_mapping(
         SECRET_KEY='dev',
-        SQLALCHEMY_DATABASE_URI=os.environ.get('SQL_URL'),
+        SQLALCHEMY_DATABASE_URI=os.environ.get('SQL_URL')
     )
     db.init_app(app)
     migrate = Migrate(app, db)
