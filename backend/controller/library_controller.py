@@ -1,7 +1,10 @@
 import sqlite3
 from global_vars.errors import *
 from dataclasses import asdict
+from dateutil.parser import ParserError
 from global_vars.constants import *
+from global_vars.database_init import policies_db_path
+from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
 
 def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, 
                     overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None, other_policies: str=None):
@@ -21,7 +24,7 @@ def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=N
         set_str.append("OTHER_POLICIES = '{}'".format(str(other_policies)))
 
     query = query.format(', '.join(set_str))
-    with sqlite3.connect('library_pols.db') as connection:
+    with sqlite3.connect(policies_db_path) as connection:
         try:
             connection.execute(query)
             connection.commit()
@@ -42,7 +45,7 @@ def update_library_contacts(address: str=None, phone_number: str=None, email: st
         set_str.append("EMAIL = '{}'".format(str(email)))
 
     query = query.format(', '.join(set_str))
-    with sqlite3.connect('library_pols.db') as connection:
+    with sqlite3.connect(policies_db_path) as connection:
         try:
             connection.execute(query)
             connection.commit()
@@ -52,7 +55,7 @@ def update_library_contacts(address: str=None, phone_number: str=None, email: st
     return True, None
 
 def get_policies():
-    with sqlite3.connect('library_pols.db') as connection:
+    with sqlite3.connect(policies_db_path) as connection:
         try:
             policies = connection.execute('SELECT * FROM LIB_POLICIES WHERE ID = 1').fetchone()
             return policies
@@ -60,9 +63,66 @@ def get_policies():
             return None
         
 def get_library_contacts():
-    with sqlite3.connect('library_pols.db') as connection:
+    with sqlite3.connect(policies_db_path) as connection:
         try:
             contacts = connection.execute('SELECT * FROM LIB_CONTACTS WHERE ID = 1').fetchone()
             return contacts
         except:
             return None
+        
+def get_library_timings():
+    with sqlite3.connect(policies_db_path) as connection:
+        try:
+            timings = connection.execute('SELECT * FROM LIB_TIMINGS WHERE ID = 1').fetchone()
+            return timings
+        except:
+            return None
+        
+def update_timings(normal_day_open: str=None, normal_day_close: str=None, weekend_open: str=None, weekend_close: str=None, 
+                    weekend_start: int=None, weekend_end: int=None):
+    query = 'UPDATE LIB_TIMINGS SET {} WHERE ID = 1'
+    set_str = []
+
+    current_timings = get_library_timings() #Get current timings
+    if current_timings != None:
+        #Weekend start and end after update
+        new_weekend_start = int(current_timings[-2]) if weekend_start == None else weekend_start
+        new_weekend_end = int(current_timings[-1]) if weekend_end == None else weekend_end
+
+    try:
+        if normal_day_open != None:
+            normal_day_open = time_to_sqlite(normal_day_open)
+            set_str.append("NORMAL_OPEN = '{}'".format(str(normal_day_open)))
+        if normal_day_close != None:
+            normal_day_close = time_to_sqlite(normal_day_close)
+            set_str.append("NORMAL_CLOSE = '{}'".format(str(normal_day_close)))
+        if weekend_open != None:
+            weekend_open = time_to_sqlite(weekend_open)
+            set_str.append("WEEKEND_OPEN = '{}'".format(str(weekend_open)))
+        if weekend_close != None:
+            weekend_close = time_to_sqlite(weekend_close)
+            set_str.append("WEEKEND_CLOSE = '{}'".format(str(weekend_close)))
+    except ParserError:
+        return False, INVALID_PARAM
+
+    if weekend_start != None:
+        if weekend_start <= 1 or weekend_start > 8:
+            return False, INVALID_PARAM
+        set_str.append('WEEKEND_START = ' + str(weekend_start))
+    if weekend_end != None:
+        if weekend_end <= 1 or weekend_end > 8:
+            return False, INVALID_PARAM
+        set_str.append('WEEKEND_END = ' + str(weekend_end))
+    
+    if new_weekend_start != None and new_weekend_end != None and new_weekend_start > new_weekend_end:
+        return False, INVALID_DURATION #Case of weekend after updating is invalid
+
+    query = query.format(', '.join(set_str))
+    with sqlite3.connect(policies_db_path) as connection:
+        try:
+            connection.execute(query)
+            connection.commit()
+        except sqlite3.Error as er:
+            return False, str(er.sqlite_errorname)
+    
+    return True, None

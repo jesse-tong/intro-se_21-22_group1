@@ -49,12 +49,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><span>Monday-Saturday:</span></td>
-                            <td><span>9:00 AM - 9:00 PM</span></td>
+                            <td><span>{{ getNormalDayRangeString() + ':' }}</span></td>
+                            <td><span>{{ removeTimeSecond(normalDayOpen) + ' - ' + removeTimeSecond(normalDayClose) }}</span></td>
                         </tr>
                         <tr>
-                            <td><span>Sunday:</span></td>
-                            <td><span>10:00 AM - 8:00 PM</span></td>
+                            <td><span>{{ getWeekendDayRangeString() + ':' }}</span></td>
+                            <td><span>{{ removeTimeSecond(weekendOpen) + ' - ' + removeTimeSecond(weekendClose) }}</span></td>
                         </tr>
                         <tr>
                             <td colspan="2"><span>Library will remain closed during public holidays</span></td>
@@ -96,6 +96,14 @@
                 contactEmail: 'N/A',
                 contactAddress: 'N/A',
                 contactPhoneNumber: 'N/A',
+
+                normalDayOpen: 'N/A',
+                normalDayClose: 'N/A',
+                weekendOpen: 'N/A',
+                weekendClose: 'N/A',
+                weekendStart: 'N/A',
+                weekendEnd: 'N/A',
+                
                 LibraryImage
             }
         },
@@ -103,7 +111,7 @@
             this.getHighestRatingBooks();
             this.getMostBorrowedBooks();
             this.getBookCount(); this.getBorrowCount();
-            this.getContacts();
+            this.getContacts(); this.getLibraryTimings();
         },
         methods: {
             getHighestRatingBooks(){
@@ -255,6 +263,77 @@
                       type: "error"
                     });
                 })
+            },
+            getLibraryTimings(){
+                axios.get('/api/timings').then(response => {
+                  if (response.data.success === true){    
+                    this.normalDayOpen = response.data.result.normal_open;
+                    this.normalDayClose = response.data.result.normal_close;
+                    this.weekendOpen = response.data.result.weekend_open;
+                    this.weekendClose = response.data.result.weekend_close;
+                    this.weekendStart = response.data.result.weekend_start;
+                    this.weekendEnd = response.data.result.weekend_end;
+
+                  }else {
+                    this.$notify({
+                      title: "Get library timings failed",
+                      text: "Get library timings failed",
+                      type: "error"
+                    });
+                  }
+                }).catch(err=>{
+                    this.$notify({
+                      title: "Get library timings failed",
+                      text: "Get library timings failed",
+                      type: "error"
+                    });
+                })
+            },
+            removeTimeSecond(timeString){
+                var [hour, minute, second] = timeString.split(':');
+                return hour + ':' + minute;
+            },
+            getWeekendDayRangeString(){
+                if (Number.isInteger(this.weekendStart) && parseInt(this.weekendStart) >=2 && parseInt(this.weekendStart) <= 8){
+                    var startWeekendName =  this.daysOfWeek[parseInt(this.weekendStart) - 2];
+                }else {
+                    var startWeekendName = 'N/A';
+                }
+                if (Number.isInteger(this.weekendEnd) && parseInt(this.weekendEnd) >=2 && parseInt(this.weekendEnd) <= 8){
+                    var endWeekendName =  this.daysOfWeek[parseInt(this.weekendEnd) - 2];
+                }else {
+                    var endWeekendName = 'N/A';
+                }
+                if (startWeekendName === endWeekendName){
+                    return startWeekendName;
+                }
+                return startWeekendName + '-' + endWeekendName;
+            },
+            getNormalDayRangeString(){
+                var indexStart = null, indexEnd = null;
+                if (Number.isInteger(this.weekendStart) && parseInt(this.weekendStart) >=2 && parseInt(this.weekendStart) <= 8){
+                    indexStart = (parseInt(this.weekendStart - 2) - 1) % this.daysOfWeek.length;
+                    if (indexStart < 0) { indexStart = (indexStart + this.daysOfWeek.length) % this.daysOfWeek.length}
+                    var startNormalDayName =  this.daysOfWeek[indexStart];
+                }else {
+                    var startNormalDayName = 'N/A';
+                }
+                if (Number.isInteger(this.weekendEnd) && parseInt(this.weekendEnd) >=2 && parseInt(this.weekendEnd) <= 8){
+                    indexEnd = (parseInt(this.weekendEnd - 2) + 1) % this.daysOfWeek.length;
+                    if (indexEnd < 0) { indexEnd = (indexEnd + this.daysOfWeek.length) % this.daysOfWeek.length}
+                    var endNormalDayName =  this.daysOfWeek[indexEnd];
+                }else {
+                    var endNormalDayName = 'N/A';
+                }
+                
+                if (indexStart !== null && indexEnd !== null && indexEnd < indexStart){
+                    return endNormalDayName + '-' + startNormalDayName;
+                }else if (indexStart === indexEnd){
+                    return startNormalDayName;
+                }else{
+                    return startNormalDayName + '-' + endNormalDayName;
+                }
+                
             }
         },
         components: {

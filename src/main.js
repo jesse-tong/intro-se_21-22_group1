@@ -23,7 +23,8 @@ const pinia = createPinia()
 
 const app = createApp(App)
 app.config.globalProperties = {
-    apiSite: 'http://localhost:5000'
+    apiSite: 'http://localhost:5000',
+    daysOfWeek: ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday']
 }
 app.use(Notifications)
 app.use(pinia)
