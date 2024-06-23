@@ -60,6 +60,11 @@
             <input type="time" step="60" class="form-control" id="weekendOpen" v-model="weekendOpen"/>    
         </div>
 
+        <div class="col-12 col-md-6 col-xl-3 mb-2">
+            <label for="weekendClose" class="form-label"><span>Weekend close time: </span></label>
+            <input type="time" step="60" class="form-control" id="weekendClose" v-model="weekendClose"/>    
+        </div>
+
         <div class="col-12 col-md-6">
             <label for="weekendStart" class="form-label"><span>Weekend start at: </span></label>
             <select class="form-select" id="weekendStart" v-model.number="weekendStart">
