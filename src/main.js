@@ -13,19 +13,24 @@ import { router } from './router';
 import VueExcelEditor from 'vue3-excel-editor';
 
 
+
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
 import { useAccountStore } from './components/stores/LoginInfoStore';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
 
-axios.defaults.baseURL = 'http://localhost:5000';
+//const apiSite = 'http://localhost:5000'; //Change to domain name instead of localhost in production, since axios will fetch from this site
+const apiSite = 'http://192.168.43.7:5000';
+
+axios.defaults.baseURL = apiSite;
 axios.defaults.withCredentials = true;
+
 
 const pinia = createPinia()
 
 const app = createApp(App)
 app.config.globalProperties = {
-    apiSite: 'http://localhost:5000',
+    apiSite: apiSite,
     daysOfWeek: ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday']
 }
 app.use(Notifications)
@@ -50,6 +55,8 @@ router.beforeEach(async (to, from) => {
       return { name: 'Login' }
     }
 })
+
+
 
 app.use(router);
 app.use(VueExcelEditor);

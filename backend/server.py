@@ -21,6 +21,9 @@ def create_app(test_config=None):
      , supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))",
      expose_headers=['X-CSRFToken'])
     
+    app.config.SESSION_COOKIE_SAMESITE='None'
+    app.config.SESSION_COOKIE_SECURE='True'
+    
     if not database_exists(os.environ.get('SQL_URL')): 
         create_database(os.environ.get('SQL_URL'))
         
@@ -96,7 +99,7 @@ if __name__ == '__main__':
     app = create_app()
 
     #app.run(debug=True, use_reloader=True) #Debug only
-
+    #app.run(ssl_context='adhoc')
     #This below is for production using waitress
     serve(app, host='0.0.0.0', port=5000, threads=50)
     
