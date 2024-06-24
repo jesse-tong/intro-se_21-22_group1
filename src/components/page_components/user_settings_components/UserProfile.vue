@@ -12,8 +12,8 @@
                 
                 <span class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</span>
                 <span class="text-black-50">{{ userInfo !== null ? (userInfo.email !== null ? userInfo.email : 'N/A') : 'N/A' }}</span>
-                <router-link class="btn btn-secondary mt-3 " role="button" to="/user/settings"><span>User settings</span></router-link>
-                <button class="btn btn-secondary mt-1" role="button" @click="imageModalShow = true"><span>Change user image</span></button>
+                <router-link class="btn btn-secondary mt-3 " role="button" to="/user/settings" v-if="$props.userId === null || accountStore.userId === $props.userId"><span>User settings</span></router-link>
+                <button class="btn btn-secondary mt-1" role="button" @click="imageModalShow = true" v-if="$props.userId === null || accountStore.userId === $props.userId"><span>Change user image</span></button>
             </div>
         </div>
         <div class="col-12 col-md-4">
@@ -67,7 +67,7 @@
     import { useAccountStore } from '../../stores/LoginInfoStore';
     import emptyImage from '../../../assets/BlankImage.svg';
     import ImageUpdateModal from './ImageUpdateModal.vue';
-    import { Faker, faker } from '@faker-js/faker';
+    import { v4 as uuidv4 } from 'uuid';
     
     export default {
         data(){
@@ -134,7 +134,7 @@
         computed: {
             ...mapStores(useAccountStore),
             getRandomId(){
-                return faker.string.uuid();
+                return uuidv4();
             }
         }
     }

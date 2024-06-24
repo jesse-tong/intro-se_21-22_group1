@@ -23,7 +23,8 @@
             <div class="col-6 col-md-6 col-lg-12 mt-2 mb-2">
                 <div class="input-group">
                     <label :for="'commentUserName' + comment.name" class="input-group-text"><span>Username:</span></label>
-                    <input disabled type="text" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.id"/>
+                    <input disabled type="text" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.id"  />
+                    <RouterLink :to="'/user/profile/' + comment.userId" role="link" class="btn btn-outline-secondary" ><span>Show profile</span></RouterLink>
                 </div>
             </div>
         </div>
@@ -47,6 +48,7 @@
             <div>
                 <button class="btn btn-sm btn-primary me-2" @click="() => { editable = false; $emit('updateCommentList'); }" v-if="editable === true" data-testid="cancelEditCommentButton">Cancel</button>
             </div>
+            
         </div>
 
     </li>
@@ -159,6 +161,10 @@
                 }).finally(()=>{
                     this.$emit('updateCommentList');
                 })
+            },
+            goToProfile(userId){
+                console.log(userId);
+                this.$router.push({path: `/user/profile/${userId}`});
             }
         },
         emits: ['updateCommentList']
