@@ -8,6 +8,9 @@
           <li class="nav-item">
             <a :class="['nav-link', activeTab=='editBook' ? 'active': '']" href="#" @click="activeTab='editBook'" id="editBookTab">Edit Book</a>
           </li>
+          <li class="nav-item">
+            <a :class="['nav-link', activeTab=='importBook' ? 'active': '']" href="#" @click="activeTab='importBook'" id="editBookTab">Import books</a>
+          </li>
         </ul>
       </div>
       <div class="card-body">
@@ -19,12 +22,16 @@
           <AddUpdateBook :bookId="editBookId" @addUpdateBookCallback="addUpdateBookCallback()" ref="editBookSubtab"/>
           <BookTable @update:currentPage="(page)=>onCurrentPageChanged(page)" :books="searchResult" :currentPage="currentPage" @deleteBook="(bookId)=>onSelectDeleteBook(bookId)" @editBook="(bookId)=>{ onSelectEditBook(bookId);}" />
         </div>
+        <div v-else-if="activeTab == 'importBook'">
+          <ImportBookPage />
+        </div>
       </div>
     </div>
 </template>
 <script>
     import SearchBook from '../borrow_management_components/SearchBook.vue';
     import AddUpdateBook from './AddUpdateBook.vue';
+    import ImportBookPage from './ImportBookPage.vue';
     import BookTable from './BookTable.vue';
     import axios from 'axios';
 
@@ -182,6 +189,7 @@
           SearchBook: SearchBook,
           BookTable: BookTable,
           AddUpdateBook: AddUpdateBook,
+          ImportBookPage: ImportBookPage
         }
     }
 </script>

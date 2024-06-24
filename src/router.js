@@ -6,7 +6,6 @@ import BorrowManagement from './components/page_components/borrow_management_com
 import PageNotFound from './components/views/PageNotFound.vue';
 import LoginPage from './components/views/LoginPage.vue';
 import BookManagement from './components/page_components/book_management_components/BookManagement.vue';
-//import BorrowTableUser from './components/page_components/user_borrow_components/BorrowTableUser.vue';
 import BookByAuthors from './components/page_components/book_page_components/BookByAuthors.vue';
 import BookByGenres from './components/page_components/book_page_components/BookByGenres.vue';
 import NavBar from './components/page_components/NavBar.vue';
@@ -19,6 +18,7 @@ import Footer from './components/views/Footer.vue';
 import HomePage from './components/views/HomePage.vue';
 import ReportPage from './components/page_components/report_page_components/ReportPage.vue';
 import LibraryPoliciesSettings from './components/page_components/library_policies_settings_components/LibraryPoliciesSettings.vue';
+import ImportBookPage from './components/page_components/book_management_components/ImportBookPage.vue';
 
 
 const routes = [
