@@ -14,4 +14,4 @@ Frameworks:
 - Frontend: Vue.js
 - Database: MariaDB
 - Testing: Pytest, Postman, Firefox DevTools, Selenium (planned)
-- Others: Docker (planned), Jenkins (planned), Inkscape (icons)
+- Others: Docker (planned), Inkscape (icons)
