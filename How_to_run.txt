@@ -14,4 +14,4 @@ Install Node.js packages, in the project directory: npm install
 Build the project frontend: npm run Build
 Run the project: npm run server_windows (Windows) or npm run server_unix
 
-We planned to create a Dockerfile or migrate to SQLite3 for easier usage, but we didn't have enough time for that
+We planned to create a Dockerfile, but we didn't have enough time for that
