@@ -429,3 +429,4 @@ def advanced_search(book_id: int=None, title: str=None, publish_year: int=None,
     result = query.all()
     
     return True, result, None
+

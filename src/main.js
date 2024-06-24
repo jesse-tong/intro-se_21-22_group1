@@ -10,6 +10,8 @@ import axios from 'axios';
 import { createPinia } from 'pinia'
 import Notifications, { useNotification } from '@kyvg/vue3-notification';
 import { router } from './router';
+import VueExcelEditor from 'vue3-excel-editor';
+
 
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
 import { useAccountStore } from './components/stores/LoginInfoStore';
@@ -49,6 +51,7 @@ router.beforeEach(async (to, from) => {
     }
 })
 
-app.use(router)
+app.use(router);
+app.use(VueExcelEditor);
 
 app.mount('#app')

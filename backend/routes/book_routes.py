@@ -55,7 +55,7 @@ def get_and_add_book_route():
         result, role, error = get_current_user_role()
         if result == False or role != 'admin':
             status = get_status_object_json(False, None, error)
-            return status, 200
+            return status, 403
         
         book_data = request.form.to_dict(flat=False)
         title = book_data.get('title');
@@ -63,7 +63,7 @@ def get_and_add_book_route():
         isbn = book_data.get('isbn'); authors = book_data.get('authors[]'); genres = book_data.get('genres[]')
         stock = book_data.get('stock'); languages = book_data.get('languages[]')
         if title == None:
-            return get_current_user_role(False, None, INVALID_PARAM), 400
+            return get_status_object_json(False, None, INVALID_PARAM), 400
         try:
             title = title[0]; isbn = isbn[0] if isbn != None else None
             description = description[0] if description != None else None
@@ -75,17 +75,13 @@ def get_and_add_book_route():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, new_book, error = add_book(title, publish_year, description, isbn, stock)
-        
-        if authors == None and genres == None:
+        success, new_book, error = add_book(title, publish_year, description, isbn, stock)        
+        #If also add authors and genres, add them too
+        if success == True:
+            success, updated, error = change_book_data(new_book.id, authors=authors, genres=genres, description=description, isbn=isbn, stock=stock, languages=languages)
             return get_status_object_json(success, new_book, error), 200
         else:
-            #If also add authors and genres, add them too
-            if success == True:
-                success, updated, error = change_book_data(new_book.id, authors=authors, genres=genres, description=description, isbn=isbn, stock=stock, languages=languages)
-                return get_status_object_json(success, new_book, error), 200
-            else:
-                return get_status_object_json(False, None, ADD_ENTRY_ERROR), 500
+            return get_status_object_json(False, None, ADD_ENTRY_ERROR), 500
         
     elif request.method == 'PUT':
         result, role, error = get_current_user_role()
@@ -436,3 +432,48 @@ def advanced_search_route():
     success, edited_data, error = advanced_search(book_id, title, publish_year, description, authors, genres, isbn, page, limit)
     return get_status_object_json(success, edited_data, error), 200
 
+@book_routes.route('/api/import-books', methods=['POST'])
+def import_books():
+    books_data = request.json
+    
+    result, role, error = get_current_user_role()
+    if result == False or role != 'admin':
+        status = get_status_object_json(False, None, error)
+        return status, 403
+    
+    success_add = []; failed_add = []
+
+    for index, book_data in enumerate(books_data):
+        title = book_data.get('title');
+        publish_year = book_data.get('publish_year'); description = book_data.get('description')
+        isbn = book_data.get('isbn'); authors = book_data.get('authors'); genres = book_data.get('genres')
+        stock = book_data.get('stock'); languages = book_data.get('languages')
+        if title == None:
+            failed_add.append({'index': index, 'error': INVALID_PARAM})
+            continue
+        try:
+            title = title; isbn = isbn if isbn != None else None
+            description = description if description != None else None
+            publish_year = int(publish_year) if publish_year != None else None
+            authors = authors.split(',') if authors != None else None
+            genres = genres.split(',') if genres != None else None
+            languages = languages.split(',') if languages != None else None
+            stock = int(stock) if stock != None or stock != 0 else 0
+        except:
+            failed_add.append({'index': index, 'error': INVALID_PARAM})
+            continue
+        
+
+        success, new_book, error = add_book(title, publish_year, description, isbn, stock)
+        
+        #If also add authors and genres, add them too
+        if success == True:
+            success, updated, error = change_book_data(new_book.id, authors=authors, genres=genres, description=description, isbn=isbn, stock=stock, languages=languages)
+            if success == True:
+                success_add.append(index)
+            else:
+                delete_book(new_book.id)
+                failed_add.append({'index': index, 'error': error})
+        else:
+            failed_add.append({'index': index, 'error': error})
+    return get_status_object_json(True, {'success': success_add, 'failed': failed_add}, None), 200

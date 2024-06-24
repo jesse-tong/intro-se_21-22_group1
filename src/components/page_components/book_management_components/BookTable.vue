@@ -18,7 +18,7 @@
           <td>{{ book.isbn }}</td>
           <td>{{ book.stock }}</td>
           <td>
-            <button class="btn btn-sm btn-primary" @click="$emit('editBook', book.id)">Edit</button>
+            <button class="btn btn-sm btn-primary me-2" @click="$emit('editBook', book.id)">Edit</button>
             <button class="btn btn-sm btn-danger" @click="$emit('deleteBook', book.id)" >Delete</button>
           </td>
         </tr>
