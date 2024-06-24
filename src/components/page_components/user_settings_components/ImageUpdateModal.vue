@@ -4,7 +4,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Update user profile image:</h5>
-            <button type="button" class="btn-close" data-bs-toggle="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" @click="(e)=>hideModal()"></button>
           </div>
           <div class="modal-body">
             <p class="row-1">Update user profile image:</p>
