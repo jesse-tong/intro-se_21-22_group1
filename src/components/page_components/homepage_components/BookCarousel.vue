@@ -39,7 +39,7 @@
 
 <script>
 import { RouterLink } from 'vue-router';
-import { faker } from '@faker-js/faker';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   props: {
@@ -65,7 +65,7 @@ export default {
     getRandomId(){
         //This will generated a random uuid and added to img src as a query 
         //so that Vue will not use the cached image but the updated one instead
-        return faker.string.uuid();
+        return uuidv4();
     }
   }
 };

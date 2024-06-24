@@ -91,7 +91,7 @@
     import BorrowModal from '../user_borrow_components/BorrowModal.vue';
     import CommentSection from '../comment_components/CommentSection.vue';
     import EbookModal from '../EbookModal.vue';
-    import {faker} from '@faker-js/faker';
+    import { v4 as uuidv4 } from 'uuid';
     export default {
         data() {
             return {
@@ -140,7 +140,7 @@
             getRandomId(){
               //This will generated a random uuid and added to img src as a query 
               //so that Vue will not use the cached image but the updated one instead
-                return faker.string.uuid();
+                return uuidv4();
             }
         },
         created(){
