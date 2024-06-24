@@ -7,8 +7,7 @@
           <h4 class="ms-2">EasyLib</h4>
         </RouterLink>
         <p class=" text-body-secondary">© 2024 
-            <RouterLink to="https://github.com/jesse-tong/intro-se_21-22_group1" class="text-decoration-none"><span>Group 1</span>
-            </RouterLink>
+            <a href="https://github.com/jesse-tong/intro-se_21-22_group1" class="text-decoration-none"><span>Group 1</span></a>
         </p>
       </div>
       <div class="col mb-3"></div>
@@ -32,5 +31,6 @@
   </footer>
 </template>
 <script setup>
+import { RouterLink } from 'vue-router';
 import EasyLibLogo from '../../assets/EasyLib.svg';
 </script>

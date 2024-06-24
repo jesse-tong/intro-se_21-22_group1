@@ -9,7 +9,7 @@ from flask_login import current_user
 from flask_cors import CORS
 
 comment_routes = Blueprint('comment_routes', __name__)
-CORS(comment_routes, supports_credentials=True, expose_headers=['X-CSRFToken'])
+CORS(comment_routes, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
 @comment_routes.route('/api/comment/<book_id>', methods=['GET'])
 def get_book_comments_route(book_id):

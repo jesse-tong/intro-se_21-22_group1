@@ -16,7 +16,7 @@ auth = Blueprint('auth', __name__)
 
 #Since we send CSRF token from the headers, we need to expose it through CORS 
 # or the browser and frontend would not get
-CORS(auth, supports_credentials=True, expose_headers=['X-CSRFToken'])
+CORS(auth, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
 #This is used to generate csrf token when the client requests this
 @auth.route('/auth/csrf_token', methods=['GET', 'HEAD'])

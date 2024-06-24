@@ -15,7 +15,7 @@ from utils.get_status_object import get_status_object_json
 from utils.file_utils import get_save_book_image_path
 
 book_routes = Blueprint('book_routes', __name__)
-CORS(book_routes, supports_credentials=True, expose_headers=['X-CSRFToken'])
+CORS(book_routes, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
 @book_routes.route('/hello-world', methods=['GET'])
 def hello_world_route():
