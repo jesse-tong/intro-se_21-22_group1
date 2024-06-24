@@ -12,7 +12,7 @@ from flask_cors import CORS
 from sqlalchemy import func, distinct
 
 book_user = Blueprint('book_user', __name__)
-CORS(book_user, supports_credentials=True, expose_headers=['X-CSRFToken'])
+CORS(book_user, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
 @book_user.route('/api/borrow', methods=['GET', 'POST'])
 def borrow_book_current_user():

@@ -10,7 +10,7 @@ from utils.get_status_object import get_status_object_json
 
 #Blue print for miscellanous library settings
 library_settings_routes = Blueprint('library_settings_routes', __name__)
-CORS(library_settings_routes, supports_credentials=True, expose_headers=['X-CSRFToken'])
+CORS(library_settings_routes, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
 @library_settings_routes.route('/api/contacts', methods=['GET', 'POST'])
 def contact_settings():
