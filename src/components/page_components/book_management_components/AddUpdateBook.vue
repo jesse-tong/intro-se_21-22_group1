@@ -16,13 +16,13 @@
                 </div>
                 
             </div>
-            <div class="col">
+            <div class="col-12 col-md-6 col-lg-4">
                 <div class="input-group my-2">
                     <label for="editBookISBN" class=" input-group-text"><span>ISBN:</span></label>
                     <input type="text" v-model="bookIsbn" id="editBookISBN" class="form-control"/>
                 </div> 
             </div>
-            <div class="col">
+            <div class="col-12 col-md-6 col-lg-4">
                 <div class="input-group my-2">
                     <label for="editBookStock" class="input-group-text"><span>Book stock in library: </span></label>
                     <input type="number" min="0" max="1000" id="editBookStock" v-model="stock" class="form-control"/>
