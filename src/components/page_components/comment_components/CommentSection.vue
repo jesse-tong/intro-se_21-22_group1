@@ -11,7 +11,7 @@
               <input class="form-control" type="number" min="0" max="10" v-model.number="commentRating" id="addCommentRating"/>
           </div>
           <div class="form-floating">
-              <textarea class="form-control" v-model="commentContent" id="addCommentContent"></textarea>
+              <textarea class="form-control" v-model="commentContent" id="addCommentContent" style="min-width: 175px;"></textarea>
               <label for="commentContent">Comment text (max 3000 characters):</label>
           </div>
           <button class="btn btn-primary mt-2" @click="addComment" id="addCommentButton"><span>Add comment</span></button>

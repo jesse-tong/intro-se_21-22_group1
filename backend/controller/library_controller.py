@@ -5,9 +5,14 @@ from dateutil.parser import ParserError
 from global_vars.constants import *
 from global_vars.database_init import policies_db_path
 from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
+from controller.user_controller import get_current_user_role
 
 def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, 
                     overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None, other_policies: str=None):
+    success, role, error = get_current_user_role()
+    if success == False or role != 'admin':
+        return get_current_user_role(False, None, NOT_AUTHENTICATED)
+    
     query = 'UPDATE LIB_POLICIES SET {} WHERE ID = 1'
     set_str = []
     if default_borrow_time != None:
@@ -34,6 +39,10 @@ def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=N
     return True, None
 
 def update_library_contacts(address: str=None, phone_number: str=None, email: str=None):
+    success, role, error = get_current_user_role()
+    if success == False or role != 'admin':
+        return get_current_user_role(False, None, NOT_AUTHENTICATED)
+    
     query = 'UPDATE LIB_CONTACTS SET {} WHERE ID = 1'
     set_str = []
 
@@ -80,6 +89,10 @@ def get_library_timings():
         
 def update_timings(normal_day_open: str=None, normal_day_close: str=None, weekend_open: str=None, weekend_close: str=None, 
                     weekend_start: int=None, weekend_end: int=None):
+    success, role, error = get_current_user_role()
+    if success == False or role != 'admin':
+        return get_current_user_role(False, None, NOT_AUTHENTICATED)
+    
     query = 'UPDATE LIB_TIMINGS SET {} WHERE ID = 1'
     set_str = []
 
