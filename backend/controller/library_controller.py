@@ -26,12 +26,15 @@ def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=N
     if new_currency != None:
         set_str.append("CURRENCY = '{}'".format(str(new_currency)))
     if other_policies != None:
-        set_str.append("OTHER_POLICIES = '{}'".format(str(other_policies)))
+        set_str.append("OTHER_POLICIES = ?")
 
     query = query.format(', '.join(set_str))
     with sqlite3.connect(policies_db_path) as connection:
         try:
-            connection.execute(query)
+            if other_policies != None:
+                connection.execute(query, (str(other_policies),))
+            else:
+                connection.execute(query)
             connection.commit()
         except sqlite3.Error as er:
             return False, er.sqlite_errorcode
