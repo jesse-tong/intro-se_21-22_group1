@@ -15,3 +15,7 @@ Frameworks:
 - Database: MariaDB
 - Testing: Pytest, Postman, Firefox DevTools, Selenium (planned)
 - Others: Docker (planned), Inkscape (icons)
+
+Clone repo:
+- Gitlab: https://gitlab.com/jesse-tong/intro-se_21-22_group1
+- Codeberg: https://codeberg.org/jesse-tong/intro-se_21-22_group1
