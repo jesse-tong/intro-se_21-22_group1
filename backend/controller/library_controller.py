@@ -7,6 +7,7 @@ from global_vars.database_init import policies_db_path
 from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
 from controller.user_controller import get_current_user_role
 
+
 def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, 
                     overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None, other_policies: str=None):
     success, role, error = get_current_user_role()
