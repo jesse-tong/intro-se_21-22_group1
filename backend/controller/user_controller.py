@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from models.user_model import User, UserInfo, UserNotification
+from models.user_model import User, UserInfo, UserNotification, Session
+from models.user_book import BookBorrow, BookFavorite
 from global_vars.database_init import db
 import re
 from global_vars.errors import *
@@ -145,3 +146,18 @@ def search_user(user_id:int=None, name: str=None, email:str=None):
     
     result = query.all()
     return True, result, None
+
+#Controller function of API to do data request 
+def user_data_request(user_id:int=None):
+    
+    user = db.session.query(User).filter(User.id == user_id).all()
+    user_info = db.session.query(UserInfo).filter(UserInfo.userId == user_id).all()
+    user_session = db.session.query(Session).filter(Session.userId == user_id).all()
+    user_borrow = db.session.query(BookBorrow).filter(BookBorrow.userId == user_id).all()
+    user_favorite = db.session.query(BookFavorite).filter(BookFavorite.userId == user_id).all()
+    user_notification = db.session.query(UserNotification).filter(UserNotification.userId == user_id).all()
+    
+    user_data = {}; user_data['user'] = user; user_data['user_info'] = user_info
+    user_data['user_session'] = user_session; user_data['user_borrow'] = user_borrow
+    user_data['user_favorite'] = user_favorite; user_data['user_notification'] = user_notification
+    return True, user_data, None

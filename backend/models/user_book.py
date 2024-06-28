@@ -27,3 +27,4 @@ class BookFavorite(db.Model):
     bookId:int = db.Column(db.Integer, db.ForeignKey('book.id'))
     userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+

@@ -46,3 +46,12 @@ class UserInfo(db.Model):
     phone:str = db.Column(db.String(20))
     address: str = db.Column(db.String(500))
     imagePath: str = db.Column(db.String(300)) 
+
+@dataclass
+class Session(db.Model):
+    __tablename__ = 'session'
+    id:int = db.Column(db.Integer, primary_key=True)
+    userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
+    os:str = db.Column(db.String(50))
+    browser:str = db.Column(db.String(50))
+    sessionTime: datetime = db.Column(db.DateTime, default=datetime.now)

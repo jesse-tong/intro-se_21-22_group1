@@ -7,7 +7,7 @@ from utils.file_utils import save_user_image, delete_user_image, delete_user_ima
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
-from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, user_profile, search_user
+from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, user_profile, search_user, user_data_request
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
@@ -214,3 +214,20 @@ def profile_image_routes(user_id):
             return get_status_object_json(True, None, None), 200
         except:
             return get_status_object_json(False, None, DELETE_ERROR), 409
+        
+@auth.route('/data-request/<user_id>', methods=['GET'])
+def data_request_route(user_id):
+    try:
+        user_id = int(user_id)
+    except:
+        return get_status_object_json(False, None, INVALID_ID), 400
+    
+    user = db.session.query(User).filter(User.id == user_id).first()
+    if not user:
+        return get_status_object_json(False, None, INVALID_ID), 409
+    
+    if not current_user.is_authenticated or current_user.id != user_id:
+        return get_status_object_json(False, None, INVALID_AUTH), 403
+
+    success, data, error = user_data_request(user_id)
+    return get_status_object_json(success, data, error), 200
