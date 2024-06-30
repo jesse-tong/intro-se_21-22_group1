@@ -19,7 +19,13 @@ import { useAccountStore } from './components/stores/LoginInfoStore';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
 
-const apiSite = 'http://localhost:5000'; //Change to domain name instead of localhost in production, since axios will fetch from this site
+var apiSite;
+if (import.meta.env.VITE_API_POINT !== undefined){
+  apiSite = import.meta.env.VITE_API_POINT; //Change to domain name instead of localhost in production, since axios will fetch from this site
+}else {
+  apiSite = 'http://localhost:5173';
+}
+
 //const apiSite = 'http://192.168.43.2:5000';
 
 axios.defaults.baseURL = apiSite;

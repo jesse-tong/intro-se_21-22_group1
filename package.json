@@ -8,8 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server_windows": "cd ./.venv/Scripts & activate & cd ../../backend & python server.py",
-    "server_unix": ". ./.venv/bin/activate && cd backend && python server.py",
+    "server_windows": "cd ./.venv/Scripts & activate & cd ../../backend & python backend/server.py",
+    "server_unix": ". ./.venv/bin/activate && cd backend && python ./backend/server.py",
     "cypress_open": "cypress open"
   },
   "dependencies": {
