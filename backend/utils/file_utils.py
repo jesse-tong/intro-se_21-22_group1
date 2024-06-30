@@ -4,9 +4,21 @@ import os, shutil, mimetypes
 
 mimetypes.init()
 
-book_files_save_directory = os.environ.get('FILE_STORAGE_PATH') if os.environ.get('FILE_STORAGE_PATH')!=None else '../.ebook_files'
-book_images_save_directory = os.environ.get('BOOK_IMAGE_STORAGE_PATH') if os.environ.get('BOOK_IMAGE_STORAGE_PATH')!=None else '../.book_images'
-user_images_save_directory = os.environ.get('USER_IMAGE_STORAGE_PATH') if os.environ.get('USER_IMAGE_STORAGE_PATH')!=None else '../.user_images'
+
+if os.environ.get('FILE_STORAGE_PATH')!= None:
+    book_files_save_directory = os.environ.get('FILE_STORAGE_PATH') 
+else:
+    raise ValueError('FILE_STORAGE_PATH not found in the .env file, please check if it\'s in the project root')
+
+if os.environ.get('BOOK_IMAGE_STORAGE_PATH') != None:
+    book_images_save_directory = os.environ.get('BOOK_IMAGE_STORAGE_PATH') 
+else:
+    raise ValueError('BOOK_IMAGE_STORAGE_PATH not found in the .env file, please check if it\'s in the project root')
+
+if os.environ.get('USER_IMAGE_STORAGE_PATH')!=None:
+    user_images_save_directory = os.environ.get('USER_IMAGE_STORAGE_PATH') 
+else:
+    raise ValueError('USER_IMAGE_STORAGE_PATH not found in the .env file, please check if it\'s in the project root')
 #Try to create directory for ebooks and images
 try:
     os.mkdir(book_files_save_directory)
