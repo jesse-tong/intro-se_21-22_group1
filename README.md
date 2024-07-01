@@ -13,7 +13,7 @@ Frameworks:
 - Backend: Flask, SQL (SQLAlchemy)
 - Frontend: Vue.js
 - Database: MariaDB
-- Testing: Pytest, Postman, Firefox DevTools, Cyress
+- Testing: Pytest, Postman, Firefox DevTools, Cypress
 - Others: Docker (planned), Inkscape (icons)
 
 Clone repo:
