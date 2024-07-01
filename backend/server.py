@@ -101,7 +101,7 @@ if __name__ == '__main__':
     #app.run(debug=True, use_reloader=True) #Debug only
     #app.run(ssl_context='adhoc')
     #This below is for production using waitress
-    listen_ips = "127.0.0.1:8100 [::]:8100"
+    listen_ips = "0.0.0.0:8100 [::]:8100"
     print('App now serve at ' + listen_ips)
     serve(app, listen=listen_ips, threads=50)
     
