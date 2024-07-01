@@ -13,6 +13,9 @@ from waitress import serve
 
 print(os.environ.get('SQL_URL'))
 
+port = os.environ.get('PORT')
+if port == None:
+    raise ValueError('PORT environment variable is not set!')
 
 def create_app(test_config=None):
     # create and configure the app
@@ -101,7 +104,7 @@ if __name__ == '__main__':
     #app.run(debug=True, use_reloader=True) #Debug only
     #app.run(ssl_context='adhoc')
     #This below is for production using waitress
-    listen_ips = "0.0.0.0:8100 [::]:8100"
+    listen_ips = "0.0.0.0:{} [::]:{}".format(port, port)
     print('App now serve at ' + listen_ips)
     serve(app, listen=listen_ips, threads=50)
     
