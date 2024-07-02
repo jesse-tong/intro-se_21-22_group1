@@ -21,3 +21,5 @@ Clone repo:
 - Codeberg: https://codeberg.org/jesse-tong/intro-se_21-22_group1
 
 Deployment (may take more than a few minutes to start up): https://intro-se-21-22-group1.onrender.com
+
+Alternative deployment (faster, recommended): https://intro-se21-22group1-production.up.railway.app/
