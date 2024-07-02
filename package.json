@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "server_windows": "cd ./.venv/Scripts & activate & cd ../../ & python ./backend/server.py",
     "server_unix": ". ./.venv/bin/activate && python ./backend/server.py",
-    "cypress_open": "cypress open"
+    "cypress_open": "cypress open",
+    "start": "python ./backend/server.py"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
