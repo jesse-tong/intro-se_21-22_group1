@@ -1,4 +1,5 @@
 import pymysql
+from global_vars.init_env import *
 from flask_sqlalchemy import SQLAlchemy
 from multiprocessing import Value
 import sqlite3
@@ -8,7 +9,9 @@ deleted_book_counter = Value('i', 0)
 
 db = SQLAlchemy()
 
-policies_db_path = 'library_pols.db'
+policies_db_path = os.environ.get('POLICIES_DB_PATH')
+if policies_db_path == None:
+    raise ValueError('POLICIES_DB_PATH not found, this is needed to read policies and timings/contact settings')
 
 # Init the SQLite server that is used
 library_pols_db = sqlite3.connect(policies_db_path)
