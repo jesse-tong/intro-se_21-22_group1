@@ -32,9 +32,12 @@
             <label :for="'commentRating' + comment.id" class="input-group-text" ><span>Rating:</span></label>
             <input class="form-control" type="number" min="0" max="10" v-model="commentRating" :class="{ disabled: editable}" :aria-disabled="!editable" :disabled="!editable"/>
         </div>
-        <div class="form-floating">
-            <textarea class="form-control bg-white" v-model="commentContent" :class="{ disabled: editable}" :aria-disabled="!editable" :disabled="!editable" style="min-height: 175px;"></textarea>
+        <div class="form-floating" v-if="editable">
+            <textarea class="form-control" v-model="commentContent" :class="{ disabled: editable}" :aria-disabled="!editable" :disabled="!editable" style="min-height: 175px;" ></textarea>        
             <label :for="'commentContent' + comment.id">Comment:</label>
+        </div>
+        <div class="border border-secondary rounded p-2" style="white-space: pre-wrap; min-height: 150px; max-height: 300px; overflow-y: auto;" v-else>
+            <span>{{ commentContent }}</span>
         </div>
         <div class="d-flex justify-content-between mt-2">
             <div v-if="accountStore.userId && accountStore.userId == commentUserId">

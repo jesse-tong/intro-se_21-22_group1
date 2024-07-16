@@ -17,7 +17,7 @@
             <btn class="btn btn-primary mt-1" @click="dismissAlert"><span>Dismiss</span></btn>
         </div>
         <h4 class="ms-2">Import books</h4>
-        <vue-excel-editor v-model="jsondata" ref="editor" @select="onSelect" no-header-edit="true" free-select="true">
+        <vue-excel-editor v-model="jsondata" ref="editor" @select="onSelect" no-header-edit="true" free-select="true" class="text-dark">
             <vue-excel-column field="title"  label="Book title" type="string" width="300px" />
             <vue-excel-column field="isbn"   label="ISBN" type="string" width="140px" />
             <vue-excel-column field="publish_year"  label="Publish year"   type="string" width="70px" />

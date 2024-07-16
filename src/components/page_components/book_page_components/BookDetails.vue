@@ -4,8 +4,8 @@
     
     <BorrowModal :showModal="borrowModalShow" @closeModal="borrowModalShow = false" ref="borrowModal" :bookId="$props.bookId"/>
     <EbookModal :showModal="ebookModalShow" @closeEbookModal="ebookModalShow = false" ref="ebookModal" :bookId="$props.bookId" />
-    <div class="container bg-light rounded-3">
-      <nav class="navbar navbar-light sticky-top shadow-sm flex-wrap bg-light rounded-3 px-3">
+    <div class="container rounded-3">
+      <nav class="navbar navbar-light sticky-top shadow-sm flex-wrap rounded-3 px-3">
         <a class="nav-link" href="#overview">Overview</a>
         <a class="nav-link" href="#description">Description</a>
         <a class="nav-link" href="#comments">Comments/Reviews</a>

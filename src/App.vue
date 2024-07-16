@@ -9,17 +9,18 @@ import {useAccountStore} from './components/stores/LoginInfoStore';
 onBeforeMount(() => {
   const store = useAccountStore();
   store.setAccountFromLocal();
+  document.getElementById('htmlMain').setAttribute('data-bs-theme', "dark");
 });
 
 
 </script>
 
-<template>
+<template data-bs-theme="dark">
   <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true data-testid="notification"/>
   <div>
     <RouterView name="NavBar" />
     <RouterView />
-    <RouterView name="footer" />
+    <RouterView name="footer"/>
   </div>
 </template>
 

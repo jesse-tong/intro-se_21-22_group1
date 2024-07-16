@@ -22,9 +22,9 @@
             </div>
             
         </div>
-        <div class="bg-light col-12 col-md-8 col-lg-9 my-2 rounded shadow-sm"  v-if="selectedId === null"></div>
+        <div class=" col-12 col-md-8 col-lg-9 my-2 rounded shadow-sm"  v-if="selectedId === null"></div>
         <div class="col-12 col-md-8 col-lg-9 my-2 pe-3" v-else>
-            <div class="bg-light rounded shadow-sm p-1 border-1" >
+            <div class=" rounded shadow-sm p-1 border-1" >
                 <GetBookByAuthorOrGenreId :genreOrAuthorId="selectedId" :fetchGenre=false />
             </div>
         </div>

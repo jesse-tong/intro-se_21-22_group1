@@ -38,7 +38,7 @@
         </div>
         
         <div class="col-12 col-md-9 col-lg-9 my-2 pe-3">
-            <div class="bg-light rounded shadow-sm p-1 border-1 table-responsive" >
+            <div class=" rounded shadow-sm p-1 border-1 table-responsive" >
                 <table class="table table-striped ">
                     <thead>
                         <tr>

@@ -157,6 +157,14 @@ a.hover::before {
   pointer-events: none;
 }
 
+.post-title {
+  color: #343f52 !important;
+}
+
+.post-meta {
+  color: #2d3139 !important;
+}
+
 @media screen and (min-width: 768px){
   .w-md-25 {
     width: 25%;

@@ -1,13 +1,13 @@
 <!-- A component to display book data in a carousel -->
 <template>
-    <div class="carousel slide" data-bs-ride="carousel" data-bs-theme="dark" :id="'myCarousel' + $props.carouselId"  >
+    <div class="carousel slide" data-bs-ride="carousel" :id="'myCarousel' + $props.carouselId"  >
         <div class="carousel-indicators" v-if="numSlides > 1">
             <button v-for="i in numSlides" :key="i" type="button" :data-bs-target="'#myCarousel' + $props.carouselId" :data-bs-slide-to="(i-1)" :class="{ active: i === 1 }" :aria-label="'Slide ' + i"></button>        
         </div>
 
         <div class="carousel-inner" >
             <div v-for="i in numSlides" :key="books.id" style="padding-left: 10%; padding-right: 10%">
-                <div v-if="i <= numSlides" class="carousel-item" data-bs-theme="light" :class="{ active: i === 1 }">
+                <div v-if="i <= numSlides" class="carousel-item" :class="{ active: i === 1 }">
                     <div class="row">
                         <div class="col-md-4" v-for="j in 3" :key="j">
                             <div v-if="(i - 1) * 3 + (j - 1) <= books.length - 1">

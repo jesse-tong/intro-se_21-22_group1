@@ -21,8 +21,8 @@
               <span>Welcome, {{ accountStore.name }}</span>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" aria-current="page" to="/" >Home</RouterLink>
-              <RouterLink class="nav-link" to="/articles">Library news</RouterLink>
+              <RouterLink class="nav-link" aria-current="page" to="/" @click="closeSidebar">Home</RouterLink>
+              <RouterLink class="nav-link" to="/articles" @click="closeSidebar">Library news</RouterLink>
             </li>
             
             <hr class="hr" v-if="accountStore.isAdmin"/>
