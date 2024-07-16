@@ -1,12 +1,18 @@
 <template>
-    
     <div class="mx-2 mt-3">
-        <ImageList :images="images" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteImage="onDeleteImage" @selectImage="onSelectImage" />
-        <input accept="image/*" type="file" @change="onFileChange($event)" class="" ref="imageInput"/>
-        <button class="btn btn-primary" @click="onUploadImage"><span>Upload image</span></button>
-        <button class="btn btn-primary ms-4" @click="(e) => removeImage()"><span>Remove upload pending upload image</span></button>
-    </div>
-    
+        <div class="row">
+            <div class="col-12 col-md-9 col-xl-9 col-xxl-8">
+                <ImageList :images="images" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteImage="onDeleteImage" @selectImage="onSelectImage" />
+            </div>
+            <div class="col-12 col-md-3 col-xl-3 col-xxl-4 border-start">
+                <div class="px-1 col">
+                    <input accept="image/*" type="file" @change="onFileChange($event)" class="form-control row" ref="imageInput"/>
+                    <button class="btn btn-primary row my-2" @click="onUploadImage"><span>Upload image</span></button>
+                    <button class="btn btn-primary row" @click="(e) => removeImage()"><span>Remove pending upload image</span></button>
+                </div>
+            </div>
+        </div>     
+    </div>   
 </template>
 <script>
     import axios from 'axios';

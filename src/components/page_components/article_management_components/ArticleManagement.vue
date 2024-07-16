@@ -2,18 +2,33 @@
     
     <div class="mx-2">
         <ArticleList :articles="articles" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteArticle="onDeleteArticle" @editArticle="onEditArticle" />
-        <button class="btn btn-primary" @click="(e) => onNewArticleDrafted()"><span>New article</span></button>
-        <p v-if="selectedArticleId === null">New article</p>
-        <p v-else>{{ 'Editing article: ' + selectedArticleId }}</p>
         <div class="mt-2 mb-2">
-            <label for="articleTitle" class="form-label"><span>Title: </span></label>
-            <input type="text" v-model="articleTitle" class="form-control" id="articleTitle"/>
+            <hr class="hr" />
+            <h4 class="mb-2">Edit article</h4>
+            <div class="d-flex flex-column justify-content-between">
+                
+                <div class="">
+                    <label for="articleTitle" class="form-label ms-1"><span>Title: </span></label>
+                    <input type="text" v-model="articleTitle" class="form-control" id="articleTitle"/>
+                </div>
+                <div class="mt-2">
+                    <label for="articleContent" class="form-label ms-1"><span>Content: </span></label>
+                    <MdEditor v-model="articleContent" :language="'en-US'" :codeTheme="'a11y'" id="articleContent" @onSave="onSaveArticle"/>
+                    <div class="d-flex justify-content-between w-100 mt-2">
+                        <button class="btn btn-success" v-if="selectedArticleId === null" @click="(e) => onCreateNewArticle()">Save new article</button>
+                        <button class="btn btn-success" v-else @click="(e)=>onSaveEditArticle(selectedArticleId)">Save article</button>
+                        <div class="">
+                            <span v-if="selectedArticleId === null" class="me-2">New article</span>
+                            <span v-else class="me-2">{{ 'Editing article: ' + selectedArticleId }}</span>
+                            <button class="btn btn-outline-success" @click="(e) => onNewArticleDrafted()"><span>Create new article</span></button>
+                        </div>
+                    </div>        
+                </div>
+            </div>
         </div>
-        
-        <MdEditor v-model="articleContent" :language="'en-US'" :codeTheme="'a11y'"/>
-        <button class="btn btn-success" v-if="selectedArticleId === null" @click="(e) => onCreateNewArticle()">Save new article</button>
-        <button class="btn btn-success" v-else @click="(e)=>onSaveEditArticle(selectedArticleId)">Save article</button>
-        <ImageUpload @select-image="onImageSelected" />
+        <hr class="hr" />
+        <h4 class="ms-1">Upload image</h4>
+        <ImageUpload @select-image="onImageSelected" class="card pt-2 pb-2"/>
     </div>
     
 </template>
@@ -61,6 +76,13 @@
             }
         },
         methods: {
+            onSaveArticle(md, html){
+                /*if (this.selectedArticleId === null){
+                    this.onCreateNewArticle();
+                }else {
+                    this.onSaveEditArticle(this.selectedArticleId);
+                }*/
+            },
             onImageSelected(url){
                 this.articleContent += url;
             },

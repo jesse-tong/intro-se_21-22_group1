@@ -20,7 +20,7 @@
           </div>
             
         </div>
-      <nav aria-label="Image list management navigation" class="mt-2">
+      <nav aria-label="Image list management navigation" class="mt-3 ms-2">
           <ul class="pagination">
               <li class="page-item">
                   <div role="button" class="page-link cursor-pointer" @click="$emit('update:currentPage', currentPage > 1 ? currentPage - 1 : 1)" id="prevPageButton"><span>Previous page</span></div>
