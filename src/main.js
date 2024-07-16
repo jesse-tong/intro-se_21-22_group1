@@ -42,10 +42,11 @@ app.config.globalProperties = {
 app.use(Notifications)
 app.use(pinia)
 
-const accountStore = useAccountStore();
+
 const notify = useNotification();
 
 router.beforeEach(async (to, from) => {
+    const accountStore = useAccountStore();
     if (
       // make sure the user is authenticated
       !accountStore.isAdmin &&
@@ -60,6 +61,7 @@ router.beforeEach(async (to, from) => {
       });
       return { name: 'Login' }
     }
+    
 })
 
 

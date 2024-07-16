@@ -1,7 +1,7 @@
 import os
 import flask
 import simplejson as json
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, jsonify
 from flask_cors import CORS
 from global_vars.database_init import db
 from global_vars.init_env import *
@@ -10,6 +10,11 @@ from sqlalchemy_utils import database_exists, create_database
 import pytest
 from flask_migrate import Migrate
 from waitress import serve
+
+
+CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
 
 print(os.environ.get('SQL_URL'))
 
@@ -26,6 +31,22 @@ def create_app(test_config=None):
     
     app.config.SESSION_COOKIE_SAMESITE='None'
     app.config.SESSION_COOKIE_SECURE='True'
+
+    app.secret_key = '!secret'
+    app.config.GOOGLE_CLIENT_ID = GOOGLE_CLIENT_ID
+    app.config.GOOGLE_CLIENT_SECRET = GOOGLE_CLIENT_SECRET
+
+    from routes.auth_routes import oauth_client as oauth
+    oauth.init_app(app)
+    oauth.register(
+        name='google',
+        server_metadata_url=CONF_URL,
+        client_id=GOOGLE_CLIENT_ID,
+        client_secret=GOOGLE_CLIENT_SECRET,
+        client_kwargs={
+            'scope': 'openid email profile'
+        }
+    )
     
     if not database_exists(os.environ.get('SQL_URL')): 
         create_database(os.environ.get('SQL_URL'))
@@ -92,13 +113,11 @@ def create_app(test_config=None):
     def index(path):
         return render_template("index.html")
     
+  
     return app
 
 if __name__ == '__main__':
-    from controller.user_controller import *
-    from controller.book_controller import *
-    from controller.book_user_controller import *
-    from controller.comment_controller import *
+    
     app = create_app()
 
     #app.run(debug=True, use_reloader=True) #Debug only

@@ -19,6 +19,8 @@ if os.environ.get('USER_IMAGE_STORAGE_PATH')!=None:
     user_images_save_directory = os.environ.get('USER_IMAGE_STORAGE_PATH') 
 else:
     raise ValueError('USER_IMAGE_STORAGE_PATH not found in the .env file, please check if it\'s in the project root')
+
+
 #Try to create directory for ebooks and images
 try:
     os.mkdir(book_files_save_directory)
@@ -103,4 +105,3 @@ def delete_ebook_file(id: int, name: str):
 
 def delete_ebook_files_dir(id: int):
     delete_dir_with_id(id, book_files_save_directory)
-

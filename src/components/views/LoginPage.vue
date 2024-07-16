@@ -13,14 +13,14 @@
                   </RouterLink>
                 </div>
                 <div class="col-2 text-center px-1">
-                  <RouterLink class="btn btn-link px-3" to="/login/github">
+                  <a class="btn btn-link px-3" href="/login/github">
                     <i class="fa fa-github text-white text-lg"></i>
-                  </RouterLink>
+                  </a>
                 </div>
                 <div class="col-2 text-center me-auto">
-                  <RouterLink class="btn btn-link px-3" to="/login/google">
+                  <a class="btn btn-link px-3" href="/login/google">
                     <i class="fa fa-google text-white text-lg"></i>
-                  </RouterLink>
+                  </a>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ import { useAccountStore } from '../stores/LoginInfoStore';
                   accountStore.clearLocalStorage();
                 }
                 this.$router.push('/');
-              }else {
+              }else if (response.data.error) {
                 this.$notify({
                   title: "Login error",
                   text: "Login with error: " + response.data.error,
@@ -122,11 +122,14 @@ import { useAccountStore } from '../stores/LoginInfoStore';
                 })
               }
             }).catch(err=>{
-              this.$notify({
-                title: "Login error",
-                text: "Login with error: "+ err.response.data.error,
-                type: "error"
-              })
+              if (err.response && err.response.data){
+                this.$notify({
+                  title: "Login error",
+                  text: "Login with error: "+ err.response.data.error,
+                  type: "error"
+                });
+              }
+              
             })
           }
         }

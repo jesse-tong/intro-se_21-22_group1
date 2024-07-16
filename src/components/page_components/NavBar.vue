@@ -21,7 +21,8 @@
               <span>Welcome, {{ accountStore.name }}</span>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link active" aria-current="page" to="/"  >Home</RouterLink>
+              <RouterLink class="nav-link" aria-current="page" to="/" >Home</RouterLink>
+              <RouterLink class="nav-link" to="/articles">Library news</RouterLink>
             </li>
             
             <hr class="hr" v-if="accountStore.isAdmin"/>
@@ -30,7 +31,7 @@
             <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-borrow" @click="closeSidebar">Manage borrow</RouterLink></li>
             <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/reports" @click="closeSidebar">Reports</RouterLink></li>
             <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/policies-settings" @click="closeSidebar">Policies/contacts settings</RouterLink></li>
-            
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/article-management" @click="closeSidebar">Article management</RouterLink></li>
             <hr class="hr" />
 
             <li class="nav-item"><RouterLink class="nav-link" to="/book/by-genre" @click="closeSidebar">Genres/categories</RouterLink></li>

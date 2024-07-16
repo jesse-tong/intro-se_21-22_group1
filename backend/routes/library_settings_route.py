@@ -7,6 +7,7 @@ from flask_cors import CORS
 from controller.library_controller import *
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
+from utils.file_utils import *
 
 #Blue print for miscellanous library settings
 library_settings_routes = Blueprint('library_settings_routes', __name__)
@@ -73,3 +74,38 @@ def library_timings_settings():
                 return get_status_object_json(False, None, error), 400
             else:
                 return get_status_object_json(False, None, error), 409
+            
+@library_settings_routes.route('/api/article/<article_id>', methods=['GET', 'PUT', 'DELETE'])
+def get_put_delete_article_route(article_id):
+    try:
+        article_id = int(article_id)
+    except:
+        return get_status_object_json(False, None, INVALID_ID), 400
+    if request.method == 'GET':
+        success, article, error = get_article(article_id)
+        return get_status_object_json(success, article, error), 200
+    elif request.method == 'PUT':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        success, edited_article, error = edit_article(article_id, title, content)
+        return get_status_object_json(success, edited_article, error), 200
+    elif request.method == 'DELETE':
+        success, result, error = delete_article(article_id)
+        return get_status_object_json(success, result, error), 200
+
+@library_settings_routes.route('/api/article', methods=['GET', 'POST'])
+def get_post_articles_route():
+    if request.method == 'GET':
+        try:
+            page = int(request.args.get('page')) if request.args.get('page') != None else None
+            limit = int(request.args.get('limit')) if request.args.get('limit') != None else None
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, article_summaries, error = get_article_summaries(page, limit, True)
+        return get_status_object_json(success, article_summaries, error)
+    elif request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        success, added_article, error = add_article(title, content)
+        return get_status_object_json(success, added_article, error), 200

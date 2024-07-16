@@ -5,6 +5,8 @@
             <img :src="LibraryImage" style="width: 100%; max-height: 300px;" alt="Library image"/>
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
+        <h3 class="mt-3 ms-3 mb-3">Latest library articles</h3>
+        <ArticleCarousel :articles="latestArticles" :carouselId="'latestArticles'"/>
         <h3 class="mt-3 ms-3 mb-3">Highest rating books</h3>
         <BookCarousel :books="highestRatingBooks" :apiSite="apiSite" :carouselId="'highestRatingBooks'" />
         <h3 class="mt-4 ms-3 mb-3">Most borrowed books</h3>
@@ -85,7 +87,11 @@
 <script>
     import axios from 'axios';
     import BookCarousel from '../page_components/homepage_components/BookCarousel.vue';
-    import LibraryImage from '../../assets/library.jpg'
+    import ArticleCarousel from '../page_components/homepage_components/ArticleCarousel.vue';
+    import LibraryImage from '../../assets/library.jpg';
+    import { useAccountStore } from '../stores/LoginInfoStore';
+    import { mapStores } from 'pinia';
+
     export default {
         data(){
             return {
@@ -103,6 +109,8 @@
                 weekendClose: 'N/A',
                 weekendStart: 'N/A',
                 weekendEnd: 'N/A',
+
+                latestArticles: [],
                 
                 LibraryImage
             }
@@ -112,6 +120,20 @@
             this.getMostBorrowedBooks();
             this.getBookCount(); this.getBorrowCount();
             this.getContacts(); this.getLibraryTimings();
+            this.getLatestArticles();
+        },
+        beforeMount(){
+            if (this.$route.query.userId !== undefined && this.$route.query.userId !== null
+            && this.$route.query.name !== undefined && this.$route.query.name !== null 
+            && this.$route.query.role !== undefined && this.$route.query.role !== null){
+                this.accountStore.clearStoredData();
+                this.accountStore.setAccountInfo(this.$route.query.userId, this.$route.query.name, this.$route.query.role);
+                this.accountStore.setLocalStorage();
+                this.$router.replace('/');
+            }
+        },
+        computed: {
+            ...mapStores(useAccountStore)
         },
         methods: {
             getHighestRatingBooks(){
@@ -141,14 +163,22 @@
                         
                     }   
                 }).catch(err=>{
-                    this.$notify({
-                        title: "Fetch highest rating books failed",
-                        text: "Fetch highest rating books failed with error: " + err.response.data.error,
-                        type: "error"
-                    });
-                    
+                    if (err.response && err.response.data && err.response.data.error){
+                        this.$notify({
+                            title: "Fetch highest rating books failed",
+                            text: "Fetch highest rating books failed with error: " + err.response.data.error,
+                            type: "error"
+                        });
+                    } 
                 }).finally(()=>{
                 })   
+            },
+            getLatestArticles(){
+                axios.get('/api/article', { params: { page: 1, limit: 10}}).then(response => {
+                    if (response.data !== undefined && response.data.success === true){
+                        this.latestArticles = response.data.result;
+                    }
+                })
             },
             getMostBorrowedBooks(){
                 axios.get('/api/most-borrowed-books').then(response=> {
@@ -173,12 +203,14 @@
                         
                     }   
                 }).catch(err=>{
-                    this.$notify({
-                        title: "Fetch highest rating books failed",
-                        text: "Fetch highest rating books failed with error: " + err.response.data.error,
-                        type: "error"
-                    });
-                    
+                    if (err.response && err.response.data && err.response.data.error){
+                        this.$notify({
+                            title: "Fetch highest rating books failed",
+                            text: "Fetch highest rating books failed with error: " + err.response.data.error,
+                            type: "error"
+                        });
+                    }
+  
                 }).finally(()=>{
                 })   
             },
@@ -203,12 +235,13 @@
                         
                     }   
                 }).catch(err=>{
-                    this.$notify({
-                        title: "Fetch book count failed",
-                        text: "Fetch book count failed with error: " + err.response.data.error,
-                        type: "error"
-                    });
-                    
+                    if (err.response && err.response.data && err.response.data.error){
+                        this.$notify({
+                            title: "Fetch book count failed",
+                            text: "Fetch book count failed with error: " + err.response.data.error,
+                            type: "error"
+                        });
+                    }   
                 }).finally(()=>{
                 })  
             },
@@ -234,11 +267,13 @@
                         
                     }   
                 }).catch(err=>{
-                    this.$notify({
-                        title: "Fetch borrow count failed",
-                        text: "Fetch borrow count failed with error: " + err.response.data.error,
-                        type: "error"
-                    });
+                    if (err.response && err.response.data && err.response.data.error){
+                        this.$notify({
+                            title: "Fetch borrow count failed",
+                            text: "Fetch borrow count failed with error: " + err.response.data.error,
+                            type: "error"
+                        });
+                    }   
                     
                 }).finally(()=>{
                 }) 
@@ -337,7 +372,8 @@
             }
         },
         components: {
-            BookCarousel: BookCarousel
+            BookCarousel: BookCarousel,
+            ArticleCarousel: ArticleCarousel
         }
     }
 </script>

@@ -6,6 +6,11 @@ from global_vars.constants import *
 from global_vars.database_init import policies_db_path
 from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
 from controller.user_controller import get_current_user_role
+from models.library_misc import Article
+from global_vars.database_init import db
+from utils.file_utils import *
+from utils.get_status_object import convert_sqlalchemy_row
+from sqlalchemy import desc, asc
 
 
 def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, 
@@ -143,3 +148,61 @@ def update_timings(normal_day_open: str=None, normal_day_close: str=None, weeken
             return False, str(er.sqlite_errorname)
     
     return True, None
+
+def add_article(title: str, content: str):
+    get_role_success, role, error  = get_current_user_role()
+    if role != 'admin':
+        return get_role_success, None, error
+    
+    try:
+        new_article = Article(); new_article.title = title; new_article.content = content
+        db.session.add(new_article); db.session.commit()
+    except:
+        return False, None, DATABASE_ERROR
+    return True, new_article, None
+
+def edit_article(article_id: int, title: str, content: str):
+    get_role_success, role, error  = get_current_user_role()
+    if role != 'admin':
+        return False, None, INVALID_AUTH
+    
+    #try:
+    new_article = db.session.query(Article).filter(Article.id == article_id).first()
+    new_article.title = title; new_article.content = content
+    db.session.commit()
+    #except:
+    #    return False, None, DATABASE_ERROR
+    return True, new_article, None
+
+def delete_article(id: int):
+    try:
+        row_deleted = db.session.query(Article).filter(Article.id == id).delete()
+        db.session.commit()
+        return True, None, None
+    except:
+        return False, None, DATABASE_ERROR
+
+def get_article(id: int):
+    article = db.session.query(Article).filter(Article.id == id).first()
+    return True, article, None
+
+def get_article_summaries(page: int=None, limit: int = 10, descending=True):
+    if page !=None and limit != None and (page < 1 or limit <= 0):
+        return False, None, INVALID_PARAM
+    
+    if page != None and limit != None:
+        offset = (page - 1)*limit
+    query = db.session.query().with_entities(Article.id, Article.title, Article.date).group_by(Article.id, Article.date)
+    
+    if descending == True:
+        query = query.order_by(desc(Article.date))
+    else:
+        query = query.order_by(asc(Article.date))
+
+    if page != None and limit != None:
+        article_summaries = query.offset(offset).limit(limit).all()
+    else:
+        article_summaries = query.all()
+    
+    article_summaries = [convert_sqlalchemy_row(article) for article in article_summaries]
+    return True, article_summaries, None

@@ -18,8 +18,9 @@ import Footer from './components/views/Footer.vue';
 import HomePage from './components/views/HomePage.vue';
 import ReportPage from './components/page_components/report_page_components/ReportPage.vue';
 import LibraryPoliciesSettings from './components/page_components/library_policies_settings_components/LibraryPoliciesSettings.vue';
-import ImportBookPage from './components/page_components/book_management_components/ImportBookPage.vue';
-
+import ArticleManagement from './components/page_components/article_management_components/ArticleManagement.vue';
+import ArticlePage from './components/page_components/ArticlePage.vue';
+import ArticleListUser from './components/page_components/article_management_components/ArticleListUser.vue';
 
 const routes = [
   { 
@@ -76,6 +77,12 @@ const routes = [
         }
       },
       {
+        path: 'admin/article-management',
+        components: {
+          default: ArticleManagement
+        }
+      },
+      {
         path: 'login',
         components: {
           default: LoginPage
@@ -106,6 +113,21 @@ const routes = [
         props: {
           default: true
         }
+      },
+      {
+        path: 'article/:articleId',
+        components:{
+          default: ArticlePage
+        },
+        props: {
+          default: true
+        }
+      },
+      {
+        path: 'articles',
+        components:{
+          default: ArticleListUser
+        },
       },
       {
         path: 'user/profile',

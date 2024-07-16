@@ -3,6 +3,11 @@
 
 body {
   background-color: #e4e7ee;
+  font-family: 'Nunito', 'Segoe UI', 'Open Sans', 'Noto Sans', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif' !important;
+}
+
+.article-title {
+  font-family: 'Nunito', 'Segoe UI', 'Open Sans', 'Noto Sans', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif' !important;
 }
 
 .book-img {
@@ -75,6 +80,66 @@ body {
   cursor: pointer;
 }
 
+.thumbnail
+{
+  width: 100%;  /*width of parent container*/
+  height: 150px; /*height of parent container*/
+  object-fit: contain;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.post-content {
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.post-content a {
+  color: rgb(38, 188, 215);
+}
+
+.article-text-align {
+  text-align: justify;
+}
+
+.mt-lg-n18 {
+  margin-top: -8rem !important;
+}
+
+.mt-n17 {
+  margin-top: -7rem !important;
+}
+
+.pb-18 {
+  padding-bottom: 8rem !important;
+}
+
+pb-14 {
+  padding-bottom: 7rem !important;
+}
+
+.bg-soft-primary {
+  background-color: #f1f5fd !important;
+}
+
+.post-meta li:first-child::before, article .post-meta li.ms-auto::before {
+  display: none;
+}
+.post-header .post-meta li::before {
+  margin: 0 0.6rem 0 0.4rem;
+}
+.post-meta li::before {
+  content: "";
+  display: inline-block;
+  width: 0.2rem;
+  height: 0.2rem;
+  border-radius: 100%;
+  margin: 0 0.6rem 0;
+  vertical-align: 0.15rem;
+
+  opacity: 0.5;
+}
 
 @media screen and (min-width: 768px){
   .w-md-25 {

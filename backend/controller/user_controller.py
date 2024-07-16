@@ -55,7 +55,7 @@ def change_password(old_password, new_password):
         return False, None, NOT_AUTHENTICATED
     
     user = db.session.query(User).filter(User.id == current_user.id).first()
-    if not user or not (check_password_hash(user.password, old_password)):
+    if not user or (user.password != None and not (check_password_hash(user.password, old_password))):
         return False, None, INVALID_AUTH
     else:
         new_password_hash = generate_password_hash(new_password)
