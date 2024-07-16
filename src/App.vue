@@ -1,24 +1,54 @@
 <script setup>
 
-import LoginPage from './components/views/LoginPage.vue';
-import NavBar from './components/page_components/NavBar.vue';
-import EasyLibLogo from './assets/EasyLib.svg';
+
 import { onBeforeMount } from 'vue';
 import {useAccountStore} from './components/stores/LoginInfoStore';
+
+const setStoredThemeColor = function(){
+    var theme = localStorage.getItem("theme");
+    if (theme === null || theme === "light"){
+        document.getElementById('htmlMain').setAttribute('data-bs-theme', "light");
+        localStorage.setItem("theme", "light");
+    }else {
+        document.getElementById('htmlMain').setAttribute('data-bs-theme', "dark");
+        localStorage.setItem("theme", "dark");
+    }
+};
+const getColorTheme = function(){
+    var theme = localStorage.getItem("theme");
+    if (theme === null || theme === "light"){
+        return "light";
+    }else {
+        return "dark";
+    }
+};
+    
+const setTheme = function(theme){
+    
+    if (theme === "light" || theme === null){
+        document.getElementById('htmlMain').setAttribute('data-bs-theme', "light");
+        localStorage.removeItem("theme");
+        localStorage.setItem("theme", "light");
+    }else {
+        document.getElementById('htmlMain').setAttribute('data-bs-theme', "dark");
+        localStorage.removeItem("theme");
+        localStorage.setItem("theme", "dark");
+    }
+};
 
 onBeforeMount(() => {
   const store = useAccountStore();
   store.setAccountFromLocal();
-  document.getElementById('htmlMain').setAttribute('data-bs-theme', "dark");
+  setStoredThemeColor();
 });
 
 
 </script>
 
-<template data-bs-theme="dark">
+<template >
   <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true data-testid="notification"/>
-  <div>
-    <RouterView name="NavBar" />
+  <div :key="componentKey">
+    <RouterView name="NavBar" @setTheme="setTheme"/>
     <RouterView />
     <RouterView name="footer"/>
   </div>

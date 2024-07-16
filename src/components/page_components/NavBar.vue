@@ -3,6 +3,7 @@
     <div class="container-fluid">
       
       <RouterLink class="navbar-brand" to="/"><img :src="EasyLibLogo" width="50" height="50" alt="EasyLib logo" />EasyLib</RouterLink>
+
       <button class="navbar-toggler" ref="sidebarToggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavigation" aria-controls="offcanvasNavigation" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -51,7 +52,18 @@
             <li class="nav-item" v-if="accountStore.notLoggedIn" ><RouterLink class="nav-link" to="/login" id="login-link" @click="closeSidebar">Log in</RouterLink></li>
             <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link" @click="closeSidebar">Register</RouterLink></li>
             <li class="nav-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
-
+            <hr class="hr" />
+            
+            <li class="nav-item">
+              <div class="nav-link" @click="() => { $emit('setTheme', 'light'); closeSidebar(); }" style="cursor: pointer;">
+                <i class="bi bi-sun"></i><span>Set light theme</span>
+              </div>
+            </li>
+            <li class="nav-item">
+              <div class="nav-link" @click="() => { $emit('setTheme', 'dark'); closeSidebar(); }" style="cursor: pointer;">
+                <i class="bi bi-moon-stars-fill" ></i><span>Set dark theme</span>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
@@ -84,6 +96,15 @@
     const searchTitle = function(){
       searchQueryStore.saveSearchQuery(searchQuery.value, '', '');
       router.push('/book/advanced-search');
+    }
+
+    var getColorTheme = function(){
+        var theme = localStorage.getItem("theme");
+        if (theme === null || theme === "light"){
+            return "light";
+        }else {
+            return theme;
+        }
     }
 
     const closeSidebar = function(){
