@@ -21,12 +21,17 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,
 
 var apiSite;
 if (import.meta.env.VITE_API_POINT !== undefined){
-  apiSite = import.meta.env.VITE_API_POINT; //Change to domain name instead of localhost in production, since axios will fetch from this site
+  apiSite = import.meta.env.VITE_API_POINT; 
 }else {
   apiSite = 'http://localhost:5173';
 }
 
-//const apiSite = 'http://192.168.43.2:5000';
+var nominatimServer, tileServer;
+if (import.meta.env.VITE_OSM_NOMINATIM_SERVER !== undefined 
+  && import.meta.env.VITE_OSM_TILE_SERVER !== undefined){
+    nominatimServer = import.meta.env.VITE_OSM_NOMINATIM_SERVER;
+    tileServer = import.meta.env.VITE_OSM_TILE_SERVER;
+}
 
 axios.defaults.baseURL = apiSite;
 axios.defaults.withCredentials = true;
@@ -37,7 +42,9 @@ const pinia = createPinia()
 const app = createApp(App)
 app.config.globalProperties = {
     apiSite: apiSite,
-    daysOfWeek: ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday']
+    daysOfWeek: ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday'],
+    nominatimServer: nominatimServer,
+    tileServer: tileServer
 }
 app.use(Notifications)
 app.use(pinia)

@@ -124,8 +124,6 @@
                 latestArticles: [],
                 map: null,
                 libraryCoordinate: null,
-                tileServer: 'https://tile.openstreetmap.org', //OpenStreetMap tile server
-                nominatimServer: 'https://nominatim.openstreetmap.org',
                 LibraryImage
             }
         },
