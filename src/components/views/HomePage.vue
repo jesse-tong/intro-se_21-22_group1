@@ -34,6 +34,14 @@
                                 <td><span>Number of borrows:</span></td>
                                 <td><span>{{ borrowCount }}</span></td>
                             </tr>
+                            <tr>
+                                <th class="table-active text-center" colspan="2">LIBRARY MAP</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="w-100" style="min-height: 180px;" id="map"></div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -91,6 +99,9 @@
     import LibraryImage from '../../assets/library.jpg';
     import { useAccountStore } from '../stores/LoginInfoStore';
     import { mapStores } from 'pinia';
+    import "leaflet/dist/leaflet.css";
+    import markerIconPng from "leaflet/dist/images/marker-icon.png"
+    import * as L from 'leaflet';
 
     export default {
         data(){
@@ -111,7 +122,10 @@
                 weekendEnd: 'N/A',
 
                 latestArticles: [],
-                
+                map: null,
+                libraryCoordinate: null,
+                tileServer: 'https://tile.openstreetmap.org', //OpenStreetMap tile server
+                nominatimServer: 'https://nominatim.openstreetmap.org',
                 LibraryImage
             }
         },
@@ -121,6 +135,7 @@
             this.getBookCount(); this.getBorrowCount();
             this.getContacts(); this.getLibraryTimings();
             this.getLatestArticles();
+            
         },
         beforeMount(){
             if (this.$route.query.userId !== undefined && this.$route.query.userId !== null
@@ -130,12 +145,85 @@
                 this.accountStore.setAccountInfo(this.$route.query.userId, this.$route.query.name, this.$route.query.role);
                 this.accountStore.setLocalStorage();
                 this.$router.replace('/');
-            }
+            };
+            
+        },
+        mounted(){
+            //this.initiateMap();
         },
         computed: {
             ...mapStores(useAccountStore)
         },
+        watch: {
+            contactAddress: {
+                handler(newAddress){
+                    console.log(newAddress);
+                    if (newAddress !== null && newAddress !== 'N/A'){                       
+                        this.coordinateFromAddress(newAddress);
+                    }
+                },
+                once: true
+            },
+            libraryCoordinate: {
+                handler(newCoordinate){
+                    this.initiateMap(newCoordinate);
+                }
+            }
+        },
         methods: {
+            initiateMap(libraryCoordinate){
+                if (libraryCoordinate !== null && this.tileServer !== null){
+                    const markerIcon = L.icon({
+                        iconUrl: markerIconPng
+                    });
+                    var map = L.map('map', { minZoom: 9.5, maxZoom: 17}).setView(libraryCoordinate, 16);
+
+                    L.tileLayer(this.tileServer + '/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    L.marker(libraryCoordinate, {icon: markerIcon}).addTo(map)
+                        .bindPopup('Library location: ' + this.contactAddress)
+                        .openPopup();
+                }
+                
+            },
+            parseAddress(addressString){
+                var result = {}; let splitByCommas = String(addressString).split(',');
+                splitByCommas.forEach((subString) => {
+                    if (subString.match(/\s+street\s*/i) !== null){
+                        result.street = subString.replace(/\s+street\s*/i, '');
+                    }else if (subString.match(/\s+city\s*/i) !== null){
+                        result.city = subString.replace(/\s+country\s*/i, '');
+                    }else if (subString.match(/\s+county\s*/i) !== null){
+                        result.county = subString.replace(/\s+county\s*/i, '');
+                    }else if (subString.match(/\s+state\s*/i) !== null){
+                        result.state = subString.replace(/\s+state\s*/i, '');
+                    }else if (subString.match(/\s+country\s*/i) !== null){
+                        result.country = subString.replace(/\s+country\s*/i, '');
+                    }
+                });
+                //If street not found, and the first substring not match one of the above, use the first substring
+                if (!result.street && splitByCommas.length > 0 
+                && splitByCommas[0].match(/\s+street|county|state|city|country\s*/i) === null){
+                    result.street = splitByCommas[0];
+                }
+                //If country not found, and the last substring not match one of the above, use the last substring
+                if (!result.country && splitByCommas.length > 1 
+                && splitByCommas[splitByCommas.length - 1].match(/\s+street|county|state|city|country\s*/i) === null){
+                    result.country = splitByCommas[splitByCommas.length - 1];
+                }
+                return result;
+            },
+            coordinateFromAddress(addressString){
+                var searchObj = this.parseAddress(addressString);
+                searchObj.format = 'json'; searchObj.limit = 1;
+                axios.get(this.nominatimServer + '/search', { params: searchObj, withCredentials: false})
+                    .then(response => {
+                        
+                        this.libraryCoordinate = [parseFloat(response.data[0].lat), parseFloat(response.data[0].lon)];
+                    })
+            },
             getHighestRatingBooks(){
                 axios.get('/api/highest-rating-books').then(response=> {
                     if (!response.data || response.data == undefined || !response.data.success){
