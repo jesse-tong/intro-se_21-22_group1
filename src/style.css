@@ -165,6 +165,10 @@ a.hover::before {
   color: #2d3139 !important;
 }
 
+.article-content img {
+  max-width: 100%;
+}
+
 @media screen and (min-width: 768px){
   .w-md-25 {
     width: 25%;
