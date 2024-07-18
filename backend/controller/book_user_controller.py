@@ -397,6 +397,8 @@ def set_library_policies_controller(default_borrow_time: int=None, overdue_fine_
         success, error_code = update_policies(default_borrow_time, overdue_fine_per_day, overdue_limit, damage_lost_fine, new_currency, new_other_policies)
         if success == True:
             library_policies = get_policies()
+            global id, borrow_time, overdue_fine, overdue_limit_before_treated_as_lost, \
+            damage_and_lost_fine, currency, other_policies
             id, borrow_time, overdue_fine, overdue_limit_before_treated_as_lost, \
             damage_and_lost_fine, currency, other_policies = library_policies
             

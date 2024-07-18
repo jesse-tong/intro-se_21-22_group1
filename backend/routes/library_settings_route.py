@@ -10,7 +10,7 @@ from models.user_book import BookBorrow
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
 from utils.file_utils import *
-from controller.book_user_controller import currency
+from controller.book_user_controller import get_policies
 
 #Blue print for miscellanous library settings
 library_settings_routes = Blueprint('library_settings_routes', __name__)
@@ -153,7 +153,13 @@ def create_checkout_session(borrow_id):
     borrow = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).filter(BookBorrow.userId == current_user.id).first()
     if not borrow:
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
-
+    
+    library_policies = get_policies()
+    if library_policies != None:
+        currency = library_policies[5]
+    else:
+        return get_status_object_json(False, None, DATABASE_ERROR), 500
+    
     success, borrow_fee, error = get_borrow_fee(borrow_id, 0.0)
     if not success:
         #Borrow not approved or book hasn't returned/declared as lost or damaged
