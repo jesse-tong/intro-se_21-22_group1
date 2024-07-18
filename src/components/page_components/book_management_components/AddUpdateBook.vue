@@ -109,7 +109,7 @@
                     </div>     
                     <div class="row-6 mt-3 ms-1">
                         <div>
-                            <span><h5>Languages: </h5></span>
+                            <span><h6>Languages: </h6></span>
                             <h6 class="badge text-bg-secondary" data-testid="languageBadge" v-for="language in languages">{{ language }}</h6>
                         </div>     
                     </div>
