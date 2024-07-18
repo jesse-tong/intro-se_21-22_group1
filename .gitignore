@@ -42,4 +42,4 @@ dist-ssr
 /playwright/.cache/
 
 #Pycache
-/__pycache__/*
+__pycache__/*
