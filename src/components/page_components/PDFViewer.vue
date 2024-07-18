@@ -64,7 +64,10 @@ const { pdf, pages } = usePDF(
         </div>
         
       </div>
-      <VuePDF class="d-flex justify-content-center" :pdf="pdf" :page="page" :scale="scale" id="main-pdf" />
+      <div class="m-auto w-100">
+        <VuePDF class="" :pdf="pdf" :page="page" :scale="scale" id="main-pdf" style="max-width: 100%;"/>
+      </div>
+      
     </div>
   </div>
   <div class="mx-auto d-flex flex-column" v-else>
