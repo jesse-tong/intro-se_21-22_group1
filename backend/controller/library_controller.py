@@ -186,7 +186,7 @@ def get_article(id: int):
     article = db.session.query(Article).filter(Article.id == id).first()
     return True, article, None
 
-def get_article_summaries(page: int=None, limit: int = 10, descending=True):
+def get_article_summaries(page: int=None, limit: int = 6, descending=True):
     if page !=None and limit != None and (page < 1 or limit <= 0):
         return False, None, INVALID_PARAM
     

@@ -584,7 +584,6 @@
             this.editedReturnDate = null;
             this.editedDamagedOrLost = null;
             this.editedIsApproved = '';
-            console.log(this.borrows);
             this.fetchBorrow(this.currentPage);
         })
         

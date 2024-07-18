@@ -98,7 +98,6 @@
         watch: {
             currentPage: {
                 handler(newPage, oldPage){
-                    console.log('Current page changed!')
                     this.fetchData(this.$props.genreOrAuthorId, this.$props.fetchGenre);
                 },
                 immediate: true

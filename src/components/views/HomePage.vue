@@ -155,7 +155,6 @@
         watch: {
             contactAddress: {
                 handler(newAddress){
-                    console.log(newAddress);
                     if (newAddress !== null && newAddress !== 'N/A'){                       
                         this.coordinateFromAddress(newAddress);
                     }

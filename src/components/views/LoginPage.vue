@@ -93,7 +93,7 @@ import { useAccountStore } from '../stores/LoginInfoStore';
               remember: (this.rememberMe !== '' && this.rememberMe !== null) ? true : false
             }).then(response => {
               if (response.data.success === true){
-                console.log(response.data.result);
+
                 try{
                   accountStore.setAccountInfo(response.data.result.id, response.data.result.name, response.data.result.role);
                 }catch(e){

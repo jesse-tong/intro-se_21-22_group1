@@ -17,9 +17,9 @@
                     <div class="d-flex justify-content-between w-100 mt-2">
                         <button class="btn btn-success" v-if="selectedArticleId === null" @click="(e) => onCreateNewArticle()">Save new article</button>
                         <button class="btn btn-success" v-else @click="(e)=>onSaveEditArticle(selectedArticleId)">Save article</button>
-                        <div class="">
-                            <span v-if="selectedArticleId === null" class="me-2">New article</span>
-                            <span v-else class="me-2">{{ 'Editing article: ' + selectedArticleId }}</span>
+                        <div class="ms-3 ms-md-0">
+                            <span v-if="selectedArticleId === null" class="me-md-2">New article</span>
+                            <span v-else class="me-md-2">{{ 'Editing article: ' + selectedArticleId }}</span>
                             <button class="btn btn-outline-success" @click="(e) => onNewArticleDrafted()"><span>Create new article</span></button>
                         </div>
                     </div>        

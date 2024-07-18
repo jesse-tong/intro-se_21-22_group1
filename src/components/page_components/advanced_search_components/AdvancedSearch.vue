@@ -190,7 +190,6 @@ import { useSearchQueryStore } from '../../stores/SearchQueryStore';
             || (this.searchId !== null && this.searchId !== '' && this.searchId > 0) 
             || (this.searchIsbn !== null && this.searchIsbn !== '') ){
                 //If one of title, id, isbn or description is not empty because of query parameters, fetch without user input
-                console.log('Fetch immediately');
                 this.fetchSearchResult(); 
             }
         }

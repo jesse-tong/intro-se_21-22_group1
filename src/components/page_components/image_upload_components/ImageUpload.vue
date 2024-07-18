@@ -4,8 +4,8 @@
             <div class="col-12 col-md-9 col-xl-9 col-xxl-8">
                 <ImageList :images="images" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteImage="onDeleteImage" @selectImage="onSelectImage" />
             </div>
-            <div class="col-12 col-md-3 col-xl-3 col-xxl-4 border-start">
-                <div class="px-1 col">
+            <div class="col-12 col-md-3 col-xl-3 col-xxl-4 border-md-start">
+                <div class="ps-3 ps-md-1 pe-1 col">
                     <input accept="image/*" type="file" @change="onFileChange($event)" class="form-control row" ref="imageInput"/>
                     <button class="btn btn-primary row my-2" @click="onUploadImage"><span>Upload image</span></button>
                     <button class="btn btn-primary row" @click="(e) => removeImage()"><span>Remove pending upload image</span></button>
@@ -61,7 +61,7 @@
                 this.$refs.imageInput.value = null;
             },
             fetchUploadedImages(page){
-                axios.get('/api/upload-user-image', {params: { page: page, limit: 10} })
+                axios.get('/api/upload-user-image', {params: { page: page, limit: 6} })
                 .then(response => {
                     if (response.data !== undefined && response.data.success === true){
                         this.images = response.data.result;

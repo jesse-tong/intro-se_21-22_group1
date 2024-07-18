@@ -2,7 +2,7 @@
     <div class="">
         <div class="row">
           <div class="col-12 col-md-6 col-lg-4 col-xl-3 " v-if="images.length > 0" v-for="image in images" :key="image.id" data-testid="imageCard">
-            <div class="mx-2 h-100">
+            <div class="mx-2 h-100 p-1">
               <div class="card h-100 mx-1 my-1 p-1" >
                   <div class="card-img-top">
                     <img :src="apiSite + '/uploaded-image/' + image.id" class="thumbnail" :alt="image.imagePath" >
@@ -11,7 +11,7 @@
                   <h6 class="card-title">{{ image.imagePath }}</h6> 
                   <p class="card-text">{{ 'ID: ' + image.id }}</p>
                   <div>
-                  <button class="btn btn-sm btn-primary me-3" @click="()=>onSelectImage(image)">Select</button>
+                  <button class="btn btn-sm btn-primary me-3 mb-1 mb-md-0" @click="()=>onSelectImage(image)">Select</button>
                   <button class="btn btn-sm btn-danger" @click="$emit('deleteImage', image.id)" >Delete</button>
                   </div>
               </div>

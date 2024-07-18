@@ -166,7 +166,6 @@
                 })
             },
             goToProfile(userId){
-                console.log(userId);
                 this.$router.push({path: `/user/profile/${userId}`});
             }
         },

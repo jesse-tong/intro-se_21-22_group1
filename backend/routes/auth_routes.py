@@ -271,12 +271,21 @@ def upload_image_user():
         if not current_user.is_authenticated:
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
         #This one to get user's current uploaded image
+        page = request.args.get('page')
+        limit = request.args.get('limit')
         try:
             user_id = int(current_user.id)
+            page = int(page) if page != None else None
+            limit = int(limit) if limit != None else None
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
-        
-        images_details = db.session.query(ArticleImage).filter(ArticleImage.userId == user_id).all()
+        if page <= 0 or limit <= 0:
+            return get_status_object_json(False, None, INVALID_PARAM), 409
+        if page != None and limit != None:
+            offset = (page - 1)*limit
+            images_details = db.session.query(ArticleImage).filter(ArticleImage.userId == user_id).offset(offset).limit(limit).all()
+        else:
+            images_details = db.session.query(ArticleImage).filter(ArticleImage.userId == user_id).all()
 
         return get_status_object_json(True, images_details, None), 200
     elif request.method == 'POST':

@@ -51,18 +51,21 @@
         <div class="col-12 col-md-8" id="overview">
           <h1 class="mb-3" style="font-family: 'Calibri', 'Helvetica';"><b>{{ book.title }}</b></h1>
           <p class="text-muted">by <span v-for="author in book.authors">{{ author + ', ' }}</span></p>
-          <ul class="list-group list-group-horizontal-md">
-            <p class="list-group-item">Languages: 
-              <span class="badge text-bg-secondary me-2" v-for="language in book.languages" data-testid="languageBadge">{{ language }}</span>
-            </p>
-            <p class="list-group-item">Author(s): 
-              <span class="badge bg-secondary me-2" v-for="author in book.authors" data-testid="authorBadge">{{ author }}</span>
-            </p>
-            <p class="list-group-item">Genre(s): 
-              <span class="badge text-bg-secondary me-2" v-for="genre in book.genres" data-testid="genreBadge">{{ genre }}</span>
-            </p>
-            <p class="list-group-item">ISBN: {{ book.isbn }}</p>
-          </ul> 
+          <div style="max-width: 100%">
+            <ul class="list-group list-group-horizontal-lg w-100">
+              <p class="list-group-item m-0">Languages: 
+                <span class="badge text-bg-secondary me-0 me-lg-2" v-for="language in book.languages" data-testid="languageBadge">{{ language }}</span>
+              </p>
+              <p class="list-group-item m-0">Author(s): 
+                <span class="badge bg-secondary me-0 me-lg-2" v-for="author in book.authors" data-testid="authorBadge">{{ author }}</span>
+              </p>
+              <p class="list-group-item m-0">Genre(s): 
+                <span class="badge text-bg-secondary me-0 me-lg-2" v-for="genre in book.genres" data-testid="genreBadge">{{ genre }}</span>
+              </p>
+              <p class="list-group-item m-0">ISBN: {{ book.isbn }}</p>
+            </ul> 
+          </div>
+          
           <br class="br"/>
           <h4 id="description"><b>Book Description</b></h4>
           <span style="white-space: pre-wrap;">

@@ -17,7 +17,7 @@ function onPassword(updatePassword, reason) {
 }
 
 function onProgress({ loaded, total }) {
-  console.log(`${loaded / total * 100}% Loaded`)
+  //console.log(`${loaded / total * 100}% Loaded`)
 }
 
 function onError(reason) {
@@ -46,7 +46,7 @@ const { pdf, pages } = usePDF(
 </script>
 
 <template>
-  <div class="mx-5" v-if="pdfLoadable">
+  <div class="mx-auto" v-if="pdfLoadable">
     
     <div class="col overflow-auto">
       <div class="row-1">
@@ -67,7 +67,7 @@ const { pdf, pages } = usePDF(
       <VuePDF class="d-flex justify-content-center" :pdf="pdf" :page="page" :scale="scale" id="main-pdf" />
     </div>
   </div>
-  <div class="mx-5 d-flex flex-column" v-else>
+  <div class="mx-auto d-flex flex-column" v-else>
     <h5>Loading PDF error/Book missing PDF</h5>
     <h6>{{ loadError }}</h6>
   </div>

@@ -80,11 +80,10 @@
             }
             
             searchParams.page = this.currentPage; searchParams.limit = 10;
-            console.log(searchParams);
+
             axios.get('/api/book', {
               params: searchParams
             }).then(response => {
-              console.log(response.data);
               if (!response.data){
                   this.$notify({
                       title: "Cannot fetch search results",
