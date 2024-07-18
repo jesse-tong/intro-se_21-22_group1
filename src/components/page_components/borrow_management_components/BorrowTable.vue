@@ -46,7 +46,6 @@
     },
     methods: {
       getDateString(date){
-        //console.log('Original date', date);
         return new Date(Date.parse(date)).toString();
       }
     },

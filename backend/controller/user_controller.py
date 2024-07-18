@@ -1,8 +1,12 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user_model import User, UserInfo, UserNotification, Session
 from models.user_book import BookBorrow, BookFavorite
+from models.library_misc import MonthlySessionCount
+from sqlalchemy import func, update, case
+from sqlalchemy.dialects.mysql import insert as mysql_insert
 from global_vars.database_init import db
 import re
+from ua_parser import user_agent_parser
 from global_vars.errors import *
 from flask_login import login_user, login_required, current_user, logout_user
 
@@ -161,3 +165,32 @@ def user_data_request(user_id:int=None):
     user_data['user_session'] = user_session; user_data['user_borrow'] = user_borrow
     user_data['user_favorite'] = user_favorite; user_data['user_notification'] = user_notification
     return True, user_data, None
+
+def update_session_count(os_or_browser: str, type: str = 'browser'):
+    
+    updated_count = mysql_insert(MonthlySessionCount).values(browserOrOs=os_or_browser, type=type, count=1, lastUpdated=func.now())\
+        .on_duplicate_key_update({
+            'count': case(
+                {(func.month(MonthlySessionCount.lastUpdated) != func.month(func.now())) | (func.year(MonthlySessionCount.lastUpdated) != func.year(func.now())): 1},
+                else_=MonthlySessionCount.count + 1
+            ),
+            'lastUpdated': func.now()
+        })
+    db.session.execute(updated_count)
+        
+
+    # Check if update was successful (indicates no race condition)
+    #if updated_count == 0:
+    # Potential race condition, consider retrying or using a different approach
+    #    print('No row update for monthly session count, potential race condition')
+    db.session.commit()
+
+def parse_user_agent(user_agent: str):
+    parsed_user_agent = user_agent_parser.Parse(user_agent)
+    browser_family = parsed_user_agent.get('user_agent').get('family')
+    os_family = parsed_user_agent.get('os').get('family')
+    return browser_family, os_family
+
+def monthly_os_browser_count():
+    data = db.session.query(MonthlySessionCount).all()
+    return data

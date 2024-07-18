@@ -19,3 +19,11 @@ class ArticleImage(db.Model):
     id:int = db.Column(db.Integer, primary_key=True)
     userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
     imagePath:str = db.Column(db.String(500))
+
+@dataclass
+class MonthlySessionCount(db.Model):
+    __tablename__ = 'monthly_sessioncount'
+    browserOrOs:str = db.Column(db.String(60), primary_key=True)
+    type:str = db.Column(db.String(30))
+    count:str = db.Column(db.Integer)
+    lastUpdated:datetime = db.Column(db.DateTime)

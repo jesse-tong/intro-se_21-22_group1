@@ -54,4 +54,6 @@ class Session(db.Model):
     userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
     os:str = db.Column(db.String(50))
     browser:str = db.Column(db.String(50))
+    referer:str = db.Column(db.String(500))
+    ipAddress:str = db.Column(db.String(500))
     sessionTime: datetime = db.Column(db.DateTime, default=datetime.now)

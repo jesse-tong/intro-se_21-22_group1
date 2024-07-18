@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { onBeforeMount } from 'vue';
 import {useAccountStore} from './components/stores/LoginInfoStore';
-import { use } from 'marked';
+import { VueElement } from 'vue';
 
 
 const setStoredThemeColor = function(){
@@ -38,32 +38,31 @@ const setTheme = function(theme){
     }
 };
 
-const onBeforeSessionEnds = function(){
-  const store = useAccountStore();
-  if (!store.isLoginRemember){
-    store.clearSessionStorage(); 
-    axios.get('/auth/logout', { }).then(response => { }).catch(err => {});
-  }
-}
-
 
 onBeforeMount(() => {
   const store = useAccountStore();
   store.setAccountFromLocal();
   setStoredThemeColor();
+  
 });
 
-//document.getElementById('spaAppBody').addEventListener('unload', onBeforeSessionEnds);
+document.addEventListener('loadstart', ()=> {
+  
+}, {once: true});
+
 
 </script>
 
 <template >
-  <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true data-testid="notification"/>
-  <div :key="componentKey">
-    <RouterView name="NavBar" @setTheme="setTheme"/>
-    <RouterView />
-    <RouterView name="footer"/>
-  </div>
+  <KeepAlive>
+    <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true data-testid="notification"/>
+    <div :key="componentKey">
+      <RouterView name="NavBar" @setTheme="setTheme"/>
+      <RouterView />
+      <RouterView name="footer"/>
+    </div>
+  </KeepAlive>
+  
 </template>
 
 <style scoped>

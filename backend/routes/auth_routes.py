@@ -3,21 +3,25 @@ from datetime import timedelta
 from flask import Blueprint, request, make_response, jsonify, send_file, url_for, redirect, flash
 from flask_login import login_user
 from global_vars.database_init import db
-from models.user_model import User, UserInfo
+from models.user_model import User, UserInfo, Session
 from models.library_misc import ArticleImage, Article
 from flask_login import logout_user, current_user
 from utils.file_utils import save_user_image, delete_user_image, get_save_user_image_path
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
-from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, user_profile, search_user, user_data_request
+from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
+user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
 from authlib.integrations.flask_client import OAuth
+from urllib import parse as url_parse
 
 auth = Blueprint('auth', __name__)
 oauth_client = OAuth()
+server_domain = os.environ.get('VITE_API_POINT')
+server_scheme = url_parse.urlparse(server_domain).scheme
 
 #Since we send CSRF token from the headers, we need to expose it through CORS 
 # or the browser and frontend would not get
@@ -32,13 +36,44 @@ def set_xsrf_cookie():
     response.headers.add('X-CSRFToken', csrf_token)
     return response
 
+@auth.route('/analytics', methods=['GET', 'POST'])
+def analytics():
+    
+    user_agent = request.user_agent.string
+    browser, os_family = parse_user_agent(user_agent)
+    update_session_count(browser, 'browser')
+    update_session_count(os_family, 'os')
+    ip_address = request.remote_addr
+    
+    
+    if request.method == 'POST':
+        referer = request.form.get('referer')
+    else:
+        referer = request.args.get('referer')
+    
+    if current_user.is_authenticated:
+        user = db.session.query(User).filter(User.id == current_user.id).first()
+        if user != None:
+            session = db.session.query(Session).filter(Session.browser == browser).filter(Session.os == os_family) \
+                .filter(Session.ipAddress == ip_address).filter(Session.userId == user.id).first()
+            if not session:
+                print('Analytics request')
+                #If the user has logged in, and detect logged in new browser/os/IP address, note it
+                new_session = Session(userId=user.id, os=os_family, browser=browser, referer=referer, ipAddress=ip_address)
+                try:
+                    db.session.add(new_session); db.session.commit()
+                except:
+                    pass
+
+    return request.user_agent.string
+
 @auth.route('/auth/login', methods=['POST'])
 def login_route():
     login_data = request.form
     email = login_data.get('email')
     password = login_data.get('password')
     remember = True if login_data.get('remember') != None else False
-
+    
     result, user_obj, error = login(email, password, remember)
     if result == True:
 
@@ -239,7 +274,7 @@ def data_request_route(user_id):
 
 @auth.route('/login/google')
 def login_google():
-    redirect_uri = url_for('auth.google_auth', _external=True)
+    redirect_uri = url_for('auth.google_auth', _scheme=server_scheme, _external=True)
     return oauth_client.google.authorize_redirect(redirect_uri)
     
 @auth.route('/auth/google')
@@ -375,3 +410,8 @@ def get_uploaded_image(image_id):
             return send_file(image_path, as_attachment=False), 200
         else:
             return get_status_object_json(False, None, NO_FILE_UPLOADED), 404
+
+@auth.route('/api/monthly-session-data')
+def monthly_session_data_route():
+    data = monthly_os_browser_count()
+    return get_status_object_json(True, data, None), 200
