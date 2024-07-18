@@ -26,6 +26,17 @@
             UpdatePassword: UpdatePassword,
             UpdateProfile: UpdateProfile,
             BorrowTableUser: BorrowTableUser
+        },
+        mounted(){
+            if (this.$route.query.status){
+                this.$notify({
+                    text: String(this.$route.query.status).includes('failed') 
+                    || String(this.$route.query.status).includes('expired') ? 'Payment failed/expired' : 'Payment success',
+                    title: this.$route.query.status,
+                    error: String(this.$route.query.status).includes('failed') 
+                    || String(this.$route.query.status).includes('expired') ? 'error' : 'success'
+                });
+            }
         }
     }
 </script>

@@ -32,7 +32,8 @@ def get_borrow_policy_constants():
     return True, result, None
 
 #Default if start_date is null is the current date
-def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, do_not_decrement_book_stock: bool=False):
+def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, 
+                is_approved: bool=False, return_date: datetime=None, is_damaged_or_lost: bool=False, do_not_decrement_book_stock: bool=False):
     borrow_book = BookBorrow()
     if start_date != None:
         borrow_book.startBorrow = start_date
@@ -58,11 +59,23 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
     borrow_book.bookId = bookId
     borrow_book.userId = userId
     borrow_book.hasReturned = False
+    borrow_book.isApproved = is_approved
+    borrow_book.isDamagedOrLost = is_damaged_or_lost
+
+    if return_date != None and return_date < start_date:
+        return False, None, INVALID_DURATION
+    else:
+        borrow_book.returnDate = return_date
     
+    if borrow_book.returnDate != None:
+        borrow_book.hasReturned = True
+
+
     try:
         db.session.add(borrow_book)
         db.session.commit()
-        decrement_book_stock(bookId)
+        if borrow_book.hasReturned == False or borrow_book.isDamagedOrLost == True:
+            decrement_book_stock(bookId)
         return True, borrow_book, None
     except:
         db.session.rollback()
@@ -390,3 +403,4 @@ def set_library_policies_controller(default_borrow_time: int=None, overdue_fine_
     result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 'damage_and_lost_fine': damage_and_lost_fine, 
               'currency': currency, 'other_policies': other_policies}
     return True, result, None
+

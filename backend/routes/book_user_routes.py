@@ -144,6 +144,18 @@ def admin_book_borrow_manage():
         start_borrow = request.form.get('start_borrow')
         end_borrow = request.form.get('end_borrow')
         return_date = request.form.get('return_date')
+        is_approved = request.form.get('is_approved')
+        damaged_or_lost = request.form.get('damaged_or_lost')
+   
+        if damaged_or_lost.lower() == 'true' or damaged_or_lost == '1':
+            damaged_or_lost = True
+        else:
+            damaged_or_lost = False
+
+        if is_approved.lower() == 'true' or is_approved == '1':
+            is_approved = True
+        else:
+            is_approved = False
 
         try:
             book_id = int(book_id)
@@ -154,7 +166,7 @@ def admin_book_borrow_manage():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = borrow_book(user_id, book_id, start_borrow, end_borrow)
+        success, result, error = borrow_book(user_id, book_id, start_borrow, end_borrow, is_approved, return_date, damaged_or_lost)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'PUT':
         borrow_id = request.form.get('borrow_id')

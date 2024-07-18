@@ -1,8 +1,10 @@
 <script setup>
 
-
+import axios from 'axios';
 import { onBeforeMount } from 'vue';
 import {useAccountStore} from './components/stores/LoginInfoStore';
+import { use } from 'marked';
+
 
 const setStoredThemeColor = function(){
     var theme = localStorage.getItem("theme");
@@ -36,12 +38,22 @@ const setTheme = function(theme){
     }
 };
 
+const onBeforeSessionEnds = function(){
+  const store = useAccountStore();
+  if (!store.isLoginRemember){
+    store.clearSessionStorage(); 
+    axios.get('/auth/logout', { }).then(response => { }).catch(err => {});
+  }
+}
+
+
 onBeforeMount(() => {
   const store = useAccountStore();
   store.setAccountFromLocal();
   setStoredThemeColor();
 });
 
+//document.getElementById('spaAppBody').addEventListener('unload', onBeforeSessionEnds);
 
 </script>
 

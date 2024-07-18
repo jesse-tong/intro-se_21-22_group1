@@ -27,7 +27,8 @@
           <td>{{ borrow.isApproved ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.fee }}</td>
           <td>
-            <button v-if="borrow.isApproved == true && !borrow.hasReturned " class="btn btn-sm btn-primary" @click="onReturnBook(borrow.id)" data-bs-toggle="modal" data-bs-target="#returnModal">Return</button>
+            <button v-if="borrow.isApproved == true && !borrow.hasReturned " class="btn btn-sm btn-primary me-2 mb-2" @click="onReturnBook(borrow.id)" data-bs-toggle="modal" data-bs-target="#returnModal">Return</button>
+            <button v-if="borrow.isApproved == true && (borrow.hasReturned == true || borrow.isDamagedOrLost == true)" class="btn btn-sm btn-success" @click="()=>onCreateCheckoutSession(borrow.id)" >Pay borrow fee</button>
           </td>
         </tr>
         <tr v-if="borrows == null || borrows.length === 0" >
@@ -53,6 +54,9 @@
 <script>
 import axios from 'axios';
 import ReturnModal from './ReturnModal.vue';
+import Stripe from 'stripe';
+
+
   export default {
     components: {
         ReturnModal: ReturnModal
@@ -84,6 +88,7 @@ import ReturnModal from './ReturnModal.vue';
             borrows: [],
             returnBorrowId: null,
             isDamagedOrLost: null,
+            stripeSession: null
         }
     },
     methods: {
@@ -93,6 +98,30 @@ import ReturnModal from './ReturnModal.vue';
       onReturnBook(borrowId){
         this.returnBorrowId = borrowId;
         
+      },
+      getStripePublishableKey(){
+        axios.get('/get-stripe-key').then(response => {
+          this.stripeSession = Stripe(response.data.publicKey);
+        }).catch(err => {
+          this.$notify({
+            title: 'Failed to get payment session key!',
+            text: 'Failed to get payment session key, cannot purchase from Stripe',
+            type: 'error'
+          });
+        })
+      },
+      onCreateCheckoutSession(borrowId){
+        axios.get('/create-checkout-session/' + borrowId).then(response => {
+          window.location.href = response.data.url;
+        }).catch(err => {
+          if (err.response && err.response.data && err.response.data.error){
+            this.$notify({
+              title: 'Get Stripe session and redirect to Stripe payment failed!',
+                  text: 'Get Stripe session and redirect to Stripe payment failed with error: ' + err.response.data.error,
+                  type: 'error'
+              });
+          }
+        })
       },
       fetchBorrow(newCurrentPage){
         let searchParams = {};
@@ -141,6 +170,8 @@ import ReturnModal from './ReturnModal.vue';
             immediate: true
         }
     },
-    
+    created(){
+      this.getStripePublishableKey();
+    }
   };
   </script>

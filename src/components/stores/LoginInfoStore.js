@@ -15,7 +15,8 @@ export const useAccountStore = defineStore('account', {
             }
         },
         loggedIn: (state) => (state.userId !== null),
-        notLoggedIn: (state) => (state.userId === null)
+        notLoggedIn: (state) => (state.userId === null),
+        isLoginRemember: (state) => (state.userId !== null && localStorage.getItem('userId') === state.userId)
     },
     actions: {
       // since we rely on `this`, we cannot use an arrow function

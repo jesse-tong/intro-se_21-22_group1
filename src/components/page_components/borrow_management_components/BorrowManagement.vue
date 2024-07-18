@@ -192,11 +192,11 @@
               <div class="mt-4">
                 <div class="form-check ">
                   <label for="isDamaged" class="form-check-label">Is damaged or lost</label>
-                  <input type="checkbox" v-model="damagedOrLost" class="form-check-input" id="isDamaged" >
+                  <input type="checkbox" v-model="damagedOrLost" class="form-check-input" id="isDamaged" value="true">
                 </div>
                 <div class="form-check mt-3">
                   <label for="isApproved" class="form-check-label">Is approved</label>
-                  <input type="checkbox" v-model="isApproved" class="form-check-input" id="isApproved" >
+                  <input type="checkbox" v-model="isApproved" class="form-check-input" id="isApproved" value="true">
                 </div>
               </div>
             </div>
@@ -475,8 +475,8 @@
           this.$notify('No user ID selected or invalid user ID');
           return;
         }
-        const isDamagedOrLost = this.damagedOrLost != "" ? true : false;
-        const isApproved = this.isApproved != "" ? true : false;
+        const isDamagedOrLost = this.damagedOrLost === "true" ? true : false;
+        const isApproved = this.isApproved === "true" ? true : false;
 
         axios.postForm('/api/manage-borrow-admin', {
             book_id: bookID,

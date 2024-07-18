@@ -1,17 +1,40 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, render_template_string, redirect
 from global_vars.database_init import db
 from sqlalchemy import func, distinct
-import json, uuid
+import json, uuid, stripe
 from flask_login import current_user
 from flask_cors import CORS
 from controller.library_controller import *
+from controller.book_user_controller import get_borrow_fee, delete_borrow
+from models.user_book import BookBorrow
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
 from utils.file_utils import *
+from controller.book_user_controller import currency
 
 #Blue print for miscellanous library settings
 library_settings_routes = Blueprint('library_settings_routes', __name__)
 CORS(library_settings_routes, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
+
+stripe_publishable_key = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+stripe_secret_key = os.environ.get('STRIPE_SECRET_KEY')
+server_domain = os.environ.get('VITE_API_POINT')
+
+def convert_to_stripe(amount: float, currency: str):
+    #Since Stripe requires charged amount of cents or equilvalent (for example, 10 USD becomes 1000)
+    zero_decimal_currencies = ['bif', 'clp', 'jpy', 'kmf', 'mga', 'pyg', 'rwf', 'vnd', 'xaf', 'xof']
+    #Currencies which Stripe requires the last digit is zero
+    three_decimal_currencies = ['bhd', 'jod', 'kwd', 'omr', 'tnd']
+    #Currencies which recently switched to zero decimal, for compatibility reasons the last two digits must be zeros
+    zero_decimal_compat = ['isk', 'huf', 'twd', 'ugx']
+    if currency in zero_decimal_currencies:
+        return int(amount)
+    elif currency in three_decimal_currencies:
+        return int(round(amount*1000, -1))
+    elif currency  in zero_decimal_compat:
+        return int(round(amount*100, -2))
+    else:
+        return int(amount*100)
 
 @library_settings_routes.route('/api/contacts', methods=['GET', 'POST'])
 def contact_settings():
@@ -109,3 +132,76 @@ def get_post_articles_route():
         content = request.form.get('content')
         success, added_article, error = add_article(title, content)
         return get_status_object_json(success, added_article, error), 200
+    
+@library_settings_routes.route('/get-stripe-key')
+def get_stripe_publishable_key():
+    stripe_config = {"publicKey": stripe_publishable_key}
+    return jsonify(stripe_config)
+
+@library_settings_routes.route("/create-checkout-session/<borrow_id>", methods=['GET'])
+def create_checkout_session(borrow_id):
+    domain_url = server_domain
+    stripe.api_key = stripe_secret_key
+    if not current_user.is_authenticated:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    
+    try:
+        borrow_id = int(borrow_id)
+    except:
+        return get_status_object_json(False, None, INVALID_ID), 409
+    
+    borrow = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).filter(BookBorrow.userId == current_user.id).first()
+    if not borrow:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+
+    success, borrow_fee, error = get_borrow_fee(borrow_id, 0.0)
+    if not success:
+        #Borrow not approved or book hasn't returned/declared as lost or damaged
+        return get_status_object_json(False, None, error), 409
+
+    try:
+        # Create new Checkout Session for the order
+        checkout_session = stripe.checkout.Session.create(
+            success_url=domain_url + '/stripe-payment/' + str(borrow_id) + "/success" +  "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=domain_url + "/stripe-payment/cancelled",
+            payment_method_types=["card"],
+            mode="payment",
+            customer_creation="always",
+            line_items=[
+                {
+                    "price_data": {
+                        "currency": str(currency).lower(),
+                        "product_data": {
+                            "name": "Library Fee",
+                        },
+                        "unit_amount": convert_to_stripe(borrow_fee, str(currency).lower()),  # Amount in cents
+                    },
+                    "quantity": 1,
+                }
+            ]
+        )
+        #Since stripe.redirectToCheckout is deprecated, just return the checkout url instead
+        #and let the frontend redirect to it
+        return jsonify({"sessionId": checkout_session["id"], "url": checkout_session["url"]})
+    except Exception as e:
+        return get_status_object_json(False, None, error=str(e)), 403
+    
+@library_settings_routes.route('/stripe-payment/<borrow_id>/success')
+def stripe_payment_success_callback(borrow_id):
+    session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+    status = session.get("status")
+    borrow_id = int(borrow_id)
+    
+    if status == 'complete':
+        delete_borrow(borrow_id)
+        return redirect('/user/settings?status=Thanks for your payment! Payment for library borrow with ID ' + str(borrow_id) + ' successfully!')
+    elif status == 'open':
+        delete_borrow(borrow_id)
+        return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) +
+                         ' is still being processed, check your account and your bank later in cases of error.')
+    else:
+        return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) + ' has been expired, no further process will occur.')
+
+@library_settings_routes.route("/stripe-payment/cancelled")
+def stripe_payment_cancelled_callback():
+    return redirect('/user/settings?status=Payment cancelled or failed.')
