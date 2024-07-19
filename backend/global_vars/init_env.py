@@ -8,3 +8,6 @@ if os.environ.get('GOOGLE_CLIENT_ID') == None or os.environ.get('GOOGLE_CLIENT_S
 
 if os.environ.get('STRIPE_PUBLISHABLE_KEY') == None or os.environ.get('STRIPE_SECRET_KEY') == None:
     raise EnvironmentError('STRIPE_PUBLISHABLE_KEY or STRIPE_SECRET_KEY is not found, please check the environment or .env file')
+
+if os.environ.get('IP_TO_COUNTRY_DB') == None:
+    raise EnvironmentError('IP_TO_COUNTRY_DB is not found, this is required for IP to country, please check the environment or .env file')

@@ -17,6 +17,7 @@ from global_vars.errors import *
 from dataclasses import asdict
 from authlib.integrations.flask_client import OAuth
 from urllib import parse as url_parse
+from utils.time_utils import ip_address_to_country
 
 auth = Blueprint('auth', __name__)
 oauth_client = OAuth()
@@ -43,10 +44,23 @@ def analytics():
     browser, os_family = parse_user_agent(user_agent)
     update_session_count(browser, 'browser')
     update_session_count(os_family, 'os')
-    ip_address = request.remote_addr
+    #ip_address = request.remote_addr
+    if request.environ.get('HTTP_CF_CONNECTING_IP') != None:
+        ip_address = request.environ['HTTP_CF_CONNECTING_IP'] #Case of running behind Cloudflare's tunnel
+    elif request.environ.get('HTTP_X_FORWARDED_FOR') != None:
+        ip_address = request.environ['HTTP_X_FORWARDED_FOR'] #Case of running behind reverse proxy server of Apache/Nginx
+    else:
+        ip_address = request.environ['REMOTE_ADDR']
+    country_codes_and_name = ip_address_to_country(ip_address)
     
-    
-    if request.method == 'POST':
+    if country_codes_and_name != None:
+        #Store ISO 3166 numeric code since it's more consistent than country codes or names
+        country_iso_numeric = country_codes_and_name[1] 
+        update_session_count(country_iso_numeric, 'country')
+        
+    if request.environ.get('HTTP_REFERER') != None:
+        referer = request.environ['HTTP_REFERER'] #Case of running befind reverse proxy or tunnel
+    elif request.environ.get('HTTP_REFERER') == None and request.method == 'POST':
         referer = request.form.get('referer')
     else:
         referer = request.args.get('referer')

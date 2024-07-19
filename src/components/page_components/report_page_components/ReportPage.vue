@@ -20,12 +20,15 @@
                                         <div class="col-12 col-lg-6 mt-2 mt-lg-0">
                                             <OSBrowserCountMonthlyChart :chartType="'browser'" />
                                         </div>
+                                        <div class="col-12 col-lg-12 mt-2">
+                                            <LocationMapChart />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md-5 col-xl-4">
                         <div class="p-2 pe-lg-2">
                             <MostRecentBorrow id="mostRecentBorrow" />
                         </div>
@@ -40,11 +43,14 @@
     import BorrowCountChart from './BorrowCountChart.vue';
     import MostRecentBorrow from './MostRecentBorrow.vue';
     import OSBrowserCountMonthlyChart from './OSBrowserCountMonthlyChart.vue';
+    import LocationMapChart from './LocationMapChart.vue';
+
     export default {
         components: {
             BorrowCountChart: BorrowCountChart,
             MostRecentBorrow: MostRecentBorrow,
-            OSBrowserCountMonthlyChart: OSBrowserCountMonthlyChart
+            OSBrowserCountMonthlyChart: OSBrowserCountMonthlyChart,
+            LocationMapChart: LocationMapChart
         }
     }
 </script>
