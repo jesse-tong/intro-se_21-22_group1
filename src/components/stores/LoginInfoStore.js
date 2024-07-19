@@ -21,9 +21,7 @@ export const useAccountStore = defineStore('account', {
     actions: {
       // since we rely on `this`, we cannot use an arrow function
       setAccountInfo(userId, name, role) {
-
         this.$state.userId = userId; this.$state.name = name; this.$state.role = role;
-        console.log(this.$state.role);
       },
       setLocalStorage(){
         if (this.$state.userId !== null){

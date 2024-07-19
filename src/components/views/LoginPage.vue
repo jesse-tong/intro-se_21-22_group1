@@ -131,9 +131,7 @@ import { useAccountStore } from '../stores/LoginInfoStore';
               }
               
             }).finally(()=> {
-              axios.post('/analytics', {
-                  referer: document.referrer,
-                }).then(response => {}).catch(()=>{})
+              
               });
           }
         }

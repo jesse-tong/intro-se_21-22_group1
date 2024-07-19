@@ -4,7 +4,7 @@
             <h6>{{ 'Page view by country' }}</h6>
         </div>
         <div class="card-body">
-            <Choropleth :chart-data="chartData" :options="options" v-if="loaded"/>
+            <Choropleth :chart-data="chartData" :options="options" v-if="loaded" />
         </div>
     </div>  
   </template>
@@ -48,6 +48,7 @@
         options: {
           showOutline: true,
           showGraticule: false,
+          responsive: true,
           legend: {
             display: false
           },
