@@ -142,7 +142,9 @@
                 this.accountStore.clearStoredData();
                 this.accountStore.setAccountInfo(this.$route.query.userId, this.$route.query.name, this.$route.query.role);
                 this.accountStore.setLocalStorage();
-                
+                axios.post('/analytics', {
+                  referer: document.referrer,
+                }).then(response => {}).catch(()=>{})
                 this.$router.replace('/');
             };
             

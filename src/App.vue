@@ -43,9 +43,7 @@ onBeforeMount(() => {
   const store = useAccountStore();
   store.setAccountFromLocal();
   setStoredThemeColor();
-  axios.post('/analytics', {
-    referer: document.referrer,
-  }).then(response => {}).catch(()=>{})
+  
 });
 
 
