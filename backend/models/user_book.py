@@ -1,6 +1,6 @@
 from global_vars.database_init import db
 from flask_login import UserMixin
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, text
 from models.user_model import User
 from models.book_model import Book
 from dataclasses import dataclass
@@ -19,6 +19,7 @@ class BookBorrow(db.Model):
     returnDate:datetime = db.Column(db.DateTime)
     isDamagedOrLost: bool = db.Column(db.Boolean, default=False)
     isApproved: bool = db.Column(db.Boolean, default=False)
+    hasResolved: bool = db.Column(db.Boolean, server_default="false", default=False, nullable=False)
 
 @dataclass
 class BookFavorite(db.Model):

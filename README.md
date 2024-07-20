@@ -20,7 +20,6 @@ Clone repo:
 - Gitlab: https://gitlab.com/jesse-tong/intro-se_21-22_group1
 - Codeberg: https://codeberg.org/jesse-tong/intro-se_21-22_group1
 
-
 Deployment (faster, recommended): https://intro-se21-22group1-production.up.railway.app/
 
 External APIs: OpenStreetMap, Stripe, Google OAuth, VNPay(planned)

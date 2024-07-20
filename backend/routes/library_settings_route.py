@@ -5,7 +5,7 @@ import json, uuid, stripe
 from flask_login import current_user
 from flask_cors import CORS
 from controller.library_controller import *
-from controller.book_user_controller import get_borrow_fee, delete_borrow
+from controller.book_user_controller import get_borrow_fee, set_borrow_resolve, delete_borrow
 from models.user_book import BookBorrow
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
@@ -199,10 +199,10 @@ def stripe_payment_success_callback(borrow_id):
     borrow_id = int(borrow_id)
     
     if status == 'complete':
-        delete_borrow(borrow_id)
+        set_borrow_resolve(borrow_id)
         return redirect('/user/settings?status=Thanks for your payment! Payment for library borrow with ID ' + str(borrow_id) + ' successfully!')
     elif status == 'open':
-        delete_borrow(borrow_id)
+        set_borrow_resolve(borrow_id)
         return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) +
                          ' is still being processed, check your account and your bank later in cases of error.')
     else:

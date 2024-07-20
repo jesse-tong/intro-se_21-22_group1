@@ -122,9 +122,13 @@
                   <label for="editedIsDamaged" class="form-check-label">Is damaged or lost</label>
                   <input type="checkbox" v-model="editedDamagedOrLost" class="form-check-input" id="editedIsDamaged" value="true">
                 </div>
-                <div class="form-check mt-3">
+                <div class="form-check mt-2">
                   <label for="editedIsApproved" class="form-check-label">Is approved</label>
                   <input type="checkbox" v-model="editedIsApproved" class="form-check-input" id="editedIsApproved" value="true">
+                </div>
+                <div class="form-check mt-2">
+                  <label for="editedHasResolved" class="form-check-label">Payment has resolved</label>
+                  <input type="checkbox" v-model="editedHasResolved" class="form-check-input" id="editedHasResolved" value="true">
                 </div>
               </div>
             </div>
@@ -194,9 +198,13 @@
                   <label for="isDamaged" class="form-check-label">Is damaged or lost</label>
                   <input type="checkbox" v-model="damagedOrLost" class="form-check-input" id="isDamaged" value="true">
                 </div>
-                <div class="form-check mt-3">
+                <div class="form-check mt-2">
                   <label for="isApproved" class="form-check-label">Is approved</label>
                   <input type="checkbox" v-model="isApproved" class="form-check-input" id="isApproved" value="true">
+                </div>
+                <div class="form-check mt-2">
+                  <label for="hasResolved" class="form-check-label">Borrow payment resolved</label>
+                  <input type="checkbox" v-model="hasResolved" class="form-check-input" id="hasResolved" value="true">
                 </div>
               </div>
             </div>
@@ -267,6 +275,7 @@
         isApproved: null,
         otherBookStatus: '',
         additionalFees: 0.0,
+        hasResolved: null,
   
         editedBorrowId: null,
         editedUserId: null,
@@ -276,6 +285,7 @@
         editedReturnDate: null,
         editedDamagedOrLost: null,
         editedIsApproved: null,
+        editedHasResolved: null,
   
         deletedBorrowId: null,
         
@@ -477,6 +487,8 @@
         }
         const isDamagedOrLost = this.damagedOrLost === "true" ? true : false;
         const isApproved = this.isApproved === "true" ? true : false;
+        const hasResolved = this.hasResolved !== "" && this.hasResolved !== null 
+                            && this.hasResolved !== false ? true : false;
 
         axios.postForm('/api/manage-borrow-admin', {
             book_id: bookID,
@@ -485,7 +497,8 @@
             end_borrow: this.convertLocalDatetimeToISOString(this.endBorrow),
             return_date: returnDate,
             damaged_or_lost: isDamagedOrLost,
-            is_approved: isApproved
+            is_approved: isApproved,
+            has_resolved: hasResolved
         }).then(response => {
             if (response.data.success !== true){
                 this.$notify({
@@ -535,6 +548,7 @@
 
         this.editedDamagedOrLost = borrow_status.isDamagedOrLost;
         this.editedIsApproved = borrow_status.isApproved;
+        this.editedHasResolved = borrow_status.hasResolved;
   
         this.activeTab = 'editBorrow';
         this.$refs.editBorrowTab.focus();
@@ -554,7 +568,8 @@
             end_borrow: this.convertLocalDatetimeToISOString(this.editedEndBorrow),
             return_date: (this.editedReturnDate === null || this.editedReturnDate === '') ? null :this.convertLocalDatetimeToISOString(this.editedReturnDate),
             damaged_or_lost: (this.editedDamagedOrLost !== null || this.editedDamagedOrLost !== '') ? this.editedDamagedOrLost : false,
-            is_approved: (this.editedIsApproved !== null || this.editedIsApproved !== '') ? this.editedIsApproved : false
+            is_approved: (this.editedIsApproved !== null || this.editedIsApproved !== '') ? this.editedIsApproved : false,
+            has_resolved: (this.editedHasResolved !== null || this.editedHasResolved !== '') ? this.editedHasResolved : false
         }).then(response => {
             if (response.data.success !== true){
                 this.$notify({
@@ -584,6 +599,7 @@
             this.editedReturnDate = null;
             this.editedDamagedOrLost = null;
             this.editedIsApproved = '';
+            this.editedHasResolved = null;
             this.fetchBorrow(this.currentPage);
         })
         

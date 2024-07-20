@@ -33,7 +33,8 @@ def get_borrow_policy_constants():
 
 #Default if start_date is null is the current date
 def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, 
-                is_approved: bool=False, return_date: datetime=None, is_damaged_or_lost: bool=False, do_not_decrement_book_stock: bool=False):
+                is_approved: bool=False, return_date: datetime=None, is_damaged_or_lost: bool=False, has_resolved: bool = False,
+                  do_not_decrement_book_stock: bool=False):
     borrow_book = BookBorrow()
     if start_date != None:
         borrow_book.startBorrow = start_date
@@ -61,6 +62,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
     borrow_book.hasReturned = False
     borrow_book.isApproved = is_approved
     borrow_book.isDamagedOrLost = is_damaged_or_lost
+    borrow_book.hasResolved = has_resolved
 
     if return_date != None and return_date < start_date:
         return False, None, INVALID_DURATION
@@ -82,7 +84,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
         return False, None, EDIT_ERROR
 
 def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: datetime=None, end_date: datetime=None, has_returned: bool=False, 
-                return_date: datetime=None, damaged_or_lost: bool=None, is_approved: bool=None):
+                return_date: datetime=None, damaged_or_lost: bool=None, is_approved: bool=None, has_resolved: bool=None):
     borrow_book = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).first()
     if not borrow_book:
         return False, None, ROW_NOT_EXISTS
@@ -113,6 +115,9 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
         borrow_book.bookId = bookId
     if userId != None:
         borrow_book.userId = userId
+
+    if has_resolved != None:
+        borrow_book.hasResolved = bool(has_resolved)
 
     prev_return_state = borrow_book.hasReturned
     borrow_book.hasReturned = has_returned
@@ -218,6 +223,14 @@ def search_borrow(user_id: int=None, book_id: int=None, start_date: datetime = N
         return_obj.append(borrow_dict)
 
     return True, return_obj, None
+
+def set_borrow_resolve(borrow_id: int):
+    try:
+        updated_count = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).update({BookBorrow.hasResolved: True})
+        db.session.commit()
+        return True, updated_count, None
+    except:
+        return False, None, DATABASE_ERROR
 
 def delete_borrow(borrow_id: int):
     borrow = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).first()

@@ -11,6 +11,7 @@
           <th>Return Date</th>
           <th>Damaged/Lost</th>
           <th>Is Approved</th>
+          <th>Payment has resolved</th>
           <th>Borrow fees</th>
           <th>Actions</th>
         </tr>
@@ -25,14 +26,15 @@
           <td>{{ borrow.returnDate ? getDateString(borrow.returnDate) : 'N/A'}}</td>
           <td>{{ borrow.isDamagedOrLost ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.isApproved ? 'Yes' : 'No' }}</td>
+          <td>{{ borrow.hasResolved ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.fee }}</td>
           <td>
             <button v-if="borrow.isApproved == true && !borrow.hasReturned " class="btn btn-sm btn-primary me-2 mb-2" @click="onReturnBook(borrow.id)" data-bs-toggle="modal" data-bs-target="#returnModal">Return</button>
-            <button v-if="borrow.isApproved == true && (borrow.hasReturned == true || borrow.isDamagedOrLost == true)" class="btn btn-sm btn-success" @click="()=>onCreateCheckoutSession(borrow.id)" >Pay borrow fee</button>
+            <button v-if="borrow.isApproved == true && borrow.hasReturned == true && borrow.hasResolved != true" class="btn btn-sm btn-success" @click="()=>onCreateCheckoutSession(borrow.id)" >Pay borrow fee</button>
           </td>
         </tr>
         <tr v-if="borrows == null || borrows.length === 0" >
-          <td colspan="10" ><p class="text-center"><i>Currently no borrow status data</i></p></td>
+          <td colspan="11" ><p class="text-center"><i>Currently no borrow status data</i></p></td>
         </tr>
       </tbody>
     </table>

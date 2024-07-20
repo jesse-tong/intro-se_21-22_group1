@@ -146,6 +146,7 @@ def admin_book_borrow_manage():
         return_date = request.form.get('return_date')
         is_approved = request.form.get('is_approved')
         damaged_or_lost = request.form.get('damaged_or_lost')
+        has_resolved = request.form.get('has_resolved')
    
         if damaged_or_lost.lower() == 'true' or damaged_or_lost == '1':
             damaged_or_lost = True
@@ -157,6 +158,11 @@ def admin_book_borrow_manage():
         else:
             is_approved = False
 
+        if has_resolved.lower() == 'true' or has_resolved == '1':
+            has_resolved = True
+        else:
+            has_resolved = False
+
         try:
             book_id = int(book_id)
             user_id = int(user_id)
@@ -166,7 +172,7 @@ def admin_book_borrow_manage():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = borrow_book(user_id, book_id, start_borrow, end_borrow, is_approved, return_date, damaged_or_lost)
+        success, result, error = borrow_book(user_id, book_id, start_borrow, end_borrow, is_approved, return_date, damaged_or_lost, has_resolved)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'PUT':
         borrow_id = request.form.get('borrow_id')
@@ -178,11 +184,19 @@ def admin_book_borrow_manage():
         has_returned = True if return_date != None else False
         damaged_or_lost = request.form.get('damaged_or_lost')
         is_approved = request.form.get('is_approved')
+        has_resolved = request.form.get('has_resolved')
 
         if damaged_or_lost == None or damaged_or_lost.lower() == 'false' or damaged_or_lost == '0':
             damaged_or_lost = False
         elif damaged_or_lost.lower() == 'true' or damaged_or_lost == '1':
             damaged_or_lost = True
+        else:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        if has_resolved == None or has_resolved.lower() == 'false' or has_resolved == '0':
+            has_resolved = False
+        elif has_resolved() == 'true' or has_resolved == '1':
+            has_resolved = True
         else:
             return get_status_object_json(False, None, INVALID_PARAM), 400
 
@@ -205,7 +219,8 @@ def admin_book_borrow_manage():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = edit_borrow(borrow_id, user_id, book_id, start_borrow, end_borrow, has_returned, return_date, damaged_or_lost, is_approved)
+        success, result, error = edit_borrow(borrow_id, user_id, book_id, start_borrow, end_borrow, has_returned, return_date, 
+                                             damaged_or_lost, is_approved, has_resolved)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'DELETE':
         borrow_id = request.form.get('borrow_id')
