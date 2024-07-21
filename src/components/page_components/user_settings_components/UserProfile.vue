@@ -52,6 +52,10 @@
                 <label for="userPhoneNumber" class="form-label"><span>Phone number: </span></label>
                 <input type="text" disabled :value="userInfo !== null ? userInfo.phone: 'N/A'" class="form-control" id="userPhoneNumber"/>
             </div>
+            <div class=" mb-2">
+                <label for="isAccountVerified" class="form-label"><span>Is account verified: </span></label>
+                <input type="text" disabled :value="userInfo !== null ? userInfo.isVerified: 'N/A'" class="form-control" id="isAccountVerified"/>
+            </div>
             <!--<div class=" mb-2">
                 <label for="userBorrowCount" class="form-label"><span>Borrow: </span></label>
                 <input type="text" disabled :value="userInfo !== null ? (userInfo.borrowLeft + ' / ' + userInfo.maxBorrow) : 'N/A'" class="form-control" id="userBorrowCount"/>
@@ -82,7 +86,8 @@
                     maxBorrow: 'N/A',
                     name: 'N/A',
                     phone: 'N/A',
-                    role: 'N/A'
+                    role: 'N/A',
+                    isVerified: 'N/A' 
                 },
                 emptyImage,
                 imageModalShow: false

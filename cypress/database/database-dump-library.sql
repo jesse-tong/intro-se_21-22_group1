@@ -16,6 +16,57 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `alembic_version`
+--
+
+DROP TABLE IF EXISTS `alembic_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `alembic_version` (
+  `version_num` varchar(32) NOT NULL,
+  PRIMARY KEY (`version_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alembic_version`
+--
+
+LOCK TABLES `alembic_version` WRITE;
+/*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
+INSERT INTO `alembic_version` VALUES
+('9977c57cb1c9');
+/*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `article`
+--
+
+DROP TABLE IF EXISTS `article`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `article` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `content` varchar(15000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `article`
+--
+
+LOCK TABLES `article` WRITE;
+/*!40000 ALTER TABLE `article` DISABLE KEYS */;
+INSERT INTO `article` VALUES
+(1,'Introduction to Meditation','- Tuesdays at 10 a.m.\r\n- Location: Regional Branch Library\r\n- Type: Online\r\n- Audience:Adults\r\n- Category: Health & Wellness\r\n- Language: English\r\n\r\nRSVP:\r\n\r\nPlease email abc@easylib.com for the Zoom meeting link.\r\nDescription:\r\n\r\nJoin us via Zoom to experience a variety of calming meditation techniques presented by instructor Staci Mintz.\r\n \r\n\r\nFor ADA accommodations, call (213) 228-7430 at least 72 hours prior to the event.\r\n\r\nPara ajustes razonables según la ley de ADA, llama al (213) 228-7430 al menos 72 horas antes del evento.\r\n','2024-07-16 11:23:24');
+/*!40000 ALTER TABLE `article` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `author`
 --
 
@@ -27,7 +78,7 @@ CREATE TABLE `author` (
   `name` varchar(150) DEFAULT NULL,
   `place` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +111,7 @@ CREATE TABLE `book` (
   `description` varchar(1000) DEFAULT NULL,
   `isbn` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,14 +121,15 @@ CREATE TABLE `book` (
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
 INSERT INTO `book` VALUES
-(1,3,'Don Quixote',1605,'Don Quixote, novel published in two parts (part 1, 1605, and part 2, 1615) by Spanish writer Miguel de Cervantes, one of the most widely read classics of Western literature. Originally conceived as a parody of the chivalric romances that had long been in literary vogue, it describes realistically what befalls an aging knight who, his head bemused by reading such romances, sets out on his old horse Rocinante, with his pragmatic squire, Sancho Panza, to seek adventure. Widely and immediately translated (first English translation 1612), the novel was a great and continuing success and is considered a prototype of the modern novel.','1716619041010'),
-(4,1,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, 978-0486282114'),
+(1,4,'Don Quixote',1605,'Don Quixote, novel published in two parts (part 1, 1605, and part 2, 1615) by Spanish writer Miguel de Cervantes, one of the most widely read classics of Western literature. Originally conceived as a parody of the chivalric romances that had long been in literary vogue, it describes realistically what befalls an aging knight who, his head bemused by reading such romances, sets out on his old horse Rocinante, with his pragmatic squire, Sancho Panza, to seek adventure. Widely and immediately translated (first English translation 1612), the novel was a great and continuing success and is considered a prototype of the modern novel.','1716619041010'),
+(4,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13, 978-0486282114'),
 (15,0,'Frankenstein',1818,'Shelley\'s novel, Frankenstein: or, the Modern Prometheus (1818), is a combination of Gothic horror story and science fiction. \r\nThe book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.','13-0486282114'),
 (17,4,'A Court of Thorns and Roses',2015,' The sexy, action-packed first book in the #1 New York Times bestselling Court of Thorns and Roses series from Sarah J. Maas.\r\n\r\nWhen nineteen-year-old huntress Feyre kills a wolf in the woods, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she knows about only from legends, Feyre discovers that her captor is not truly a beast, but one of the lethal, immortal faeries who once ruled her world.\r\n','1526605392'),
 (20,0,'Cold Fire',2015,'As a DEA agent, Jeremiah “Hawk” Tate was one of the best at taking down drug traffickers. Then the cartels struck back—and destroyed everything he held dear.\r\n\r\nFive years later, Hawk has retreated from society and is living a quiet life as a Montana wilderness guide. He’s done with the DEA, done with the criminals, and done with the pain left over from his past. But his past isn’t done with him.',' ‎B00QKUW8UO'),
 (24,0,'Cold Fire',2015,'','1222131414141'),
-(61,100000,'Test book 2',2024,'Test description','1111111111111'),
-(74,0,'Test book 1',2024,'Test description','1111111');
+(61,99989,'Test book 2',2024,'Test description','1111111111111'),
+(74,0,'Test book 1',2024,'Test description','1111111'),
+(96,1,'Test book 11',2021,NULL,'TESTbook11');
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +149,7 @@ CREATE TABLE `bookauthor` (
   KEY `authorId` (`authorId`),
   CONSTRAINT `bookauthor_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookauthor_ibfk_2` FOREIGN KEY (`authorId`) REFERENCES `author` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +163,8 @@ INSERT INTO `bookauthor` VALUES
 (99,1,1),
 (100,17,52),
 (103,74,54),
-(108,4,2);
+(108,4,2),
+(150,96,54);
 /*!40000 ALTER TABLE `bookauthor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,12 +185,13 @@ CREATE TABLE `bookborrow` (
   `returnDate` datetime DEFAULT NULL,
   `isDamagedOrLost` tinyint(1) DEFAULT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
+  `hasResolved` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `bookId` (`bookId`),
   KEY `userId` (`userId`),
   CONSTRAINT `bookborrow_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookborrow_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,27 +201,37 @@ CREATE TABLE `bookborrow` (
 LOCK TABLES `bookborrow` WRITE;
 /*!40000 ALTER TABLE `bookborrow` DISABLE KEYS */;
 INSERT INTO `bookborrow` VALUES
-(18,4,1,'2024-04-04 03:00:00','2024-06-06 03:00:00',1,'2024-07-09 03:00:00',0,1),
-(19,17,1,'2024-04-04 04:11:00','2024-06-06 04:11:00',1,'2024-05-24 04:11:00',0,1),
-(20,1,1,'2024-05-06 03:00:00','2024-06-06 03:00:00',1,'2024-05-22 02:00:00',0,1),
-(21,1,1,'2024-04-26 11:07:20','2024-04-30 12:00:00',1,'2024-05-29 00:00:00',0,1),
-(22,17,1,'2024-05-01 12:33:15','2024-05-07 16:59:59',1,'2024-06-17 04:10:00',0,1),
-(24,1,4,'2024-05-25 11:42:53','2024-06-29 16:59:59',1,'2024-06-17 03:00:00',0,1),
-(27,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',1,'2024-06-16 03:00:00',0,1),
-(28,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(29,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(31,17,22,'2024-06-09 14:51:50','2024-06-23 16:59:59',1,'2024-06-10 02:15:00',0,1),
-(32,1,21,'2024-06-10 03:00:00','2024-06-18 15:00:00',1,'2024-06-16 04:01:00',0,1),
-(34,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(35,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(36,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(37,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(38,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(39,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(40,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(41,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(42,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0),
-(43,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0);
+(18,4,1,'2024-04-04 03:00:00','2024-06-06 03:00:00',1,'2024-07-09 03:00:00',0,1,0),
+(19,17,1,'2024-04-04 04:11:00','2024-06-06 04:11:00',1,'2024-05-24 04:11:00',0,1,0),
+(20,1,1,'2024-05-06 03:00:00','2024-06-06 03:00:00',1,'2024-05-24 02:00:00',0,1,0),
+(21,1,1,'2024-04-26 11:07:20','2024-04-30 12:00:00',1,'2024-05-29 00:00:00',0,1,0),
+(22,17,1,'2024-05-01 12:33:15','2024-05-07 16:59:59',1,'2024-06-17 04:10:00',0,1,0),
+(27,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',1,'2024-06-16 03:00:00',0,1,0),
+(28,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',1,'2024-07-18 04:12:00',0,1,0),
+(29,61,2,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(31,17,22,'2024-06-09 14:51:50','2024-06-23 16:59:59',1,'2024-06-10 02:15:00',0,1,0),
+(32,1,21,'2024-06-10 03:00:00','2024-06-18 15:00:00',1,'2024-06-16 04:01:00',0,1,0),
+(34,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(35,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(36,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(37,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(38,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(39,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(40,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(41,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(42,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(43,61,1,'2024-05-15 03:00:00','2024-06-15 16:59:59',0,NULL,0,0,0),
+(46,4,27,'2024-07-02 07:39:42','2024-07-16 16:59:59',1,'2024-07-18 02:04:00',0,1,0),
+(47,61,4,'2024-07-17 18:01:56','2024-08-01 16:59:59',1,'2024-07-18 12:20:00',1,1,0),
+(49,61,4,'2024-06-06 03:00:00','2024-07-07 03:00:00',1,'2024-07-17 10:30:00',0,1,0),
+(50,61,4,'2024-06-06 03:00:00','2024-07-07 03:00:00',1,'2024-07-17 03:00:00',0,1,0),
+(51,61,4,'2024-06-06 03:00:00','2024-06-07 03:00:00',0,NULL,0,1,0),
+(53,61,4,'2024-07-06 12:00:00','2024-08-01 16:59:00',0,NULL,0,0,0),
+(54,61,4,'2024-07-10 07:00:00','2024-07-21 13:00:00',0,NULL,0,0,0),
+(55,61,4,'2024-07-10 07:00:00','2024-07-21 13:00:00',0,NULL,0,0,1),
+(56,61,1,'2024-07-07 03:00:00','2024-07-21 03:00:00',0,NULL,0,0,0),
+(57,61,1,'2024-07-02 03:00:00','2024-07-30 03:00:00',0,NULL,0,0,1),
+(58,61,1,'2024-07-22 04:11:00','2024-07-31 03:00:00',0,NULL,0,0,0);
 /*!40000 ALTER TABLE `bookborrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +251,7 @@ CREATE TABLE `bookfavorite` (
   KEY `userId` (`userId`),
   CONSTRAINT `bookfavorite_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookfavorite_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +261,9 @@ CREATE TABLE `bookfavorite` (
 LOCK TABLES `bookfavorite` WRITE;
 /*!40000 ALTER TABLE `bookfavorite` DISABLE KEYS */;
 INSERT INTO `bookfavorite` VALUES
-(7,61,4);
+(7,61,4),
+(10,17,4),
+(11,4,4);
 /*!40000 ALTER TABLE `bookfavorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +281,7 @@ CREATE TABLE `bookfile` (
   PRIMARY KEY (`id`),
   KEY `bookId` (`bookId`),
   CONSTRAINT `bookfile_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +292,8 @@ LOCK TABLES `bookfile` WRITE;
 /*!40000 ALTER TABLE `bookfile` DISABLE KEYS */;
 INSERT INTO `bookfile` VALUES
 (1,4,'shelley-frankenstein-1818.pdf'),
-(3,1,'book0530.pdf');
+(3,1,'book0530.pdf'),
+(5,61,'final_semester_project-4.pdf');
 /*!40000 ALTER TABLE `bookfile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,7 +313,7 @@ CREATE TABLE `bookgenre` (
   KEY `genreId` (`genreId`),
   CONSTRAINT `bookgenre_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`),
   CONSTRAINT `bookgenre_ibfk_2` FOREIGN KEY (`genreId`) REFERENCES `genre` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,7 +335,8 @@ INSERT INTO `bookgenre` VALUES
 (151,4,4),
 (152,4,5),
 (153,4,6),
-(154,4,7);
+(154,4,7),
+(196,96,62);
 /*!40000 ALTER TABLE `bookgenre` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -312,7 +380,7 @@ CREATE TABLE `booklanguage` (
   PRIMARY KEY (`id`),
   KEY `bookId` (`bookId`),
   CONSTRAINT `booklanguage_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +391,9 @@ LOCK TABLES `booklanguage` WRITE;
 /*!40000 ALTER TABLE `booklanguage` DISABLE KEYS */;
 INSERT INTO `booklanguage` VALUES
 (61,74,'English'),
-(65,4,'English');
+(65,4,'English'),
+(88,61,'English'),
+(105,96,'English');
 /*!40000 ALTER TABLE `booklanguage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,7 +444,7 @@ CREATE TABLE `comment` (
   KEY `bookId` (`bookId`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,8 +456,7 @@ LOCK TABLES `comment` WRITE;
 INSERT INTO `comment` VALUES
 (1,1,'This book is great!',10,4),
 (3,1,'Test comment 2',10,4),
-(4,4,'This book is great',10,1),
-(5,4,'Test comment',9,1),
+(5,4,'Test commentTestcommentTestcommentTest commentTestcommentTest commentTest commentTest comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment ',9,1),
 (6,4,'This looks good!',9,17),
 (7,4,'test comment',9,24),
 (9,4,'Testing if Vue static files can work on Flask!',9,4),
@@ -396,8 +465,9 @@ INSERT INTO `comment` VALUES
 (14,4,'Test content',9,1),
 (15,4,'Test content',8,1),
 (16,16,'Test comment',7,1),
-(18,21,'Test book',1,61),
-(19,4,'',0,61);
+(22,4,'Test comment',10,4),
+(24,4,'',1,17),
+(25,4,'',9,61);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,7 +482,7 @@ CREATE TABLE `genre` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -433,8 +503,88 @@ INSERT INTO `genre` VALUES
 (11,'War & Millitary Fiction'),
 (30,'Romance'),
 (31,'Fantasy'),
-(33,'Test genre');
+(33,'Test genre'),
+(62,'');
 /*!40000 ALTER TABLE `genre` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `monthly_sessioncount`
+--
+
+DROP TABLE IF EXISTS `monthly_sessioncount`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `monthly_sessioncount` (
+  `browserOrOs` varchar(60) NOT NULL,
+  `type` varchar(30) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  `lastUpdated` datetime DEFAULT NULL,
+  PRIMARY KEY (`browserOrOs`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `monthly_sessioncount`
+--
+
+LOCK TABLES `monthly_sessioncount` WRITE;
+/*!40000 ALTER TABLE `monthly_sessioncount` DISABLE KEYS */;
+INSERT INTO `monthly_sessioncount` VALUES
+('704','country',21,'2024-07-19 18:24:56'),
+('840','country',10,'2024-07-19 13:15:04'),
+('Android','os',11,'2024-07-19 13:15:04'),
+('Chrome','browser',1,'2024-07-19 00:56:36'),
+('Firefox','browser',10,'2024-07-20 08:53:55'),
+('Firefox Mobile','browser',5,'2024-07-19 13:15:04'),
+('iOS','os',2,'2024-07-19 18:24:56'),
+('Linux','os',2,'2024-07-19 02:26:31'),
+('Mac OS X','os',1,'2024-07-19 00:56:19'),
+('Mobile Safari','browser',2,'2024-07-19 18:24:56'),
+('Safari','browser',1,'2024-07-19 00:56:19'),
+('Windows','os',9,'2024-07-20 08:53:55');
+/*!40000 ALTER TABLE `monthly_sessioncount` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `session`
+--
+
+DROP TABLE IF EXISTS `session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `session` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) DEFAULT NULL,
+  `os` varchar(50) DEFAULT NULL,
+  `browser` varchar(50) DEFAULT NULL,
+  `referer` varchar(500) DEFAULT NULL,
+  `ipAddress` varchar(500) DEFAULT NULL,
+  `sessionTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `session_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `session`
+--
+
+LOCK TABLES `session` WRITE;
+/*!40000 ALTER TABLE `session` DISABLE KEYS */;
+INSERT INTO `session` VALUES
+(1,28,'Windows','Firefox',NULL,'::1','2024-07-19 02:01:55'),
+(2,28,'Windows','Firefox',NULL,'::1','2024-07-19 02:01:55'),
+(3,4,'Linux','Firefox',NULL,'::1','2024-07-19 02:26:31'),
+(4,4,'Windows','Firefox',NULL,'::1','2024-07-19 02:31:26'),
+(5,4,'Android','Firefox Mobile',NULL,'::1','2024-07-19 12:52:30'),
+(6,4,'Android','Firefox Mobile','https://easylib.jesse-tong.work/login','113.185.74.24','2024-07-19 13:15:04'),
+(7,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','14.169.33.144','2024-07-19 16:30:40'),
+(8,4,'Windows','Firefox','https://easylib.jesse-tong.work/admin/reports','14.169.31.144','2024-07-19 18:23:27'),
+(9,4,'iOS','Mobile Safari','https://easylib.jesse-tong.work/','14.169.31.144','2024-07-19 18:24:56'),
+(10,4,'Windows','Firefox','http://localhost/login','127.0.0.1','2024-07-20 08:53:55');
+/*!40000 ALTER TABLE `session` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -453,7 +603,7 @@ CREATE TABLE `user` (
   `isRestricted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -480,8 +630,41 @@ INSERT INTO `user` VALUES
 (23,'Jerald55@hotmail.com','scrypt:32768:8:1$6PjabneNjI0Dkcak$14369e40e1c5a8f2349ea5ea1d2c3d9a27ae82bb43fb671b1f067644bcaf9340be74e4b294783bf97f5269a0d36e4d34faedb0b166ba21f6f06aa3c9a763d991','Leonie43','user',0),
 (24,'Tierra44@gmail.com','scrypt:32768:8:1$itNq4HcgCjRDmGsq$123b1062276b46f29e3678655a0151e5dfc1b1d2f17a6311a6ea0dfd16a1c663de95f3dd99033b2bb790be48382c557f2ac33ff0950f7b9eb530a10b115c7fd1','Karina44','user',0),
 (25,'Bertram.Mills@yahoo.com','scrypt:32768:8:1$samtTcvbwq8dSBVn$c8b0c835d520e263394890ee8953de622dfb0ae56e548ac2c38a49a8f33cd44ccb1814bbd989ea5afb980518b4a23674d3c560cfc3a06d2218f66b764bba27f1','Napoleon_Russel','admin',0),
-(26,'test@gmail.com','scrypt:32768:8:1$gmhXb5e0xSyhHax6$e2a57d9a04c0fd6b6a593555abf036ec169d7af5e64dadbda11db1213c659e8a716a53f2f9c0d8554dbd5129f1cf4de4010c681eb37864b0a5747dcc7f44125e','User 2','admin',0);
+(26,'test@gmail.com','scrypt:32768:8:1$gmhXb5e0xSyhHax6$e2a57d9a04c0fd6b6a593555abf036ec169d7af5e64dadbda11db1213c659e8a716a53f2f9c0d8554dbd5129f1cf4de4010c681eb37864b0a5747dcc7f44125e','User 2','admin',0),
+(27,'test4@gmail.com','scrypt:32768:8:1$j8FPsciMVQvp0sRH$58507b49c4cdf600400242bda170c941a7d70f892c4a8fef2931fd216d8821331a0c0dc08b394b2ecf0843eee857a62e6a325a74a1c73c0fe6a83de1703895e2','Demo user','user',0),
+(28,'tongnguyenminhkhang21012020@gmail.com','scrypt:32768:8:1$MATDiA0pjtRr077R$b5ebd91178fa33f89c78f79fb6c9d221b5522a45773e4fb3f2dc16323897b1920d36b1b6ed97097a82ed6a150358a678bd5f0838454711d5b94b2aae0d3b970e','Khang Tống Nguyễn Minh (21120263)',NULL,0),
+(29,'voquocbao124@gmail.com',NULL,'Quốc Bảo Võ','user',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_image`
+--
+
+DROP TABLE IF EXISTS `user_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) DEFAULT NULL,
+  `imagePath` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `user_image_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_image`
+--
+
+LOCK TABLES `user_image` WRITE;
+/*!40000 ALTER TABLE `user_image` DISABLE KEYS */;
+INSERT INTO `user_image` VALUES
+(4,4,'EasyLibNotificationClass.PNG'),
+(5,4,'Capture3.PNG'),
+(6,4,'1f6e29b7f11718cc.jpg');
+/*!40000 ALTER TABLE `user_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -504,7 +687,7 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -514,9 +697,10 @@ CREATE TABLE `user_info` (
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` VALUES
-(1,1,21,'other',5,5,'0888888888','Some address',NULL),
-(2,4,21,'male',5,5,'0988888888','Some address',NULL),
-(3,22,21,'male',5,5,'089777777','Some address, HCM City',NULL);
+(1,1,21,'other',5,5,'0888888888','Some address','1003w-Ah-do4Y91lk-1.webp'),
+(2,4,21,NULL,5,5,'0988888888','Some address','Group 1 - Introduction to SE - EasyLib Manage borrow.png'),
+(3,22,21,'male',5,5,'089777777','Some address, HCM City',NULL),
+(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Group 1 - Introduction to SE - EasyLib.png');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -560,4 +744,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-20 20:24:51
+-- Dump completed on 2024-07-20  9:20:08

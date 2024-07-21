@@ -44,7 +44,10 @@
                     <input type="password" class="form-control" v-model="passwordRepeat" id="passwordRepeatInput">
                   </div>
                   <div class="text-center">
-                    <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => register()" data-testid="registerButton" id="registerButton">Sign up</button>
+                    <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => register(false)" data-testid="registerButton" id="registerButton">Sign up</button>
+                  </div>
+                  <div class="text-center" v-if="waitVerification === true">
+                    <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => register(true)" data-testid="registerButton" id="registerButton">Resend verification email</button>
                   </div>
                   <p class="mt-4 text-sm text-center">
                      Already have an account? <RouterLink to="/login" class="text-decoration-none" style="color: #ec407a;">Login</RouterLink>
@@ -59,6 +62,7 @@
     
     <script>
     import axios from 'axios';
+
     
         export default {
             data(){
@@ -67,6 +71,7 @@
                     password: '', 
                     name: '',
                     passwordRepeat: '',
+                    waitVerification: false
                 }
             },
             props: {
@@ -80,7 +85,7 @@
             },
             methods: {
               
-              register(){
+              register(resend_verification){
                 if (this.email === null || this.email === ''){
                   this.$notify({
                         title: 'Empty email!',
@@ -117,15 +122,16 @@
                   email: this.email,
                   password: this.password,
                   name: this.name,
-                  role: this.$props.role
+                  role: this.$props.role,
+                  resend_verification: resend_verification
                 }).then(response => {
                   if (response.data.success === true){ 
                     this.$notify({
                       title: "Register successfully!",
-                      text: "Register successfully!",
+                      text: "Register successfully! Please check verification email at: " + this.email,
                       type: "success"
                     });
-                    this.$router.push('/login');
+                    //this.$router.push('/login');
                   }else {
                     this.$notify({
                       title: "Register error",
@@ -139,7 +145,11 @@
                     text: "Register failed with error: "+ err.response.data.error,
                     type: "error"
                   })
-                })
+                }).finally(() => {
+                  if (resend_verification === false){
+                    this.waitVerification = true;
+                  }
+                });
               }
             }
         }

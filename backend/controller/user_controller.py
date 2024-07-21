@@ -5,14 +5,17 @@ from models.library_misc import MonthlySessionCount
 from sqlalchemy import func, update, case
 from sqlalchemy.dialects.mysql import insert as mysql_insert
 from global_vars.database_init import db
-import re
+from utils.email_utils import send_verification_email
+import re, jwt, datetime
+from datetime import timezone
 from ua_parser import user_agent_parser
 from global_vars.errors import *
 from flask_login import login_user, login_required, current_user, logout_user
 
-def register(email: str, password: str, name: str, role: str):
+def register(email: str, password: str, name: str, role: str, resend_verification_email=False):
+
     user = User.query.filter_by(email = email).first()
-    if (user):
+    if (user and resend_verification_email != False):
         return False, None, EMAIL_EXISTS
     
     #Reference: https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
@@ -21,15 +24,42 @@ def register(email: str, password: str, name: str, role: str):
     if re.fullmatch(email_regex, email) == None:
         return False, None, INVALID_EMAIL
 
-    new_user = User(email = email, name = name, role = role, password = generate_password_hash(password=password))
-    try:
-        db.session.add(new_user)
-        db.session.commit()
+    if resend_verification_email != None:
+        new_user = User(email = email, name = name, role = role, password = generate_password_hash(password=password))
+    else:
+        new_user = db.session.query(User).filter(User.email == email, User.name == name).first()
 
+    if resend_verification_email == False:
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            print(resend_verification_email)
+            token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
+                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
+            send_verification_email(token, email)
+            return True, new_user, None
+        except:
+            db.session.rollback()
+            return False, None, ADD_ENTRY_ERROR
+    else:
+        token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
+                                    "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key", algorithm='HS256')
+        send_verification_email(token, email)
         return True, new_user, None
+
+def verify_email_address(token):
+    try:
+        payload = jwt.decode(token, key="my_secret_key", algorithms=['HS256'], leeway=60.0)
     except:
-        db.session.rollback()
-        return False, None, ADD_ENTRY_ERROR
+        return False, None, INVALID_AUTH
+    if payload != None and payload.get('id') and payload.get('email'):
+        user = db.session.query(User).filter(User.id == int(payload.get('id'))).filter(User.email == str(payload.get('email'))).first()
+        user.isVerified = True
+        db.session.commit()
+        return True, None, None
+    else:
+        return False, None, INVALID_AUTH
+    
 
 #Return true if userId not exists or is restricted, false for others
 def isRestricted(userId: int):
@@ -194,3 +224,4 @@ def parse_user_agent(user_agent: str):
 def monthly_os_browser_count():
     data = db.session.query(MonthlySessionCount).all()
     return data
+

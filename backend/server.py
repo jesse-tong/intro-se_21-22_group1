@@ -7,7 +7,7 @@ from global_vars.database_init import db
 from global_vars.init_env import *
 from flask_login import LoginManager
 from sqlalchemy_utils import database_exists, create_database
-import pytest
+from utils.email_utils import mail_client
 from flask_migrate import Migrate
 from waitress import serve
 
@@ -15,6 +15,8 @@ from waitress import serve
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+MAILTRAP_API_TOKEN = os.environ.get('MAILTRAP_API_TOKEN')
+MAILTRAP_DEFAULT_SENDER = os.environ.get('MAILTRAP_DEFAULT_SENDER')
 
 print(os.environ.get('SQL_URL'))
 
@@ -36,6 +38,14 @@ def create_app(test_config=None):
     app.config.GOOGLE_CLIENT_ID = GOOGLE_CLIENT_ID
     app.config.GOOGLE_CLIENT_SECRET = GOOGLE_CLIENT_SECRET
 
+    app.config['MAIL_SERVER']='live.smtp.mailtrap.io'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USERNAME'] = 'api'
+    app.config['MAIL_PASSWORD'] = MAILTRAP_API_TOKEN
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
+    app.config['MAIL_DEFAULT_SENDER'] = MAILTRAP_DEFAULT_SENDER
+
     from routes.auth_routes import oauth_client as oauth
     oauth.init_app(app)
     oauth.register(
@@ -47,6 +57,7 @@ def create_app(test_config=None):
             'scope': 'openid email profile'
         }
     )
+    mail_client.init_app(app)
     
     if not database_exists(os.environ.get('SQL_URL')): 
         create_database(os.environ.get('SQL_URL'))

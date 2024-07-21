@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     name:str = db.Column(db.String(300))
     role:str = db.Column(db.String(20))
     isRestricted:bool = db.Column(db.Boolean, default=False)
+    isVerified:bool = db.Column(db.Boolean, server_default="0", default=False)
     
 @dataclass
 class Comment(db.Model):

@@ -11,7 +11,7 @@ from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import generate_csrf
 from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
-user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count
+user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, verify_email_address
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
@@ -107,8 +107,18 @@ def register_route():
     password = register_form.get('password')
     name = register_form.get('name')
     role = register_form.get('role')
-    result, user, error = register(email, password, name, role)
+    resend_verification_email = register_form.get('resend_verification')
+    if resend_verification_email == 'true' or resend_verification_email == '1':
+        resend_verification_email = True
+    else:
+        resend_verification_email = False
+    result, user, error = register(email, password, name, role, resend_verification_email)
     return get_status_object_json(result, user, error), 200
+
+@auth.route('/auth/verification/<token>')
+def verify_email_address_route(token, methods=['POST', 'GET']):
+    success, result, error = verify_email_address(token)
+    return redirect('/login?verify_success=' + ('true' if success == True else 'false') + ('&error=' + error if error != None else '' ))
 
 @auth.route('/auth/change-password', methods=['POST'])
 def change_password_route():
@@ -157,7 +167,7 @@ def profile_route():
     else:
         success, result, error = user_profile(current_user.id)
         if result != None:
-            result = asdict(result[0]) | asdict(result[1])
+            result = asdict(result[0]) | asdict(result[1]) if result[1] != None else result[0]
         return get_status_object_json(success, result, error), 200
     
 @auth.route('/auth/profile/<user_id>', methods=['GET'])
@@ -166,7 +176,7 @@ def profile_route_with_id(user_id):
         user_id = int(user_id)
         success, result, error = user_profile(user_id)
         if result != None:
-            result = asdict(result[0]) | asdict(result[1])
+            result = asdict(result[0]) | asdict(result[1]) if result[1] != None else result[0]
         return get_status_object_json(success, result, error), 200
     except:
         return get_status_object_json(False, None, USER_NOT_EXIST), 404

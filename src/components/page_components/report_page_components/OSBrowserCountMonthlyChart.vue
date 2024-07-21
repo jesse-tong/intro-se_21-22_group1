@@ -89,8 +89,7 @@
                     type: "error"
                 });
                 
-            })   
-            
+            })      
         }
     },
     created(){

@@ -42,6 +42,7 @@
               <div class="text-center">
                 <button id="loginSubmitButton" type="button" class="btn bg-gradient-primary w-100 my-4 mb-2 text-white" @click="event => login()">Sign in</button>
               </div>
+              
               <p class="mt-4 text-sm text-center">
                 Don't have an account? <RouterLink to="/register" class="text-decoration-none" style="color: #ec407a;">Sign up</RouterLink>
               </p>
@@ -71,8 +72,20 @@ import { useAccountStore } from '../stores/LoginInfoStore';
             default: 'user'
           }
         },
-        watch: {
-
+        mounted(){
+          if (this.$route.query.verify_success && this.$route.query.verify_success == 'true'){
+            this.$notify({
+              title: 'Verify account successfully!',
+              text: 'Verify account successfully!',
+              type: 'success'
+            })
+          }else if (this.$route.query.verify_success && this.$route.query.error &&this.$route.query.error != 'null'){
+            this.$notify({
+              title: 'Verify account failed with error: ' + this.$route.query.error,
+              text: 'Verify account failed with error: ' + this.$route.query.error,
+              type: 'error'
+            })
+          }
         },
         methods: {
           storeLocal(userId, email, role){
