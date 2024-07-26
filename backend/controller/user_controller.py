@@ -140,7 +140,7 @@ def add_update_user_infos(user_id: int, age: int = None, gender: str = None, bor
         return False, None, EDIT_ERROR
 
 def user_profile(user_id: int):
-    profile = db.session.query(User, UserInfo).join(UserInfo, User.id == UserInfo.userId).filter(User.id == user_id).first()
+    profile = db.session.query(User, UserInfo).join(UserInfo, User.id == UserInfo.userId, isouter=True).filter(User.id == user_id).first()
     return True, profile, None
 
 
