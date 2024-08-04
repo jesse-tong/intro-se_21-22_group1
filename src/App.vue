@@ -8,7 +8,11 @@ import { VueElement } from 'vue';
 
 const setStoredThemeColor = function(){
     var theme = localStorage.getItem("theme");
-    if (theme === null || theme === "light"){
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.getElementById('htmlMain').setAttribute('data-bs-theme', "dark");
+        localStorage.setItem("theme", "dark");
+    }
+    else if (theme === null || theme === "light"){
         document.getElementById('htmlMain').setAttribute('data-bs-theme', "light");
         localStorage.setItem("theme", "light");
     }else {
