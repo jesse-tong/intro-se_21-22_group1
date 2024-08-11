@@ -4,7 +4,7 @@ services:
     volumes:
       - library_files:/usr/src/app/
     ports:
-      - 5001:5000
+      - 5000:5000
     env_file:
       - ./.env.docker
     depends_on:
@@ -12,7 +12,7 @@ services:
         condition: service_healthy
         restart: true
   db:
-    image: percona:ps-8.0
+    image: mariadb:latest
     restart: always
     volumes:
       - db_data:/var/lib/mysql
@@ -24,7 +24,7 @@ services:
     ports:
       - 3310:3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "-uroot", "-peasylib","ping"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 12s
       interval: 10s
       timeout: 5s

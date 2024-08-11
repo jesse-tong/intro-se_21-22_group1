@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 RUN npm install
 RUN npm run build
 
-ENTRYPOINT [ "python", "backend/server.py" ]
+ENTRYPOINT [ "./entrypoint.sh" ]

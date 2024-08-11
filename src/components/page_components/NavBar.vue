@@ -1,5 +1,5 @@
 <template>
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar bg-body-tertiary top-nav">
     <div class="container-fluid">
       
       <RouterLink class="navbar-brand" to="/"><img :src="EasyLibLogo" width="50" height="50" alt="EasyLib logo" />EasyLib</RouterLink>
