@@ -4,7 +4,7 @@ COPY ./ /usr/src/app/
 
 RUN mkdir data
 
-
+RUN chmod +x entrypoint.sh
 RUN apt-get update && apt-get install -y netcat-traditional
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
