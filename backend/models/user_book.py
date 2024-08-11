@@ -19,7 +19,7 @@ class BookBorrow(db.Model):
     returnDate:datetime = db.Column(db.DateTime)
     isDamagedOrLost: bool = db.Column(db.Boolean, default=False)
     isApproved: bool = db.Column(db.Boolean, default=False)
-    hasResolved: bool = db.Column(db.Boolean, server_default="false", default=False, nullable=False)
+    hasResolved: bool = db.Column(db.Boolean, default=False)
 
 @dataclass
 class BookFavorite(db.Model):
