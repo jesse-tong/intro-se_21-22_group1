@@ -35,7 +35,7 @@ CREATE TABLE `alembic_version` (
 LOCK TABLES `alembic_version` WRITE;
 /*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
 INSERT INTO `alembic_version` VALUES
-('9977c57cb1c9');
+('3498e6fc8cb4');
 /*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,7 +185,7 @@ CREATE TABLE `bookborrow` (
   `returnDate` datetime DEFAULT NULL,
   `isDamagedOrLost` tinyint(1) DEFAULT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `hasResolved` tinyint(1) DEFAULT NULL,
+  `hasResolved` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `bookId` (`bookId`),
   KEY `userId` (`userId`),
@@ -531,18 +531,18 @@ CREATE TABLE `monthly_sessioncount` (
 LOCK TABLES `monthly_sessioncount` WRITE;
 /*!40000 ALTER TABLE `monthly_sessioncount` DISABLE KEYS */;
 INSERT INTO `monthly_sessioncount` VALUES
-('704','country',21,'2024-07-19 18:24:56'),
+('704','country',24,'2024-07-21 12:11:30'),
 ('840','country',10,'2024-07-19 13:15:04'),
 ('Android','os',11,'2024-07-19 13:15:04'),
 ('Chrome','browser',1,'2024-07-19 00:56:36'),
-('Firefox','browser',10,'2024-07-20 08:53:55'),
+('Firefox','browser',13,'2024-07-21 12:11:30'),
 ('Firefox Mobile','browser',5,'2024-07-19 13:15:04'),
 ('iOS','os',2,'2024-07-19 18:24:56'),
 ('Linux','os',2,'2024-07-19 02:26:31'),
 ('Mac OS X','os',1,'2024-07-19 00:56:19'),
 ('Mobile Safari','browser',2,'2024-07-19 18:24:56'),
 ('Safari','browser',1,'2024-07-19 00:56:19'),
-('Windows','os',9,'2024-07-20 08:53:55');
+('Windows','os',12,'2024-07-21 12:11:30');
 /*!40000 ALTER TABLE `monthly_sessioncount` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -564,7 +564,7 @@ CREATE TABLE `session` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `session_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -574,8 +574,6 @@ CREATE TABLE `session` (
 LOCK TABLES `session` WRITE;
 /*!40000 ALTER TABLE `session` DISABLE KEYS */;
 INSERT INTO `session` VALUES
-(1,28,'Windows','Firefox',NULL,'::1','2024-07-19 02:01:55'),
-(2,28,'Windows','Firefox',NULL,'::1','2024-07-19 02:01:55'),
 (3,4,'Linux','Firefox',NULL,'::1','2024-07-19 02:26:31'),
 (4,4,'Windows','Firefox',NULL,'::1','2024-07-19 02:31:26'),
 (5,4,'Android','Firefox Mobile',NULL,'::1','2024-07-19 12:52:30'),
@@ -583,7 +581,8 @@ INSERT INTO `session` VALUES
 (7,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','14.169.33.144','2024-07-19 16:30:40'),
 (8,4,'Windows','Firefox','https://easylib.jesse-tong.work/admin/reports','14.169.31.144','2024-07-19 18:23:27'),
 (9,4,'iOS','Mobile Safari','https://easylib.jesse-tong.work/','14.169.31.144','2024-07-19 18:24:56'),
-(10,4,'Windows','Firefox','http://localhost/login','127.0.0.1','2024-07-20 08:53:55');
+(10,4,'Windows','Firefox','http://localhost/login','127.0.0.1','2024-07-20 08:53:55'),
+(11,31,'Windows','Firefox','https://easylib.jesse-tong.work/login','14.169.31.144','2024-07-21 12:10:10');
 /*!40000 ALTER TABLE `session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -601,9 +600,10 @@ CREATE TABLE `user` (
   `name` varchar(300) DEFAULT NULL,
   `role` varchar(20) DEFAULT NULL,
   `isRestricted` tinyint(1) DEFAULT NULL,
+  `isVerified` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -613,27 +613,27 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'jesse-tong@gmail.com','scrypt:32768:8:1$Np75qqYJfk5Dw5Tn$7084996e23ccc3350118ad41e5c9028325e48ceaf0586ef65549704c36b8b003dd86630dde514368bbe51cc1ef83b97c2fcd612bbc7c75e4ba2e95638a70a160','Jesse Tong','admin',0),
-(2,'jesse-tong2@gmail.com','scrypt:32768:8:1$9JYSQ9qYvuCys34h$384ef4e9afee3dd63989b090478acdc34b334629e102b855f3fa5cc83017b725a7530745b2a898989d25767bd89376a2971cf9e5901ff06fec7af4ff7993b00f','Jesse Tong','user',0),
-(3,'some-email@gmail.com','scrypt:32768:8:1$PGeJpOZxpeeu61HB$9a6fcd91ed9ce51bb018c181165770aece093ad9c3b74e9ac33d1955e49518c306b0fe7d57a732d93f15bdee95ce95bbe83cbada30861464a05f2514ac58cb48','Test user','admin',0),
-(4,'jesse-tong3@gmail.com','scrypt:32768:8:1$nVLNRwXNYrezmgtw$05c8aab4745cae0a114288d5c19c9ca129d7c4c695bd7c4d5161cbbb205fcafe8b11249a550514031e13f4ae6e9ffc37f8e1c1ed425a2a92512f9c50a102f8eb','Test account 3','admin',0),
-(5,'jesse-tong7@gmail.com','scrypt:32768:8:1$LjNdixV1kT1X2seZ$6f03758756a8c57e0d51d65e7c0623133571e7ebedbe3fb21212870a414cde6ca086825197572a8a4ce37144d6c51a99ab9e726d54325c17c9a2d5b83f869b97','Jesse Tong','user',0),
-(6,'jesse-tong3gmail.com','scrypt:32768:8:1$JdtgzqZB1wClEBCZ$85791dcae07181c7ff1e679e258f32dd662098b1758204babbe05f9079d6a093afa5f36965d61bdbc678d037c1bc0dd23b57ce32e38ea619bb7848a9ba4775c0','some name','user',0),
-(15,'Laurine_Hand45','scrypt:32768:8:1$YlyT2bd6V41FhIFm$3035d2833ad81efb9e0a29ad0c93ce39944dd3fb20b28b3b1a8c36bb4606036c21a73b85c194e3ad3b6f4b7eef1850a9307ca5c2c5a343cf8262797ec8432b95','Crystal87','user',0),
-(16,'jesse-tong4@gmail.com','scrypt:32768:8:1$6Y586WSlXl0pA7rV$d6db2c2d26fd95d93fb6a75c217550760a8b056c0d4be7427b1579510d1d1dc556a34dea92740e9eaecfb8d04251334e1cca372a696339b5f3df789f9db80422','User 4','user',0),
-(17,'\'a@gmail.com\' or 1 = 1','scrypt:32768:8:1$cZXq5PK6aPgZ0fzg$75f4792617c540128f9e77cda9eb19441a2bf1b696a4047a8c8d04e3d3a9b7f3cf81096517167072b4de3b6efb0f53c9a95ad2feaebbe360314e96ef70bd532e','User 7','user',0),
-(18,'\"abc@gmail.com\" or user.email = user.email','scrypt:32768:8:1$ucCBl3r9y5qHR3WG$bb1e8e075e16f79147fbc8495d199bd5b63bc28c60cb117ffd98cf871a465ca48de2e1b56ebfac5abb6d4f0fb8786e21d1c7d32437dfcb48c17eb58c037f3a63','jesse-tong3@gmail.com','user',0),
-(19,'ttttt@gmail.com','scrypt:32768:8:1$XZO0l1jJGguH3xIp$b6d908f2f97e181308319935f541d2488a56ab557b8c9e398266a1aa167aad06d91b136bb363764a20a6d83e33e68919fb248559a83c16f3febca7752b583651','ttttttt','user',0),
-(20,'t@gmail.com','scrypt:32768:8:1$HR6BjSGDkW1eacUc$b89586bd3e6a6e6b6239ab1cb1106a44fd58b60b0e68185c9c379761b4deb04f511f4240d34610211dfa473eb06f8def9922b44e520ba6663858aeade0538e61','ttttt','user',0),
-(21,'test2@gmail.com','scrypt:32768:8:1$j0Zx3eChNifCiYd3$cddacb25cb04645d2d9b460f7f385830062bcbf903266c4fcbf8044411df9782e2f232a739abd820efa0c1b77f0ec46846ca4d85a05d3ffc3947826a6726ba43','Test user','user',0),
-(22,'test3@gmail.com','scrypt:32768:8:1$A3bLMuLgJ1MNRRk0$c30ef771c8cbd649e442129566531d3f1c56957b3c7987179a127cca7b7e57258825c1ff761b145b4877e6dc49b868cc2631eef1a287ab34914a02bee48da0c9','Test user 3','admin',0),
-(23,'Jerald55@hotmail.com','scrypt:32768:8:1$6PjabneNjI0Dkcak$14369e40e1c5a8f2349ea5ea1d2c3d9a27ae82bb43fb671b1f067644bcaf9340be74e4b294783bf97f5269a0d36e4d34faedb0b166ba21f6f06aa3c9a763d991','Leonie43','user',0),
-(24,'Tierra44@gmail.com','scrypt:32768:8:1$itNq4HcgCjRDmGsq$123b1062276b46f29e3678655a0151e5dfc1b1d2f17a6311a6ea0dfd16a1c663de95f3dd99033b2bb790be48382c557f2ac33ff0950f7b9eb530a10b115c7fd1','Karina44','user',0),
-(25,'Bertram.Mills@yahoo.com','scrypt:32768:8:1$samtTcvbwq8dSBVn$c8b0c835d520e263394890ee8953de622dfb0ae56e548ac2c38a49a8f33cd44ccb1814bbd989ea5afb980518b4a23674d3c560cfc3a06d2218f66b764bba27f1','Napoleon_Russel','admin',0),
-(26,'test@gmail.com','scrypt:32768:8:1$gmhXb5e0xSyhHax6$e2a57d9a04c0fd6b6a593555abf036ec169d7af5e64dadbda11db1213c659e8a716a53f2f9c0d8554dbd5129f1cf4de4010c681eb37864b0a5747dcc7f44125e','User 2','admin',0),
-(27,'test4@gmail.com','scrypt:32768:8:1$j8FPsciMVQvp0sRH$58507b49c4cdf600400242bda170c941a7d70f892c4a8fef2931fd216d8821331a0c0dc08b394b2ecf0843eee857a62e6a325a74a1c73c0fe6a83de1703895e2','Demo user','user',0),
-(28,'tongnguyenminhkhang21012020@gmail.com','scrypt:32768:8:1$MATDiA0pjtRr077R$b5ebd91178fa33f89c78f79fb6c9d221b5522a45773e4fb3f2dc16323897b1920d36b1b6ed97097a82ed6a150358a678bd5f0838454711d5b94b2aae0d3b970e','Khang Tống Nguyễn Minh (21120263)',NULL,0),
-(29,'voquocbao124@gmail.com',NULL,'Quốc Bảo Võ','user',0);
+(1,'jesse-tong@gmail.com','scrypt:32768:8:1$Np75qqYJfk5Dw5Tn$7084996e23ccc3350118ad41e5c9028325e48ceaf0586ef65549704c36b8b003dd86630dde514368bbe51cc1ef83b97c2fcd612bbc7c75e4ba2e95638a70a160','Jesse Tong','admin',0,0),
+(2,'jesse-tong2@gmail.com','scrypt:32768:8:1$9JYSQ9qYvuCys34h$384ef4e9afee3dd63989b090478acdc34b334629e102b855f3fa5cc83017b725a7530745b2a898989d25767bd89376a2971cf9e5901ff06fec7af4ff7993b00f','Jesse Tong','user',0,0),
+(3,'some-email@gmail.com','scrypt:32768:8:1$PGeJpOZxpeeu61HB$9a6fcd91ed9ce51bb018c181165770aece093ad9c3b74e9ac33d1955e49518c306b0fe7d57a732d93f15bdee95ce95bbe83cbada30861464a05f2514ac58cb48','Test user','admin',0,0),
+(4,'jesse-tong3@gmail.com','scrypt:32768:8:1$nVLNRwXNYrezmgtw$05c8aab4745cae0a114288d5c19c9ca129d7c4c695bd7c4d5161cbbb205fcafe8b11249a550514031e13f4ae6e9ffc37f8e1c1ed425a2a92512f9c50a102f8eb','Test account 3','admin',0,0),
+(5,'jesse-tong7@gmail.com','scrypt:32768:8:1$LjNdixV1kT1X2seZ$6f03758756a8c57e0d51d65e7c0623133571e7ebedbe3fb21212870a414cde6ca086825197572a8a4ce37144d6c51a99ab9e726d54325c17c9a2d5b83f869b97','Jesse Tong','user',0,0),
+(6,'jesse-tong3gmail.com','scrypt:32768:8:1$JdtgzqZB1wClEBCZ$85791dcae07181c7ff1e679e258f32dd662098b1758204babbe05f9079d6a093afa5f36965d61bdbc678d037c1bc0dd23b57ce32e38ea619bb7848a9ba4775c0','some name','user',0,0),
+(15,'Laurine_Hand45','scrypt:32768:8:1$YlyT2bd6V41FhIFm$3035d2833ad81efb9e0a29ad0c93ce39944dd3fb20b28b3b1a8c36bb4606036c21a73b85c194e3ad3b6f4b7eef1850a9307ca5c2c5a343cf8262797ec8432b95','Crystal87','user',0,0),
+(16,'jesse-tong4@gmail.com','scrypt:32768:8:1$6Y586WSlXl0pA7rV$d6db2c2d26fd95d93fb6a75c217550760a8b056c0d4be7427b1579510d1d1dc556a34dea92740e9eaecfb8d04251334e1cca372a696339b5f3df789f9db80422','User 4','user',0,0),
+(17,'\'a@gmail.com\' or 1 = 1','scrypt:32768:8:1$cZXq5PK6aPgZ0fzg$75f4792617c540128f9e77cda9eb19441a2bf1b696a4047a8c8d04e3d3a9b7f3cf81096517167072b4de3b6efb0f53c9a95ad2feaebbe360314e96ef70bd532e','User 7','user',0,0),
+(18,'\"abc@gmail.com\" or user.email = user.email','scrypt:32768:8:1$ucCBl3r9y5qHR3WG$bb1e8e075e16f79147fbc8495d199bd5b63bc28c60cb117ffd98cf871a465ca48de2e1b56ebfac5abb6d4f0fb8786e21d1c7d32437dfcb48c17eb58c037f3a63','jesse-tong3@gmail.com','user',0,0),
+(19,'ttttt@gmail.com','scrypt:32768:8:1$XZO0l1jJGguH3xIp$b6d908f2f97e181308319935f541d2488a56ab557b8c9e398266a1aa167aad06d91b136bb363764a20a6d83e33e68919fb248559a83c16f3febca7752b583651','ttttttt','user',0,0),
+(20,'t@gmail.com','scrypt:32768:8:1$HR6BjSGDkW1eacUc$b89586bd3e6a6e6b6239ab1cb1106a44fd58b60b0e68185c9c379761b4deb04f511f4240d34610211dfa473eb06f8def9922b44e520ba6663858aeade0538e61','ttttt','user',0,0),
+(21,'test2@gmail.com','scrypt:32768:8:1$j0Zx3eChNifCiYd3$cddacb25cb04645d2d9b460f7f385830062bcbf903266c4fcbf8044411df9782e2f232a739abd820efa0c1b77f0ec46846ca4d85a05d3ffc3947826a6726ba43','Test user','user',0,0),
+(22,'test3@gmail.com','scrypt:32768:8:1$A3bLMuLgJ1MNRRk0$c30ef771c8cbd649e442129566531d3f1c56957b3c7987179a127cca7b7e57258825c1ff761b145b4877e6dc49b868cc2631eef1a287ab34914a02bee48da0c9','Test user 3','admin',0,0),
+(23,'Jerald55@hotmail.com','scrypt:32768:8:1$6PjabneNjI0Dkcak$14369e40e1c5a8f2349ea5ea1d2c3d9a27ae82bb43fb671b1f067644bcaf9340be74e4b294783bf97f5269a0d36e4d34faedb0b166ba21f6f06aa3c9a763d991','Leonie43','user',0,0),
+(24,'Tierra44@gmail.com','scrypt:32768:8:1$itNq4HcgCjRDmGsq$123b1062276b46f29e3678655a0151e5dfc1b1d2f17a6311a6ea0dfd16a1c663de95f3dd99033b2bb790be48382c557f2ac33ff0950f7b9eb530a10b115c7fd1','Karina44','user',0,0),
+(25,'Bertram.Mills@yahoo.com','scrypt:32768:8:1$samtTcvbwq8dSBVn$c8b0c835d520e263394890ee8953de622dfb0ae56e548ac2c38a49a8f33cd44ccb1814bbd989ea5afb980518b4a23674d3c560cfc3a06d2218f66b764bba27f1','Napoleon_Russel','admin',0,0),
+(26,'test@gmail.com','scrypt:32768:8:1$gmhXb5e0xSyhHax6$e2a57d9a04c0fd6b6a593555abf036ec169d7af5e64dadbda11db1213c659e8a716a53f2f9c0d8554dbd5129f1cf4de4010c681eb37864b0a5747dcc7f44125e','User 2','admin',0,0),
+(27,'test4@gmail.com','scrypt:32768:8:1$j8FPsciMVQvp0sRH$58507b49c4cdf600400242bda170c941a7d70f892c4a8fef2931fd216d8821331a0c0dc08b394b2ecf0843eee857a62e6a325a74a1c73c0fe6a83de1703895e2','Demo user','user',0,0),
+(29,'voquocbao124@gmail.com',NULL,'Quốc Bảo Võ','user',0,0),
+(31,'ledohe7516@tiervio.com','scrypt:32768:8:1$AZw89goSEmI2vTsz$0969599da142421293ffc6f47ee3c728a6ec46c8ff8b9dd9240283b9c9e6a4c236c7649f40a0f74ddb426004618ca9dd24b51410309971c7cb2633877e99c148','jesse-tong3@gmail.com','admin',0,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -687,7 +687,7 @@ CREATE TABLE `user_info` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -700,7 +700,8 @@ INSERT INTO `user_info` VALUES
 (1,1,21,'other',5,5,'0888888888','Some address','1003w-Ah-do4Y91lk-1.webp'),
 (2,4,21,NULL,5,5,'0988888888','Some address','Group 1 - Introduction to SE - EasyLib Manage borrow.png'),
 (3,22,21,'male',5,5,'089777777','Some address, HCM City',NULL),
-(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Group 1 - Introduction to SE - EasyLib.png');
+(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Group 1 - Introduction to SE - EasyLib.png'),
+(6,31,19,NULL,5,5,'0878668596','test',NULL);
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -744,4 +745,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-20  9:20:08
+-- Dump completed on 2024-07-21 22:25:24

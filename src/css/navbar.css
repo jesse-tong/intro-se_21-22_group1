@@ -1,0 +1,9 @@
+.top-nav {
+  background-color: #6f42c1;
+  position: fixed;
+}
+.top-nav .navbar-toggler {
+  background-color: inherit;
+}
+
+/*# sourceMappingURL=navbar.css.map */
