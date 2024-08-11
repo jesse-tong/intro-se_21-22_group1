@@ -1,0 +1,21 @@
+$lightGray: #c8c8fa;
+$gray: #565c64;
+$gray2: #666;
+$darkGray: #333;
+$white: #fff;
+$blueishGreen: #13795b;
+$crimson: #c6303e;
+$greenishBlue: #087990;
+$violet2: #6f42c1;
+$navyBlue: #084298;
+$violet: #6f42c1;
+$purple: #ab296a;
+$gray3: #333;
+
+.top-nav {
+    background-color: $violet2;
+    position: fixed;
+    .navbar-toggler {
+        background-color: inherit;
+    }
+}
