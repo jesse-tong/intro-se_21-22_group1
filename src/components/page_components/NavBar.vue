@@ -16,53 +16,53 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
             <div class="d-flex mt-3" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search input" v-model="searchQuery">
-              <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button">Search</button>
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search input" v-model="searchQuery" role="searchbox">
+              <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
             </div>
             <li class="nav-item mt-3" v-if="accountStore.loggedIn">
               <span>Welcome, {{ accountStore.name }}</span>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" aria-current="page" to="/" @click="closeSidebar">Home</RouterLink>
-              <RouterLink class="nav-link" to="/articles" @click="closeSidebar">Library news</RouterLink>
+              <RouterLink class="nav-link" aria-current="page" to="/" @click="closeSidebar"><i class="me-1 bi bi-house-fill"></i>Home</RouterLink>
+              <RouterLink class="nav-link" to="/articles" @click="closeSidebar"><i class="me-1 bi bi-newspaper"></i>Library news</RouterLink>
             </li>
             
             <hr class="hr" v-if="accountStore.isAdmin"/>
 
-            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-books" @click="closeSidebar">Manage books</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-borrow" @click="closeSidebar">Manage borrow</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/reports" @click="closeSidebar">Reports</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/policies-settings" @click="closeSidebar">Policies/contacts settings</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/article-management" @click="closeSidebar">Article management</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-books" @click="closeSidebar"><i class="me-1 bi bi-journals"></i>Manage books</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/manage-borrow" @click="closeSidebar"><i class="me-1 bi bi-database"></i>Manage borrow</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/reports" @click="closeSidebar"><i class="me-1 bi bi-bar-chart"></i>Reports</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/policies-settings" @click="closeSidebar"><i class="me-1 bi bi-journal-check"></i>Policies/contacts settings</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/article-management" @click="closeSidebar"><i class="me-1 bi bi-newspaper"></i>Article management</RouterLink></li>
             <hr class="hr" />
 
-            <li class="nav-item"><RouterLink class="nav-link" to="/book/by-genre" @click="closeSidebar">Genres/categories</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/book/by-author" @click="closeSidebar">Authors</RouterLink></li>
-            <li class="nav-item"><RouterLink class="nav-link" to="/book/advanced-search" @click="closeSidebar">Advanced search</RouterLink></li>
+            <li class="nav-item"><RouterLink class="nav-link" to="/book/by-genre" @click="closeSidebar"><i class="me-1 bi bi-collection-play"></i>Genres/categories</RouterLink></li>
+            <li class="nav-item"><RouterLink class="nav-link" to="/book/by-author" @click="closeSidebar"><i class="me-1 bi bi-people"></i>Authors</RouterLink></li>
+            <li class="nav-item"><RouterLink class="nav-link" to="/book/advanced-search" @click="closeSidebar"><i class="me-1 bi bi-search"></i>Advanced search</RouterLink></li>
             
             <hr class="hr" v-if="accountStore.loggedIn"/>
 
             <!--<li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/borrows">Your borrows/return book</RouterLink></li> -->
-            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile" @click="closeSidebar">User profile</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings" @click="closeSidebar">User settings</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile" @click="closeSidebar"><i class="me-1 bi bi-person"></i>User profile</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings" @click="closeSidebar"><i class="me-1 bi bi-gear-fill"></i>User settings</RouterLink></li>
             
             <hr class="hr" v-if="accountStore.loggedIn"/>
             <li class="nav-item" ><RouterLink class="nav-link" to="/library-policies">Library's policies</RouterLink></li>
             <hr class="hr" />
             
-            <li class="nav-item" v-if="accountStore.notLoggedIn" ><RouterLink class="nav-link" to="/login" id="login-link" @click="closeSidebar">Log in</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link" @click="closeSidebar">Register</RouterLink></li>
-            <li class="nav-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
+            <li class="nav-item" v-if="accountStore.notLoggedIn" ><RouterLink class="nav-link" to="/login" id="login-link" @click="closeSidebar"><i class="me-1 bi bi-door-open"></i>Log in</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link" @click="closeSidebar"><i class="me-1 bi bi-person-add"></i>Register</RouterLink></li>
+            <li class="nav-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar"><i class="me-1 bi bi-box-arrow-right"></i>Log out</a></li>
             <hr class="hr" />
             
             <li class="nav-item">
-              <div class="nav-link" @click="() => { $emit('setTheme', 'light'); closeSidebar(); }" style="cursor: pointer;">
-                <i class="bi bi-sun"></i><span>Set light theme</span>
+              <div class="nav-link" @click="() => { $emit('setTheme', 'light'); closeSidebar(); }" style="cursor: pointer;" role="link">
+                <i class="me-1 bi bi-sun"></i><span>Set light theme</span>
               </div>
             </li>
             <li class="nav-item">
-              <div class="nav-link" @click="() => { $emit('setTheme', 'dark'); closeSidebar(); }" style="cursor: pointer;">
-                <i class="bi bi-moon-stars-fill" ></i><span>Set dark theme</span>
+              <div class="nav-link" @click="() => { $emit('setTheme', 'dark'); closeSidebar(); }" style="cursor: pointer;" role="link">
+                <i class="me-1 bi bi-moon-stars-fill" ></i><span>Set dark theme</span>
               </div>
             </li>
           </ul>

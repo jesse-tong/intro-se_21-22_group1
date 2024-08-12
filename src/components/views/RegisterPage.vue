@@ -8,19 +8,19 @@
                   <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Register {{ $props.role === 'admin' ? ' for admin' : '' }}</h4>
                   <div class="row mt-3">
                     <div class="col-2 text-center ms-auto">
-                      <RouterLink class="btn btn-link px-3" to="/register/facebook">
-                        <i class="fa fa-facebook text-white text-lg"></i>
+                      <RouterLink class="btn btn-link px-3" to="/login/facebook">
+                        <i class="bi bi-facebook text-white text-lg"></i>
                       </RouterLink>
                     </div>
                     <div class="col-2 text-center px-1">
-                      <RouterLink class="btn btn-link px-3" to="/register/github">
-                        <i class="fa fa-github text-white text-lg"></i>
-                      </RouterLink>
+                      <a class="btn btn-link px-3" href="/login/github">
+                        <i class="bi bi-github text-white text-lg"></i>
+                      </a>
                     </div>
                     <div class="col-2 text-center me-auto">
-                      <RouterLink class="btn btn-link px-3" to="/register/google">
-                        <i class="fa fa-google text-white text-lg"></i>
-                      </RouterLink>
+                      <a class="btn btn-link px-3" href="/login/google">
+                        <i class="bi bi-google text-white text-lg"></i>
+                      </a>
                     </div>
                   </div>
                 </div>

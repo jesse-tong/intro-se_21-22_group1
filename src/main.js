@@ -6,7 +6,7 @@ import './css/navbar.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "bootstrap-icons/font/bootstrap-icons.css";
-import 'font-awesome/css/font-awesome.min.css';
+
 import axios from 'axios';
 import { createPinia } from 'pinia'
 import Notifications, { useNotification } from '@kyvg/vue3-notification';

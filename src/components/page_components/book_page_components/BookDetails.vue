@@ -89,7 +89,6 @@
 </template>
 <script>
     import axios from 'axios';
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import BookCarousel from '../homepage_components/BookCarousel.vue';
     import BorrowModal from '../user_borrow_components/BorrowModal.vue';
     import CommentSection from '../comment_components/CommentSection.vue';
@@ -117,7 +116,6 @@
             }
         },
         components: {
-          FontAwesomeIcon,
           BorrowModal,
           CommentSection,
           BookCarousel,
