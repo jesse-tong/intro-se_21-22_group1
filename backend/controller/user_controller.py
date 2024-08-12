@@ -15,7 +15,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 async def register(email: str, password: str, name: str, role: str, resend_verification_email=False):
 
     user = User.query.filter_by(email = email).first()
-    if (user and resend_verification_email != False):
+    if (user and resend_verification_email == False):
         return False, None, EMAIL_EXISTS
     
     #Reference: https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
@@ -36,7 +36,11 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
             print(resend_verification_email)
             token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
                                         "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
-            await send_verification_email(token, email)
+            try:
+                await send_verification_email(token, email)
+            except:
+                return False, new_user, SEND_VERIFICATION_EMAIL_FAILED
+            
             return True, new_user, None
         except:
             db.session.rollback()
@@ -44,7 +48,10 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
     else:
         token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
                                     "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key", algorithm='HS256')
-        await send_verification_email(token, email)
+        try:
+            await send_verification_email(token, email)
+        except: 
+            return False, None, 'Resend verification email failed!'
         return True, new_user, None
 
 def verify_email_address(token):
