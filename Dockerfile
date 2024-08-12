@@ -4,7 +4,7 @@ COPY ./ /usr/src/app/
 
 RUN mkdir data
 
-
+RUN chmod +x entrypoint.sh
 RUN apt-get update && apt-get install -y netcat-traditional
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 RUN npm install
 RUN npm run build
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "python", "backend/server.py" ]
