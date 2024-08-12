@@ -12,7 +12,7 @@ from ua_parser import user_agent_parser
 from global_vars.errors import *
 from flask_login import login_user, login_required, current_user, logout_user
 
-def register(email: str, password: str, name: str, role: str, resend_verification_email=False):
+async def register(email: str, password: str, name: str, role: str, resend_verification_email=False):
 
     user = User.query.filter_by(email = email).first()
     if (user and resend_verification_email != False):
@@ -36,7 +36,7 @@ def register(email: str, password: str, name: str, role: str, resend_verificatio
             print(resend_verification_email)
             token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
                                         "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
-            send_verification_email(token, email)
+            await send_verification_email(token, email)
             return True, new_user, None
         except:
             db.session.rollback()
@@ -44,7 +44,7 @@ def register(email: str, password: str, name: str, role: str, resend_verificatio
     else:
         token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
                                     "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key", algorithm='HS256')
-        send_verification_email(token, email)
+        await send_verification_email(token, email)
         return True, new_user, None
 
 def verify_email_address(token):

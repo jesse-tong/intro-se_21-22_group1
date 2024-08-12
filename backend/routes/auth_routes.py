@@ -101,7 +101,7 @@ def logout_route():
     return get_status_object_json(True, None, None), 200
 
 @auth.route('/auth/register', methods=['POST'])
-def register_route():
+async def register_route():
     register_form = request.form
     email = register_form.get('email')
     password = register_form.get('password')
@@ -112,7 +112,7 @@ def register_route():
         resend_verification_email = True
     else:
         resend_verification_email = False
-    result, user, error = register(email, password, name, role, resend_verification_email)
+    result, user, error = await register(email, password, name, role, resend_verification_email)
     return get_status_object_json(result, user, error), 200
 
 @auth.route('/auth/verification/<token>')

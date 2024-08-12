@@ -5,11 +5,13 @@ from controller.book_user_controller import *
 from controller.user_controller import get_current_user_role
 from models.book_model import Book
 from models.user_book import BookFavorite, BookBorrow
+from models.user_model import UserNotification
 import json, uuid, datetime
 from dateutil.parser import parse as dateparse
 from flask_login import current_user
 from flask_cors import CORS
-from sqlalchemy import func, distinct
+from sqlalchemy import func, distinct, insert
+from flask_apscheduler import scheduler
 
 book_user = Blueprint('book_user', __name__)
 CORS(book_user, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
@@ -377,3 +379,4 @@ def favourite_book(book_id):
         
         success, favorite_status, error = remove_favorite(current_user.id, book_id)
         return get_status_object_json(success, favorite_status, error), 200
+    
