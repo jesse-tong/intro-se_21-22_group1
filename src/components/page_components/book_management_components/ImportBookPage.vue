@@ -17,7 +17,8 @@
             <btn class="btn btn-primary mt-1" @click="dismissAlert"><span>Dismiss</span></btn>
         </div>
         <h4 class="ms-2">Import books</h4>
-        <vue-excel-editor v-model="jsondata" ref="editor" @select="onSelect" no-header-edit="true" free-select="true" class="text-dark">
+        <vue-excel-editor v-model="jsondata" ref="editor" @select="onSelect" no-header-edit="true" free-select="true" class="text-dark" 
+        style="min-width: 100%; max-width: 1500px; margin: auto">
             <vue-excel-column field="title"  label="Book title" type="string" width="300px" />
             <vue-excel-column field="isbn"   label="ISBN" type="string" width="140px" />
             <vue-excel-column field="publish_year"  label="Publish year"   type="string" width="70px" />
@@ -26,7 +27,7 @@
             <vue-excel-column field="authors" label="Authors (comma seperated)" type="string" width="200px" />
             <vue-excel-column field="genres" label="Genres (comma seperated)" type="string" width="200px" />
         </vue-excel-editor>
-        <div class="d-flex flex-column flex-md-row justify-content-between mt-3" style="max-width: 1220px;">
+        <div class="d-flex flex-column flex-md-row justify-content-between mt-3" style="max-width: 1500px;">
             <button class="btn btn-primary mb-2" @click="addRow"><span>Add row</span></button>
             <button class="btn btn-success mb-2" @click="importBooks"><span>Import books</span></button>
             <button class="btn btn-danger mb-2" @click="deleteSelectedRows"><span>Delete selected rows</span></button>

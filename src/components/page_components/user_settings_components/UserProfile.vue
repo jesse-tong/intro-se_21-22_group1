@@ -1,6 +1,6 @@
 <template>
     <ImageUpdateModal :showModal="imageModalShow" @closeModal="imageModalShow = false" ref="updateImageModal" :userId="$props.userId !== null ? $props.userId : accountStore.userId" />
-    <h3 class="mt-2 ms-3 me-3">User profile:</h3>
+    <h3 class="mt-2 ms-3 me-3" style="margin-top: 3.8rem;">User profile:</h3>
     <div class="row ms-3 me-3">
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">

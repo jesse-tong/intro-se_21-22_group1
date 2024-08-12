@@ -1,5 +1,5 @@
 <template>
-    <h4 class="ms-4 me-3 mt-2 ">Borrow policies</h4>
+    <h4 class="ms-4 me-3" style="margin-top: 3.8rem">Borrow policies</h4>
     <div class="row ms-3 me-3">
         <div class="col-12 col-md-6 col-lg-4 mb-2">
             <label for="overdueFine" class="form-label"><span>Overdue fine (per day): </span></label>
@@ -43,7 +43,7 @@
         </div>
         
     </div>
-    <h4 class="ms-4 me-3 mt-2 ">Library timings</h4>
+    <h4 class="ms-4 me-3 mt-3 ">Library timings</h4>
     <div class="row ms-3 me-3">
         <div class="col-12 col-md-6 col-xl-3 mb-2">
             <label for="normalDayOpen" class="form-label"><span>Normal day open time: </span></label>

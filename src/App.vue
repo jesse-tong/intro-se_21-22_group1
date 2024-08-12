@@ -56,10 +56,12 @@ onBeforeMount(() => {
 
 <template >
   <KeepAlive>
-    <Notifications position="bottom right" :duration=7000 :max=1 :closeOnClick=true data-testid="notification"/>
+    <Notifications position="bottom right" :duration=9000 :max=1 :closeOnClick=true data-testid="notification" style="font-size: 15px;"/>
     <div :key="componentKey">
       <RouterView name="NavBar" @setTheme="setTheme"/>
-      <RouterView />
+      <div style="margin-top: 4.2rem;">
+        <RouterView />
+      </div>
       <RouterView name="footer"/>
     </div>
   </KeepAlive>

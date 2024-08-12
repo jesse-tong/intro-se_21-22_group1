@@ -1,7 +1,7 @@
 .top-nav {
-  background-color: #6f42c1 !important;
   position: fixed;
   top: 0;
+  background-image: linear-gradient(rgba(147, 95, 250, 0.98), rgba(166, 125, 248, 0.93));
 }
 .top-nav .navbar-toggler {
   background-color: inherit;

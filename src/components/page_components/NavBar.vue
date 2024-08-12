@@ -1,10 +1,11 @@
 <template>
-<nav class="navbar bg-body-tertiary top-nav">
+<nav class="navbar fixed-top bg-body-tertiary">
     <div class="container-fluid">
       
-      <RouterLink class="navbar-brand" to="/"><img :src="EasyLibLogo" width="50" height="50" alt="EasyLib logo" />EasyLib</RouterLink>
+      <RouterLink class="navbar-brand" to="/"><img :src="EasyLibLogo" width="40" height="40" alt="EasyLib logo" />EasyLib</RouterLink>
 
-      <button class="navbar-toggler" ref="sidebarToggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavigation" aria-controls="offcanvasNavigation" aria-label="Toggle navigation">
+      <button class="navbar-toggler" ref="sidebarToggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavigation" 
+      aria-controls="offcanvasNavigation" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavigation" aria-labelledby="offcanvasNavbarLabel" ref="sidebar" >

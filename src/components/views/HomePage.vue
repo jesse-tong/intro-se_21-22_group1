@@ -51,7 +51,7 @@
                 
             </div>
             <div class="col-12 col-md-5 col-lg-4">
-                <table class="table table-bordered">
+                <table class="table table-bordered me-2">
                     <thead>
                         <tr>
                             <th class="table-active text-center" colspan="2">LIBRARY TIMINGS</th>

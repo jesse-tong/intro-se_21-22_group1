@@ -11,11 +11,18 @@ $navyBlue: #084298;
 $violet: #6f42c1;
 $purple: #ab296a;
 $gray3: #333;
+$bd-violet-rgb-start: rgba(147, 95, 250, 0.98);
+$bd-violet-rgb-end: rgba(166, 125, 248, 0.93);
 
 .top-nav {
-    background-color: $violet2;
     position: fixed;
+    top: 0;
+    background-image: linear-gradient($bd-violet-rgb-start, $bd-violet-rgb-end);
     .navbar-toggler {
         background-color: inherit;
     }
+}
+
+.top-nav nav-link, .top-nav navbar-brand{
+    @extend .text-light !optional
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-2 mb-2 mt-2 rounded border border-secondary border-2 px-2">
+    <div class="mx-2 mb-2 mt-4 rounded border border-secondary border-2 px-2">
         <h3 class="mt-2" >
             Policies when using library services
         </h3>

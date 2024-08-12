@@ -8,7 +8,7 @@
             <div v-for="i in numSlides" :key="articles.id" style="padding-left: 10%; padding-right: 10%">
                 <div v-if="i <= numSlides" class="carousel-item" :class="{ active: i === 1 }">
                     <div class="row mx-3">
-                        <div class="col-md-3" v-for="j in 4" :key="j">
+                        <div class="col-12 col-md-6 col-lg-3" v-for="j in 4" :key="j">
                             <div v-if="(i - 1) * 4 + (j - 1) <= articles.length - 1">
                                 <div class="card mb-3">
                                     <div class="card-body">

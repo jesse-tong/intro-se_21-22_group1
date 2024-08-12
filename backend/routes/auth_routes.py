@@ -81,6 +81,15 @@ def analytics():
 
     return request.user_agent.string
 
+@auth.route('/auth/sessions', methods=['GET'])
+def get_user_session():
+    if not current_user.is_authenticated:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    
+    current_user_id = current_user.id
+    sessions = db.session.query(Session).filter(Session.userId == current_user_id).all()
+    return get_status_object_json(True, sessions, None), 200
+
 @auth.route('/auth/login', methods=['POST'])
 def login_route():
     login_data = request.form

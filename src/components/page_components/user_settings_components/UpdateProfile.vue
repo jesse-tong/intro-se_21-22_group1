@@ -1,5 +1,5 @@
 <template>
-    <h4 class="ms-3 me-3 mt-2 ">Update user information</h4>
+    <h4 class="ms-3 me-3" style="margin-top: 3.75rem;">Update user information</h4>
     <div class=" ms-3 me-3">
         <div class=" mb-2">
             <label for="userId" class="form-label"><span>User ID: </span></label>
