@@ -7,7 +7,7 @@
         <ArticleList :articles="articles" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteArticle="onDeleteArticle" @editArticle="onEditArticle" />
         <div class="mt-2 mb-2">
             <hr class="hr" />
-            <h4 class="mb-2">Edit article</h4>
+            <h5 class="section-title bg-light-subtle text-primary pe-3 mt-2 mb-2">Create/Edit New Article</h5>
             <div class="d-flex flex-column justify-content-between">
                 
                 <div class="">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <hr class="hr" />
-        <h4 class="ms-1">Upload image</h4>
+        <h5 class="section-title bg-light-subtle text-primary pe-3 ms-1">Upload Image</h5>
         <ImageUpload @select-image="onImageSelected" class="card pt-2 pb-2"/>
     </div>
     
