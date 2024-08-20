@@ -1,6 +1,9 @@
 <template>
     
     <div class="mx-2">
+        <div class="text-center w-100 mt-4">
+            <h4 class="section-title bg-light-subtle text-center text-primary px-3">Library Article Management</h4>
+        </div>
         <ArticleList :articles="articles" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteArticle="onDeleteArticle" @editArticle="onEditArticle" />
         <div class="mt-2 mb-2">
             <hr class="hr" />

@@ -21,17 +21,18 @@
             
         </div>
       <nav aria-label="Image list management navigation" class="mt-3 ms-2">
-          <ul class="pagination">
-              <li class="page-item">
-                  <div role="button" class="page-link cursor-pointer" @click="$emit('update:currentPage', currentPage > 1 ? currentPage - 1 : 1)" id="prevPageButton"><span>Previous page</span></div>
-              </li>
-              <li class="page-item">
-                  <input @input="(e)=>$emit('update:currentPage', e.target.value)" type="number" min="1" :max="maxPage" class="page-link" style="max-width: 95px" :value="currentPage">
-              </li>
-              <li class="page-item">
-                  <div role="button" class="page-link cursor-pointer" @click="$emit('update:currentPage', currentPage < maxPage ? currentPage + 1 : 1)" id="nextPageButton"><span >Next page</span></div>
-              </li>
-          </ul>
+        <ul class="component-pagination">
+            <li class="pagination-arrow arrow-left me-1">
+                <div class="page-link" @click="$emit('update:currentPage', currentPage > 1 ? currentPage - 1 : 1)" id="prevPageButton"><i class="bi bi-chevron-left"></i></div>
+            </li>
+            <li class="page-item">
+                <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                  @input="(e)=>$emit('update:currentPage', e.target.value)" :value="currentPage" min="1"/></li>
+            </li>
+            <li class="pagination-arrow arrow-left ms-1">
+                <div class="page-link" @click="$emit('update:currentPage', currentPage < maxPage ? currentPage + 1 : 1)" id="nextPageButton"><i class="bi bi-chevron-right"></i></div>
+            </li>
+        </ul>
       </nav>
     </div>
     </template>

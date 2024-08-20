@@ -1,5 +1,5 @@
 <template>
-    <div class="table-reponsive-lg">
+    <div class="table-reponsive-lg mt-3">
       <table class="table table-bordered">
         <thead>
           <tr>

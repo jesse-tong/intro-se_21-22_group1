@@ -1,5 +1,8 @@
 <template>
     <div class="mx-2">
+        <div class="text-center w-100 mt-4">
+            <h4 class="section-title bg-white text-center text-primary px-3">Articles from Library</h4>
+        </div>
         <ArticleList :articles="articles" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" :actionVisible="false"/>
     </div>
 </template>

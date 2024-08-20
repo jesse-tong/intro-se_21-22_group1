@@ -5,7 +5,9 @@
                 <div class="col-md-10 col-xl-8 mx-auto"> 
                     <div class="post-header">
                         <div class="post-category text-line">
-                            <RouterLink to="/articles" class="hover" rel="category">Return To Article List</RouterLink>
+                            <RouterLink to="/articles" class="hover" rel="category">
+                                <h6 class="section-title text-center text-primary px-2 mt-2">Return to Article List</h6>
+                            </RouterLink>
                         </div>
                     <h1 class="display-6 mb-3 post-title article-title"><b>{{ title }}</b></h1>
                     <ul class="post-meta" style="list-style-type: none;">

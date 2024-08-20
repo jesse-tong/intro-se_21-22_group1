@@ -6,7 +6,7 @@
   padding: 10px 14px;
   border-radius: 8px;
   max-width: 400px;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, Nunito, sans-serif;
   cursor: pointer;
 }
 .author-list .list-item:hover {
@@ -49,7 +49,7 @@
   vertical-align: middle;
 }
 .component-pagination .pagination-number {
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", "Nunito", sans-serif;
   font-size: 14px;
   text-align: center;
   line-height: 24px;
@@ -63,6 +63,25 @@
 .component-pagination .pagination-arrow i {
   font-size: 24px;
   padding: 8px;
+}
+
+.card-header {
+  background-color: transparent;
+}
+
+.nav-tabs.card-header-tabs .nav-item .nav-link {
+  border-radius: 0;
+  background-color: #303030;
+  border-color: #303030;
+  color: white;
+  font-weight: 610;
+  margin-right: 10px;
+}
+.nav-tabs.card-header-tabs .nav-item .nav-link.active {
+  background-color: #d14031;
+  border-color: #d14031;
+  color: white;
+  font-weight: 610;
 }
 
 /*# sourceMappingURL=custom.css.map */

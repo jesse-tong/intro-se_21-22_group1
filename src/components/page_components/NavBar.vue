@@ -1,17 +1,17 @@
 <template>
   <!-- Navbar Start -->
   <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <RouterLink href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <RouterLink to="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <img src="/src/assets/EasyLib.svg" height="50" width="50" alt="EasyLib logo">
-            <h3 class="m-0 text-decoration-none text-primary">Easylib</h3>
+            <h3 class="m-0 text-primary">EasyLib</h3>
         </RouterLink>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div id="navbarCollapse" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="offcanvasNavbarLabel" ref="sidebar" >
+        <div id="navbarOffcanvas" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="offcanvasNavbarLabel" ref="sidebar" >
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
@@ -137,7 +137,7 @@
 
     const closeSidebar = function(){
       if (window.innerWidth <= 768){
-        sidebarToggler.value.click();
+        //sidebarToggler.value.click();
       }
       
     }

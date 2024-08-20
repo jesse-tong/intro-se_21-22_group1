@@ -1,12 +1,12 @@
 /*Image from Virginia State Parks: https://www.flickr.com/photos/37922399@N05/13580562913
   Licensed under CC-BY 2.0*/
-
+@import url( 'https://fonts.googleapis.com/css2?family=Roboto&display=swap'); 
 body {
-  font-family: 'Nunito', 'Segoe UI', 'Open Sans', 'Noto Sans', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif' !important;
+  font-family: 'Roboto', 'Nunito', 'Segoe UI', 'Open Sans', 'Noto Sans', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif' !important;
 }
 
 .article-title {
-  font-family: 'Nunito', 'Segoe UI', 'Open Sans', 'Noto Sans', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif' !important;
+  font-family: 'Roboto', 'Nunito', 'Segoe UI', 'Open Sans', 'Noto Sans', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif' !important;
 }
 
 .book-img {
@@ -119,7 +119,7 @@ pb-14 {
 }
 
 .bg-soft-primary {
-  background-color: #f1f5fd !important;
+  background-image: linear-gradient(#f1f5fd, #f0fbfc) !important;
 }
 
 .post-meta li:first-child::before, article .post-meta li.ms-auto::before {
