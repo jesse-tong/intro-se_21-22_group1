@@ -1,0 +1,71 @@
+
+@import "./variables.scss";
+
+// Default variable overrides
+.author-list{
+	display: block;
+	list-style: none;
+	.list-item{
+		padding: 10px 14px;
+		border-radius: 8px;
+		max-width: 400px;
+		font-family: Roboto, sans-serif;
+		cursor: pointer;
+		&:hover {
+			background-color: rgba(233,30,99,.12);
+		}
+		&.active {
+			background-color: $blue;
+			color: white;
+		}
+		
+	}
+}
+
+.navbar-link:hover{
+    background-color: $w3green;
+}
+
+.navbar-link:active{
+    background-color: #082b1b;
+}
+
+.component-pagination {
+	list-style: none;
+	padding: 8px;
+	li {
+		border-radius: 2px;
+		color: rgba(33,33,33 ,1);
+		display: inline-block;
+		margin: 0;
+		transition: .15s ease-in;
+		cursor: pointer;
+		&:hover {
+			background: rgba(233,30,99,.12);
+		}
+		&:active {
+			background: $blue;
+			color: #333;
+		}
+	}
+	.pagination-number,
+	.pagination-arrow i {
+		vertical-align: middle;
+	}
+	.pagination-number {
+		font-family: "Roboto", sans-serif;
+		font-size: 14px;
+		text-align: center;
+		line-height: 24px;
+		min-width: 40px;
+		padding: 8px 0;
+		&.current-number {
+			background: $blue;
+			color: #333;
+		}
+	}
+	.pagination-arrow i {
+		font-size: 24px;
+		padding: 8px;
+	}
+}
