@@ -1,7 +1,7 @@
 <template>
     <div class="row mt-3 ms-2">
         <div class="col-12 col-md-4 col-lg-3 rounded g-0"  >
-            <h5 class="ms-3 ms-md-3 ms-lg-3">Authors:</h5>
+            <h5 class="section-title bg-light-subtle text-start text-primary ms-3 ms-md-3 ms-lg-3 px-3">Authors</h5>
             <div class="">
                 <ul class="author-list mt-2">
                     <li class="list-item" :class="{ active: isTabActive(author.id) }" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>

@@ -1,7 +1,7 @@
 <template>
     <div class="row mt-3">
         <div class="col-12 col-md-4 col-lg-3 g-0 rounded"  >
-            <h5 class="ms-3 ms-md-3 ms-lg-3">Genres:</h5>
+            <h5 class="section-title bg-light-subtle text-start text-primary ms-3 ms-md-3 ms-lg-3 px-3">Genres</h5>
             <ul class="list-group mt-2 border-0 list-group-flush">
                 <ul class="author-list mt-2">
                     <li class="list-item" :class="{ active: isTabActive(genre.id) }"  v-for="genre in genres" @click="selectedId = parseInt(genre.id)"><span>{{ genre.name }}</span></li>

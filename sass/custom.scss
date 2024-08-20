@@ -9,7 +9,6 @@
 		padding: 10px 14px;
 		border-radius: 8px;
 		max-width: 400px;
-		font-family: Roboto, sans-serif;
 		cursor: pointer;
 		&:hover {
 			background-color: rgba(233,30,99,.12);
@@ -53,7 +52,6 @@
 		vertical-align: middle;
 	}
 	.pagination-number {
-		font-family: "Roboto", sans-serif;
 		font-size: 14px;
 		text-align: center;
 		line-height: 24px;
@@ -67,5 +65,28 @@
 	.pagination-arrow i {
 		font-size: 24px;
 		padding: 8px;
+	}
+}
+
+.card-header {
+	background-color: transparent;
+	
+}
+.nav-tabs.card-header-tabs {
+
+	.nav-item .nav-link{
+		border-radius: 0;
+		background-color: $darkGray;
+		border-color: $darkGray;
+		color: white;
+		font-weight: $slightly-bold;
+		margin-right: 10px;
+
+		&.active {
+			background-color: $crimson;
+			border-color: $crimson;
+			color: white;
+			font-weight: $slightly-bold;
+		}
 	}
 }

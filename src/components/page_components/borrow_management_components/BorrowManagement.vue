@@ -20,7 +20,7 @@
             <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" v-model:searchBookId="searchBookId" @search-book="searchBook" class="mt-2" />
           </div>
           <div v-if="searchResultUser" class="mt-3">
-            <h3>User Search Result</h3>
+            <h5 class="section-title bg-light-subtle text-start text-primary pe-3">User Search Result</h5>
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead>
@@ -48,7 +48,7 @@
             
           </div>
           <div v-if="searchResultBooks">
-            <h3>Book Search Results</h3>
+            <h5 class="section-title bg-light-subtle text-start text-primary pe-3 me-3">Book Search Result</h5>
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead>
@@ -214,7 +214,7 @@
           </div>
         </div>
         <div v-if="borrows">
-          <h3>Borrow List</h3>
+          <h5 class="section-title bg-light-subtle text-start text-primary pe-3">Borrow list</h5>
           <BorrowTable :borrows="borrows" @editBorrow="(borrow_status) => editBorrowChanged(borrow_status)" @deleteBorrow="(borrow_id)=> deleteBorrowChanged(borrow_id)"/>
             <ul class="component-pagination">
                 <li class="pagination-arrow arrow-left me-1">
