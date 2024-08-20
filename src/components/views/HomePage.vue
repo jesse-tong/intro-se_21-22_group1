@@ -5,12 +5,14 @@
             <img :src="LibraryImage" style="width: 100%; max-height: 300px;" alt="Library image"/>
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
-        <h3 class="mt-3 ms-3 mb-3">Latest library articles</h3>
+        <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Latest library articles</h5>
         <ArticleCarousel :articles="latestArticles" :carouselId="'latestArticles'"/>
-        <h3 class="mt-3 ms-3 mb-3">Highest rating books</h3>
-        <BookCarousel :books="highestRatingBooks" :apiSite="apiSite" :carouselId="'highestRatingBooks'" />
-        <h3 class="mt-4 ms-3 mb-3">Most borrowed books</h3>
+        <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Highest rating books</h5>
+        <BookCarousel :books="highestRatingBooks" :apiSite="apiSite" :carouselId="'highestRatingBooks'"/>
+
+        <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Most borrowed books</h5>
         <BookCarousel :books="mostBorrowedBooks" :apiSite="apiSite" :carouselId="'mostBorrowedBooks'"/>
+        
     </div>
     <div class="row">
         <hr class="hr" />
@@ -102,6 +104,8 @@
     import "leaflet/dist/leaflet.css";
     import markerIconPng from "leaflet/dist/images/marker-icon.png"
     import * as L from 'leaflet';
+
+
 
     export default {
         data(){
@@ -461,7 +465,7 @@
         },
         components: {
             BookCarousel: BookCarousel,
-            ArticleCarousel: ArticleCarousel
+            ArticleCarousel: ArticleCarousel,
         }
     }
 </script>

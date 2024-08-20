@@ -2,7 +2,7 @@
     <div>
         <div class="col">
             <div class="row-1">
-                <h3 class="ms-3 mt-2">Report Dashboard</h3>
+                <h5 class="section-title bg-light-subtle text-center text-primary px-3 mt-3">Report dashboard</h5>
             </div>
             <div class="row-11">
                 <div class="row">

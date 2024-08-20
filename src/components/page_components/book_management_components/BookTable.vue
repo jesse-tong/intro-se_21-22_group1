@@ -1,6 +1,6 @@
 <template>
   <div class="table-reponsive-lg">
-    <table class="table table-striped">
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>Book ID</th>
@@ -25,15 +25,17 @@
       </tbody>
     </table>
     <nav aria-label="Book table navigation">
-        <ul class="pagination">
-            <li class="page-item">
-                <a href="#prevPageButton" class="page-link" @click="$emit('update:currentPage', currentPage > 1 ? currentPage - 1 : 1)" id="prevPageButton"><span>Previous page</span></a>
+        
+        <ul class="component-pagination">
+            <li class="pagination-arrow arrow-left me-1">
+                <a href="#" class="page-link" @click="$emit('update:currentPage', currentPage > 1 ? currentPage - 1 : 1)" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
             </li>
             <li class="page-item">
-                <input @input="(e)=>$emit('update:currentPage', e.target.value)" type="number" min="1" :max="maxPage" class="page-link" style="max-width: 95px" :value="currentPage">
+                <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                  @input="(e)=>$emit('update:currentPage', e.target.value)" :value="currentPage" min="1"/></li>
             </li>
-            <li class="page-item">
-                <a href="#nextPageButton" class="page-link" @click="$emit('update:currentPage', currentPage < maxPage ? currentPage + 1 : 1)" id="nextPageButton"><span >Next page</span></a>
+            <li class="pagination-arrow arrow-left ms-1">
+                <a href="#" class="page-link" @click="$emit('update:currentPage', currentPage < maxPage ? currentPage + 1 : 1)" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
             </li>
         </ul>
     </nav>

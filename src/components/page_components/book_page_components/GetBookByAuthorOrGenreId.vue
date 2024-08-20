@@ -1,6 +1,6 @@
 <template>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -20,20 +20,21 @@
                 <td>{{ book.publish_year }}</td>
                 <td>{{ book.isbn }}</td>
                 <td>{{ book.stock }}</td>
-                <td><button class="btn btn-primary"><RouterLink :to="'/book/' + book.id" class="text-white">Details</RouterLink></button></td>
+                <td><RouterLink :to="'/book/' + book.id" class="text-decoration-none"><button class="btn btn-outline-primary">Details</button></RouterLink></td>
             </tr>
         </tbody>
         </table>
         <nav aria-label="Book table navigation">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a href="#prevPageButton" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><span>Previous page</span></a>
+            <ul class="component-pagination">
+                <li class="pagination-arrow arrow-left me-1">
+                    <a href="#" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
                 </li>
                 <li class="page-item">
-                    <input @input="(e)=> {currentPage = e.target.value}" type="number" min="1"  class="page-link" style="max-width: 95px" :value="currentPage">
+                    <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                        @input="(e)=> {currentPage = e.target.value}" :value="currentPage" min="1"/></li>
                 </li>
-                <li class="page-item">
-                    <a href="#nextPageButton" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><span >Next page</span></a>
+                <li class="pagination-arrow arrow-left ms-1">
+                    <a href="#" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
                 </li>
             </ul>
         </nav>

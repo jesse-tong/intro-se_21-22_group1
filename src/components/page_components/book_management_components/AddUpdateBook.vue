@@ -5,7 +5,7 @@
         <UpdateImage :bookId="$props.bookId" v-if="$props.bookId !== null"/>
     </div>
     <div :class="['col-12', $props.bookId !== null ? 'col-lg-9' : 'col-12']">
-        <h4 v-if="$props.bookId !== null" class="mb-2 mt-3">Update book data</h4>
+        <h4 v-if="$props.bookId !== null || $props.isEditPage === true" class="mb-2 mt-3">Update book data</h4>
         <h4 v-else class="mb-2 mt-3">Add book</h4>
         <div class="row">
             <div v-if="$props.bookId !== null" class="col-12 col-md-6 col-lg-4">
@@ -126,7 +126,7 @@
             </div>
             <div class="col m-auto">
                 <button class="btn btn-primary" @click="(e)=>onSubmitAddUpdateBook()">
-                    <span v-if="bookId == null" id="addBookButton">Add book</span>
+                    <span v-if="$props.isEditPage === false" id="addBookButton">Add book</span>
                     <span v-else id="editBookButton">Edit book</span>
                 </button>
             </div>
@@ -147,6 +147,11 @@
                 required: false,
                 default: null
             },
+            isEditPage: {
+                type: Boolean,
+                required: false,
+                default: false
+            }
         },
         data(){
             return {
@@ -244,7 +249,7 @@
                 bookUpdateObject.stock = this.stock !== null && this.stock !== '' && this.stock !== 0 ? this.stock : 0;
 
                 //Use axios to send request here
-                if (this.$props.bookId === null){
+                if (this.$props.bookId === null || this.$props.isEditPage === false){
                     //Add new book
                     axios.postForm('/api/book', bookUpdateObject)
                         .then(response => {

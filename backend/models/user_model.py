@@ -1,9 +1,17 @@
+import json
 from global_vars.database_init import db
 from flask_login import UserMixin
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, event, Connection
+from sqlalchemy.orm import mapper, Session
 from models.book_model import Book
 from dataclasses import dataclass
 from datetime import datetime
+from utils.ap_utils import uri
+
+class URIs(object):
+    def __init__(self, **kwargs):
+        for attr, values in kwargs:
+            setattr(self, attr, values)
 
 #Note that if we don't declare the type of each attribute in a dataclass class, it will be ignore
 #when being jsonified, also the password will be hashed before stored in the database
@@ -17,7 +25,16 @@ class User(UserMixin, db.Model):
     role:str = db.Column(db.String(20))
     isRestricted:bool = db.Column(db.Boolean, default=False)
     isVerified:bool = db.Column(db.Boolean, server_default="0", default=False)
+
     
+
+@dataclass
+class UserFollowing(db.Model):
+    __tablename__ = 'user_following'
+    id:int = db.Column(db.Integer, primary_key=True) 
+    follower:int = db.Column(db.Integer, db.ForeignKey('user.id'))
+    followedUser:int = db.column(db.Integer, db.ForeignKey('user.id'))
+
 @dataclass
 class Comment(db.Model):
     __tablename__ = 'comment'
@@ -28,6 +45,14 @@ class Comment(db.Model):
     comment:str = db.Column(db.String(3000))
     rating:int = db.Column(db.Integer)
     bookId:int = db.Column(db.Integer, db.ForeignKey('book.id'))
+
+
+@dataclass
+class CommentLike(db.Model):
+    __tablename__ = 'comment_like'
+    id:int = db.Column(db.Integer, primary_key=True)
+    commentId:int = db.Column(db.Integer, db.ForeignKey('comment.id'))
+    userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 @dataclass
 class UserNotification(db.Model):

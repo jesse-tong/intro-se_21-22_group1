@@ -1,18 +1,27 @@
 <template>
     <ImageUpdateModal :showModal="imageModalShow" @closeModal="imageModalShow = false" ref="updateImageModal" :userId="$props.userId !== null ? $props.userId : accountStore.userId" />
-    <h3 class="mt-2 ms-3 me-3" style="margin-top: 3.8rem;">User profile:</h3>
+    <h5 class="section-title bg-light-subtle text-center text-primary px-3 mt-3">User Profile</h5>
     <div class="row ms-3 me-3">
         <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <div class="rounded-circle mt-5" width="150px" height="150px">
-                    <img class="rounded-circle mt-5 border border-2" width="150px" height="150px" 
-                    :src="apiSite + '/api/profile_image/' + ($props.userId !== null ? $props.userId : accountStore.userId) + '?session=' + getRandomId || emptyImage" />
+            <div class=" wow fadeInUp" data-wow-delay="0.5s">
+                <div class="team-item bg-light">
+                    <div class="overflow-hidden">
+                        <img class="img-fluid" style="aspect-ratio: 1/1;" :src="apiSite + '/api/profile_image/' + ($props.userId !== null ? $props.userId : accountStore.userId) + '?session=' + getRandomId || emptyImage" />
+                    </div>
+                    <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
+                        <div class="bg-light d-flex justify-content-center pt-2 px-1">
+                            <a class="btn btn-sm-square btn-primary mx-1" :href="'mailto'"><i class="bi bi-envelope-at"></i></a>
+                            <router-link class="btn btn-sm-square btn-primary mx-1" role="button" title="User settings" alt="User settings"
+                            to="/user/settings" v-if="$props.userId === null || accountStore.userId === $props.userId"><i class="bi bi-gear"></i></router-link>
+                            <button class="btn btn-sm-square btn-primary mx-1" title="Change account image" alt="Change account image"
+                             role="button" @click="imageModalShow = true" v-if="$props.userId === null || accountStore.userId === $props.userId"><i class="bi bi-image"></i></button>
+                        </div>
+                    </div>
+                    <div class="text-center p-4 d-block">
+                        <p class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</p>
+                        <p class="text-black-50">{{ userInfo !== null ? (userInfo.email !== null ? userInfo.email : 'N/A') : 'N/A' }}</p>
+                    </div>
                 </div>
-                
-                <span class="font-weight-bold">{{ userInfo !== null ? userInfo.name : 'N/A' }}</span>
-                <span class="text-black-50">{{ userInfo !== null ? (userInfo.email !== null ? userInfo.email : 'N/A') : 'N/A' }}</span>
-                <router-link class="btn btn-secondary mt-3 " role="button" to="/user/settings" v-if="$props.userId === null || accountStore.userId === $props.userId"><span>User settings</span></router-link>
-                <button class="btn btn-secondary mt-1" role="button" @click="imageModalShow = true" v-if="$props.userId === null || accountStore.userId === $props.userId"><span>Change user image</span></button>
             </div>
         </div>
         <div class="col-12 col-md-4">

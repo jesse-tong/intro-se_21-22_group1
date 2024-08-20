@@ -1,7 +1,7 @@
 <template>
     <div class="card">
       <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
+        <ul class="nav nav-tabs card-header-tabs bg-transparent">
           <li class="nav-item">
             <a :class="['nav-link', activeTab=='search' ? 'active': '']" href="#searchTab" @click="activeTab='search'" id="searchTab">Search</a>
           </li>
@@ -22,7 +22,7 @@
           <div v-if="searchResultUser" class="mt-3">
             <h3>User Search Result</h3>
             <div class="table-responsive">
-              <table class="table table-striped">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -50,7 +50,7 @@
           <div v-if="searchResultBooks">
             <h3>Book Search Results</h3>
             <div class="table-responsive">
-              <table class="table table-striped">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th>Book ID</th>
@@ -216,17 +216,18 @@
         <div v-if="borrows">
           <h3>Borrow List</h3>
           <BorrowTable :borrows="borrows" @editBorrow="(borrow_status) => editBorrowChanged(borrow_status)" @deleteBorrow="(borrow_id)=> deleteBorrowChanged(borrow_id)"/>
-          <ul class="pagination">
-            <li class="page-item">
-                <a href="#prevPage" id="prevPage" class="page-link" @click="currentPage = currentPage > 1 ? currentPage - 1 : 1"><span>Previous page</span></a>
-            </li>
-            <li class="page-item">
-                <input class="page-link" v-model.number="currentPage" type="number" min="1" :max="maxPage" style="max-width: 75px"/>
-            </li>
-            <li class="page-item">
-                <a href="#mextPage" id="nextPage" class="page-link" @click="currentPage = currentPage < maxPage ? currentPage + 1 : 1"><span>Next page</span></a>
-            </li>
-        </ul>
+            <ul class="component-pagination">
+                <li class="pagination-arrow arrow-left me-1">
+                    <div style="cursor: pointer;" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></div>
+                </li>
+                <li class="page-item">
+                    <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                        @input="(e)=> {currentPage = e.target.value}" :value="currentPage" min="1"/></li>
+                </li>
+                <li class="pagination-arrow arrow-left ms-1">
+                    <div style="cursor: pointer;" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><i class="bi bi-chevron-right"></i></div>
+                </li>
+            </ul>
         </div>
       </div>
     </div>

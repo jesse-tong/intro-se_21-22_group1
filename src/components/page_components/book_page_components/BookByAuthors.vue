@@ -3,19 +3,20 @@
         <div class="col-12 col-md-4 col-lg-3 rounded g-0"  >
             <h5 class="ms-3 ms-md-3 ms-lg-3">Authors:</h5>
             <div class="">
-                <ul class="list-group mt-2 rounded">
-                    <li class="list-group-item" :class="{ active: isTabActive(author.id) }" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>
+                <ul class="author-list mt-2">
+                    <li class="list-item" :class="{ active: isTabActive(author.id) }" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>
                 </ul>
                 <nav aria-label="Author list navigation">
-                    <ul class="pagination input-group">
-                        <li class="page-item">
-                            <a href="#prevPageButton" class="page-link" @click="authorPage =  authorPage > 1 ? authorPage - 1 : 1" id="prevPageButton"><span>Previous page</span></a>
+                    <ul class="component-pagination">
+                        <li class="pagination-arrow arrow-left me-1">
+                            <a href="#prevPageButton" class="page-link" @click="authorPage =  authorPage > 1 ? authorPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
                         </li>
                         <li class="page-item">
-                            <input @input="(e)=> {authorPage = e.target.value}" type="number" min="1"  class="page-link" style="max-width: 75px" :value="authorPage">
+                            <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                                @input="(e)=> {authorPage = e.target.value}" :value="authorPage" min="1"/></li>
                         </li>
-                        <li class="page-item">
-                            <a href="#nextPageButton" class="page-link" @click="authorPage =  authorPage + 1" id="nextPageButton"><span >Next page</span></a>
+                        <li class="pagination-arrow arrow-left ms-1">
+                            <a href="#nextPageButton" class="page-link" @click="authorPage =  authorPage + 1" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
                         </li>
                     </ul>
                 </nav>
@@ -24,7 +25,7 @@
         </div>
         <div class=" col-12 col-md-8 col-lg-9 my-2 rounded shadow-sm"  v-if="selectedId === null"></div>
         <div class="col-12 col-md-8 col-lg-9 my-2 pe-3" v-else>
-            <div class=" rounded shadow-sm p-1 border-1" >
+            <div class=" rounded p-1 border-0" >
                 <GetBookByAuthorOrGenreId :genreOrAuthorId="selectedId" :fetchGenre=false />
             </div>
         </div>

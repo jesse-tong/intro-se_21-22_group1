@@ -2,26 +2,30 @@
     <div class="row mt-3">
         <div class="col-12 col-md-4 col-lg-3 g-0 rounded"  >
             <h5 class="ms-3 ms-md-3 ms-lg-3">Genres:</h5>
-            <ul class="list-group mt-2 rounded">
-                <li class="list-group-item" :class="{ active: isTabActive(genre.id) }" v-for="genre in genres" @click="selectedId = parseInt(genre.id)"><span>{{ genre.name }}</span></li>
+            <ul class="list-group mt-2 border-0 list-group-flush">
+                <ul class="author-list mt-2">
+                    <li class="list-item" :class="{ active: isTabActive(genre.id) }"  v-for="genre in genres" @click="selectedId = parseInt(genre.id)"><span>{{ genre.name }}</span></li>
+                </ul>
             </ul>
             <nav aria-label="Genre list navigation">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a href="#t2" class="page-link" @click="genrePage =  genrePage > 1 ? genrePage - 1 : 1" id="prevPageButton"><span>Previous page</span></a>
+                <ul class="component-pagination">
+                    <li class="pagination-arrow arrow-left me-1">
+                        <a href="#" class="page-link" @click="genrePage =  genrePage > 1 ? genrePage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
                     </li>
                     <li class="page-item">
-                        <input v-model.number="genrePage" type="number" min="1"  class="page-link" style="max-width: 95px" >
+                        <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                            @input="(e)=> {genrePage = e.target.value}" :value="genrePage" min="1"/></li>
                     </li>
-                    <li class="page-item">
-                        <a href="#t1" class="page-link" @click="genrePage =  genrePage + 1" id="nextPageButton"><span >Next page</span></a>
+                    <li class="pagination-arrow arrow-left ms-1">
+                        <a href="#" class="page-link" @click="genrePage =  genrePage + 1" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
                     </li>
                 </ul>
+                
             </nav>
         </div>
         <div class=" col-12 col-md-8 col-lg-9"  v-if="selectedId === null"></div>
         <div class="col-12 col-md-8 col-lg-9 my-2 pe-3" v-else>
-            <div class=" rounded shadow-sm p-1 border-1">
+            <div class=" rounded p-1 border-0">
                 <GetBookByAuthorOrGenreId :genreOrAuthorId="selectedId" :fetchGenre=true />
             </div>
         </div>

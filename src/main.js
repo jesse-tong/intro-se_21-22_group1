@@ -1,11 +1,15 @@
 import { createApp } from 'vue';
 import { RouterLink, RouterView} from 'vue-router';
 import App from './App.vue';
-import './style.css';
-import './css/navbar.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/js/bootstrap.bundle';
 import "bootstrap-icons/font/bootstrap-icons.css";
+
+import './style.css';
+import './css/custom.css';
+import './css/elearning_style.css'
 
 import axios from 'axios';
 import { createPinia } from 'pinia'

@@ -19,7 +19,7 @@
         </div>
         <div v-else-if="activeTab == 'editBook'" >
           <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" v-model:searchBookId="searchBookId" @search-book="searchBook(currentPage)"/>
-          <AddUpdateBook :bookId="editBookId" @addUpdateBookCallback="addUpdateBookCallback()" ref="editBookSubtab"/>
+          <AddUpdateBook :bookId="editBookId" :isEditPage="true" @addUpdateBookCallback="addUpdateBookCallback()" ref="editBookSubtab"/>
           <BookTable @update:currentPage="(page)=>onCurrentPageChanged(page)" :books="searchResult" :currentPage="currentPage" @deleteBook="(bookId)=>onSelectDeleteBook(bookId)" @editBook="(bookId)=>{ onSelectEditBook(bookId);}" />
         </div>
         <div v-else-if="activeTab == 'importBook'">

@@ -39,7 +39,7 @@
         
         <div class="col-12 col-md-9 col-lg-9 my-2 pe-3">
             <div class=" rounded shadow-sm p-1 border-1 table-responsive" >
-                <table class="table table-striped ">
+                <table class="table table-bordered ">
                     <thead>
                         <tr>
                         <th>Image</th>
@@ -68,15 +68,16 @@
                     </tbody>
                 </table>
                 <nav aria-label="Book table navigation">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a href="#prevPageButton" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><span>Previous page</span></a>
+                    <ul class="component-pagination">
+                        <li class="pagination-arrow arrow-left me-1">
+                            <a href="#" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
                         </li>
                         <li class="page-item">
-                            <input @input="(e)=> {currentPage = e.target.value}" type="number" min="1"  class="page-link" style="max-width: 95px" :value="currentPage">
+                            <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                                @input="(e)=> {currentPage = e.target.value}" :value="currentPage" min="1"/></li>
                         </li>
-                        <li class="page-item">
-                            <a href="#nextPageButton" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><span >Next page</span></a>
+                        <li class="pagination-arrow arrow-left ms-1">
+                            <a href="#" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
                         </li>
                     </ul>
                 </nav>
@@ -183,7 +184,7 @@ import { useSearchQueryStore } from '../../stores/SearchQueryStore';
             this.searchTitle = this.searchQueryStore.title;
             this.searchIsbn = this.searchQueryStore.isbn;
             this.searchDescription = this.searchQueryStore.description;
-
+ 
             this.searchQueryStore.clearQueries(); //clear search query
 
             if ((this.searchTitle !== '' && this.searchTitle !== null) 

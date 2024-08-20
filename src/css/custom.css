@@ -1,0 +1,68 @@
+.author-list {
+  display: block;
+  list-style: none;
+}
+.author-list .list-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  max-width: 400px;
+  font-family: Roboto, sans-serif;
+  cursor: pointer;
+}
+.author-list .list-item:hover {
+  background-color: rgba(233, 30, 99, 0.12);
+}
+.author-list .list-item.active {
+  background-color: #06bbcc;
+  color: white;
+}
+
+.navbar-link:hover {
+  background-color: #04aa6d;
+}
+
+.navbar-link:active {
+  background-color: #082b1b;
+}
+
+.component-pagination {
+  list-style: none;
+  padding: 8px;
+}
+.component-pagination li {
+  border-radius: 2px;
+  color: rgb(33, 33, 33);
+  display: inline-block;
+  margin: 0;
+  transition: 0.15s ease-in;
+  cursor: pointer;
+}
+.component-pagination li:hover {
+  background: rgba(233, 30, 99, 0.12);
+}
+.component-pagination li:active {
+  background: #06bbcc;
+  color: #333;
+}
+.component-pagination .pagination-number,
+.component-pagination .pagination-arrow i {
+  vertical-align: middle;
+}
+.component-pagination .pagination-number {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  line-height: 24px;
+  min-width: 40px;
+  padding: 8px 0;
+}
+.component-pagination .pagination-number.current-number {
+  background: #06bbcc;
+  color: #333;
+}
+.component-pagination .pagination-arrow i {
+  font-size: 24px;
+  padding: 8px;
+}
+
+/*# sourceMappingURL=custom.css.map */
