@@ -10,7 +10,7 @@
                     </div>
                     <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
                         <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                            <a class="btn btn-sm-square btn-primary mx-1" :href="'mailto'"><i class="bi bi-envelope-at"></i></a>
+                            <a class="btn btn-sm-square btn-primary mx-1" :href="'mailto:' + (userInfo || userInfo.email ? userInfo.email : '')"><i class="bi bi-envelope-at"></i></a>
                             <router-link class="btn btn-sm-square btn-primary mx-1" role="button" title="User settings" alt="User settings"
                             to="/user/settings" v-if="$props.userId === null || accountStore.userId === $props.userId"><i class="bi bi-gear"></i></router-link>
                             <button class="btn btn-sm-square btn-primary mx-1" title="Change account image" alt="Change account image"
@@ -80,6 +80,7 @@
     import emptyImage from '../../../assets/BlankImage.svg';
     import ImageUpdateModal from './ImageUpdateModal.vue';
     import { v4 as uuidv4 } from 'uuid';
+
     
     export default {
         data(){
