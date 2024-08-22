@@ -84,4 +84,30 @@
   font-weight: 610;
 }
 
+.vue-notification {
+
+  margin: 0 5px 5px;
+  padding: 10px;
+  font-size: 15px;
+  color: #ffffff;
+
+  background: #44A4FC;
+  border-left: 5px solid #187FE7;
+
+  &.success {
+    background: #68CD86;
+    border-left-color: #42A85F;
+  }
+
+  &.warn {
+    background: #ffb648;
+    border-left-color: #f48a06;
+  }
+
+  &.error {
+    background: #E54D42;
+    border-left-color: #B82E24;
+  }
+}
+
 /*# sourceMappingURL=custom.css.map */

@@ -33,8 +33,7 @@ class UserFollowing(db.Model):
     __tablename__ = 'user_following'
     id:int = db.Column(db.Integer, primary_key=True) 
     follower:int = db.Column(db.Integer, db.ForeignKey('user.id'))
-    followedUser:int = db.column(db.Integer)
-    #followedUser:int = db.column(db.Integer, db.ForeignKey('user.id'))
+    followedUser:int = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 @dataclass
 class Comment(db.Model):
