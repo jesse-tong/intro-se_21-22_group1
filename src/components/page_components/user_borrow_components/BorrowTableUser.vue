@@ -1,4 +1,12 @@
 <template>
+  <div class="row">
+    <div v-if="selectedBorrowId !== null" class="col-12 col-md-9">
+      <div><span>{{ 'Purchase with Paypal with borrow ID ' + selectedBorrowId +
+       'and fee  ' + selectedBorrowFee }}</span></div>
+    </div>
+    <div class="col-12 col-md-9"><span>Select in the table below to purchase with Paypal :</span></div>
+    <div class="col-12 col-md-3" id="paypal-button-container"></div>
+  </div>
   <div class="table-responsive">
     <table class="table table-bordered">
       <thead>
@@ -30,7 +38,8 @@
           <td>{{ borrow.fee }}</td>
           <td>
             <button v-if="borrow.isApproved == true && !borrow.hasReturned " class="btn btn-sm btn-primary me-2 mb-2" @click="onReturnBook(borrow.id)" data-bs-toggle="modal" data-bs-target="#returnModal">Return</button>
-            <button v-if="borrow.isApproved == true && borrow.hasReturned == true && borrow.hasResolved != true" class="btn btn-sm btn-success" @click="()=>onCreateCheckoutSession(borrow.id)" >Pay borrow fee</button>
+            <button v-if="borrow.isApproved == true && borrow.hasReturned == true && borrow.hasResolved != true" class="btn btn-sm btn-success me-2 mb-2" @click="()=>onCreateCheckoutSession(borrow.id)" >Pay borrow fee (Stripe)</button>
+            <button v-if="borrow.isApproved == true && borrow.hasReturned == true && borrow.hasResolved != true" class="btn btn-sm btn-success" @click="()=>onCreateCheckoutSessionPaypal(borrow.id, borrow.fee)" >Select for Paypal</button>
           </td>
         </tr>
         <tr v-if="borrows == null || borrows.length === 0" >
@@ -57,7 +66,7 @@
 import axios from 'axios';
 import ReturnModal from './ReturnModal.vue';
 import Stripe from 'stripe';
-
+import { loadScript } from "@paypal/paypal-js";
 
   export default {
     components: {
@@ -90,7 +99,12 @@ import Stripe from 'stripe';
             borrows: [],
             returnBorrowId: null,
             isDamagedOrLost: null,
-            stripeSession: null
+            stripeSession: null,
+            currency: null,
+
+            paypalClientId: null,
+            selectedBorrowId: null,
+            selectedBorrowFee: null
         }
     },
     methods: {
@@ -100,6 +114,61 @@ import Stripe from 'stripe';
       onReturnBook(borrowId){
         this.returnBorrowId = borrowId;
         
+      },
+      onCreateCheckoutSessionPaypal(borrowId, fee){
+        this.selectedBorrowFee = fee; //Fee should be before borrow ID since it'll be used in watch
+        this.selectedBorrowId = borrowId;
+        if (borrowId && borrowId !== null && this.paypalClientId !== null && 
+            this.currency !== null && fee && fee !== null){
+              loadScript({ "client-id": this.paypalClientId, "currency": this.currency })
+                .then((paypal) => {
+                    // start to use the PayPal JS SDK script
+                  paypal.Buttons({
+                    style: {
+                      layout: 'horizontal',
+                      color:  'blue',
+                      shape:  'rect',
+                      label:  'paypal'
+                    },
+                    createOrder: function(data, actions) {
+                      return actions.order.create({
+                        purchase_units: [{
+                          amount: {
+                            value: fee.toString()
+                          }
+                        }],
+                        application_context: {
+                          shipping_preference: 'NO_SHIPPING'
+                        }
+                      });
+                    },
+                    onApprove: (data, actions) => {
+                        return axios.post(`/create-checkout-session-paypal/${borrowId}/${data.orderID}`)
+                              .then((orderData) => {
+                                  // Successful capture! For dev/demo purposes:
+                                  console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                                  const transaction = orderData.purchase_units[0].payments.captures[0];
+                                  this.$notify({
+                                    title: 'Payment success',
+                                    text: 'Payment success with transaction ID: ' + transaction.id,
+                                    type: 'success'
+                                  });
+                                  // Or go to another URL:  actions.redirect('thank_you.html');
+                              });
+                      },
+                    }).render('#paypal-button-container');
+                  
+                })
+                .catch((err) => {
+                    console.error("failed to load the PayPal JS SDK script", err);
+                });
+            }else {
+              this.$notify({
+                title: 'Cannot load Paypal payment',
+                text: 'Cannot load Paypal payment, please check your Paypal client ID, currency, and fee',
+                type: 'error'
+              });
+            }
       },
       getStripePublishableKey(){
         axios.get('/get-stripe-key').then(response => {
@@ -111,6 +180,17 @@ import Stripe from 'stripe';
             type: 'error'
           });
         })
+      },
+      getPaypalPublishableKey(){
+        axios.get('/get-paypal-key').then(response => {
+          this.paypalClientId = response.data.publicKey;
+        }).catch(err => {
+          this.$notify({
+            title: 'Failed to get payment session key!',
+            text: 'Failed to get payment session key, cannot purchase from Paypal',
+            type: 'error'
+          });
+        });
       },
       onCreateCheckoutSession(borrowId){
         axios.get('/create-checkout-session/' + borrowId).then(response => {
@@ -162,6 +242,13 @@ import Stripe from 'stripe';
                 }).finally(()=>{
                     
                 })
+      },
+      fetchBorrowPolicies(){
+          axios.get('/api/borrow-policies?noPolicyText=true').then(response => {
+              if (response.data != undefined && response.data.success != undefined && response.data.success === true){    
+                  this.currency = response.data.result.currency;
+              }
+          });
       }
     },
     watch: {
@@ -170,10 +257,18 @@ import Stripe from 'stripe';
                 this.fetchBorrow(newCurrentPage);
             },
             immediate: true
+        },
+        selectedBorrowId: {
+          handler(newBorrowId, oldBorrowId){
+            
+          },
+          immediate: false
         }
     },
     created(){
       this.getStripePublishableKey();
+      this.getPaypalPublishableKey();
+      this.fetchBorrowPolicies();
     }
   };
   </script>

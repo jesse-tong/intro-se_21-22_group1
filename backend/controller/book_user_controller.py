@@ -26,8 +26,12 @@ except:
 
 env_lock = Lock()
 
-def get_borrow_policy_constants():
-    result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 
+def get_borrow_policy_constants(no_policy_text=False):
+    if no_policy_text == True:
+        result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 
+              'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency}
+    else:
+        result = { 'overdue_fine': overdue_fine, 'overdue_time_limit': overdue_limit_before_treated_as_lost, 
               'damage_and_lost_fine': damage_and_lost_fine, 'currency': currency, 'other_policies': other_policies}
     return True, result, None
 

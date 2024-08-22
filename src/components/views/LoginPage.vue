@@ -2,7 +2,7 @@
 <div class="container my-auto mt-4">
     <div class="row">
       <div class="col-lg-4 col-md-8 col-12 mx-auto">
-        <div class="card z-index-0 fadeIn3 fadeInBottom">
+        <div class="card z-index-0 fadeIn3 fadeInBottom" id="loginTab">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary rounded-4 py-3 pe-1">
               <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
@@ -56,6 +56,7 @@
 
 <script>
 import axios from 'axios';
+import gsap from 'gsap';
 import { useAccountStore } from '../stores/LoginInfoStore';
 
     export default {
@@ -85,7 +86,8 @@ import { useAccountStore } from '../stores/LoginInfoStore';
               text: 'Verify account failed with error: ' + this.$route.query.error,
               type: 'error'
             })
-          }
+          };
+          
         },
         methods: {
           storeLocal(userId, email, role){

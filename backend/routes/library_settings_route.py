@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template_string, redirect
+import requests
+from requests.auth import HTTPBasicAuth
 from global_vars.database_init import db
 from sqlalchemy import func, distinct
 import json, uuid, stripe
@@ -19,6 +21,8 @@ CORS(library_settings_routes, supports_credentials=True, origins = r"https?:\/\/
 stripe_publishable_key = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 stripe_secret_key = os.environ.get('STRIPE_SECRET_KEY')
 server_domain = os.environ.get('VITE_API_POINT')
+paypal_client_id = os.environ.get('PAYPAL_CLIENT_ID')
+paypal_client_secret = os.environ.get('PAYPAL_CLIENT_SECRET')
 
 def convert_to_stripe(amount: float, currency: str):
     #Since Stripe requires charged amount of cents or equilvalent (for example, 10 USD becomes 1000)
@@ -137,6 +141,37 @@ def get_post_articles_route():
 def get_stripe_publishable_key():
     stripe_config = {"publicKey": stripe_publishable_key}
     return jsonify(stripe_config)
+
+@library_settings_routes.route('/get-paypal-key')
+def get_paypal_client_id():
+    paypal_config = {"publicKey": paypal_client_id}
+    return jsonify(paypal_config)
+
+@library_settings_routes.route("/create-checkout-session-paypal/<borrow_id>/<order_id>", methods=['GET'])
+def create_checkout_session_paypal(borrow_id, order_id):
+    if not current_user.is_authenticated:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    
+    try:
+        borrow_id = int(borrow_id)
+    except:
+        return get_status_object_json(False, None, INVALID_ID), 409
+    
+    borrow = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).filter(BookBorrow.userId == current_user.id).first()
+    if not borrow:
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    borrow.hasResolved = True; db.session.commit()
+    
+    api_link = f"https://api-m.sandbox.paypal.com/v2/checkout/orders/{order_id}/capture"    
+    client_id = paypal_client_id   
+    secret = paypal_client_secret    
+    basic_auth = HTTPBasicAuth(client_id, secret)    
+    headers = { "Content-Type": "application/json", }    
+    response = requests.post(url=api_link, headers=headers, auth=basic_auth)    
+    response.raise_for_status()    
+    captured_payment = response.json()
+    print(captured_payment)
+    return jsonify(captured_payment)
 
 @library_settings_routes.route("/create-checkout-session/<borrow_id>", methods=['GET'])
 def create_checkout_session(borrow_id):

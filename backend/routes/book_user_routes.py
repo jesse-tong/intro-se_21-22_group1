@@ -297,6 +297,9 @@ def get_borrow_count_by_month():
 @book_user.route('/api/borrow-policies', methods=['GET', 'POST', 'PUT'])
 def get_borrow_policies():
     if request.method == 'GET':
+        if request.args.get('noPolicyText') != None and (
+            request.args.get('noPolicyText').lower() == 'true' or request.args.get('noPolicyText') == '1'):
+            success, result, error = get_borrow_policy_constants(no_policy_text=True)
         success, result, error = get_borrow_policy_constants()
         return get_status_object_json(success, result, error), 200
     elif request.method == 'POST' or request.method == 'PUT':

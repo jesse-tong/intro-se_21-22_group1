@@ -71,7 +71,6 @@ def analytics():
             session = db.session.query(Session).filter(Session.browser == browser).filter(Session.os == os_family) \
                 .filter(Session.ipAddress == ip_address).filter(Session.userId == user.id).first()
             if not session:
-                print('Analytics request')
                 #If the user has logged in, and detect logged in new browser/os/IP address, note it
                 new_session = Session(userId=user.id, os=os_family, browser=browser, referer=referer, ipAddress=ip_address)
                 try:
