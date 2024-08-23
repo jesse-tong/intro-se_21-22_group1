@@ -12,6 +12,7 @@
                     <h1 class="display-6 mb-3 post-title article-title"><b>{{ title }}</b></h1>
                     <ul class="post-meta" style="list-style-type: none;">
                         <li class="post-date" ><i class="bi bi-calendar3 me-3"></i><span>{{ date }}</span></li>
+                        <li class="post-category" v-if="category !== null && category !== undefined"><i class="bi bi-folder2 me-3"></i><span>Category: {{ category }}</span></li>
                     </ul>
                     </div>
                 </div>
@@ -49,6 +50,7 @@ import { RouterLink } from 'vue-router';
                 title: 'N/A',
                 content: 'N/A',
                 date: 'N/A',
+                category: 'N/A',
                 parsedContent: ''
             }
         },
@@ -73,6 +75,7 @@ import { RouterLink } from 'vue-router';
                         this.content = response.data.result.content;
                         this.title = response.data.result.title;
                         this.date = response.data.result.date;
+                        this.category = response.data.result.category;
                         this.parsedContent = marked.parse(this.content);
                     }else if (response.data.success === false){
                         this.$notify({

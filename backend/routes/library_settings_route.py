@@ -114,7 +114,8 @@ def get_put_delete_article_route(article_id):
     elif request.method == 'PUT':
         title = request.form.get('title')
         content = request.form.get('content')
-        success, edited_article, error = edit_article(article_id, title, content)
+        category = request.form.get('category')
+        success, edited_article, error = edit_article(article_id, title, content, category)
         return get_status_object_json(success, edited_article, error), 200
     elif request.method == 'DELETE':
         success, result, error = delete_article(article_id)
@@ -134,7 +135,8 @@ def get_post_articles_route():
     elif request.method == 'POST':
         title = request.form.get('title')
         content = request.form.get('content')
-        success, added_article, error = add_article(title, content)
+        category = request.form.get('category')
+        success, added_article, error = add_article(title, content, category)
         return get_status_object_json(success, added_article, error), 200
     
 @library_settings_routes.route('/get-stripe-key')

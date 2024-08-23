@@ -14,6 +14,10 @@
                     <label for="articleTitle" class="form-label ms-1"><span>Title: </span></label>
                     <input type="text" v-model="articleTitle" class="form-control" id="articleTitle"/>
                 </div>
+                <div class="">
+                    <label for="articleCategory" class="form-label ms-1"><span>Category (max 500 characters): </span></label>
+                    <input type="text" v-model="articleCategory" class="form-control" id="articleCategory"/>
+                </div>
                 <div class="mt-2">
                     <label for="articleContent" class="form-label ms-1"><span>Content: </span></label>
                     <MdEditor v-model="articleContent" :language="'en-US'" :codeTheme="'a11y'" id="articleContent" @onSave="onSaveArticle" :noMermaid="true" :noKatex="true"/>
@@ -51,7 +55,8 @@
                 currentPage: 1,
 
                 articleTitle: '',
-                articleContent: ''
+                articleContent: '',
+                articleCategory: ''
             }
         },
         components: {
@@ -131,6 +136,7 @@
                     if (response.data !== undefined && response.data.success === true){
                         this.articleContent = response.data.result.content;
                         this.articleTitle = response.data.result.title;
+                        this.articleCategory = response.data.result.category;
                     }else if (response.data.success === false){
                         this.$notify({
                             title: 'Fetching article with ID ' + articleId + ' failed',
@@ -157,7 +163,7 @@
                 })
             },
             onCreateNewArticle(){
-                axios.postForm('/api/article', { title: this.articleTitle, content: this.articleContent})
+                axios.postForm('/api/article', { title: this.articleTitle, content: this.articleContent, category: this.articleCategory})
                 .then(response => {
                     if (response.data !== undefined && response.data.success === true){
                         this.$notify({
@@ -234,7 +240,7 @@
             },
             onSaveEditArticle(articleId){
                 
-                axios.putForm('/api/article/' + articleId, { title: this.articleTitle, content: this.articleContent})
+                axios.putForm('/api/article/' + articleId, { title: this.articleTitle, content: this.articleContent, category: this.articleCategory})
                 .then(response => {
                     if (response.data !== undefined && response.data.success === true){
                         this.$notify({
@@ -269,6 +275,7 @@
                     this.fetchArticles(this.currentPage);
                     this.selectedArticleId = null; 
                     this.articleContent = ''; this.articleTitle = '';
+                    this.articleCategory = '';
                  });
             }
         }

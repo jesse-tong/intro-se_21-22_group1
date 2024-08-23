@@ -4,6 +4,7 @@
         <thead>
           <tr>
             <th>Article ID</th>
+            <th colspan="3">Article category</th>
             <th colspan="5">Article title</th>
             <th colspan="2">Article creation date</th>
             <th v-if="$props.actionVisible === true">Actions</th>
@@ -13,6 +14,7 @@
         <tbody>
           <tr  v-if="articles.length > 0" v-for="article in articles" :key="article.id" data-testid="articleTableRow">
             <td>{{ article.id }}</td>
+            <td colspan="3">{{ article.category ? article.category : '' }}</td>
             <td colspan="5">{{ article.title }}</td> 
             <td colspan="2">{{ article.date }}</td>
             <td v-if="$props.actionVisible === true">
