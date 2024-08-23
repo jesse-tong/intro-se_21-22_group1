@@ -17,7 +17,8 @@ import { createPinia } from 'pinia'
 import Notifications, { useNotification } from '@kyvg/vue3-notification';
 import { router } from './router';
 import VueExcelEditor from 'vue3-excel-editor';
-
+import {marked} from "marked";
+import markedKatex from "marked-katex-extension";
 
 
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
@@ -55,6 +56,20 @@ app.config.globalProperties = {
 app.use(Notifications)
 app.use(pinia)
 
+const options = {
+  throwOnError: false
+};
+
+marked.use(markedKatex(options));
+
+marked.use({
+  renderer: {
+    code: function (code) {
+      if (code.lang == 'mermaid') return `<pre class="mermaid">${code.text}</pre>`;
+      return `<pre>${code.text}</pre>`;
+    }
+  }
+});
 
 const notify = useNotification();
 
