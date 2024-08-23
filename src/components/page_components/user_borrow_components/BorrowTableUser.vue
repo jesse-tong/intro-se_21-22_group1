@@ -5,7 +5,7 @@
        'and fee  ' + selectedBorrowFee }}</span></div>
     </div>
     <div class="col-12 col-md-9"><span>Select in the table below to purchase with Paypal :</span></div>
-    <div class="col-12 col-md-3" id="paypal-button-container"></div>
+    <div class="col-12 col-md-3" id="paypal-button-container" ref="paypalContainer"></div>
   </div>
   <div class="table-responsive">
     <table class="table table-bordered">
@@ -118,6 +118,7 @@ import { loadScript } from "@paypal/paypal-js";
       onCreateCheckoutSessionPaypal(borrowId, fee){
         this.selectedBorrowFee = fee; //Fee should be before borrow ID since it'll be used in watch
         this.selectedBorrowId = borrowId;
+        this.$refs.paypalContainer.innerHTML = '';
         if (borrowId && borrowId !== null && this.paypalClientId !== null && 
             this.currency !== null && fee && fee !== null){
               loadScript({ "client-id": this.paypalClientId, "currency": this.currency })
@@ -145,15 +146,29 @@ import { loadScript } from "@paypal/paypal-js";
                     onApprove: (data, actions) => {
                         return axios.post(`/create-checkout-session-paypal/${borrowId}/${data.orderID}`)
                               .then((orderData) => {
-                                  // Successful capture! For dev/demo purposes:
-                                  console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                                  const transaction = orderData.purchase_units[0].payments.captures[0];
+                                  if (orderData.data && orderData.data.success && orderData.data.success === true){
+                                    this.$notify({
+                                      title: 'Payment success',
+                                      text: orderData.data.status,
+                                      type: 'success'
+                                    });
+                                  }else {
+                                    this.$notify({
+                                      title: 'Payment failed',
+                                      text: orderData.data.status,
+                                      type: 'error'
+                                    });
+                                  }
+                                  
+                              }).catch(err => {
+                                if (err.response && err.response.data && err.response.data.status){
                                   this.$notify({
-                                    title: 'Payment success',
-                                    text: 'Payment success with transaction ID: ' + transaction.id,
-                                    type: 'success'
+                                    title: 'Payment failed',
+                                    text: err.response.data.status,
+                                    type: 'error'
                                   });
-                                  // Or go to another URL:  actions.redirect('thank_you.html');
+                                }
+                                
                               });
                       },
                     }).render('#paypal-button-container');
@@ -269,6 +284,7 @@ import { loadScript } from "@paypal/paypal-js";
       this.getStripePublishableKey();
       this.getPaypalPublishableKey();
       this.fetchBorrowPolicies();
-    }
+    },
+    
   };
   </script>

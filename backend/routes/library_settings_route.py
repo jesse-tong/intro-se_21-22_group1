@@ -147,7 +147,7 @@ def get_paypal_client_id():
     paypal_config = {"publicKey": paypal_client_id}
     return jsonify(paypal_config)
 
-@library_settings_routes.route("/create-checkout-session-paypal/<borrow_id>/<order_id>", methods=['GET'])
+@library_settings_routes.route("/create-checkout-session-paypal/<borrow_id>/<order_id>", methods=['GET', 'POST'])
 def create_checkout_session_paypal(borrow_id, order_id):
     if not current_user.is_authenticated:
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
@@ -160,18 +160,29 @@ def create_checkout_session_paypal(borrow_id, order_id):
     borrow = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).filter(BookBorrow.userId == current_user.id).first()
     if not borrow:
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
-    borrow.hasResolved = True; db.session.commit()
+    
+    
     
     api_link = f"https://api-m.sandbox.paypal.com/v2/checkout/orders/{order_id}/capture"    
     client_id = paypal_client_id   
     secret = paypal_client_secret    
     basic_auth = HTTPBasicAuth(client_id, secret)    
     headers = { "Content-Type": "application/json", }    
-    response = requests.post(url=api_link, headers=headers, auth=basic_auth)    
-    response.raise_for_status()    
+    response = requests.post(url=api_link, headers=headers, auth=basic_auth)
+    
+
+    if response.status_code != 201 and response.status_code != 200:
+        #return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) + ' has been expired, no further process will occur.') 
+        return jsonify({"status": "Payment for library borrow with ID " + str(borrow_id) + " has been expired, no further process will occur.", 'success': False}), 403
     captured_payment = response.json()
-    print(captured_payment)
-    return jsonify(captured_payment)
+    if captured_payment['status'] == 'COMPLETED':
+        borrow.hasResolved = True; db.session.commit()
+        #return redirect('/user/settings?status=Thanks for your payment! Payment for library borrow with ID ' + str(borrow_id) + ' successfully!')
+        return jsonify({"status": "Thanks for your payment! Payment for library borrow with ID " + str(borrow_id) + " successfully!", 'success': True}), 200
+    else:
+        return jsonify({"status": "Payment for library borrow with ID " + str(borrow_id) + " has been expired, no further process will occur.", 'success': False}), 403
+        #return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) + ' has been expired, no further process will occur.') 
+    
 
 @library_settings_routes.route("/create-checkout-session/<borrow_id>", methods=['GET'])
 def create_checkout_session(borrow_id):
@@ -240,6 +251,7 @@ def stripe_payment_success_callback(borrow_id):
         set_borrow_resolve(borrow_id)
         return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) +
                          ' is still being processed, check your account and your bank later in cases of error.')
+    
     else:
         return redirect('/user/settings?status=Payment for library borrow with ID '+ str(borrow_id) + ' has been expired, no further process will occur.')
 

@@ -37,6 +37,7 @@
                     || String(this.$route.query.status).includes('expired') ? 'error' : 'success'
                 });
             }
+            
         }
     }
 </script>
