@@ -16,7 +16,7 @@
                 </div>
                 <div class="mt-2">
                     <label for="articleContent" class="form-label ms-1"><span>Content: </span></label>
-                    <MdEditor v-model="articleContent" :language="'en-US'" :codeTheme="'a11y'" id="articleContent" @onSave="onSaveArticle"/>
+                    <MdEditor v-model="articleContent" :language="'en-US'" :codeTheme="'a11y'" id="articleContent" @onSave="onSaveArticle" :noMermaid="true" :noKatex="true"/>
                     <div class="d-flex justify-content-between w-100 mt-2">
                         <button class="btn btn-success" v-if="selectedArticleId === null" @click="(e) => onCreateNewArticle()">Save new article</button>
                         <button class="btn btn-success" v-else @click="(e)=>onSaveEditArticle(selectedArticleId)">Save article</button>

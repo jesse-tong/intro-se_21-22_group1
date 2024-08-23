@@ -36,7 +36,7 @@
         </div>
         <div class="col-12 mt-3">
             <p class="form-text">Enter other policy text (such as other borrow policies, data policies, policies when using library,...) here</p>
-            <MdEditor v-model="libraryPolicyText" :language="en-US" :codeTheme="a11y"/>
+            <MdEditor v-model="libraryPolicyText" :language="en-US" :codeTheme="a11y" :noMermaid="true" :noKatex="true"/>
         </div>
         <div class="col-12 mt-2">
             <button @click="updateBorrowSettings" class="mb-2 btn btn-success"><span>Update borrow policies</span></button>
