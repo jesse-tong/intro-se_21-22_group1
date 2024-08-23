@@ -31,7 +31,6 @@
     "leaflet": "^1.9.4",
     "marked": "^13.0.0",
     "md-editor-v3": "^4.16.9",
-    "mermaid": "^10.9.1",
     "pdfjs-dist": "^4.0.379",
     "pinia": "^2.1.7",
     "stripe": "^16.2.0",
