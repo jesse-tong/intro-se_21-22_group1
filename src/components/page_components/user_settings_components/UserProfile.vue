@@ -151,10 +151,6 @@
                 return uuidv4();
             }
         },
-        watch: {
-            userId : function(){
-                this.getUserProfile();
-            }
-        }
+        
     }
 </script>

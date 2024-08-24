@@ -10,7 +10,7 @@
                     <div class="row mx-3">
                         <div class="col-12 col-md-6 col-lg-3" v-for="j in 4" :key="j">
                             <div v-if="(i - 1) * 4 + (j - 1) <= articles.length - 1">
-                                <div class="card mb-3">
+                                <div class="card mb-3" style="height: 200px; overflow: auto">
                                     <div class="card-body">
                                         <router-link :to="'/article/' + $props.articles[(i - 1) * 4 + (j - 1)].id" class="card-title link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
                                             <h5 class="">{{ $props.articles[(i - 1) * 4 + (j - 1)].title }}</h5>

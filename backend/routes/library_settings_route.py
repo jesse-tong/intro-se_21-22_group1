@@ -260,3 +260,11 @@ def stripe_payment_success_callback(borrow_id):
 @library_settings_routes.route("/stripe-payment/cancelled")
 def stripe_payment_cancelled_callback():
     return redirect('/user/settings?status=Payment cancelled or failed.')
+
+@library_settings_routes.route('/api/search-everything', methods=['GET'])
+def search_everything():
+    query = request.args.get('query')
+    if query == None or query == '':
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    result = search_everything_controller(query)
+    return get_status_object_json(True, result, None), 200

@@ -2,6 +2,7 @@
 :root {
     --primary: #06BBCC;
     --light: #F0FBFC;
+    --light-dark-theme: #167491;
     --dark: #181d38;
 }
 
@@ -25,6 +26,10 @@
     background-color: var(--light) !important;
 }
 
+[data-bs-theme="dark"] .bg-light {
+    background-color: var(--light-dark-theme) !important;
+}
+
 .bg-dark {
     background-color: var(--dark);
 }
@@ -37,6 +42,41 @@
     color: var(--dark);
 }
 
+@media (min-width: 1000px) {
+    .site-search.site-search-persistent .site-search-inner {
+      padding: 0 20px 0 0;
+    }
+}
+
+.site-search.site-search-persistent {
+    text-align: left;
+}
+
+
+.site-search-inner {
+    background: #0061AC;
+    padding: 50px 12px 50px 12px;
+}
+
+.site-search * {
+    box-sizing: border-box !important;
+    color: #fff;
+}
+
+.theme-pink-dark.theme-bg, .theme-pink-dark .theme-bg {
+    background-color: #751D43;
+    color: #FFFFFF;
+}
+
+.theme-blue-dark.theme-bg, .theme-blue-dark .theme-bg {
+    background-color: #5281B3;
+    color: #FFFFFF;
+}
+
+.theme-green-dark.theme-bg, .theme-blue-dark .theme-bg {
+    background-color: #52B381;
+    color: #FFFFFF;
+}
 
 /*** Spinner ***/
 #spinner {
@@ -141,6 +181,10 @@
 .navbar-light .navbar-brand,
 .navbar-light a.btn {
     height: 75px;
+}
+
+[data-bs-theme="dark"] .navbar-light .navbar-nav .nav-link {
+    color: var(--light);
 }
 
 .navbar-light .navbar-nav .nav-link {

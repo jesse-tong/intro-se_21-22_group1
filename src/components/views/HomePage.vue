@@ -5,6 +5,7 @@
             <img :src="LibraryImage" style="width: 100%; max-height: 300px;" alt="Library image"/>
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
+        
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Latest library articles</h5>
         <ArticleCarousel :articles="latestArticles" :carouselId="'latestArticles'"/>
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Highest rating books</h5>

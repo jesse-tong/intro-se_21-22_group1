@@ -1,6 +1,6 @@
 <template>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+  <nav class="navbar navbar-expand-lg bg-light-subtle navbar-light shadow sticky-top p-0">
         <RouterLink to="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <img src="/src/assets/EasyLib.svg" height="50" width="50" alt="EasyLib logo">
             <h3 class="m-0 text-primary">EasyLib</h3>
@@ -15,8 +15,8 @@
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
-              <div class="d-flex d-lg-none mt-3 mt-lg-0" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search input" v-model="searchQuery" role="searchbox" >
+              <div class="nav-item d-flex mt-3 mt-lg-0 me-lg-4" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
                 <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
               </div>
               
@@ -79,6 +79,8 @@
                   <li class="dropdown-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link" @click="closeSidebar">Register</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
                 </ul>
+
+                
               </li>
               
               <li class="nav-item">

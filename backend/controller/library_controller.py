@@ -7,10 +7,11 @@ from global_vars.database_init import policies_db_path
 from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
 from controller.user_controller import get_current_user_role
 from models.library_misc import Article
+from models.book_model import Book
 from global_vars.database_init import db
 from utils.file_utils import *
 from utils.get_status_object import convert_sqlalchemy_row
-from sqlalchemy import desc, asc
+from sqlalchemy import desc, asc, or_
 
 
 def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, 
@@ -209,3 +210,10 @@ def get_article_summaries(page: int=None, limit: int = 6, descending=True):
     
     article_summaries = [convert_sqlalchemy_row(article) for article in article_summaries]
     return True, article_summaries, None
+
+def search_everything_controller(query: str):
+    query = '%' + query + '%'
+    articles = db.session.query(Article).filter(or_(Article.title.ilike(query), Article.content.ilike(query))).all()
+    books = db.session.query(Book).filter(or_(Book.title.ilike(query), Book.description.ilike(query))).all()
+    
+    return { 'articles' :articles, 'books': books }
