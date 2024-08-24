@@ -90,3 +90,13 @@
 		}
 	}
 }
+
+.table {
+	thead {
+		th {
+			background-color: $w3green;
+			color: white;
+			font-weight: $slightly-bold;
+		}
+	}
+}

@@ -1,5 +1,5 @@
 <template>
-    <h4 class="ps-3 me-3 mt-4 mt-lg-0 bg-white section-title text-center text-primary" >Update user information</h4>
+    <h4 class="ps-3 me-3 mt-4 mt-lg-0 bg-light-subtle section-title text-center text-primary" >Update user information</h4>
 
     <div class=" ms-3 me-3">
         <div class=" mb-2">
