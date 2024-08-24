@@ -5,8 +5,8 @@
         <UpdateImage :bookId="$props.bookId" v-if="$props.bookId !== null"/>
     </div>
     <div :class="['col-12', $props.bookId !== null ? 'col-lg-9' : 'col-12']">
-        <h4 v-if="$props.bookId !== null || $props.isEditPage === true" class="mb-2 mt-3">Update book data</h4>
-        <h4 v-else class="mb-2 mt-3">Add book</h4>
+        <h4 v-if="$props.bookId !== null || $props.isEditPage === true" class="mb-2 mt-3 section-title bg-light-subtle">Update book data</h4>
+        <h4 v-else class="mb-2 mt-3 section-title bg-light-subtle">Add book</h4>
         <div class="row">
             <div v-if="$props.bookId !== null" class="col-12 col-md-6 col-lg-4">
                 <div class="input-group my-2">

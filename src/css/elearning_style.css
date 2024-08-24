@@ -149,7 +149,9 @@
     border-radius: 0px;
 }
 
-
+.btn-danger {
+    background-color: #d14031 !important;
+}
 
 
 .navbar-light .navbar-nav .nav-link {
@@ -201,8 +203,16 @@
     text-shadow: 5px 3px 12px #06BBCC;
 }
 
+.navbar .nav-item:active {
+    text-shadow: 5px 3px 12px #06BBCC;
+}
+
 .navbar .nav-item .dropdown-item {
     text-shadow: none;
+}
+
+.navbar .nav-item .dropdown-item:active {
+    background-color: #06BBCC;
 }
 
 @media (min-width: 992px) {

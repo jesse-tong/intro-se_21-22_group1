@@ -13,7 +13,7 @@
           </li>
         </ul>
       </div>
-      <div class="card-body">
+      <div class="card-body bg-light-subtle">
         <div v-if="activeTab === 'search'">
           <div class="col">
             <SearchUser v-model:searchUserEmail="searchUserEmail" v-model:searchUserName="searchUserName" v-model:searchUserId="searchUserId" @search-user="searchUser" />

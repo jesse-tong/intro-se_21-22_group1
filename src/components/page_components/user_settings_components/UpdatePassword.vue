@@ -1,5 +1,5 @@
 <template>
-    <h5 class="section-title bg-white text-center text-primary px-3 me-3 mt-2 ">Reset Password</h5>
+    <h5 class="section-title bg-light-subtle text-center text-primary px-3 me-3 mt-2 ">Reset Password</h5>
     <div class=" ms-3 me-3">
         <div class="mb-2">
             <label for="currentPassword" class="form-label"><span>Current password: </span></label>
