@@ -20,13 +20,15 @@
                 <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
               </div>
               
-              <li class="nav-item dropdown-center my-auto d-none d-xl-block" >
+              <li class="nav-item dropdown my-auto d-none d-xl-block" >
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Search <i class="bi bi-search"></i>
                 </a>
-                <ul class="dropdown-menu d-flex" style="padding-left: 15px; padding-right: 15px; min-width: 300px">
-                  <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
-                  <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
+                <ul class="dropdown-menu" style="padding-left: 15px; padding-right: 15px; min-width: 300px">
+                  <div class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
+                    <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
+                  </div>
                 </ul>
               </li>
               
