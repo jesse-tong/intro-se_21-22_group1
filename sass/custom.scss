@@ -100,3 +100,14 @@
 		}
 	}
 }
+
+@media  (min-width: 1024px) {
+	.vue-notification {
+		width: 400px;
+	}
+}
+
+
+.vue-notification, .vue-notification .notification-title, .vue-notification .notification-content {
+	font-size: 15px;
+}

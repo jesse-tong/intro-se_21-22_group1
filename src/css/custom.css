@@ -87,8 +87,14 @@
   color: white;
   font-weight: 610;
 }
-.table tbody tr:nth-child(odd) {
-  background-color: #04aa6d;
+
+@media (max-width: 1024px) {
+  .vue-notification {
+    width: 400px;
+  }
+}
+.vue-notification, .vue-notification .notification-title, .vue-notification .notification-content {
+  font-size: 15px;
 }
 
 /*# sourceMappingURL=custom.css.map */

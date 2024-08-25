@@ -43,9 +43,15 @@ const setTheme = function(theme){
 };
 
 const getCSRFToken = function(){
-  axios.get('/auth/csrf-token').then(response => {
-    if (response.headers !== null && response.headers !== undefined){
-      axios.defaults.headers.common["X-CSRFToken"] = response.headers["X-CSRFToken"];
+  axios.get('/auth/csrf_token').then(response => {
+    if (response.data !== null && response.data !== undefined && response.data.csrf_token){
+      //For some reasons the csrf token is not being set in the headers but the cookie is being set
+      //when using axios.defaults.headers.common["X-CSRFToken"] = response.data.csrf_token;
+      axios.defaults.headers.get["X-CSRFToken"] = response.data.csrf_token;
+      axios.defaults.headers.post["X-CSRFToken"] = response.data.csrf_token;
+      axios.defaults.headers.put["X-CSRFToken"] = response.data.csrf_token;
+      axios.defaults.headers.patch["X-CSRFToken"] = response.data.csrf_token;
+      axios.defaults.headers.delete["X-CSRFToken"] = response.data.csrf_token;
     }
   }).catch(err => {
     console.error('Failed to get CSRF token: ' + err);

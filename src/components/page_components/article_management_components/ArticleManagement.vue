@@ -165,13 +165,13 @@
             onCreateNewArticle(){
                 axios.postForm('/api/article', { title: this.articleTitle, content: this.articleContent, category: this.articleCategory})
                 .then(response => {
-                    if (response.data !== undefined && response.data.success === true){
+                    if (response && response.data !== undefined && response.data.success === true){
                         this.$notify({
                             title: 'Creating article successfully!' ,
                             text: 'Creating article with ID' + response.data.response.id + 'successfully!',
                             type: 'success'
                         });
-                    }else if (response.data.success === false){
+                    }else if (response && response.data && response.data.success === false){
                         this.$notify({
                             title: 'Creating new article failed',
                             text: 'Error creating new article: ' + response.data.error,
@@ -203,7 +203,7 @@
             onDeleteArticle(articleId){
                 axios.delete('/api/article/' + articleId)
                 .then(response => {
-                    if (response.data !== undefined && response.data.success === true){
+                    if (response.data !== undefined && response.data.success && response.data.success === true){
                         this.$notify({
                             title: 'Deleting article with ID ' + articleId + ' successfully!' ,
                             text: 'Deleting article with ID ' + articleId + ' successfully!',
@@ -242,7 +242,7 @@
                 
                 axios.putForm('/api/article/' + articleId, { title: this.articleTitle, content: this.articleContent, category: this.articleCategory})
                 .then(response => {
-                    if (response.data !== undefined && response.data.success === true){
+                    if (response.data !== undefined && response.data.success && response.data.success === true){
                         this.$notify({
                             title: 'Saving article successfully!' ,
                             text: 'Saving article with ID ' + articleId + ' successfully!',
