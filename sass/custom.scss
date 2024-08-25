@@ -116,5 +116,6 @@
 }
 
 .navbar.navbar-bottom-border {
-	border-bottom: 3px solid $w3green;
+	border-bottom: 4px solid;
+	border-image: linear-gradient(139deg, $violet2, $crimson, $blue, $w3green)
 }
