@@ -88,9 +88,12 @@
   font-weight: 610;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1024px) {
   .vue-notification {
-    width: 400px;
+    width: 420px !important;
+  }
+  .vue-notification-group {
+    width: 430px !important;
   }
 }
 .vue-notification, .vue-notification .notification-title, .vue-notification .notification-content {

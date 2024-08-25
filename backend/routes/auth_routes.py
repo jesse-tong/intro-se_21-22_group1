@@ -9,6 +9,7 @@ from flask_login import logout_user, current_user
 from utils.file_utils import save_user_image, delete_user_image, get_save_user_image_path
 from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
+from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import generate_csrf
 from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
 user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, verify_email_address
@@ -23,16 +24,19 @@ auth = Blueprint('auth', __name__)
 oauth_client = OAuth()
 server_domain = os.environ.get('VITE_API_POINT')
 server_scheme = url_parse.urlparse(server_domain).scheme
+csrf = CSRFProtect()
 
 #Since we send CSRF token from the headers, we need to expose it through CORS 
 # or the browser and frontend would not get
 CORS(auth, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
 #This is used to generate csrf token when the client requests this
+
 @auth.route('/auth/csrf_token', methods=['GET', 'HEAD'])
+@csrf.exempt
 def set_xsrf_cookie():
-    response = make_response('')
     csrf_token = generate_csrf()
+    response = make_response(jsonify({'csrf_token': csrf_token}))
     response.set_cookie('X-CSRFToken', csrf_token)
     response.headers.add('X-CSRFToken', csrf_token)
     return response

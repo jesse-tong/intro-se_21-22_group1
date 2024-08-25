@@ -14,7 +14,7 @@ Frameworks:
 - Frontend: Vue.js
 - Database: MariaDB
 - Testing: Pytest, Postman, Firefox DevTools, Cypress
-- Others: Docker (planned), Inkscape (icons)
+- Others: Docker, Inkscape (icons)
 
 Clone repo:
 - Gitlab: https://gitlab.com/jesse-tong/intro-se_21-22_group1
@@ -22,4 +22,4 @@ Clone repo:
 
 Deployment (faster, recommended): https://intro-se21-22group1-production.up.railway.app/
 
-External APIs: OpenStreetMap, Stripe, Google OAuth, VNPay(planned)
+External APIs: OpenStreetMap, Stripe, Google OAuth, Paypal

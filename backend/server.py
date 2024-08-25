@@ -6,10 +6,12 @@ from flask_cors import CORS
 from global_vars.database_init import db
 from global_vars.init_env import *
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 from sqlalchemy_utils import database_exists, create_database
 from utils.email_utils import mail_client
 from flask_migrate import Migrate
 from waitress import serve
+from routes.auth_routes import csrf
 
 
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
@@ -75,7 +77,7 @@ def create_app(test_config=None):
     with app.app_context():
         db.create_all()
 
-
+    
     login_manager = LoginManager()
     
     #Register login_manager to the main Flask so that login_manager and other
@@ -95,6 +97,7 @@ def create_app(test_config=None):
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
+
 
     # blueprint for auth routes in our app
     from routes.auth_routes import auth as auth_blueprint
@@ -117,12 +120,15 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
+    
     @app.route("/", defaults={"path": ""})
 
     @app.route("/<path:path>")
+    @csrf.exempt
     def index(path):
         return render_template("index.html")
+    
+    csrf.init_app(app)
     
     return app
 
