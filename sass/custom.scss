@@ -116,6 +116,7 @@
 }
 
 .navbar.navbar-bottom-border {
-	border-bottom: 4px solid;
-	border-image: linear-gradient(139deg, $violet2, $crimson, $blue, $w3green)
+  	border-width: 0 0 5px 0;
+  	border-bottom-style: solid;
+  	border-image: linear-gradient(139deg, $violet2, $crimson, $blue, $w3green) 3 stretch;
 }
