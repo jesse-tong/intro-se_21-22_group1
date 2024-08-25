@@ -13,6 +13,7 @@
                     <ul class="post-meta" style="list-style-type: none;">
                         <li class="post-date" ><i class="bi bi-calendar3 me-3"></i><span>{{ date }}</span></li>
                         <li class="post-category" v-if="category !== null && category !== undefined"><i class="bi bi-folder2 me-3"></i><span>Category: {{ category }}</span></li>
+                        <li class="post-note" v-if="note !== null && note !== undefined"><i class="bi bi-box-seam-fill me-3"></i><span>{{ note }}</span></li>
                     </ul>
                     </div>
                 </div>
@@ -51,6 +52,7 @@ import { RouterLink } from 'vue-router';
                 content: 'N/A',
                 date: 'N/A',
                 category: 'N/A',
+                note: 'N/A',
                 parsedContent: ''
             }
         },
@@ -76,6 +78,7 @@ import { RouterLink } from 'vue-router';
                         this.title = response.data.result.title;
                         this.date = response.data.result.date;
                         this.category = response.data.result.category;
+                        this.note = response.data.result.note;
                         this.parsedContent = marked.parse(this.content);
                     }else if (response.data.success === false){
                         this.$notify({

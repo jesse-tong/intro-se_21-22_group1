@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
                 <div class="ps-4">
-                    <table class="table ps-2 table-bordered">
+                    <table class="table ps-0 ps-lg-2 table-bordered">
                         <thead>
                             <tr>
                                 <th class="table-active text-center" colspan="2">LIBRARY STATISTICS</th>
