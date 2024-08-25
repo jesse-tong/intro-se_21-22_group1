@@ -115,7 +115,8 @@ def get_put_delete_article_route(article_id):
         title = request.form.get('title')
         content = request.form.get('content')
         category = request.form.get('category')
-        success, edited_article, error = edit_article(article_id, title, content, category)
+        note = request.form.get('note')
+        success, edited_article, error = edit_article(article_id, title, content, category, note)
         return get_status_object_json(success, edited_article, error), 200
     elif request.method == 'DELETE':
         success, result, error = delete_article(article_id)
@@ -136,7 +137,8 @@ def get_post_articles_route():
         title = request.form.get('title')
         content = request.form.get('content')
         category = request.form.get('category')
-        success, added_article, error = add_article(title, content, category)
+        note = request.form.get('note')
+        success, added_article, error = add_article(title, content, category, note)
         return get_status_object_json(success, added_article, error), 200
     
 @library_settings_routes.route('/get-stripe-key')
@@ -267,4 +269,38 @@ def search_everything():
     if query == None or query == '':
         return get_status_object_json(False, None, INVALID_PARAM), 400
     result = search_everything_controller(query)
+    return get_status_object_json(True, result, None), 200
+
+@library_settings_routes.route('/api/recent-events', methods=['GET'])
+def get_recent_event():
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        page = int(page) if page != None else 1
+        limit = int(limit) if limit != None else 10
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    if page < 1 or limit < 1:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    result = db.session.query(Article).filter(or_(Article.category.ilike('event'), Article.category.ilike('events'))). \
+        order_by(desc(Article.date)).offset((page-1)*limit).limit(limit).all()
+    return get_status_object_json(True, result, None), 200
+
+@library_settings_routes.route('/api/search-event', methods=['GET'])
+def search_event():
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    query = request.args.get('query') if request.args.get('query') != None else ''
+    if query != '':
+        query = '%' + query + '%'
+    try:
+        page = int(page) if page != None else 1
+        limit = int(limit) if limit != None else 10
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    if page < 1 or limit < 1:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    result = db.session.query(Article).filter(or_(Article.category.ilike('event'), Article.category.ilike('events'))) \
+        .filter(Article.title.like(query) | Article.content.like(query)) \
+        .order_by(desc(Article.date)).offset((page-1)*limit).limit(limit).all()
     return get_status_object_json(True, result, None), 200

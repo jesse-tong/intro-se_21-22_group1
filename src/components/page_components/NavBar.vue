@@ -34,7 +34,13 @@
                 <RouterLink class="nav-link" aria-current="page" to="/" @click="closeSidebar">Home</RouterLink>
               </li>
               <li class="nav-item my-auto">
-                <RouterLink class="nav-link" to="/articles" @click="closeSidebar">Library news</RouterLink>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Articles/ Events
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-item"><RouterLink class="nav-link" to="/recent-events" @click="closeSidebar">Recent events</RouterLink></li>
+                  <li class="dropdown-item"><RouterLink class="nav-link" to="/articles" @click="closeSidebar">Library articles</RouterLink></li>
+                </ul>
               </li>
 
               <li class="nav-item dropdown my-auto" v-if="accountStore.isAdmin">

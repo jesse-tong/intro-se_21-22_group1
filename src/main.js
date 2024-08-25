@@ -21,6 +21,7 @@ import {marked} from "marked";
 
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
 import { useAccountStore } from './components/stores/LoginInfoStore';
+import { Exception } from 'sass';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -28,7 +29,7 @@ var apiSite;
 if (import.meta.env.VITE_API_POINT !== undefined){
   apiSite = import.meta.env.VITE_API_POINT; 
 }else {
-  apiSite = 'http://localhost:5173';
+  throw Exception("API point is not defined in .env file");
 }
 
 var nominatimServer, tileServer;

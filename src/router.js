@@ -21,6 +21,7 @@ import LibraryPoliciesSettings from './components/page_components/library_polici
 import ArticleManagement from './components/page_components/article_management_components/ArticleManagement.vue';
 import ArticlePage from './components/page_components/ArticlePage.vue';
 import ArticleListUser from './components/page_components/article_management_components/ArticleListUser.vue';
+import RecentEventArticleList from './components/page_components/article_management_components/RecentEventArticleList.vue';
 
 const routes = [
   { 
@@ -121,6 +122,12 @@ const routes = [
         },
         props: {
           default: true
+        }
+      },
+      {
+        path: 'recent-events',
+        components:{
+          default: RecentEventArticleList
         }
       },
       {

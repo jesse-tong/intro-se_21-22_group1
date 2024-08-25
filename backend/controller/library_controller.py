@@ -150,7 +150,7 @@ def update_timings(normal_day_open: str=None, normal_day_close: str=None, weeken
     
     return True, None
 
-def add_article(title: str, content: str, category: str = None):
+def add_article(title: str, content: str, category: str = None, note: str = None):
     get_role_success, role, error  = get_current_user_role()
     if role != 'admin':
         return get_role_success, None, error
@@ -158,13 +158,13 @@ def add_article(title: str, content: str, category: str = None):
     try:
         new_article = Article(); 
         new_article.title = title; new_article.content = content
-        new_article.category = category
+        new_article.category = category; new_article.note = note
         db.session.add(new_article); db.session.commit()
     except:
         return False, None, DATABASE_ERROR
     return True, new_article, None
 
-def edit_article(article_id: int, title: str, content: str, category: str = None):
+def edit_article(article_id: int, title: str, content: str, category: str = None, note: str = None):
     get_role_success, role, error  = get_current_user_role()
     if role != 'admin':
         return False, None, INVALID_AUTH
@@ -172,6 +172,7 @@ def edit_article(article_id: int, title: str, content: str, category: str = None
     #try:
     new_article = db.session.query(Article).filter(Article.id == article_id).first()
     new_article.title = title; new_article.content = content; new_article.category = category
+    new_article.note = note
     db.session.commit()
     #except:
     #    return False, None, DATABASE_ERROR

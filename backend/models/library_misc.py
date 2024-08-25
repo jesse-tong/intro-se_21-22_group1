@@ -12,6 +12,7 @@ class Article(db.Model):
     title:str = db.Column(db.String(500).with_variant(NVARCHAR(500), "mysql", "mariadb"))
     content:str = db.Column(db.String(15000).with_variant(NVARCHAR(15000), "mysql", "mariadb"))
     category:str = db.Column(db.String(500).with_variant(NVARCHAR(500), "mysql", "mariadb"))
+    note:str = db.Column(db.String(500).with_variant(NVARCHAR(500), "mysql", "mariadb"))
     date:datetime = db.Column(db.DateTime, default=datetime.now)
 
 @dataclass

@@ -15,8 +15,12 @@
                     <input type="text" v-model="articleTitle" class="form-control" id="articleTitle"/>
                 </div>
                 <div class="">
-                    <label for="articleCategory" class="form-label ms-1"><span>Category (max 500 characters): </span></label>
+                    <label for="articleCategory" class="form-label ms-1"><span>Category (max 500 characters, type "Event" to make it an event): </span></label>
                     <input type="text" v-model="articleCategory" class="form-control" id="articleCategory"/>
+                </div>
+                <div class="">
+                    <label for="articleNote" class="form-label ms-1"><span>Note (for example; event dates, languages,...;max 500 characters): </span></label>
+                    <input type="text" v-model="articleNote" class="form-control" id="articleNote"/>
                 </div>
                 <div class="mt-2">
                     <label for="articleContent" class="form-label ms-1"><span>Content: </span></label>
@@ -56,7 +60,8 @@
 
                 articleTitle: '',
                 articleContent: '',
-                articleCategory: ''
+                articleCategory: '',
+                articleNote: ''
             }
         },
         components: {
@@ -78,6 +83,8 @@
                     }else {
                         this.articleTitle = '';
                         this.articleContent = '';
+                        this.articleCategory = '';
+                        this.articleNote = '';
                     }
                 },
                 immediate: true
@@ -137,6 +144,7 @@
                         this.articleContent = response.data.result.content;
                         this.articleTitle = response.data.result.title;
                         this.articleCategory = response.data.result.category;
+                        this.articleNote = response.data.result.note;
                     }else if (response.data.success === false){
                         this.$notify({
                             title: 'Fetching article with ID ' + articleId + ' failed',
@@ -163,7 +171,13 @@
                 })
             },
             onCreateNewArticle(){
-                axios.postForm('/api/article', { title: this.articleTitle, content: this.articleContent, category: this.articleCategory})
+                axios.postForm('/api/article', 
+                {   
+                    title: this.articleTitle, 
+                    content: this.articleContent, 
+                    category: this.articleCategory,
+                    note: this.articleNote
+                })
                 .then(response => {
                     if (response && response.data !== undefined && response.data.success === true){
                         this.$notify({
@@ -240,7 +254,13 @@
             },
             onSaveEditArticle(articleId){
                 
-                axios.putForm('/api/article/' + articleId, { title: this.articleTitle, content: this.articleContent, category: this.articleCategory})
+                axios.putForm('/api/article/' + articleId, 
+                { 
+                    title: this.articleTitle, 
+                    content: this.articleContent, 
+                    category: this.articleCategory,
+                    note: this.articleNote
+                })
                 .then(response => {
                     if (response.data !== undefined && response.data.success && response.data.success === true){
                         this.$notify({
