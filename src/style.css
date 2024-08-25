@@ -122,6 +122,10 @@ pb-14 {
   background-image: linear-gradient(#f1f5fd, #f0fbfc) !important;
 }
 
+.wrapper.bg-light {
+  background-color: #f0fbfc !important;
+}
+
 .post-meta li:first-child::before, article .post-meta li.ms-auto::before {
   display: none;
 }
