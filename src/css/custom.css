@@ -100,4 +100,8 @@
   font-size: 15px;
 }
 
+.navbar.navbar-bottom-border {
+  border-bottom: 3px solid #04aa6d;
+}
+
 /*# sourceMappingURL=custom.css.map */

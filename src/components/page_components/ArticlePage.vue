@@ -11,9 +11,9 @@
                         </div>
                     <h1 class="display-6 mb-3 post-title article-title"><b>{{ title }}</b></h1>
                     <ul class="post-meta" style="list-style-type: none;">
-                        <li class="post-date" ><i class="bi bi-calendar3 me-3"></i><span>{{ date }}</span></li>
-                        <li class="post-category" v-if="category !== null && category !== undefined"><i class="bi bi-folder2 me-3"></i><span>Category: {{ category }}</span></li>
-                        <li class="post-note" v-if="note !== null && note !== undefined"><i class="bi bi-box-seam-fill me-3"></i><span>{{ note }}</span></li>
+                        <li class="post-date" title="Creation date" :alt="'Creation date' + Date(date).toString()"><i class="bi bi-calendar3 me-3"></i><span>{{ date }}</span></li>
+                        <li class="post-category" v-if="category !== null && category !== undefined"><i class="bi bi-folder2 me-3" ></i><span>Category: {{ category }}</span></li>
+                        <li class="post-note" v-if="note !== null && note !== undefined"><i class="bi bi-box-seam-fill me-3" title="Note" alt="Note"></i><span>{{ note }}</span></li>
                     </ul>
                     </div>
                 </div>

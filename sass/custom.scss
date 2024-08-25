@@ -114,3 +114,7 @@
 .vue-notification, .vue-notification .notification-title, .vue-notification .notification-content {
 	font-size: 15px;
 }
+
+.navbar.navbar-bottom-border {
+	border-bottom: 3px solid $w3green;
+}
