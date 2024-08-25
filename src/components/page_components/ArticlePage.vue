@@ -19,7 +19,7 @@
             </div>
         </div>
     </section>
-    <section class="wrapper bg-light">
+    <section class="wrapper bg-light-primary">
 
         <div class="container pb-14 pb-md-16">
             <div class="row">
