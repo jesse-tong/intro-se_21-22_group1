@@ -4,13 +4,14 @@
     
     <BorrowModal :showModal="borrowModalShow" @closeModal="borrowModalShow = false" ref="borrowModal" :bookId="$props.bookId"/>
     <EbookModal :showModal="ebookModalShow" @closeEbookModal="ebookModalShow = false" ref="ebookModal" :bookId="$props.bookId" />
-    <div class="container rounded-3">
-      <nav class="navbar navbar-light sticky-top shadow-sm flex-wrap rounded-3 px-3">
+    <nav class="navbar bg-light-subtle fixed-bottom shadow-sm flex-wrap rounded-3 px-3 book-detail-navbar" id="scrollBar">
         <a class="nav-link" href="#overview">Overview</a>
         <a class="nav-link" href="#description">Description</a>
         <a class="nav-link" href="#comments">Comments/Reviews</a>
         <a class="nav-link" href="#related-books">Related Books</a>
-      </nav>
+    </nav>
+    <div class="container rounded-3"  data-bs-spy="scroll" data-bs-target="#scrollBar">
+      
       <div class="row row-cols-md-2">
         <div class="col col-12 col-md-4" >
           <div class="list-group">
@@ -48,10 +49,10 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-8" id="overview">
+        <div class="col-12 col-md-8" >
           <h1 class="mb-3" style="font-family: 'Calibri', 'Helvetica';"><b>{{ book.title }}</b></h1>
           <p class="text-muted">by <span v-for="author in book.authors">{{ author + ', ' }}</span></p>
-          <div style="max-width: 100%">
+          <div style="max-width: 100%" id="overview">
             <ul class="list-group list-group-horizontal-lg w-100">
               <p class="list-group-item m-0">Languages: 
                 <span class="badge text-bg-secondary me-0 me-lg-2" v-for="language in book.languages" data-testid="languageBadge">{{ language }}</span>

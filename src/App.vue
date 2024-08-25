@@ -42,12 +42,22 @@ const setTheme = function(theme){
     }
 };
 
+const getCSRFToken = function(){
+  axios.get('/auth/csrf-token').then(response => {
+    if (response.headers !== null && response.headers !== undefined){
+      axios.defaults.headers.common["X-CSRFToken"] = response.headers["X-CSRFToken"];
+    }
+  }).catch(err => {
+    console.error('Failed to get CSRF token: ' + err);
+  });
+}
+
 
 onBeforeMount(() => {
   const store = useAccountStore();
   store.setAccountFromLocal();
   setStoredThemeColor();
-  
+  getCSRFToken();
 });
 
 

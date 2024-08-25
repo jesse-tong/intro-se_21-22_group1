@@ -153,6 +153,23 @@
     background-color: #d14031 !important;
 }
 
+.navbar.book-detail-navbar .nav-link{
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+.navbar.book-detail-navbar {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.navbar.book-detail-navbar .nav-link.active{
+    color: #FFFFFF;
+    background-color: var(--primary);
+}
 
 .navbar-light .navbar-nav .nav-link {
     margin-right: 30px;
