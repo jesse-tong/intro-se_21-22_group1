@@ -26,6 +26,10 @@
     background-color: var(--light) !important;
 }
 
+[data-bs-theme="light"].bg-light {
+    background-color: var(--light) !important;
+}
+
 [data-bs-theme="dark"] .bg-light {
     background-color: var(--light-dark-theme) !important;
 }
@@ -206,6 +210,11 @@
     color: var(--light);
 }
 
+[data-bs-theme="light"] .navbar-light .navbar-nav .nav-link {
+    color: var(--dark);
+    font-weight: 500;
+}
+
 .navbar-light .navbar-nav .nav-link {
     color: var(--dark);
     font-weight: 500;
@@ -256,6 +265,11 @@
     }
 }
 
+.bg-dark-blue {
+    background-color: #0061ac;
+    color: white !important;
+    height: 100%;
+}
 
 /*** Header carousel ***/
 @media (max-width: 768px) {

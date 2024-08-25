@@ -8,17 +8,27 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div id="navbarOffcanvas" class="offcanvas offcanvas-start" tabindex="-1" aria-labelledby="offcanvasNavbarLabel" ref="sidebar" >
+        <div id="navbarOffcanvas" class="offcanvas offcanvas-start"  tabindex="-1" aria-labelledby="offcanvasNavbarLabel" ref="sidebar" >
           <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
           </div>
           <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">      
-              <div class="nav-item d-flex mt-3 mt-lg-0 me-lg-4" role="search">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-2">      
+              <div class="nav-item d-flex mt-3 d-lg-none mt-lg-0 me-lg-4" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
                 <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
               </div>
+              
+              <li class="nav-item dropdown-center my-auto d-none d-lg-block" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Search <i class="bi bi-search"></i>
+                </a>
+                <ul class="dropdown-menu d-flex" style="padding-left: 15px; padding-right: 15px; min-width: 300px">
+                  <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
+                  <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
+                </ul>
+              </li>
               
               <li class="nav-item my-auto">
                 <RouterLink class="nav-link" aria-current="page" to="/" @click="closeSidebar">Home</RouterLink>
@@ -79,19 +89,28 @@
                   <li class="dropdown-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link" @click="closeSidebar">Register</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
                 </ul>
-
-                
               </li>
               
-              <li class="nav-item">
-                <div class="nav-link" @click="() => { $emit('setTheme', 'light'); theme = 'light' }" style="cursor: pointer;" role="link" v-if="theme == 'dark'">
+              <li class="nav-item d-lg-none">
+                <div class="nav-link" @click="() => { $emit('setTheme', 'light'); theme = 'light' }" style="cursor: pointer;" role="link" >
                   <i class="me-1 bi bi-sun"></i><span class="d-lg-none">Set light theme</span>
                 </div>
               </li>
-              <li class="nav-item">
-                <div class="nav-link" @click="() => { $emit('setTheme', 'dark'); theme = 'dark' }" style="cursor: pointer;" role="link" v-if="theme == 'light'">
+              <li class="nav-item d-lg-none">
+                <div class="nav-link" @click="() => { $emit('setTheme', 'dark'); theme = 'dark' }" style="cursor: pointer;" role="link" >
                   <i class="me-1 bi bi-moon-stars-fill" ></i><span class="d-lg-none">Set dark theme</span>
                 </div>
+              </li>
+              
+              <li class="nav-item dropdown-center my-auto d-none d-lg-block">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-moon-stars-fill" v-if="getColorTheme() === 'dark'"></i>
+                  <i class="bi bi-sun-fill" v-else></i>
+                </a>
+                <ul class="dropdown-menu" style="max-width: 50px !important; min-width: 50px;">
+                  <li class="dropdown-item"><div class="nav-link"  @click="() => { setTheme('light'); closeSidebar() }"><i class="bi bi-sun-fill" ></i></div></li>
+                  <li class="dropdown-item"><div class="nav-link"  @click="() => { setTheme('dark'); closeSidebar() }"><i class="bi bi-moon-stars-fill"></i></div></li>
+                </ul>
               </li>
 
             </ul>
@@ -144,6 +163,18 @@
       
     }
 
+    const setTheme = function(theme){
+        
+        if (theme === "light" || theme === null){
+            document.getElementById('spaAppBody').setAttribute('data-bs-theme', "light");
+            localStorage.removeItem("theme");
+            localStorage.setItem("theme", "light");
+        }else {
+            document.getElementById('spaAppBody').setAttribute('data-bs-theme', "dark");
+            localStorage.removeItem("theme");
+            localStorage.setItem("theme", "dark");
+        }
+    };
     onBeforeMount: () => {
       theme.value = getColorTheme();
     }
