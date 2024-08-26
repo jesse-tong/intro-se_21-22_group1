@@ -3,7 +3,7 @@ from models.user_model import User, Comment
 from global_vars.database_init import db
 from models.book_model import Book
 from controller.comment_controller import *
-from controller.user_controller import get_current_user_role
+from controller.user_controller import get_current_user_role, check_user_authentication
 from utils.get_status_object import get_status_object_json
 from flask_login import current_user
 from flask_cors import CORS
@@ -42,7 +42,7 @@ def comment_action_api():
         success, search_result, error = get_user_comment(user_id, page*limit, limit)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'POST':
-        if current_user.is_authenticated:
+        if check_user_authentication():
             user_id = current_user.id 
             book_id = request.form.get('book_id')
             comment = request.form.get('comment')
@@ -52,7 +52,7 @@ def comment_action_api():
         else:
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     elif request.method == 'PUT':
-        if current_user.is_authenticated:
+        if check_user_authentication():
             user_id = int(current_user.id)
             comment_id = request.form.get('comment_id')
             comment_str = request.form.get('comment')
@@ -73,7 +73,7 @@ def comment_action_api():
         else:
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     elif request.method == 'DELETE':
-        if current_user.is_authenticated:
+        if check_user_authentication():
             user_id = int(current_user.id)
             comment_id = request.form.get('comment_id')
             try:

@@ -2,7 +2,7 @@ from flask import Blueprint, url_for, request, make_response
 from utils.get_status_object import get_status_object_json
 from controller.book_controller import get_book_data
 from controller.book_user_controller import *
-from controller.user_controller import get_current_user_role
+from controller.user_controller import get_current_user_role, check_user_authentication
 from models.book_model import Book
 from models.user_book import BookFavorite, BookBorrow
 from models.user_model import UserNotification
@@ -16,11 +16,19 @@ from flask_apscheduler import scheduler
 book_user = Blueprint('book_user', __name__)
 CORS(book_user, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))", expose_headers=['X-CSRFToken'])
 
+@book_user.route('/api/get-borrow/<borrow_id>', methods=['GET'])
+def get_borrow(borrow_id):
+    try:
+        borrow_id = int(borrow_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    result = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).first()
+    return get_status_object_json(True, result, None), 200
+
 @book_user.route('/api/borrow', methods=['GET', 'POST'])
 def borrow_book_current_user():
     if request.method == 'GET':
-        success, role, error = get_current_user_role()
-        if not success:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 401
         else:
             user_id = current_user.id
@@ -49,7 +57,7 @@ def borrow_book_current_user():
             else:
                 return get_status_object_json(False, None, error), 200
     elif request.method== 'POST':
-        if not current_user.is_authenticated:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 401
         else:
             user_id = current_user.id 
@@ -72,7 +80,7 @@ def borrow_book_current_user():
     
 @book_user.route('/api/borrow-search', methods=['GET', 'POST'])
 def search_borrow_book_current_user():
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 401
     else:
         user_id = current_user.id 
@@ -116,7 +124,7 @@ def get_borrow_fee_route():
 @book_user.route('/api/manage-borrow-admin', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def admin_book_borrow_manage():
     success, role, error = get_current_user_role()
-    if role != 'admin':
+    if role != 'admin' or check_user_authentication() == False:
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 401
     
     if request.method == 'GET':
@@ -149,6 +157,7 @@ def admin_book_borrow_manage():
         is_approved = request.form.get('is_approved')
         damaged_or_lost = request.form.get('damaged_or_lost')
         has_resolved = request.form.get('has_resolved')
+        renew_pending = request.form.get('renew_pending')
    
         if damaged_or_lost.lower() == 'true' or damaged_or_lost == '1':
             damaged_or_lost = True
@@ -165,6 +174,11 @@ def admin_book_borrow_manage():
         else:
             has_resolved = False
 
+        if renew_pending.lower() == 'true' or renew_pending == '1':
+            renew_pending = True
+        else:
+            renew_pending = False
+
         try:
             book_id = int(book_id)
             user_id = int(user_id)
@@ -174,7 +188,8 @@ def admin_book_borrow_manage():
         except:
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = borrow_book(user_id, book_id, start_borrow, end_borrow, is_approved, return_date, damaged_or_lost, has_resolved)
+        success, result, error = borrow_book(user_id, book_id, start_borrow, end_borrow, 
+                                             is_approved, return_date, damaged_or_lost, has_resolved, renew_pending)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'PUT':
         borrow_id = request.form.get('borrow_id')
@@ -187,6 +202,7 @@ def admin_book_borrow_manage():
         damaged_or_lost = request.form.get('damaged_or_lost')
         is_approved = request.form.get('is_approved')
         has_resolved = request.form.get('has_resolved')
+        renew_pending = request.form.get('renew_pending')
 
         if damaged_or_lost == None or damaged_or_lost.lower() == 'false' or damaged_or_lost == '0':
             damaged_or_lost = False
@@ -197,8 +213,15 @@ def admin_book_borrow_manage():
         
         if has_resolved == None or has_resolved.lower() == 'false' or has_resolved == '0':
             has_resolved = False
-        elif has_resolved() == 'true' or has_resolved == '1':
+        elif has_resolved.lower() == 'true' or has_resolved == '1':
             has_resolved = True
+        else:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        if renew_pending == None or renew_pending.lower() == 'false' or renew_pending == '0':
+            renew_pending = False
+        elif renew_pending.lower() == 'true' or renew_pending == '1':
+            renew_pending = True
         else:
             return get_status_object_json(False, None, INVALID_PARAM), 400
 
@@ -222,7 +245,7 @@ def admin_book_borrow_manage():
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
         success, result, error = edit_borrow(borrow_id, user_id, book_id, start_borrow, end_borrow, has_returned, return_date, 
-                                             damaged_or_lost, is_approved, has_resolved)
+                                             damaged_or_lost, is_approved, has_resolved, renew_pending)
         return get_status_object_json(success, result, error), 200
     elif request.method == 'DELETE':
         borrow_id = request.form.get('borrow_id')
@@ -244,9 +267,26 @@ def delete_borrow_route(borrow_id):
 
     return get_status_object_json(success, result, error), 200
 
+@book_user.route('/api/renew-borrow/<borrow_id>', methods=['POST', 'GET'])
+def renew_borrow_route(borrow_id):
+    if not check_user_authentication():
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 401
+    else:
+        try:
+            user_id = current_user.id
+            if request.method == 'POST':
+                new_end_date = request.form.get('new_end_date')
+            else:
+                new_end_date = request.args.get('new_end_date')
+            new_end_date = int(new_end_date)
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        success, result, error = renew_borrow(user_id, borrow_id, new_end_date)
+        return get_status_object_json(success, result, error), 200
+
 @book_user.route('/api/return/<borrow_id>', methods=['POST', 'GET'])
 def return_book_current_user(borrow_id):
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 401
     else:
         try:
@@ -370,14 +410,14 @@ def favourite_book(book_id):
         success, favorite_status, error = get_favorite(book_id)
         return get_status_object_json(success, favorite_status, error), 200
     elif request.method == 'POST':
-        if not current_user.is_authenticated:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED)
         
         success, favorite_status, error = add_favorite(current_user.id, book_id)
         return get_status_object_json(success, favorite_status, error), 200
     
     elif request.method == 'DELETE':
-        if not current_user.is_authenticated:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED)
         
         success, favorite_status, error = remove_favorite(current_user.id, book_id)

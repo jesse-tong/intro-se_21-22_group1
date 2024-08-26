@@ -12,6 +12,9 @@ from ua_parser import user_agent_parser
 from global_vars.errors import *
 from flask_login import login_user, login_required, current_user, logout_user
 
+def check_user_authentication():
+    return current_user.is_authenticated and current_user.isRestricted == False
+
 async def register(email: str, password: str, name: str, role: str, resend_verification_email=False):
 
     user = User.query.filter_by(email = email).first()
@@ -92,7 +95,7 @@ def login(email: str, password: str, remember: bool):
 #Note that this function will only allow you to change password if you have been logged in
 #I may make a function to recover lost password later though
 def change_password(old_password, new_password):
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return False, None, NOT_AUTHENTICATED
     
     user = db.session.query(User).filter(User.id == current_user.id).first()
@@ -106,7 +109,7 @@ def change_password(old_password, new_password):
         return True, user, None
 
 def get_current_user_role():
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return False, None, NOT_AUTHENTICATED
     user_id = current_user.id
     user = db.session.query(User).filter(User.id == user_id).first()
@@ -187,6 +190,22 @@ def search_user(user_id:int=None, name: str=None, email:str=None):
     
     result = query.all()
     return True, result, None
+
+def change_user_role_and_restriction(user_id: int, new_role: str, isRestricted: bool = False):
+    get_role_success, role, error = get_current_user_role()
+    if check_user_authentication() == False and role != 'admin':
+        return get_role_success, None, error
+    
+    current_user_id = current_user.id
+    user = db.session.query(User).filter(User.id == user_id).first()
+    if not user:
+        return False, None, USER_NOT_EXIST
+    if user.id == current_user_id:
+        return False, None, CANNOT_CHANGE_SELF_ROLE
+    
+    user.role = new_role; user.isRestricted = isRestricted
+    db.session.commit()
+    return True, user, None
 
 #Controller function of API to do data request 
 def user_data_request(user_id:int=None):

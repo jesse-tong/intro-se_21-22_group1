@@ -8,7 +8,7 @@ import json, uuid
 from flask_login import current_user
 from flask_cors import CORS
 from controller.book_controller import *
-from controller.user_controller import get_current_user_role
+from controller.user_controller import get_current_user_role, check_user_authentication
 from controller.comment_controller import get_book_avg_rating
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
@@ -53,7 +53,7 @@ def get_and_add_book_route():
     
     elif request.method == 'POST':
         result, role, error = get_current_user_role()
-        if result == False or role != 'admin':
+        if result == False or role != 'admin' or check_user_authentication() == False:
             status = get_status_object_json(False, None, error)
             return status, 403
         
@@ -85,9 +85,9 @@ def get_and_add_book_route():
         
     elif request.method == 'PUT':
         result, role, error = get_current_user_role()
-        if result == False or role != 'admin':
+        if result == False or role != 'admin' or check_user_authentication() == False:
             status = get_status_object_json(False, None, error)
-            return status, 200
+            return status, 403
         book_data = request.form.to_dict(flat=False)
         book_id = book_data.get('book_id'); title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')
@@ -137,11 +137,7 @@ def edit_delete_book_route(bookId):
         except:
             error_status = get_status_object_json(False, None, INVALID_ID)
             return error_status, 400
-        
-        """ result, role, error = get_current_user_role()
-        if result == False or role != 'admin':
-            status = get_status_object_json(False, None, error)
-            return status, 200 """
+
         book_data = request.form
         title = book_data.get('title');
         publish_year = book_data.get('publish_year'); description = book_data.get('description')

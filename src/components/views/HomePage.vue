@@ -2,7 +2,28 @@
 <div class="col">
     <div class="row-5">
         <div class="library-homepage-container">
-            <img :src="LibraryImage" style="width: 100%; max-height: 300px;" alt="Library image"/>
+            <img :src="LibraryImage" style="width: 100%; max-height: 400px;" alt="Library image"/>
+            <table class="table table-bordered library-homepage-action-box">
+                <thead>
+                    <tr>
+                        <th class="table-active text-center" colspan="1">Popular action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><RouterLink to="place-a-hold-borrow" class="text-decoration-none"><span>Place a hold</span></RouterLink></td>
+                    </tr>
+                    <tr>
+                        <td><RouterLink to="renew-item" class="text-decoration-none"><span>Renew an item</span></RouterLink></td>
+                    </tr>
+                    <tr>
+                        <td><RouterLink to="get-library-card" class="text-decoration-none"><span>Get a library card</span></RouterLink></td>
+                    </tr>
+                    <tr>
+                        <td><RouterLink to="suggest-title" class="text-decoration-none"><span>Suggest a title</span></RouterLink></td>
+                    </tr>
+                </tbody>
+            </table>
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
         
@@ -105,6 +126,7 @@
     import "leaflet/dist/leaflet.css";
     import markerIconPng from "leaflet/dist/images/marker-icon.png"
     import * as L from 'leaflet';
+import { RouterLink } from 'vue-router';
 
 
 

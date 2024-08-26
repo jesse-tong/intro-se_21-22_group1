@@ -130,6 +130,10 @@
                   <label for="editedHasResolved" class="form-check-label">Payment has resolved</label>
                   <input type="checkbox" v-model="editedHasResolved" class="form-check-input" id="editedHasResolved" value="true">
                 </div>
+                <div class="form-check mt-2">
+                  <label for="editedRenewPending" class="form-check-label">Renew pending</label>
+                  <input type="checkbox" v-model="editedRenewPending" class="form-check-input" id="editedRenewPending" value="true">
+                </div>
               </div>
             </div>
             <div class="col-md-4 mt-4">
@@ -206,6 +210,10 @@
                   <label for="hasResolved" class="form-check-label">Borrow payment resolved</label>
                   <input type="checkbox" v-model="hasResolved" class="form-check-input" id="hasResolved" value="true">
                 </div>
+                <div class="form-check mt-2">
+                  <label for="renewPending" class="form-check-label">Renew pending</label>
+                  <input type="checkbox" v-model="renewPending" class="form-check-input" id="renewPending" value="true">
+                </div>
               </div>
             </div>
             <div class="col-md-4 mt-4">
@@ -277,6 +285,7 @@
         otherBookStatus: '',
         additionalFees: 0.0,
         hasResolved: null,
+        renewPending: null,
   
         editedBorrowId: null,
         editedUserId: null,
@@ -287,6 +296,7 @@
         editedDamagedOrLost: null,
         editedIsApproved: null,
         editedHasResolved: null,
+        editedRenewPending: null,
   
         deletedBorrowId: null,
         
@@ -490,7 +500,8 @@
         const isApproved = this.isApproved === "true" ? true : false;
         const hasResolved = this.hasResolved !== "" && this.hasResolved !== null 
                             && this.hasResolved !== false ? true : false;
-
+        const renewPending = this.renewPending !== "" && this.renewPending !== null 
+                            && this.renewPending !== false ? true : false;
         axios.postForm('/api/manage-borrow-admin', {
             book_id: bookID,
             user_id: userID,
@@ -499,7 +510,8 @@
             return_date: returnDate,
             damaged_or_lost: isDamagedOrLost,
             is_approved: isApproved,
-            has_resolved: hasResolved
+            has_resolved: hasResolved,
+            renew_pending: renewPending
         }).then(response => {
             if (response.data.success !== true){
                 this.$notify({
@@ -550,6 +562,7 @@
         this.editedDamagedOrLost = borrow_status.isDamagedOrLost;
         this.editedIsApproved = borrow_status.isApproved;
         this.editedHasResolved = borrow_status.hasResolved;
+        this.editedRenewPending = borrow_status.renewPending;
   
         this.activeTab = 'editBorrow';
         this.$refs.editBorrowTab.focus();
@@ -570,7 +583,8 @@
             return_date: (this.editedReturnDate === null || this.editedReturnDate === '') ? null :this.convertLocalDatetimeToISOString(this.editedReturnDate),
             damaged_or_lost: (this.editedDamagedOrLost !== null || this.editedDamagedOrLost !== '') ? this.editedDamagedOrLost : false,
             is_approved: (this.editedIsApproved !== null || this.editedIsApproved !== '') ? this.editedIsApproved : false,
-            has_resolved: (this.editedHasResolved !== null || this.editedHasResolved !== '') ? this.editedHasResolved : false
+            has_resolved: (this.editedHasResolved !== null || this.editedHasResolved !== '') ? this.editedHasResolved : false,
+            renew_pending: (this.editedRenewPending !== null || this.editedRenewPending !== '') ? this.editedRenewPending : false,
         }).then(response => {
             if (response.data.success !== true){
                 this.$notify({
@@ -601,6 +615,7 @@
             this.editedDamagedOrLost = null;
             this.editedIsApproved = '';
             this.editedHasResolved = null;
+            this.editedRenewPending = null;
             this.fetchBorrow(this.currentPage);
         })
         

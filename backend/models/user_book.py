@@ -20,6 +20,7 @@ class BookBorrow(db.Model):
     isDamagedOrLost: bool = db.Column(db.Boolean, default=False)
     isApproved: bool = db.Column(db.Boolean, default=False)
     hasResolved: bool = db.Column(db.Boolean, default=False)
+    renewPending: bool = db.Column(db.Boolean, default=False, server_default=text('0'))
 
 @dataclass
 class BookFavorite(db.Model):

@@ -22,6 +22,7 @@ import ArticleManagement from './components/page_components/article_management_c
 import ArticlePage from './components/page_components/ArticlePage.vue';
 import ArticleListUser from './components/page_components/article_management_components/ArticleListUser.vue';
 import RecentEventArticleList from './components/page_components/article_management_components/RecentEventArticleList.vue';
+import SearchWebsitePage from './components/page_components/article_management_components/SearchWebsitePage.vue';
 
 const routes = [
   { 
@@ -128,6 +129,12 @@ const routes = [
         path: 'recent-events',
         components:{
           default: RecentEventArticleList
+        }
+      },
+      {
+        path: 'search-website',
+        components:{  
+          default: SearchWebsitePage
         }
       },
       {

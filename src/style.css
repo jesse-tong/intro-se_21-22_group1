@@ -68,6 +68,15 @@ body {
   position: relative;
 }
 
+.library-homepage-action-box {
+  height: 50%;
+  max-width: 200px;
+  position: absolute;
+  top: 40%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+}
+
 .library-homepage-image-text {
   position: absolute;
   top: 80%;

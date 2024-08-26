@@ -5,7 +5,7 @@ from dateutil.parser import ParserError
 from global_vars.constants import *
 from global_vars.database_init import policies_db_path
 from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
-from controller.user_controller import get_current_user_role
+from controller.user_controller import get_current_user_role, check_user_authentication
 from models.library_misc import Article
 from models.book_model import Book
 from global_vars.database_init import db
@@ -17,8 +17,8 @@ from sqlalchemy import desc, asc, or_
 def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=None, 
                     overdue_limit: int=None, damage_lost_fine: float = None, new_currency: str=None, other_policies: str=None):
     success, role, error = get_current_user_role()
-    if success == False or role != 'admin':
-        return get_current_user_role(False, None, NOT_AUTHENTICATED)
+    if success == False or role != 'admin' or check_user_authentication() == False:
+        return False, NOT_AUTHENTICATED
     
     query = 'UPDATE LIB_POLICIES SET {} WHERE ID = 1'
     set_str = []
@@ -50,7 +50,7 @@ def update_policies(default_borrow_time: int=None, overdue_fine_per_day: float=N
 
 def update_library_contacts(address: str=None, phone_number: str=None, email: str=None):
     success, role, error = get_current_user_role()
-    if success == False or role != 'admin':
+    if success == False or role != 'admin' or check_user_authentication() == False:
         return get_current_user_role(False, None, NOT_AUTHENTICATED)
     
     query = 'UPDATE LIB_CONTACTS SET {} WHERE ID = 1'
@@ -100,7 +100,7 @@ def get_library_timings():
 def update_timings(normal_day_open: str=None, normal_day_close: str=None, weekend_open: str=None, weekend_close: str=None, 
                     weekend_start: int=None, weekend_end: int=None):
     success, role, error = get_current_user_role()
-    if success == False or role != 'admin':
+    if success == False or role != 'admin' or check_user_authentication() == False:
         return get_current_user_role(False, None, NOT_AUTHENTICATED)
     
     query = 'UPDATE LIB_TIMINGS SET {} WHERE ID = 1'
@@ -152,7 +152,7 @@ def update_timings(normal_day_open: str=None, normal_day_close: str=None, weeken
 
 def add_article(title: str, content: str, category: str = None, note: str = None):
     get_role_success, role, error  = get_current_user_role()
-    if role != 'admin':
+    if role != 'admin' or check_user_authentication() == False:
         return get_role_success, None, error
     
     try:
@@ -216,5 +216,6 @@ def search_everything_controller(query: str):
     query = '%' + query + '%'
     articles = db.session.query(Article).filter(or_(Article.title.ilike(query), Article.content.ilike(query))).all()
     books = db.session.query(Book).filter(or_(Book.title.ilike(query), Book.description.ilike(query))).all()
-    
-    return { 'articles' :articles, 'books': books }
+    events = db.session.query(Article).filter(or_(Article.title.ilike(query), Article.content.ilike(query))) \
+        .filter(Article.category.ilike('%Event%')).all()
+    return { 'articles' :articles, 'books': books, 'events': events }

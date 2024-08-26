@@ -20,6 +20,7 @@
           <th>Damaged/Lost</th>
           <th>Is Approved</th>
           <th>Payment has resolved</th>
+          <th>Renew pending</th>
           <th>Borrow fees</th>
           <th>Actions</th>
         </tr>
@@ -35,9 +36,11 @@
           <td>{{ borrow.isDamagedOrLost ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.isApproved ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.hasResolved ? 'Yes' : 'No' }}</td>
+          <td>{{ borrow.renewPending ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.fee }}</td>
           <td>
             <button v-if="borrow.isApproved == true && !borrow.hasReturned " class="btn btn-sm btn-primary me-2 mb-2" @click="onReturnBook(borrow.id)" data-bs-toggle="modal" data-bs-target="#returnModal">Return</button>
+            <button v-if="borrow.isApproved == true && !borrow.hasReturned " class="btn btn-sm btn-primary me-2 mb-2" @click="onRenewBook(borrow.id)" data-bs-toggle="modal" data-bs-target="#renewBorrowModal">Renew</button>
             <button v-if="borrow.isApproved == true && borrow.hasReturned == true && borrow.hasResolved != true" class="btn btn-sm btn-success me-2 mb-2" @click="()=>onCreateCheckoutSession(borrow.id)" >Pay borrow fee (Stripe)</button>
             <button v-if="borrow.isApproved == true && borrow.hasReturned == true && borrow.hasResolved != true" class="btn btn-sm btn-success" @click="()=>onCreateCheckoutSessionPaypal(borrow.id, borrow.fee)" >Select for Paypal</button>
           </td>
@@ -60,17 +63,20 @@
     </ul>
   </div>
   <ReturnModal ref="returnModal" :borrowId="returnBorrowId" @update:borrowList="currentPage = 1"/>
+  <RenewBorrowModal ref="renewBorrowModal" :borrowId="returnBorrowId" @update:borrowList="currentPage = 1" :bookId="$props.bookId"/>
 </template>
   
 <script>
 import axios from 'axios';
 import ReturnModal from './ReturnModal.vue';
+import RenewBorrowModal from './RenewBorrowModal.vue';
 import Stripe from 'stripe';
 import { loadScript } from "@paypal/paypal-js";
 
   export default {
     components: {
-        ReturnModal: ReturnModal
+        ReturnModal: ReturnModal,
+        RenewBorrowModal: RenewBorrowModal
     },
     props: {
       bookId: {
@@ -109,9 +115,13 @@ import { loadScript } from "@paypal/paypal-js";
     },
     methods: {
       getDateString(date){
-        return Date(date).toLocaleString();
+        return date ? new Date(Date.parse(date)).toString() : 'N/A';
       },
       onReturnBook(borrowId){
+        this.returnBorrowId = borrowId;
+        
+      },
+      onRenewBook(borrowId){
         this.returnBorrowId = borrowId;
         
       },

@@ -13,6 +13,7 @@
           <th>Damaged/Lost</th>
           <th>Is Approved</th>
           <th>Payment has resolved?</th>
+          <th>Renew pending</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -28,6 +29,7 @@
           <td>{{ borrow.isDamagedOrLost ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.isApproved ? 'Yes' : 'No' }}</td>
           <td>{{ borrow.hasResolved ? 'Yes' : 'No' }}</td>
+          <td>{{ borrow.renewPending ? 'Yes': 'No' }}</td>
           <td>
             <button class="btn btn-sm btn-primary me-1 mb-1" @click="$emit('editBorrow', borrow)">Edit</button>
             <button class="btn btn-sm btn-danger" @click="$emit('deleteBorrow', borrow.id)" >Delete</button>

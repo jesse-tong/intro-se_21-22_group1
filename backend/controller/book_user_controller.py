@@ -13,6 +13,7 @@ from global_vars.init_env import *
 from controller.library_controller import update_policies, get_policies
 from dataclasses import asdict
 from flask_login import current_user
+from controller.user_controller import check_user_authentication
 from threading import Thread, Lock
 from controller.book_controller import increment_book_stock, decrement_book_stock, is_book_out_of_stock
 
@@ -37,8 +38,8 @@ def get_borrow_policy_constants(no_policy_text=False):
 
 #Default if start_date is null is the current date
 def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: datetime=None, 
-                is_approved: bool=False, return_date: datetime=None, is_damaged_or_lost: bool=False, has_resolved: bool = False,
-                  do_not_decrement_book_stock: bool=False):
+                is_approved: bool=False, return_date: datetime=None, is_damaged_or_lost: bool=False, 
+                has_resolved: bool = False, renew_pending: bool = False, do_not_decrement_book_stock: bool=False):
     borrow_book = BookBorrow()
     if start_date != None:
         borrow_book.startBorrow = start_date
@@ -67,6 +68,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
     borrow_book.isApproved = is_approved
     borrow_book.isDamagedOrLost = is_damaged_or_lost
     borrow_book.hasResolved = has_resolved
+    borrow_book.renewPending = renew_pending
 
     if return_date != None and return_date < start_date:
         return False, None, INVALID_DURATION
@@ -88,7 +90,7 @@ def borrow_book(userId: int, bookId: int, start_date: datetime=None, end_date: d
         return False, None, EDIT_ERROR
 
 def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: datetime=None, end_date: datetime=None, has_returned: bool=False, 
-                return_date: datetime=None, damaged_or_lost: bool=None, is_approved: bool=None, has_resolved: bool=None):
+                return_date: datetime=None, damaged_or_lost: bool=None, is_approved: bool=None, has_resolved: bool=None, renew_pending: bool=None): 
     borrow_book = db.session.query(BookBorrow).filter(BookBorrow.id == borrow_id).first()
     if not borrow_book:
         return False, None, ROW_NOT_EXISTS
@@ -122,6 +124,9 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
 
     if has_resolved != None:
         borrow_book.hasResolved = bool(has_resolved)
+
+    if renew_pending != None:
+        borrow_book.renewPending = bool(renew_pending)
 
     prev_return_state = borrow_book.hasReturned
     borrow_book.hasReturned = has_returned
@@ -165,6 +170,25 @@ def edit_borrow(borrow_id: int, userId: int=None, bookId: int=None, start_date: 
     except:
         db.session.rollback()
         return False, None, EDIT_ERROR
+
+def renew_borrow(userId: int, borrow_id: int, new_end_date: int):
+    #new_end_date: number of days to extend the borrow
+    borrow_book = db.session.query(BookBorrow).filter(BookBorrow.userId == userId) \
+        .filter(BookBorrow.id == borrow_id).first()
+    if borrow_book != None:
+        if borrow_book.hasReturned:
+            return False, None, BOOK_HAS_RETURNED
+        if not borrow_book.isApproved:
+            return False, None, BORROW_NOT_APPROVED
+        borrow_book.endBorrow = borrow_book.endBorrow + timedelta(days=new_end_date)
+        borrow_book.returnDate = None; borrow_book.hasReturned = False; borrow_book.isApproved = False
+        borrow_book.renewPending = True
+        try:
+            db.session.commit()
+            return True, borrow_book, None
+        except:
+            db.session.rollback()
+            return False, None, EDIT_ERROR
 
 def return_book(userId: int, id: int, damagedOrLost: bool=False):
     borrow_book = db.session.query(BookBorrow).filter(BookBorrow.userId == userId) \
@@ -352,7 +376,7 @@ def toggle_favourite(userId: int, bookId: int):
         
 def get_favorite(bookId: int):
     is_user_mark_book_favorite = None
-    if current_user.is_authenticated:
+    if check_user_authentication() == True:
         favourite = db.session.query(BookFavorite).filter(BookFavorite.userId == current_user.id).filter(BookFavorite.bookId == bookId).first()
         if favourite != None:
             is_user_mark_book_favorite = True

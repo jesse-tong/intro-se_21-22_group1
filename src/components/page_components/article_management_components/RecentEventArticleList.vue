@@ -36,6 +36,7 @@
 import { ref, watch } from 'vue';
 import { onBeforeMount } from 'vue';
 import { useNotification } from '@kyvg/vue3-notification';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 
 const articles = ref([]);
@@ -43,6 +44,7 @@ const currentPage = ref(1);
 const nofification = useNotification();
 const maxPage = 10;
 const searchQuery = ref('');
+const router = useRoute();
 
 const searchEvent = () => {
     axios.get('/api/search-event', {
@@ -116,5 +118,10 @@ watch(currentPage, () => {
     }
 }, { immediate: true });
 
+onBeforeMount(() => {
+    if (router.query.searchQuery) {
+        searchQuery.value = String(router.query.searchQuery); searchEvent();
+    }
+});
 
 </script>

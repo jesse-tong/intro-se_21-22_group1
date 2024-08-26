@@ -12,13 +12,15 @@ from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import generate_csrf
 from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
-user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, verify_email_address
+user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, \
+verify_email_address, check_user_authentication
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
 from authlib.integrations.flask_client import OAuth
 from urllib import parse as url_parse
 from utils.time_utils import ip_address_to_country
+
 
 auth = Blueprint('auth', __name__)
 oauth_client = OAuth()
@@ -69,7 +71,7 @@ def analytics():
     else:
         referer = request.args.get('referer')
     
-    if current_user.is_authenticated:
+    if check_user_authentication():
         user = db.session.query(User).filter(User.id == current_user.id).first()
         if user != None:
             session = db.session.query(Session).filter(Session.browser == browser).filter(Session.os == os_family) \
@@ -86,7 +88,7 @@ def analytics():
 
 @auth.route('/auth/sessions', methods=['GET'])
 def get_user_session():
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     
     current_user_id = current_user.id
@@ -149,7 +151,7 @@ def is_user_restricted(userId):
     
 @auth.route('/auth/update-user-info', methods=['POST', 'PUT'])
 def update_user_info():
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     else:
         user_id = current_user.id 
@@ -174,7 +176,7 @@ def update_user_info():
 
 @auth.route('/auth/profile', methods=['GET'])
 def profile_route():
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     else:
         success, result, error = user_profile(current_user.id)
@@ -302,7 +304,7 @@ def data_request_route(user_id):
     if not user:
         return get_status_object_json(False, None, INVALID_ID), 409
     
-    if not current_user.is_authenticated or current_user.id != user_id:
+    if not check_user_authentication() or current_user.id != user_id:
         return get_status_object_json(False, None, INVALID_AUTH), 403
 
     success, data, error = user_data_request(user_id)
@@ -339,7 +341,7 @@ def google_auth():
 @auth.route('/api/upload-user-image', methods=['GET', 'POST'])
 def upload_image_user():
     if request.method == 'GET':
-        if not current_user.is_authenticated:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
         #This one to get user's current uploaded image
         page = request.args.get('page')
@@ -360,7 +362,7 @@ def upload_image_user():
 
         return get_status_object_json(True, images_details, None), 200
     elif request.method == 'POST':
-        if not current_user.is_authenticated:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
         try:
             user_id = int(current_user.id)
@@ -396,7 +398,7 @@ def upload_image_user():
 @auth.route('/api/upload-user-image/<image_id>', methods=['DELETE'])
 def delete_upload_user_image_route(image_id):
     if request.method == 'DELETE':
-        if not current_user.is_authenticated:
+        if not check_user_authentication():
             return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
         try:
             user_id = int(current_user.id)

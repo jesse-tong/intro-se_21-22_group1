@@ -25,9 +25,31 @@
                   Search <i class="bi bi-search"></i>
                 </a>
                 <ul class="dropdown-menu" style="padding-left: 15px; padding-right: 15px; min-width: 300px">
-                  <div class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
-                    <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex" v-if="searchType === 'searchCatalogue'">
+                      <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
+                      <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
+                    </div>
+                    <div class="d-flex mt-2" v-if="searchType === 'searchWebsite'">
+                      <input class="form-control me-2" type="search" placeholder="Search website here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
+                      <button class="btn btn-outline-success" type="submit" @click="searchWebsite()" aria-label="Search button" role="search">Search</button>
+                    </div>
+                    
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" id="searchCatalogue" 
+                      :value="'searchCatalogue'" v-model="searchType" name="searchType" checked>
+                      <label class="form-check-label" for="searchCatalogue">
+                        Search catalogue 
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" id="searchWebsite" 
+                      :value="'searchWebsite'" v-model="searchType" name="searchType">
+                      <label class="form-check-label" for="searchWebsite">
+                        Search website
+                      </label>
+                    </div>
+
                   </div>
                 </ul>
               </li>
@@ -42,6 +64,7 @@
                 <ul class="dropdown-menu dropdown-center">
                   <li class="dropdown-item"><RouterLink class="nav-link" to="/recent-events" @click="closeSidebar">Recent events</RouterLink></li>
                   <li class="dropdown-item"><RouterLink class="nav-link" to="/articles" @click="closeSidebar">Library articles</RouterLink></li>
+                  <li class="dropdown-item"><RouterLink class="nav-link" to="/search-website" @click="closeSidebar">Search website</RouterLink></li>
                 </ul>
               </li>
 
@@ -142,6 +165,7 @@
     const route = useRoute();
     const notify = useNotification();
     const searchQueryStore = useSearchQueryStore();
+    const searchType = ref('searchCatalogue');
     import axios from 'axios';
     
     const accountStore = useAccountStore();
@@ -153,6 +177,10 @@
     const searchTitle = function(){
       searchQueryStore.saveSearchQuery(searchQuery.value, '', '');
       router.push('/book/advanced-search');
+    }
+
+    const searchWebsite = function(){
+      router.push('/search-website?searchQuery=' + searchQuery.value);
     }
 
     var getColorTheme = function(){

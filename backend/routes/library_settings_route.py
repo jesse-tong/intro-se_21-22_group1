@@ -7,6 +7,7 @@ import json, uuid, stripe
 from flask_login import current_user
 from flask_cors import CORS
 from controller.library_controller import *
+from controller.user_controller import check_user_authentication
 from controller.book_user_controller import get_borrow_fee, set_borrow_resolve, delete_borrow
 from models.user_book import BookBorrow
 from global_vars.constants import status_template, result_per_page
@@ -153,7 +154,7 @@ def get_paypal_client_id():
 
 @library_settings_routes.route("/create-checkout-session-paypal/<borrow_id>/<order_id>", methods=['GET', 'POST'])
 def create_checkout_session_paypal(borrow_id, order_id):
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     
     try:
@@ -192,7 +193,7 @@ def create_checkout_session_paypal(borrow_id, order_id):
 def create_checkout_session(borrow_id):
     domain_url = server_domain
     stripe.api_key = stripe_secret_key
-    if not current_user.is_authenticated:
+    if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     
     try:
