@@ -191,12 +191,12 @@ const routes = [
     ]
   },
   
-  { path: "/:pathMatch(.*)*", name: "not-found", component: PageNotFound },
-  // if you omit the last `*`, the `/` character in params will be encoded when resolving or pushing
-  { path: "/:pathMatch(.*)", name: "bad-not-found", component: PageNotFound },
 ]
 
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    return { top: 0, left: 0 }
+  }
 })

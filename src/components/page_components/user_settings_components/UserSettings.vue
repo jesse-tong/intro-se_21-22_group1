@@ -5,7 +5,7 @@
         </div>
         <div class="col-12">
             <div class="mt-3 mx-3">
-                <h5 class="section-title bg-light-subtle text-center text-primary px-3">Your Current Borrows</h5>
+                <h5 class="section-title bg-light-subtle text-center text-primary px-1" id="yourCurrentBorrows">Your Current Borrows</h5>
                 <BorrowTableUser />
             </div>
         </div>

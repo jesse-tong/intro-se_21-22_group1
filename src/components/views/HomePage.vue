@@ -3,30 +3,46 @@
     <div class="row-5">
         <div class="library-homepage-container">
             <img :src="LibraryImage" style="width: 100%; max-height: 400px;" alt="Library image"/>
-            <table class="table table-bordered library-homepage-action-box">
-                <thead>
-                    <tr>
-                        <th class="table-active text-center" colspan="1">Popular action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><RouterLink to="place-a-hold-borrow" class="text-decoration-none"><span>Place a hold</span></RouterLink></td>
-                    </tr>
-                    <tr>
-                        <td><RouterLink to="renew-item" class="text-decoration-none"><span>Renew an item</span></RouterLink></td>
-                    </tr>
-                    <tr>
-                        <td><RouterLink to="get-library-card" class="text-decoration-none"><span>Get a library card</span></RouterLink></td>
-                    </tr>
-                    <tr>
-                        <td><RouterLink to="suggest-title" class="text-decoration-none"><span>Suggest a title</span></RouterLink></td>
-                    </tr>
-                </tbody>
-            </table>
+            
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>
-        
+        <div class="mx-3 my-3 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-gap-3">
+            <div class="col">
+                <div class="card bg-light-subtle shadow-sm">
+                    <div class="card-body">
+                        <RouterLink to="/search-website" class="text-decoration-none" title="Search books, events, articles,... in this website">
+                            <h5 class="card-title text-primary"><i class="bi bi-search me-2"></i>Search website</h5>
+                        </RouterLink>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-light-subtle shadow-sm">
+                    <div class="card-body">
+                        <RouterLink to="/get-library-card" class="text-decoration-none"><h5 class="card-title text-primary"><i class="bi bi-credit-card-2-front-fill me-2"></i>Get a library card</h5></RouterLink>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-light-subtle shadow-sm">
+                    <div class="card-body">
+                        <RouterLink to="/user/settings#yourCurrentBorrows" class="text-decoration-none" 
+                        title="You can renew book in the user settings for borrow if you haven't return the item yet and the borrow request was approved">
+                            <h5 class="card-title text-primary"><i class="bi bi-clock-history me-2"></i>Renew item</h5>
+                        </RouterLink>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-light-subtle shadow-sm">
+                    <div class="card-body">
+                        <RouterLink to="/book/advanced-search" class="text-decoration-none" title="Advanced search for books and materials">
+                            <h5 class="card-title text-primary"><i class="bi bi-search me-2"></i>Search catalogue (advanced)</h5>
+                        </RouterLink>
+                    </div>
+                </div>
+            </div>
+        </div>
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Latest library articles</h5>
         <ArticleCarousel :articles="latestArticles" :carouselId="'latestArticles'"/>
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Highest rating books</h5>

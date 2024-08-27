@@ -8,15 +8,15 @@
             <div v-for="i in numSlides" :key="articles.id" style="padding-left: 10%; padding-right: 10%">
                 <div v-if="i <= numSlides" class="carousel-item" :class="{ active: i === 1 }">
                     <div class="row mx-3">
-                        <div class="col-12 col-md-6 col-lg-3" v-for="j in 4" :key="j">
-                            <div v-if="(i - 1) * 4 + (j - 1) <= articles.length - 1">
-                                <div class="card mb-3" style="height: 200px; overflow: auto">
+                        <div class="col-12 col-md-6 col-lg-4" v-for="j in 3" :key="j">
+                            <div v-if="(i - 1) * 3 + (j - 1) <= articles.length - 1">
+                                <div class="card mb-3" style="height: 220px; overflow: auto">
                                     <div class="card-body">
-                                        <router-link :to="'/article/' + $props.articles[(i - 1) * 4 + (j - 1)].id" class="card-title link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                                            <h5 class="">{{ $props.articles[(i - 1) * 4 + (j - 1)].title }}</h5>
+                                        <router-link :to="'/article/' + $props.articles[(i - 1) * 3 + (j - 1)].id" class="card-title link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                                            <h5 class="">{{ $props.articles[(i - 1) * 3 + (j - 1)].title }}</h5>
                                         </router-link>
-                                        <p class="text-body-secondary mb-2 card-subtitle"><i class="bi bi-calendar3"></i><span class="ms-2">{{ $props.articles[(i - 1) * 4 + (j - 1)].date }}</span></p>
-                                        <RouterLink :to="'/article/' + $props.articles[(i - 1) * 4 + (j - 1)].id" class="btn btn-primary">View Article</RouterLink>
+                                        <p class="text-body-secondary mb-2 card-subtitle"><i class="bi bi-calendar3"></i><span class="ms-2">{{ $props.articles[(i - 1) * 3 + (j - 1)].date }}</span></p>
+                                        <RouterLink :to="'/article/' + $props.articles[(i - 1) * 3 + (j - 1)].id" class="btn btn-primary">View Article</RouterLink>
                                     </div>
                                 </div>
                             </div>

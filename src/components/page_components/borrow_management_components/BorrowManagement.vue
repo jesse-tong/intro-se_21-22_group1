@@ -19,10 +19,10 @@
             <SearchUser v-model:searchUserEmail="searchUserEmail" v-model:searchUserName="searchUserName" v-model:searchUserId="searchUserId" @search-user="searchUser" />
             <SearchBook v-model:searchBookTitle="searchBookTitle" v-model:searchBookIsbn="searchBookIsbn" v-model:searchBookId="searchBookId" @search-book="searchBook" class="mt-2" />
           </div>
-          <div v-if="searchResultUser" class="mt-3">
+          <div  class="mt-3">
             <h5 class="section-title bg-light-subtle text-start text-primary pe-3">User Search Result</h5>
             <div class="table-responsive">
-              <table class="table table-bordered">
+              <table class="table table-bordered" v-if="searchResultUser !== null && searchResultUser.length > 0">
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -47,10 +47,10 @@
             </div>
             
           </div>
-          <div v-if="searchResultBooks">
+          <div >
             <h5 class="section-title bg-light-subtle text-start text-primary pe-3 me-3">Book Search Result</h5>
             <div class="table-responsive">
-              <table class="table table-bordered">
+              <table class="table table-bordered" v-if="searchResultBooks !== null && searchResultBooks.length > 0">
                 <thead>
                   <tr>
                     <th>Book ID</th>

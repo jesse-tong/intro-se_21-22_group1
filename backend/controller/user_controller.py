@@ -191,6 +191,11 @@ def search_user(user_id:int=None, name: str=None, email:str=None):
     result = query.all()
     return True, result, None
 
+def get_user_list(page: int, limit: int):
+    query = db.session.query(User).limit(limit).offset(page*limit)
+    result = query.all()
+    return True, result, None
+
 def change_user_role_and_restriction(user_id: int, new_role: str, isRestricted: bool = False):
     get_role_success, role, error = get_current_user_role()
     if check_user_authentication() == False and role != 'admin':

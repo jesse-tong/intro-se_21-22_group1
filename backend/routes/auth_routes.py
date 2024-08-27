@@ -13,7 +13,7 @@ from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import generate_csrf
 from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
 user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, \
-verify_email_address, check_user_authentication
+verify_email_address, check_user_authentication, get_current_user_role, change_user_role_and_restriction
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
@@ -453,3 +453,37 @@ def get_uploaded_image(image_id):
 def monthly_session_data_route():
     data = monthly_os_browser_count()
     return get_status_object_json(True, data, None), 200
+
+@auth.route('/api/get-users')
+def get_users_route():
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        page = int(page) if page != None else None
+        limit = int(limit) if limit != None else None
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    if page <= 0 or limit <= 0: 
+        return get_status_object_json(False, None, INVALID_PARAM), 409
+    if page != None and limit != None: 
+        users = db.session.query(User).offset((page - 1)*limit).limit(limit).all()
+    else:
+        users = db.session.query(User).all()
+    return get_status_object_json(True, users, None), 200
+
+@auth.route('/api/change-user-role-and-restriction', methods=['POST'])
+def change_user_role_and_restriction_route():
+    success, role, error = get_current_user_role()
+    if not check_user_authentication() and role != 'admin':
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    form = request.form
+    user_id = form.get('user_id')
+    role = form.get('role')
+    isRestricted = form.get('is_restricted')
+    try:
+        user_id = int(user_id)
+        isRestricted = True if isRestricted == 'true' or isRestricted == '1' else False
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    success, result, error = change_user_role_and_restriction(user_id, role, isRestricted)
+    return get_status_object_json(success, result, error), 200
