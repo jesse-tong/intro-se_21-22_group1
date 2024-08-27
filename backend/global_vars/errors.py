@@ -26,4 +26,4 @@ BOOK_NOT_RETURNED_NOT_DELETABLE = 'Record cannot be deleted has book has not bee
 GOOGLE_LOGIN_ERROR = 'Error while create an account to the database while logging in using Google!'
 SEND_VERIFICATION_EMAIL_FAILED = 'Register successfully but sending verification email failed'
 INVALID_CURRENCY = 'VNPay currently only supports VND currency'
-CANNOT_CHANGE_SELF_ROLE = 'User cannot change their own role or strict themselves!'
+CANNOT_CHANGE_SELF_ROLE = 'User cannot change their own role or restrict themselves!'

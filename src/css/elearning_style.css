@@ -350,6 +350,11 @@
     z-index: -1;
 }
 
+.badge.bg-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
 .section-title::after {
     position: absolute;
     content: "";

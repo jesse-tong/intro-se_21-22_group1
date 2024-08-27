@@ -200,13 +200,20 @@ def search_user_route():
     user_id = request.args.get('user_id')
     name = request.args.get('name')
     email = request.args.get('email')
-    
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+
     try:
         user_id = int(user_id) if user_id != None else None
+        page = int(page) if page != None else None
+        limit = int(limit) if limit != None else None
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
+    
+    if page != None and limit != None and page <= 0 or limit <= 0:
+        return get_status_object_json(False, None, INVALID_PARAM), 409
 
-    success, result, error = search_user(user_id, name, email)
+    success, result, error = search_user(user_id, name, email, page, limit)
     return get_status_object_json(success, result, error)
 
 @auth.route('/api/profile_image/<user_id>', methods=['GET', 'POST', 'DELETE'])

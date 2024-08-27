@@ -23,6 +23,7 @@ import ArticlePage from './components/page_components/ArticlePage.vue';
 import ArticleListUser from './components/page_components/article_management_components/ArticleListUser.vue';
 import RecentEventArticleList from './components/page_components/article_management_components/RecentEventArticleList.vue';
 import SearchWebsitePage from './components/page_components/article_management_components/SearchWebsitePage.vue';
+import UserManagement from './components/page_components/user_management_components/UserManagement.vue';
 
 const routes = [
   { 
@@ -165,6 +166,12 @@ const routes = [
         path: 'admin/reports',
         components: {
           default: ReportPage
+        }
+      },
+      {
+        path: 'admin/user-management',
+        components: {
+          default: UserManagement
         }
       },
       {
