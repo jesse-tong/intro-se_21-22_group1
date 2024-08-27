@@ -31,7 +31,7 @@
                             v-model.number="currentPage" min="1"/></li>
                     </li>
                     <li class="pagination-arrow arrow-left ms-1">
-                        <div class="page-link" @click="currentPage = currentPage < maxPage ? currentPage + 1 : maxPage" id="nextPageButton"><i class="bi bi-chevron-right"></i></div>
+                        <div class="page-link" @click="currentPage = currentPage + 1 " id="nextPageButton"><i class="bi bi-chevron-right"></i></div>
                     </li>
                 </ul>
             </div>
