@@ -67,20 +67,18 @@
                         
                     </tbody>
                 </table>
-                <nav aria-label="Book table navigation">
-                    <ul class="component-pagination">
-                        <li class="pagination-arrow arrow-left me-1">
-                            <a href="#" class="page-link" @click="currentPage =  currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
-                        </li>
-                        <li class="page-item">
-                            <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
-                                @input="(e)=> {currentPage = e.target.value}" :value="currentPage" min="1"/></li>
-                        </li>
-                        <li class="pagination-arrow arrow-left ms-1">
-                            <a href="#" class="page-link" @click="currentPage =  currentPage + 1" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
-                        </li>
-                    </ul>
-                </nav>
+                <ul class="component-pagination">
+                    <li class="pagination-arrow arrow-left me-1">
+                        <a href="#" class="page-link" @click="currentPage = currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item">
+                        <li class="pagination-number current-number" ><input type="number" style="margin: 0 5px; max-width: 50px;" 
+                            v-model.number="currentPage" min="1"/></li>
+                    </li>
+                    <li class="pagination-arrow arrow-left ms-1">
+                        <a href="#" class="page-link" @click="currentPage = currentPage < maxPage ? currentPage + 1 : maxPage" id="nextPageButton"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

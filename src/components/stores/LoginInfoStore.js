@@ -4,7 +4,8 @@ export const useAccountStore = defineStore('account', {
     state: () => ({
       userId: null,
       name: null,
-      role: null
+      role: null,
+      isRestricted: false
     }),
     getters: {
         isAdmin: (state) => {
@@ -14,20 +15,23 @@ export const useAccountStore = defineStore('account', {
                 return false;
             }
         },
-        loggedIn: (state) => (state.userId !== null),
-        notLoggedIn: (state) => (state.userId === null),
+        loggedIn: (state) => (state.userId !== null && state.isRestricted === false),
+        notLoggedIn: (state) => (state.userId === null || state.isRestricted === true),
         isLoginRemember: (state) => (state.userId !== null && localStorage.getItem('userId') === state.userId)
     },
     actions: {
       // since we rely on `this`, we cannot use an arrow function
-      setAccountInfo(userId, name, role) {
-        this.$state.userId = userId; this.$state.name = name; this.$state.role = role;
+      setAccountInfo(userId, name, role, isRestricted) {
+        this.$state.userId = userId; this.$state.name = name; this.$state.role = role; 
+        this.$state.isRestricted = isRestricted; 
       },
       setLocalStorage(){
         if (this.$state.userId !== null){
             localStorage.setItem('userId', this.$state.userId);
         }
-        
+        if (this.$state.isRestricted !== null){
+          localStorage.setItem('isRestricted', this.$state.isRestricted);
+        }
         if (this.$state.name !== null){
             localStorage.setItem('name', this.$state.name);
         }
@@ -39,7 +43,9 @@ export const useAccountStore = defineStore('account', {
         if (this.$state.userId !== null){
           sessionStorage.setItem('userId', this.$state.userId);
         }
-        
+        if (this.$state.isRestricted !== null){
+            sessionStorage.setItem('isRestricted', this.$state.isRestricted);
+        }
         if (this.$state.name !== null){
             sessionStorage.setItem('name', this.$state.name);
         }
@@ -51,10 +57,12 @@ export const useAccountStore = defineStore('account', {
         this.$state.userId = sessionStorage.getItem('userId');
         this.$state.name = sessionStorage.getItem('name');
         this.$state.role = sessionStorage.getItem('role');
+        this.$state.isRestricted = sessionStorage.getItem('isRestricted');
         if (this.$state.userId === null && this.$state.name === null && this.$state.role === null){
           localStorage.setItem('userId', this.$state.userId);
           localStorage.setItem('name', this.$state.name);
           localStorage.setItem('role', this.$state.role);
+          localStorage.setItem('isRestricted', this.$state.isRestricted);
         }
       },
       clearSessionStorage(){
@@ -65,6 +73,7 @@ export const useAccountStore = defineStore('account', {
       },
       clearStoredData(){
         this.$state.userId = null; this.$state.name = null; this.$state.role = null;
+        this.$state.isRestricted = false;
       },
     },
 });

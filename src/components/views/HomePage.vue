@@ -183,7 +183,8 @@ import { RouterLink } from 'vue-router';
             && this.$route.query.name !== undefined && this.$route.query.name !== null 
             && this.$route.query.role !== undefined && this.$route.query.role !== null){
                 this.accountStore.clearStoredData();
-                this.accountStore.setAccountInfo(this.$route.query.userId, this.$route.query.name, this.$route.query.role);
+                this.accountStore.setAccountInfo(this.$route.query.userId, this.$route.query.name, 
+                this.$route.query.role, this.$route.query.isRestricted);
                 this.accountStore.setLocalStorage();
                 axios.post('/analytics', {
                   referer: document.referrer,

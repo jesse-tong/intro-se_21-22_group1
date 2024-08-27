@@ -27,3 +27,4 @@ GOOGLE_LOGIN_ERROR = 'Error while create an account to the database while loggin
 SEND_VERIFICATION_EMAIL_FAILED = 'Register successfully but sending verification email failed'
 INVALID_CURRENCY = 'VNPay currently only supports VND currency'
 CANNOT_CHANGE_SELF_ROLE = 'User cannot change their own role or restrict themselves!'
+BANNED_USER = 'Your account has been banned, please contact the administrator for more information!'

@@ -87,7 +87,7 @@ def login(email: str, password: str, remember: bool):
         return False, None, INVALID_AUTH
     
     if user.isRestricted == True:
-        return False, None, INVALID_AUTH
+        return False, None, BANNED_USER
 
     login_user(user, remember=remember)
     return True, user, None

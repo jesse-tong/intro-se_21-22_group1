@@ -110,7 +110,8 @@ import { useAccountStore } from '../stores/LoginInfoStore';
               if (response.data.success === true){
 
                 try{
-                  accountStore.setAccountInfo(response.data.result.id, response.data.result.name, response.data.result.role);
+                  accountStore.setAccountInfo(response.data.result.id, response.data.result.name,
+                   response.data.result.role, response.data.result.isRestricted);
                 }catch(e){
                   
                 }
