@@ -87,7 +87,7 @@ import { useAccountStore } from '../stores/LoginInfoStore';
               type: 'error'
             })
           };
-          
+          document.title = "EasyLib - Login";
         },
         methods: {
           storeLocal(userId, email, role){

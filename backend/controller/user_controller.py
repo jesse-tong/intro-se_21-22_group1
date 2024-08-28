@@ -135,9 +135,10 @@ def get_current_user_role():
     else:
         return True, user.role, None
     
-def add_update_user_infos(user_id: int, age: int = None, gender: str = None, borrowMax: int=5, phone: str = None, address: str = None):
+def add_update_user_infos(user_id: int, age: int = None, gender: str = None, borrowMax: int=5, phone: str = None, 
+                          address: str = None, alternateEmail: str = None, alternatePhone: str = None, zipCode: str = None):
     add_new = False
-    user_infos = db.session.query(UserInfo).filter(UserInfo.userId == user_id).first()
+    user_infos = db.session.query(UserInfo).filter(UserInfo.userId == user_id).filter(UserInfo.type == 'user').first()
     if user_infos == None:
         add_new = True
         user_infos = UserInfo()
@@ -154,7 +155,8 @@ def add_update_user_infos(user_id: int, age: int = None, gender: str = None, bor
         user_infos.borrowLeft = borrowMax
         
     user_infos.age = age; user_infos.gender = gender; user_infos.maxBorrow = borrowMax
-    user_infos.phone = phone; user_infos.address = address
+    user_infos.phone = phone; user_infos.address = address; user_infos.alternateEmail = alternateEmail
+    user_infos.alternatePhone = alternatePhone; user_infos.zipCode = zipCode; user_infos.type = 'user'
 
     try:
         if add_new == True:
@@ -166,9 +168,46 @@ def add_update_user_infos(user_id: int, age: int = None, gender: str = None, bor
         return False, None, EDIT_ERROR
 
 def user_profile(user_id: int):
-    profile = db.session.query(User, UserInfo).join(UserInfo, User.id == UserInfo.userId, isouter=True).filter(User.id == user_id).first()
+    profile = db.session.query(User, UserInfo).join(UserInfo, User.id == UserInfo.userId, isouter=True) \
+        .filter(User.id == user_id).filter(UserInfo.type == 'user').first()
     return True, profile, None
 
+def add_update_library_card_infos(user_id: int, age: int = None, gender: str = None, borrowMax: int=5, phone: str = None, 
+                          address: str = None, alternateEmail: str = None, alternatePhone: str = None, zipCode: str = None):
+    add_new = False
+    user_infos = db.session.query(UserInfo).filter(UserInfo.userId == user_id).filter(UserInfo.type == 'library_card').first()
+    if user_infos == None:
+        add_new = True
+        user_infos = UserInfo()
+        user_infos.borrowLeft = borrowMax
+
+    if (borrowMax !=None and borrowMax < 0):
+        return False, None, INVALID_PARAM
+    #Phone should have from 8-15 number characters
+    if phone != None and not re.match(r'[\+\-0-9]{8,15}', phone):
+        return False, None, 'Invalid phone number'
+    user_infos.userId = user_id
+
+    if user_infos.borrowLeft == user_infos.maxBorrow:
+        user_infos.borrowLeft = borrowMax
+        
+    user_infos.age = age; user_infos.gender = gender; user_infos.maxBorrow = borrowMax
+    user_infos.phone = phone; user_infos.address = address; user_infos.alternateEmail = alternateEmail
+    user_infos.alternatePhone = alternatePhone; user_infos.zipCode = zipCode; user_infos.type = 'library_card'
+
+    try:
+        if add_new == True:
+            db.session.add(user_infos)
+        db.session.commit()
+        return True, user_infos, None
+    except:
+        db.session.rollback()
+        return False, None, EDIT_ERROR
+
+def library_card_of_user(user_id: int):
+    profile = db.session.query(User, UserInfo).join(UserInfo, User.id == UserInfo.userId, isouter=True) \
+        .filter(User.id == user_id).filter(UserInfo.type == 'library_card').first()
+    return True, profile, None
 
 def send_notification(to_user: int, notification_data: str):
     user = db.session.query(User).filter(User.id == to_user).first()

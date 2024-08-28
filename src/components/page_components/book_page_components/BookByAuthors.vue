@@ -97,6 +97,9 @@
         },
         components: {
             GetBookByAuthorOrGenreId: GetBookByAuthorOrGenreId
+        },
+        created(){
+            document.title = "Books by Authors";
         }
     }
 </script>

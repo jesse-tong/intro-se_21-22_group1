@@ -58,6 +58,9 @@
                     }
                 })
             }
+        },
+        created(){
+            document.title = "EasyLib - Articles";
         }
     }
 </script>

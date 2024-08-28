@@ -305,6 +305,7 @@
     },
     created() {
       this.fetchBorrow(this.currentPage);
+      document.title = "Borrow Management";
     },
     methods: {
       fetchBorrow(page){

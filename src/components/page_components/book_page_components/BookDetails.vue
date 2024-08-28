@@ -150,6 +150,7 @@
           this.getRating(this.$props.bookId);
           this.getRelatedBooksByBorrow(this.$props.bookId);
           this.getFavoriteCount();
+          document.title = 'Book: ' + this.book.title;
         },
         methods: {
           getBookData(bookId){

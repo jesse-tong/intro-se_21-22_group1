@@ -378,6 +378,7 @@
         created(){
             this.getBorrowSettings();
             this.getContacts(); this.getLibraryTimings();
+            document.title = "Library policies settings";
         }
     }
 </script>

@@ -191,6 +191,7 @@ import { useSearchQueryStore } from '../../stores/SearchQueryStore';
                 //If one of title, id, isbn or description is not empty because of query parameters, fetch without user input
                 this.fetchSearchResult(); 
             }
+            document.title = "Advanced Search";
         }
     }
 </script>

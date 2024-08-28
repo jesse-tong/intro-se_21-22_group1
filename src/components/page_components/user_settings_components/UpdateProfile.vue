@@ -19,6 +19,18 @@
             <input type="text" v-model="phoneNumber" class="form-control" id="userPhone"/>
         </div>
         <div class=" mb-2">
+            <label for="altUserPhone" class="form-label"><span>Alternate phone number: </span></label>
+            <input type="text" v-model="altPhoneNumber" class="form-control" id="altUserPhone"/>
+        </div>
+        <div class=" mb-2">
+            <label for="altEmail" class="form-label"><span>Alternate email: </span></label>
+            <input type="email" v-model="altEmail" class="form-control" id="altEmail"/>
+        </div>
+        <div class=" mb-2">
+            <label for="zipCode" class="form-label"><span>Zip code: </span></label>
+            <input type="text" v-model="zipCode" class="form-control" id="zipCode"/>
+        </div>
+        <div class=" mb-2">
             <label for="userGender" class="form-label"><span>Gender: </span></label>
             <select v-model="gender" class="form-select" id="userGender" role="select">
                 <option value="male" >Male</option>
@@ -43,6 +55,9 @@
                 phoneNumber: '',
                 address: '',
                 phoneNumber: '',
+                altPhoneNumber: '',
+                altEmail: '',
+                zipCode: ''
             }
         },
         created(){
@@ -68,8 +83,14 @@
                 if (this.gender !== null && this.gender !== ''){
                     updateParams.gender = this.gender;
                 }
-                if (this.phoneNumber !== null && this.phone !== ''){
-                    updateParams.phone_number = this.phoneNumber;
+                if (this.altEmail !== null && this.altEmail !== ''){
+                    updateParams.alternate_email = this.altEmail;
+                }
+                if (this.zipCode !== null && this.zipCode !== ''){
+                    updateParams.zip_code = this.zipCode;
+                }
+                if (this.altPhoneNumber !== null && this.altPhoneNumber !== ''){
+                    updateParams.alternate_phone = this.altPhoneNumber;
                 }
                 axios.putForm('/auth/update-user-info', updateParams).then(response => {
                   if (response.data.success === true){    
@@ -102,6 +123,9 @@
                     this.age = profile.age;
                     this.phoneNumber = profile.phone;
                     this.address = profile.address;
+                    this.altEmail = profile.alternate_email;
+                    this.altPhoneNumber = profile.alternate_phone;
+                    this.zipCode = profile.zip_code;
                   }else {
                     this.$notify({
                       title: "Fetch user information failed",

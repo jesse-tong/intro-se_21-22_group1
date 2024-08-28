@@ -81,7 +81,7 @@
               }
             },
             mounted(){
-              
+              document.title = "EasyLib - Register";
             },
             methods: {
               

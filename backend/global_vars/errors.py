@@ -28,3 +28,4 @@ SEND_VERIFICATION_EMAIL_FAILED = 'Register successfully but sending verification
 INVALID_CURRENCY = 'VNPay currently only supports VND currency'
 CANNOT_CHANGE_SELF_ROLE = 'User cannot change their own role or restrict themselves!'
 BANNED_USER = 'Your account has been banned, please contact the administrator for more information!'
+LIBRARY_CARD_NOT_EXIST = 'Library card does not exist. Please contact the librarian for more information, or create one!'

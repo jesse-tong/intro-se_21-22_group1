@@ -64,6 +64,7 @@ import { RouterLink } from 'vue-router';
         },
         created(){
             this.fetchArticle(this.$props.articleId);
+            document.title = 'Article: ' + this.title;
         },
         methods: {
             fetchArticle(articleId){

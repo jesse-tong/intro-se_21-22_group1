@@ -37,7 +37,7 @@
                     || String(this.$route.query.status).includes('expired') ? 'error' : 'success'
                 });
             }
-            
+            document.title = "User Settings";
         }
     }
 </script>

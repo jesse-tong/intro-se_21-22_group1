@@ -68,6 +68,7 @@
         },
         created(){
             this.getBorrowPolicies();
+            document.title = "Library policies";
         }
     }
 </script>

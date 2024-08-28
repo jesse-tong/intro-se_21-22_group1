@@ -111,6 +111,9 @@ export default {
             },
             immediate: true
         }
+    },
+    created(){
+        document.title = "User Management";
     }
 }
 </script>

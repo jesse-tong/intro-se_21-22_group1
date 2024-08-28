@@ -50,7 +50,10 @@
                 <label for="userRole" class="form-label"><span>Account role: </span></label>
                 <input type="text" disabled :value="userInfo !== null ? userInfo.role : 'N/A'" class="form-control" id="userRole"/>
             </div>
-            
+            <div class=" mb-2">
+                <label for="alternatePhone" class="form-label"><span>Alternate phone number: </span></label>
+                <input type="text" disabled :value="userInfo.alternatePhone ? userInfo.alternatePhone : 'N/A'" class="form-control" id="userRole"/>
+            </div>
         </div>
         <div class="col-12 col-md-4">
             <div class=" mb-2">
@@ -68,6 +71,14 @@
             <div class=" mb-2">
                 <label for="isAccountVerified" class="form-label"><span>Is account verified: </span></label>
                 <input type="text" disabled :value="userInfo !== null ? userInfo.isVerified: 'N/A'" class="form-control" id="isAccountVerified"/>
+            </div>
+            <div class=" mb-2">
+                <label for="alternateEmail" class="form-label"><span>Alternate email: </span></label>
+                <input type="text" disabled :value="userInfo.alternateEmail ? userInfo.alternateEmail : 'N/A'" class="form-control" id="alternateEmail"/>
+            </div>
+            <div class=" mb-2">
+                <label for="zipCode" class="form-label"><span>Zip code: </span></label>
+                <input type="text" disabled :value="userInfo.zipCode ? userInfo.zipCode : 'N/A'" class="form-control" id="zipCode"/>
             </div>
             <!--<div class=" mb-2">
                 <label for="userBorrowCount" class="form-label"><span>Borrow: </span></label>
@@ -120,6 +131,7 @@
             if (!this.accountStore.loggedIn){
                 this.$router.push({ path: '/login', query: { error: 'You must log in first before update profile!' } });
             }
+            document.title = "User profile";
         },
         computed: {
             ...mapStores(useAccountStore)

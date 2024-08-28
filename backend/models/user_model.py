@@ -1,11 +1,11 @@
 import json
 from global_vars.database_init import db
 from flask_login import UserMixin
-from sqlalchemy import CheckConstraint, event, Connection
+from sqlalchemy import CheckConstraint, event, Connection, text
 from sqlalchemy.orm import mapper, Session
 from models.book_model import Book
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils.ap_utils import uri
 
 class URIs(object):
@@ -71,6 +71,12 @@ class UserInfo(db.Model):
     borrowLeft: int = db.Column(db.Integer)
     phone:str = db.Column(db.String(20))
     address: str = db.Column(db.String(500))
+    alternateEmail: str = db.Column(db.String(100))
+    alternatePhone: str = db.Column(db.String(20))
+    #The type of the user info, can be either user or library card
+    type: str = db.Column(db.String(20), default='user')
+    expires: datetime = db.Column(db.DateTime, default=lambda: datetime.now + timedelta(days=365))
+    zipCode: str = db.Column(db.String(20))
     imagePath: str = db.Column(db.String(300)) 
 
 @dataclass

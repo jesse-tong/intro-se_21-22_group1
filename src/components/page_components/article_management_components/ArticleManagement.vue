@@ -310,6 +310,9 @@
                     this.articleCategory = ''; this.articleNote = ''; this.articleThumbnail = '';
                  });
             }
+        },
+        created(){
+            document.title = "Article Management";
         }
     }
 </script>

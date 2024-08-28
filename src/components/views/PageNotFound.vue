@@ -11,6 +11,9 @@
     </div>
 </template>
 
-<script>
-
+<script setup lang="ts">
+    import { onBeforeMount } from 'vue';
+    onBeforeMount(() => {
+        document.title = 'Page Not Found';
+    });
 </script>

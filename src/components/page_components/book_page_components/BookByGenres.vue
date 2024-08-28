@@ -96,6 +96,9 @@ import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
         },
         components: {
             GetBookByAuthorOrGenreId: GetBookByAuthorOrGenreId
+        },
+        created(){
+            document.title = "Book by genres";
         }
     }
 </script>

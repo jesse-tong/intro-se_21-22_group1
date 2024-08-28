@@ -176,7 +176,7 @@ import { RouterLink } from 'vue-router';
             this.getBookCount(); this.getBorrowCount();
             this.getContacts(); this.getLibraryTimings();
             this.getLatestArticles();
-            
+            document.title = "EasyLib - Homepage";
         },
         beforeMount(){
             if (this.$route.query.userId !== undefined && this.$route.query.userId !== null

@@ -110,6 +110,7 @@ onBeforeMount(() => {
     if (router.query.searchQuery) {
         searchQuery.value = String(router.query.searchQuery); getSearchResults();
     }
+    document.title = 'Search on website';
 });
 
 </script>

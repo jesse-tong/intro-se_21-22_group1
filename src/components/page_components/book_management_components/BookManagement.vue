@@ -189,6 +189,9 @@
           BookTable: BookTable,
           AddUpdateBook: AddUpdateBook,
           ImportBookPage: ImportBookPage
+        },
+        created(){
+          document.title = "Book Management";
         }
     }
 </script>

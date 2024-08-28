@@ -11,9 +11,7 @@ from utils.get_status_object import get_status_object_json
 from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import generate_csrf
-from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
-user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, \
-verify_email_address, check_user_authentication, get_current_user_role, change_user_role_and_restriction, send_verification_email_controller
+from controller.user_controller import *
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
@@ -162,9 +160,9 @@ def is_user_restricted(userId):
         return get_status_object_json(True, result, None), 200
     except:
         return get_status_object_json(False, None, INVALID_ID), 400
-    
-@auth.route('/auth/update-user-info', methods=['POST', 'PUT'])
-def update_user_info():
+
+@auth.route('/auth/update-library-card-info', methods=['POST', 'PUT'])
+def update_library_card_info_route():
     if not check_user_authentication():
         return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
     else:
@@ -173,6 +171,9 @@ def update_user_info():
         gender = request.form.get('gender')
         phone_number = request.form.get('phone_number')
         address = request.form.get('address')
+        alternate_email = request.form.get('alternate_email')
+        alternate_phone = request.form.get('alternate_phone')
+        zip_code = request.form.get('zip_code')
 
         if gender != None and gender.lower() not in available_genders:
             return get_status_object_json(False, None, INVALID_PARAM), 400
@@ -185,7 +186,37 @@ def update_user_info():
         if age != None and (age < 0 or age > 125): 
             return get_status_object_json(False, None, INVALID_PARAM), 400
         
-        success, result, error = add_update_user_infos(user_id, age, gender, borrow_left_default, phone_number, address)
+        success, result, error = add_update_library_card_infos(user_id, age, gender, borrow_left_default, 
+                                                       phone_number, address, alternate_email, alternate_phone, zip_code)
+        return get_status_object_json(success, result, error), 200
+
+@auth.route('/auth/update-user-info', methods=['POST', 'PUT'])
+def update_user_info():
+    if not check_user_authentication():
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    else:
+        user_id = current_user.id 
+        age = request.form.get('age')
+        gender = request.form.get('gender')
+        phone_number = request.form.get('phone_number')
+        address = request.form.get('address')
+        alternate_email = request.form.get('alternate_email')
+        alternate_phone = request.form.get('alternate_phone')
+        zip_code = request.form.get('zip_code')
+
+        if gender != None and gender.lower() not in available_genders:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        try:
+            age = int(age) if age != None else None
+        except:
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        if age != None and (age < 0 or age > 125): 
+            return get_status_object_json(False, None, INVALID_PARAM), 400
+        
+        success, result, error = add_update_user_infos(user_id, age, gender, borrow_left_default, 
+                                                       phone_number, address, alternate_email, alternate_phone, zip_code)
         return get_status_object_json(success, result, error), 200
 
 @auth.route('/auth/profile', methods=['GET'])
@@ -197,12 +228,45 @@ def profile_route():
         if result != None:
             result = asdict(result[0]) | asdict(result[1]) if result[1] != None else result[0]
         return get_status_object_json(success, result, error), 200
-    
+
 @auth.route('/auth/profile/<user_id>', methods=['GET'])
 def profile_route_with_id(user_id):
     try:
         user_id = int(user_id)
         success, result, error = user_profile(user_id)
+        if result != None:
+            result = asdict(result[0]) | asdict(result[1]) if result[1] != None else result[0]
+        return get_status_object_json(success, result, error), 200
+    except:
+        return get_status_object_json(False, None, USER_NOT_EXIST), 404
+
+@auth.route('/auth/library_card', methods=['GET'])
+def get_logged_in_user_library_card(user_id):
+    if not check_user_authentication():
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    
+    try:
+        user_id = int(user_id)
+        success, result, error = library_card_of_user(current_user.id)
+        if result != None:
+            if result[1] == None:
+                return get_status_object_json(False, None, LIBRARY_CARD_NOT_EXIST), 404
+            result = asdict(result[0]) | asdict(result[1])
+        return get_status_object_json(success, result, error), 200
+    except:
+        return get_status_object_json(False, None, USER_NOT_EXIST), 404
+
+@auth.route('/auth/library_card/<user_id>', methods=['GET'])
+def get_library_card_with_id(user_id):
+    _, role, __ = get_current_user_role()
+    if not check_user_authentication():
+        return get_status_object_json(False, None, NOT_AUTHENTICATED), 403
+    if role != 'admin' or current_user.id != user_id:
+        return get_status_object_json(False, None, INVALID_AUTH), 403
+    
+    try:
+        user_id = int(user_id)
+        success, result, error = library_card_of_user(user_id)
         if result != None:
             result = asdict(result[0]) | asdict(result[1]) if result[1] != None else result[0]
         return get_status_object_json(success, result, error), 200
