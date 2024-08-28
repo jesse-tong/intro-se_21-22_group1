@@ -2,7 +2,8 @@
     <div class="mx-2 mt-3">
         <div class="row">
             <div class="col-12 col-md-9 col-xl-9 col-xxl-8">
-                <ImageList :images="images" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" @deleteImage="onDeleteImage" @selectImage="onSelectImage" />
+                <ImageList :images="images" @update:currentPage="(page) => { currentPage = page }" :currentPage="currentPage" 
+                    @deleteImage="onDeleteImage" @selectImage="onSelectImage" @selectThumbnail="onSelectImageThumbnail"/>
             </div>
             <div class="col-12 col-md-3 col-xl-3 col-xxl-4 border-md-start">
                 <div class="ps-3 ps-md-1 pe-1 col">
@@ -166,6 +167,9 @@
             },
             onSelectImage({id, fileName}){
                 this.$emit('selectImage', '![' + fileName + '](' + this.apiSite + '/uploaded-image/' + id + ' "' + fileName + '")');
+            },
+            onSelectImageThumbnail({id, fileName}){
+                this.$emit('selectImageThumbnail', this.apiSite + '/uploaded-image/' + id);
             }
             
         },

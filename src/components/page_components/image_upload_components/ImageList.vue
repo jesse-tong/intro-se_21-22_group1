@@ -11,7 +11,8 @@
                   <h6 class="card-title">{{ image.imagePath }}</h6> 
                   <p class="card-text">{{ 'ID: ' + image.id }}</p>
                   <div>
-                  <button class="btn btn-sm btn-primary me-3 mb-1 mb-md-0" @click="()=>onSelectImage(image)">Select</button>
+                  <button class="btn btn-sm btn-primary me-3 mb-1 " @click="()=>onSelectImage(image)">Select</button>
+                  <button class="btn btn-sm btn-primary me-3 mb-1 " @click="()=>onSelectThumbnail(image)">Set as thumbnail</button>
                   <button class="btn btn-sm btn-danger" @click="$emit('deleteImage', image.id)" >Delete</button>
                   </div>
               </div>
@@ -66,9 +67,12 @@
       methods: {
         onSelectImage(image){
           this.$emit('selectImage', { id: image.id, fileName: image.imagePath});
+        },
+        onSelectThumbnail(image){
+          this.$emit('selectThumbnail', { id: image.id, fileName: image.imagePath});
         }
       },
   
-      emits: ['deleteImage', 'selectImage', 'update:currentPage'],
+      emits: ['deleteImage', 'selectImage', 'update:currentPage', 'selectThumbnail'],
     };
     </script>

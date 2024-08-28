@@ -1,6 +1,6 @@
 <template>
     <footer >
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 py-4 my-5 border-top">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 py-4 mt-5 border-top">
       <div class="col mb-3 ps-4">
         <RouterLink class="d-flex align-items-center mb-1 link-body-emphasis text-decoration-none" to="/">
           <img :src="EasyLibLogo" height="70" width="70" alt="EasyLib logo" />

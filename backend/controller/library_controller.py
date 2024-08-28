@@ -150,7 +150,7 @@ def update_timings(normal_day_open: str=None, normal_day_close: str=None, weeken
     
     return True, None
 
-def add_article(title: str, content: str, category: str = None, note: str = None):
+def add_article(title: str, content: str, category: str = None, note: str = None, thumbnail: str = None):
     get_role_success, role, error  = get_current_user_role()
     if role != 'admin' or check_user_authentication() == False:
         return get_role_success, None, error
@@ -159,12 +159,14 @@ def add_article(title: str, content: str, category: str = None, note: str = None
         new_article = Article(); 
         new_article.title = title; new_article.content = content
         new_article.category = category; new_article.note = note
+        new_article.thumbnail = thumbnail
         db.session.add(new_article); db.session.commit()
     except:
         return False, None, DATABASE_ERROR
     return True, new_article, None
 
-def edit_article(article_id: int, title: str, content: str, category: str = None, note: str = None):
+def edit_article(article_id: int, title: str, content: str, 
+                 category: str = None, note: str = None, thumbnail: str = None):
     get_role_success, role, error  = get_current_user_role()
     if role != 'admin':
         return False, None, INVALID_AUTH
@@ -172,7 +174,7 @@ def edit_article(article_id: int, title: str, content: str, category: str = None
     #try:
     new_article = db.session.query(Article).filter(Article.id == article_id).first()
     new_article.title = title; new_article.content = content; new_article.category = category
-    new_article.note = note
+    new_article.note = note; new_article.thumbnail = thumbnail
     db.session.commit()
     #except:
     #    return False, None, DATABASE_ERROR
@@ -196,7 +198,8 @@ def get_article_summaries(page: int=None, limit: int = 6, descending=True):
     
     if page != None and limit != None:
         offset = (page - 1)*limit
-    query = db.session.query().with_entities(Article.id, Article.title, Article.category, Article.date) \
+    query = db.session.query().with_entities(Article.id, Article.title, Article.category, 
+                                Article.date, Article.note, Article.thumbnail) \
                                 .group_by(Article.id, Article.date)
     
     if descending == True:

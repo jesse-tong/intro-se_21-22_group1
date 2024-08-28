@@ -10,8 +10,9 @@
                     <div class="row mx-3">
                         <div class="col-12 col-md-6 col-lg-4" v-for="j in 3" :key="j">
                             <div v-if="(i - 1) * 3 + (j - 1) <= articles.length - 1">
-                                <div class="card mb-3" style="height: 220px; overflow: auto">
-                                    <div class="card-body">
+                                <div class="card mb-3" >
+                                    <img class="card-img-top" style="height: 180px;" :src="$props.articles[(i - 1) * 3 + (j - 1)].thumbnail" :alt="'Image for artitle with title: ' + $props.articles[(i - 1) * 3 + (j - 1)].title" @error="($event) => setAltImg($event)"/>
+                                    <div class="card-body" style="height: 200px; overflow: auto">
                                         <router-link :to="'/article/' + $props.articles[(i - 1) * 3 + (j - 1)].id" class="card-title link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
                                             <h5 class="">{{ $props.articles[(i - 1) * 3 + (j - 1)].title }}</h5>
                                         </router-link>
@@ -39,6 +40,7 @@
 <script>
 import { RouterLink } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
+import emptyImage from '../../../assets/empty_image.png';
 
 export default {
   props: {
@@ -56,6 +58,11 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      emptyImage
+    };
+  },
   computed: {
     numSlides() {
         let numSlides = Math.ceil(this.$props.articles.length / 4);
@@ -65,6 +72,16 @@ export default {
         //This will generated a random uuid and added to img src as a query 
         //so that Vue will not use the cached image but the updated one instead
         return uuidv4();
+    },
+    
+  },
+  methods: {
+    setAltImg(e){
+        e.target.onerror = null;
+        e.target.src = emptyImage;
+        e.target.style.backgroundImage = 'linear-gradient(135deg, #e66465, #9198e5)';
+        e.target.alt = 'Image not found';
+        e.target.title = 'Image not found';
     }
   }
 };

@@ -22,6 +22,10 @@
                     <label for="articleNote" class="form-label ms-1"><span>Note (for example; event dates, languages,...;max 500 characters): </span></label>
                     <input type="text" v-model="articleNote" class="form-control" id="articleNote"/>
                 </div>
+                <div class="">
+                    <label for="articleThumbnail" class="form-label ms-1"><span>Thumbnail image link (max 500 characters): </span></label>
+                    <input type="text" v-model="articleThumbnail" class="form-control" id="articleThumbnail"/>
+                </div>
                 <div class="mt-2">
                     <label for="articleContent" class="form-label ms-1"><span>Content: </span></label>
                     <MdEditor v-model="articleContent" :language="'en-US'" :codeTheme="'a11y'" id="articleContent" @onSave="onSaveArticle" :noMermaid="true" :noKatex="true"/>
@@ -39,7 +43,7 @@
         </div>
         <hr class="hr" />
         <h5 class="section-title bg-light-subtle text-primary pe-3 ms-1">Upload Image</h5>
-        <ImageUpload @select-image="onImageSelected" class="card pt-2 pb-2"/>
+        <ImageUpload @select-image="onImageSelected" @select-image-thumbnail="onThumbnailSelected" class="card pt-2 pb-2"/>
     </div>
     
 </template>
@@ -61,7 +65,8 @@
                 articleTitle: '',
                 articleContent: '',
                 articleCategory: '',
-                articleNote: ''
+                articleNote: '',
+                articleThumbnail: ''
             }
         },
         components: {
@@ -100,6 +105,9 @@
             },
             onImageSelected(url){
                 this.articleContent += url;
+            },
+            onThumbnailSelected(url){
+                this.articleThumbnail = url;
             },
             onNewArticleDrafted(){
                 this.selectedArticleId = null;
@@ -145,6 +153,7 @@
                         this.articleTitle = response.data.result.title;
                         this.articleCategory = response.data.result.category;
                         this.articleNote = response.data.result.note;
+                        this.articleThumbnail = response.data.result.thumbnail;
                     }else if (response.data.success === false){
                         this.$notify({
                             title: 'Fetching article with ID ' + articleId + ' failed',
@@ -176,7 +185,8 @@
                     title: this.articleTitle, 
                     content: this.articleContent, 
                     category: this.articleCategory,
-                    note: this.articleNote
+                    note: this.articleNote,
+                    thumbnail: this.articleThumbnail
                 })
                 .then(response => {
                     if (response && response.data !== undefined && response.data.success === true){
@@ -212,6 +222,7 @@
                     this.fetchArticles(this.currentPage); 
                     this.selectedArticleId = null; 
                     this.articleContent = ''; this.articleTitle = '';
+                    this.articleCategory = ''; this.articleNote = ''; this.articleThumbnail = '';
                 });
             },
             onDeleteArticle(articleId){
@@ -259,7 +270,8 @@
                     title: this.articleTitle, 
                     content: this.articleContent, 
                     category: this.articleCategory,
-                    note: this.articleNote
+                    note: this.articleNote,
+                    thumbnail: this.articleThumbnail
                 })
                 .then(response => {
                     if (response.data !== undefined && response.data.success && response.data.success === true){
@@ -295,7 +307,7 @@
                     this.fetchArticles(this.currentPage);
                     this.selectedArticleId = null; 
                     this.articleContent = ''; this.articleTitle = '';
-                    this.articleCategory = '';
+                    this.articleCategory = ''; this.articleNote = ''; this.articleThumbnail = '';
                  });
             }
         }
