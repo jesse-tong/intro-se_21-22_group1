@@ -13,7 +13,7 @@ from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import generate_csrf
 from controller.user_controller import login, register, isRestricted, change_password, add_update_user_infos, \
 user_profile, search_user, user_data_request, parse_user_agent, update_session_count, monthly_os_browser_count, \
-verify_email_address, check_user_authentication, get_current_user_role, change_user_role_and_restriction
+verify_email_address, check_user_authentication, get_current_user_role, change_user_role_and_restriction, send_verification_email_controller
 from global_vars.constants import *
 from global_vars.errors import *
 from dataclasses import asdict
@@ -113,6 +113,20 @@ def login_route():
 def logout_route():
     logout_user()
     return get_status_object_json(True, None, None), 200
+
+@auth.route('/auth/send-verification-email/<user_id>', methods=['GET', 'POST'])
+async def send_verification_email_route(user_id):
+    try:
+        user_id = int(user_id)
+    except:
+        return get_status_object_json(False, None, INVALID_ID), 400
+    
+    user = db.session.query(User).filter(User.id == user_id).first()
+    if not user:
+        return get_status_object_json(False, None, INVALID_ID), 404
+    
+    success, result, error = await send_verification_email_controller(user_id)
+    return get_status_object_json(success, result, error), 200
 
 @auth.route('/auth/register', methods=['POST'])
 async def register_route():

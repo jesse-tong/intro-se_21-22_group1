@@ -23,6 +23,10 @@
                     </div>
                 </div>
             </div>
+            <h5 class="section-title bg-light-subtle text-center text-primary px-3 me-3 mt-2 ">Send verification email</h5>
+            <div class="ms-3 me-3" >
+                <button class="btn btn-primary mb-2 mx-auto" @click="sendVerificationEmail"><span>Send verification email</span></button>
+            </div>
         </div>
         <div class="col-12 col-md-4">
             <div class=" mb-2">
@@ -124,6 +128,29 @@
             this.getUserProfile();
         },
         methods: {
+            sendVerificationEmail(){
+                axios.post('/auth/send-verification-email/' + this.userInfo.id).then(response => {
+                    if (response.data.success === true){
+                        this.$notify({
+                            title: "Send verification email successfully!",
+                            text: "Send verification email successfully!",
+                            type: "success"
+                        });
+                    }else {
+                        this.$notify({
+                            title: "Send verification email failed",
+                            text: "Send verification email failed with error: " + response.data.error,
+                            type: "error"
+                        });
+                    }
+                }).catch(err=>{
+                    this.$notify({
+                        title: "Send verification email failed",
+                        text: "Send verification email failed with error: "+ err.response.data.error,
+                        type: "error"
+                    });
+                });
+            },
             getUserProfile(){
                 //Default will get current logged user profile userId prop is null
                 axios.get('/auth/profile' + (this.$props.userId !== null ? '/' + this.$props.userId : '')).then(response => {

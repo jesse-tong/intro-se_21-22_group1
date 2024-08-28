@@ -8,10 +8,20 @@ env = Environment(loader = PackageLoader('instance', 'templates'), autoescape=se
 verification_email_template = env.get_template('verification_email_template.jinja')
 
 mail_client = Mail()
-
+verification_template = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{action}</title>
+</head>
+<body>
+    <h1>{action}</h1>
+    <p>Click <a href="{api_site}/auth/verification/{token}">here</a> to verify your email</p>
+</body>
+"""
 
 def verification_email_from_template(api_site: str, token: str):
-    return verification_email_template.render(api_site=api_site, token=token, action="Verify your email")
+    return verification_template.format(api_site=api_site, token=token, action="Verify your email")
 
 def send_email(subject: str, html: str, to_addr: str, from_addr: str = "easylib@jesse-tong.work"):
     msg = Message(subject=subject, sender=from_addr, recipients=[to_addr], html=html)

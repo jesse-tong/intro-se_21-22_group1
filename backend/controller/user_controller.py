@@ -15,6 +15,20 @@ from flask_login import login_user, login_required, current_user, logout_user
 def check_user_authentication():
     return current_user.is_authenticated and current_user.isRestricted == False
 
+async def send_verification_email_controller(user_id: int):
+    user = User.query.filter_by(id = user_id).first()
+    if not user:
+        return False, None, USER_NOT_EXIST
+    email = user.email; name = user.name; role = user.role
+    token = jwt.encode(payload={ 'id': user.id, 'email': email, 'name': name, 'role': role, 
+                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
+    try:
+        await send_verification_email(token, email)
+    except Exception as e:
+        print(e)
+        return False, None, SEND_VERIFICATION_EMAIL_FAILED
+    return True, None, None
+
 async def register(email: str, password: str, name: str, role: str, resend_verification_email=False):
 
     user = User.query.filter_by(email = email).first()
@@ -41,7 +55,8 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
                                         "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
             try:
                 await send_verification_email(token, email)
-            except:
+            except Exception as e:
+                print(e)
                 return False, new_user, SEND_VERIFICATION_EMAIL_FAILED
             
             return True, new_user, None
@@ -53,7 +68,8 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
                                     "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key", algorithm='HS256')
         try:
             await send_verification_email(token, email)
-        except: 
+        except Exception as e:
+            print(e) 
             return False, None, 'Resend verification email failed!'
         return True, new_user, None
 

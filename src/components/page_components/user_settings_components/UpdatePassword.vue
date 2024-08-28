@@ -15,6 +15,7 @@
         </div>
         <button @click="updatePassword" class=" mb-2 btn btn-success"><span>Update password</span></button>
     </div>
+    
 </template>
 <script>
     import axios from 'axios';
@@ -38,6 +39,7 @@
         },
         
         methods: {
+            
             checkPassword(password){
                 if (password.length >= 8 && password.match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)){
                     return true;
