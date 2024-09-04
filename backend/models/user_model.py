@@ -63,6 +63,7 @@ class UserNotification(db.Model):
 
 @dataclass
 class UserInfo(db.Model):
+    __tablename__ = 'user_info'
     id:int = db.Column(db.Integer, primary_key=True)
     userId:int = db.Column(db.Integer, db.ForeignKey('user.id'))
     age: int = db.Column(db.Integer)

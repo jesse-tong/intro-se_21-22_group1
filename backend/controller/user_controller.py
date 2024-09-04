@@ -41,7 +41,7 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
     if re.fullmatch(email_regex, email) == None:
         return False, None, INVALID_EMAIL
 
-    if resend_verification_email != None:
+    if resend_verification_email != None and resend_verification_email == False:
         new_user = User(email = email, name = name, role = role, password = generate_password_hash(password=password))
     else:
         new_user = db.session.query(User).filter(User.email == email, User.name == name).first()
@@ -310,5 +310,11 @@ def parse_user_agent(user_agent: str):
 
 def monthly_os_browser_count():
     data = db.session.query(MonthlySessionCount).all()
-    return data
+    result = []
+    for row in data:
+        if row.lastUpdated.month != datetime.datetime.now().month \
+        or row.lastUpdated.year != datetime.datetime.now().year:
+            row.count = 0
+        result.append(row)
+    return result
 

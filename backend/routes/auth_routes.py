@@ -288,8 +288,9 @@ def search_user_route():
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
     
-    if page != None and limit != None and page <= 0 or limit <= 0:
-        return get_status_object_json(False, None, INVALID_PARAM), 409
+    if page != None and limit != None:
+        if page <= 0 or limit <= 0:
+            return get_status_object_json(False, None, INVALID_PARAM), 409
 
     success, result, error = search_user(user_id, name, email, page, limit)
     return get_status_object_json(success, result, error)

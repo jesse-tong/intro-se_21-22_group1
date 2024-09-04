@@ -13,6 +13,9 @@ from models.user_book import BookBorrow
 from global_vars.constants import status_template, result_per_page
 from utils.get_status_object import get_status_object_json
 from utils.file_utils import *
+import datetime
+from models.user_model import User
+from dateutil.parser import parse as dateparse
 from controller.book_user_controller import get_policies
 
 #Blue print for miscellanous library settings
@@ -307,3 +310,265 @@ def search_event():
         .filter(Article.title.like(query) | Article.content.like(query)) \
         .order_by(desc(Article.date)).offset((page-1)*limit).limit(limit).all()
     return get_status_object_json(True, result, None), 200
+
+
+# REST methods for LibraryPlace
+@library_settings_routes.route('/library/place', methods=['GET', 'POST'])
+def places_route():
+    if request.method == 'GET':
+        
+        places = db.session.query(LibraryPlace).all()
+        available_places = []
+        for place in places:
+            sessionInUse = db.session.query(LibrarySession).filter_by(placeId=place.id, inUse=True).first()
+            sessionInHold = db.session.query(LibrarySession).filter_by(placeId=place.id).first()
+            available_places.append({
+                'id': place.id,
+                'room': place.room,
+                'haveComputer': place.haveComputer,
+                'isOnHold': sessionInHold != None,
+                'isInUse': sessionInUse != None
+            })
+            
+        return get_status_object_json(True, available_places, None), 200
+    elif request.method == 'POST':
+        room = request.form.get('room')
+        has_computer = request.form.get('haveComputer')
+        if has_computer == 'true' or has_computer == '1':
+            has_computer = True
+        else:
+            has_computer = False
+        
+        place = LibraryPlace(room=room, haveComputer=has_computer)
+        db.session.add(place)
+        db.session.commit()
+        return get_status_object_json(True, place, None), 200
+
+@library_settings_routes.route('/library/place/<int:place_id>', methods=['PUT', 'DELETE'])
+def place_route_put_delete(place_id):
+    if request.method == 'PUT':
+        place = db.session.query(LibraryPlace).filter(LibraryPlace.id == place_id).first()
+        if place is None:
+            return get_status_object_json(False, None, PLACE_NOT_FOUND), 404
+        place.room = request.form.get('room')
+        has_computer = request.form.get('haveComputer')
+        if has_computer == 'true' or has_computer == '1':
+            has_computer = True
+        else:
+            has_computer = False
+        place.haveComputer = has_computer
+        db.session.commit()
+        return get_status_object_json(True, place, None), 200
+    elif request.method == 'DELETE':
+        place = db.session.query(LibraryPlace).filter(LibraryPlace.id == place_id).first()
+        if place is None:
+            return get_status_object_json(False, None, PLACE_NOT_FOUND), 404
+        
+        db.session.query(LibrarySession).filter(LibrarySession.placeId == place_id).delete()
+        delete_row = db.session.query(LibraryPlace).filter(LibraryPlace.id == place_id).delete()
+        if delete_row == 0:
+            return get_status_object_json(False, None, UNRESOLVED_SESSION), 500
+        db.session.commit()
+        return get_status_object_json(True, None, None), 200
+
+# REST methods for LibrarySession
+@library_settings_routes.route('/library/session', methods=['GET'])
+def get_all_sessions():
+    sessions = db.session.query(LibrarySession).all()
+    result = []
+    for session in sessions:
+        session_books = db.session.query(Book).join(LibrarySessionBook, LibrarySessionBook.bookId == Book.id).filter(LibrarySessionBook.sessionId == session.id).all()
+        user = db.session.query(User).join(LibrarySession, LibrarySession.userId == User.id).filter(LibrarySession.id == session.id).first()
+        session_books = [asdict(session_book) for session_book in session_books]
+        session = asdict(session); user = asdict(user); session['books'] = session_books; session['user'] = user
+        result.append(session)
+    return get_status_object_json(True, result, None), 200
+
+@library_settings_routes.route('/library/place/<int:place_id>/session', methods=['GET'])
+def get_sessions_by_place_id(place_id):
+    sessions = db.session.query(LibrarySession).filter(LibrarySession.placeId == place_id).all()
+    result = []
+    for session in sessions:
+        session_books = db.session.query(Book).join(LibrarySessionBook, LibrarySessionBook.bookId == Book.id).filter(LibrarySessionBook.sessionId == session.id).all()
+        user = db.session.query(User).join(LibrarySession, LibrarySession.userId == User.id).filter(LibrarySession.id == session.id).first()
+        session_books = [asdict(session_book) for session_book in session_books]
+        session = asdict(session); user = asdict(user); session['books'] = session_books; session['user'] = user
+        result.append(session)
+    return get_status_object_json(True, result, None), 200
+
+@library_settings_routes.route('/library/session/<int:session_id>', methods=['GET'])
+def get_session(session_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    session_user = db.session.query(User).filter(User.id == session.userId).first()
+    session_place = db.session.query(LibraryPlace).filter(LibraryPlace.id == session.placeId).first()
+    session_books = db.session.query(Book).join(LibrarySessionBook, LibrarySessionBook.bookId == Book.id).filter(LibrarySessionBook.sessionId == session_id).all()
+    session_books = [asdict(session_book) for session_book in session_books]
+    session = asdict(session); session['books'] = session_books; session_user = asdict(session_user); session['user'] = session_user
+    session_place = asdict(session_place); session['place'] = session_place
+    return get_status_object_json(True, session, None), 200
+
+@library_settings_routes.route('/library/session', methods=['POST'])
+def add_session():
+    place_id = request.form.get('placeId')
+    user_id = request.form.get('userId')
+    start_date = request.form.get('startDate')
+    try:
+        start_date = dateparse(start_date) if start_date != None else datetime.now()
+        place_id = int(place_id)
+        user_id = int(user_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    session = LibrarySession(placeId=place_id, userId=user_id, startDate=start_date, inUse=False)
+    db.session.add(session)
+    db.session.commit()
+    return get_status_object_json(True, session, None), 200
+
+@library_settings_routes.route('/library/session/<int:session_id>', methods=['PUT'])
+def update_session(session_id):
+    session = db.session.query(LibrarySession).get(session_id)
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    place_id = request.form.get('placeId')
+    user_id = request.form.get('userId')
+    start_date = request.form.get('startDate')
+    in_use = request.form.get('inUse')
+    try:
+        place_id = int(place_id)
+        user_id = int(user_id)
+        start_date = dateparse(start_date) if start_date != None else datetime.now()
+        in_use = True if in_use == 'true' or in_use == '1' else False
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    session.placeId = place_id
+    session.userId = user_id
+    session.startDate = start_date
+    if session.inUse == False and in_use == True:
+        session_books = db.session.query(LibrarySessionBook).filter(LibrarySessionBook.sessionId == session_id).all()
+        for session_book in session_books:
+            if session_book.book.stock == 0:
+                return get_status_object_json(False, None, BOOK_OUT_OF_STOCK), 400
+        db.session.query(Book).filter(Book.id.in_(session_books)).update({Book.stock: Book.stock - 1})
+    if session.inUse == True and in_use == False:
+        session_books = db.session.query(LibrarySessionBook.id).filter(LibrarySessionBook.sessionId == session_id).all()
+        db.session.query(Book).filter(Book.id.in_(session_books)).update({Book.stock: Book.stock + 1})
+    session.inUse = in_use
+
+    db.session.commit()
+    return get_status_object_json(True, session, None), 200
+
+@library_settings_routes.route('/library/session/<int:session_id>', methods=['DELETE'])
+def delete_session(session_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    session_book_ids = db.session.query(LibrarySessionBook.bookId).filter(LibrarySessionBook.sessionId == session_id).all()
+    db.session.query(Book).filter(Book.id.in_(session_book_ids)).update({Book.stock: Book.stock +1})
+    db.session.query(LibrarySessionBook).filter(LibrarySessionBook.sessionId == session_id).delete()
+    db.session.delete(session)
+    db.session.commit()
+    return get_status_object_json(True, None, None), 200
+
+# REST methods for LibrarySessionBook
+@library_settings_routes.route('/library/session/<int:session_id>/book', methods=['POST'])
+def add_book_to_session(session_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    book_id = request.form.get('bookId')
+    try:
+        book_id = int(book_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    book = db.session.query(Book).filter(Book.id == book_id).first()
+    if book is None:
+        return get_status_object_json(False, None, INVALID_ID), 404
+    if book.stock == 0 and session.inUse:
+        return get_status_object_json(False, None, BOOK_OUT_OF_STOCK), 400
+    if session.inUse:
+        book.stock -= 1
+    session_book = db.session.query(LibrarySessionBook).filter(LibrarySessionBook.sessionId == session_id, LibrarySessionBook.bookId == book_id).first()
+    if session_book is None:
+        return get_status_object_json(False, None, INVALID_ID), 404
+    
+    session_book = LibrarySessionBook(bookId=book_id, sessionId=session_id)
+    db.session.add(session_book)
+    db.session.commit()
+    return get_status_object_json(True, session_book, None), 200
+
+@library_settings_routes.route('/library/session/<int:session_id>/book', methods=['GET'])
+def get_all_books(session_id):
+    books = db.session.query(LibrarySessionBook).filter(LibrarySessionBook.sessionId == session_id).all()
+    return get_status_object_json(True, books, None), 200
+
+@library_settings_routes.route('/library/session/<int:session_id>/book/<int:book_id>', methods=['POST'])
+def update_book_session(session_id, book_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    try:
+        book_id = int(book_id)
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    book = db.session.query(Book).filter(Book.id == book_id).first()
+
+    if book == None:
+        return get_status_object_json(False, None, INVALID_ID), 404
+    if book.stock == 0 and session.inUse:
+        return get_status_object_json(False, None, BOOK_OUT_OF_STOCK), 400
+    session_book = db.session.query(LibrarySessionBook).filter(LibrarySessionBook.sessionId == session_id, LibrarySessionBook.bookId == book_id).first()
+    
+    if session.inUse:
+        book.stock -= 1
+    session_book = LibrarySessionBook(bookId=book_id, sessionId=session_id)
+    db.session.add(session_book)
+    db.session.commit()
+    return get_status_object_json(True, session_book, None), 200
+
+
+@library_settings_routes.route('/library/session/<int:session_id>/book/<int:book_id>', methods=['DELETE'])
+def delete_book_session(session_id, book_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    book = db.session.query(Book).filter(Book.id == book_id).first()
+    if book is None:
+        return get_status_object_json(False, None, INVALID_ID), 404
+    session_book = db.session(LibrarySessionBook).filter(LibrarySessionBook.sessionId == session_id, LibrarySessionBook.bookId == book_id).first()
+    if session_book is None:
+        return get_status_object_json(True, None, None), 202
+    if session.inUse:
+        book.stock += 1
+    db.session.delete(session_book)
+    db.session.commit()
+    return get_status_object_json(True, None, None), 200
+
+@library_settings_routes.route('/library/session/<int:session_id>/in-use', methods=['POST', 'PUT'])
+def set_session_in_use(session_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    books = db.session.query(Book).join(LibrarySessionBook, LibrarySessionBook.bookId == Book.id).filter(LibrarySessionBook.sessionId == session_id).all()
+    for book in books:
+        if book.stock == 0:
+            return get_status_object_json(False, None, BOOK_OUT_OF_STOCK), 409
+    session.inUse = True
+    for book in books:
+        book.stock -= 1
+    db.session.commit()
+    return get_status_object_json(True, session, None), 200 
+
+@library_settings_routes.route('/library/session/<int:session_id>/end', methods=['POST', 'PUT'])
+def set_session_end(session_id):
+    session = db.session.query(LibrarySession).filter(LibrarySession.id == session_id).first()
+    if session is None:
+        return get_status_object_json(False, None, SESSION_NOT_FOUND), 404
+    if session.inUse:
+        books = LibrarySessionBook.query.filter_by(sessionId=session_id).all()
+        for book in books:
+            book.book.stock += 1
+    session.inUse = False
+    db.session.commit()
+    return get_status_object_json(True, None, None), 200

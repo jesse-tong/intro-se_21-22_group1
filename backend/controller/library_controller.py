@@ -6,6 +6,7 @@ from global_vars.constants import *
 from global_vars.database_init import policies_db_path
 from utils.time_utils import sqlite_time_string_from_time_string as time_to_sqlite
 from controller.user_controller import get_current_user_role, check_user_authentication
+from models.user_book import LibrarySession, LibraryPlace, LibrarySessionBook
 from models.library_misc import Article
 from models.book_model import Book
 from global_vars.database_init import db

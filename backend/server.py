@@ -128,7 +128,7 @@ def create_app(test_config=None):
     def index(path):
         return render_template("index.html")
     
-    csrf.init_app(app)
+    #csrf.init_app(app)
     
     return app
 

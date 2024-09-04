@@ -21,6 +21,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div v-if="(i - 1) * 3 + (j - 1) > articles.length - 1">
+                                <div class="card mb-3" >
+                                    <img class="card-img-top" :src="emptyImage" style="height: 380px; background-image: linear-gradient(135deg, #e66465, #9198e5)"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

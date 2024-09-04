@@ -24,6 +24,9 @@ import ArticleListUser from './components/page_components/article_management_com
 import RecentEventArticleList from './components/page_components/article_management_components/RecentEventArticleList.vue';
 import SearchWebsitePage from './components/page_components/article_management_components/SearchWebsitePage.vue';
 import UserManagement from './components/page_components/user_management_components/UserManagement.vue';
+import PlaceList from './components/page_components/session_management_components/PlaceList.vue';
+import SessionList from './components/page_components/session_management_components/SessionList.vue';
+import SessionDetails from './components/page_components/session_management_components/SessionDetails.vue';
 
 const routes = [
   { 
@@ -84,6 +87,36 @@ const routes = [
         components: {
           default: ArticleManagement
         }
+      },
+      {
+        path: 'session/:sessionId',
+        components: {
+          default: SessionDetails
+        },
+        props: {
+          default: true
+        }
+      },
+      {
+        path: 'library-place/:placeId/session',
+        components: {
+          default: SessionList
+        },
+        props: {
+          default: true
+        }
+      },
+      {
+        path: 'library-place/session',
+        components: {
+          default: SessionList
+        },
+      },
+      {
+        path: 'library-place',
+        components: {
+          default: PlaceList
+        },
       },
       {
         path: 'login',

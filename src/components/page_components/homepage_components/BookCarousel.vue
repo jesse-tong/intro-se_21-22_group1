@@ -32,6 +32,7 @@
                                     <small class="flex-fill text-center py-2"><i class="bi bi-bookmark me-2"></i><div class="sr-only">ISBN</div>{{$props.books[(i - 1) * 3 + (j - 1)].isbn}}</small>
                                 </div>
                             </div>
+                            
                         </div>
 
                         
@@ -54,13 +55,14 @@
 import { RouterLink } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-
+import emptyImage from '../../../assets/empty_image.png';
 export default {
   props: {
     books: {
       type: Array,
       required: true,
-      default: []
+      default: [],
+      emptyImage
     },
     imgHeight: {
       type: Number,
