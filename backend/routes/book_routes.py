@@ -473,3 +473,11 @@ def import_books():
         else:
             failed_add.append({'index': index, 'error': error})
     return get_status_object_json(True, {'success': success_add, 'failed': failed_add}, None), 200
+
+@book_routes.route('/api/genre-to-id/<genre>', methods=['GET'])
+def genre_to_id(genre):
+    if request.method == 'GET':
+        genre_id = db.session.query(Genre).filter(Genre.name.ilike(genre)).first()
+        if genre_id == None:
+            return get_status_object_json(True, None, None), 200
+        return get_status_object_json(True, genre_id.id, None), 200
