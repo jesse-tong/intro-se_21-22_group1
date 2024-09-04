@@ -99,6 +99,13 @@ import GetBookByAuthorOrGenreId from './GetBookByAuthorOrGenreId.vue';
         },
         created(){
             document.title = "Book by genres";
+            if (this.$route.query.genre){
+                axios.get('/api/genre-to-id/' + this.$route.query.genre).then(response=>{
+                    if (response.data && response.data.success && response.data.success === true){
+                        this.selectedId = response.data.result;
+                    }
+                }).catch(err=>{}).finally(()=>{});
+            }
         }
     }
 </script>

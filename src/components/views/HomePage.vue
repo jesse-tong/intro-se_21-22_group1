@@ -43,6 +43,69 @@
                 </div>
             </div>
         </div>
+        <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Books by Genre</h5>
+        <div class="row row-cols-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 mt-2 rounded-4 mx-3 border py-2 shadow-sm">
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Arts" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/palette.svg" class="icon" alt="Arts book category" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Arts</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Biographies" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/book-cover.svg" class="icon" alt="Biographies" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Biographies</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Recipes" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/chef-toque.svg" class="icon" alt="Recipes" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Recipes</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Medicine" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/caduceus.svg" class="icon" alt="Medicine" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Medicine</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Plays" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/drama-masks.svg" class="icon" alt="Plays" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Plays</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Musical" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/harp.svg" class="icon" alt="Musical" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Musical</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Romance" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/love-letter.svg" class="icon" alt="Romance" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Romance</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Science Fiction" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/ufo.svg" class="icon text-center" alt="Science Fiction" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Science Fiction</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Science" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/microscope.svg" class="icon m-auto" alt="Science" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Science</i></p>
+                </RouterLink>
+            </div>
+            <div class="col">
+                <RouterLink to="/book/by-genre?genre=Fantasy" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+                    <img src="/src/assets/icons/tower-flag.svg" class="icon" alt="Fantasy" style="width: 50px; height: 50px;"/>
+                    <p class="text-center text-secondary"><i>Fantasy</i></p>
+                </RouterLink>
+            </div>
+        </div>
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Latest library articles</h5>
         <ArticleCarousel :articles="latestArticles" :carouselId="'latestArticles'"/>
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Highest rating books</h5>
@@ -142,8 +205,6 @@
     import "leaflet/dist/leaflet.css";
     import markerIconPng from "leaflet/dist/images/marker-icon.png"
     import * as L from 'leaflet';
-import { RouterLink } from 'vue-router';
-
 
 
     export default {

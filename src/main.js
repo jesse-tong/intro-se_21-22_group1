@@ -67,7 +67,7 @@ router.beforeEach(async (to, from) => {
       // make sure the user is authenticated
       !accountStore.isAdmin &&
       //Check if the page is an admin-only one, avoid an infinite redirect
-      to.fullPath.includes('/admin/') && to.name !== 'Login'
+      (to.fullPath.includes('/admin/') || to.fullPath.includes('/library-place')) && to.name !== 'Login'
     ) {
       // notifies user that the page is admin-only redirect the user to the login page
       notify.notify({
