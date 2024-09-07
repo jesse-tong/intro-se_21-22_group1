@@ -15,8 +15,8 @@ export const useAccountStore = defineStore('account', {
                 return false;
             }
         },
-        loggedIn: (state) => (state.userId !== null && state.isRestricted === false),
-        notLoggedIn: (state) => (state.userId === null || state.isRestricted === true),
+        loggedIn: (state) => (state.userId !== null ),
+        notLoggedIn: (state) => (state.userId === null),
         isLoginRemember: (state) => (state.userId !== null && localStorage.getItem('userId') === state.userId)
     },
     actions: {

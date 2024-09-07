@@ -77,24 +77,26 @@
             <button class="btn btn-primary" @click="updateSession">Update session</button>
             <h5>Search user</h5>
             <SearchUser @search-user="onSearchUserButtonClicked" v-model:searchUserId="searchUserId" v-model:searchUserEmail="searchUserEmail" v-model:searchUserName="searchUserName"/>
-            <table class="table table-responsive-lg mt-3 rounded">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody >
-                    <tr v-for="user in searchResultUser" v-if="session !== null" >
-                        <th class="bg-light-subtle">{{user.id }}</th> 
-                        <td class="bg-light-subtle">{{ user.name }}</td>
-                        <td class="bg-light-subtle">{{ user.email }}</td>
-                        <td class="bg-light-subtle"><button class="btn btn-primary" @click="changeSessionUser(user.id)">Change session user</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive-lg mt-3 rounded">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr v-for="user in searchResultUser" v-if="session !== null" >
+                            <th class="bg-light-subtle">{{user.id }}</th> 
+                            <td class="bg-light-subtle">{{ user.name }}</td>
+                            <td class="bg-light-subtle">{{ user.email }}</td>
+                            <td class="bg-light-subtle"><button class="btn btn-primary" @click="changeSessionUser(user.id)">Change session user</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div v-if="editing === true && session !== null">
             <h5>Add book to session</h5>
