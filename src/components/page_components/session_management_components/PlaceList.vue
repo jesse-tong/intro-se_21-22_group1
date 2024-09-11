@@ -52,8 +52,8 @@
         </template>
     </Modal>
     <div class="container">
-        <div class="d-flex justify-content-between mb-2">
-            <h3>Library Place List</h3>
+        <div class="d-flex justify-content-between mb-2 mt-3">
+            <h4 class="section-title bg-light-subtle text-primary px-3">Library Place List</h4>
             <div>
                 <button class="btn btn-primary me-3" @click="getPlaceList">Refresh</button>
                 <button class="btn btn-outline-primary" @click="onCreatePlaceButtonClicked">Create Place</button>
@@ -94,7 +94,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#" @click="deleteModalButtonSelected(libraryPlace.id)">Delete place</a></li>
                                         <li><a class="dropdown-item" href="#" @click="createSessionButtonSelected(libraryPlace.id)">Create session here</a></li>
-                                        <li><RouterLink class="dropdown-item" :to="'/library-place/' + libraryPlace.id + '/session'">Sessions</RouterLink></li>
+                                        <li><RouterLink class="dropdown-item" :to="'/admin/library-place/' + libraryPlace.id + '/session'">Sessions</RouterLink></li>
                                     </ul>
                                 </div>
                             </div>

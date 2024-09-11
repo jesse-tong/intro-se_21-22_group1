@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container mt-3">
         <div class="d-flex justify-content-between mb-2">
-            <h3>Session List</h3>
-            <RouterLink class="btn btn-primary" to="/library-place"><< Return</RouterLink>
+            <h4 class="section-title bg-light-subtle text-primary px-3">Session List</h4>
+            <RouterLink class="btn btn-primary" to="/admin/library-place"><< Return</RouterLink>
         </div>
         <hr />
         <div class="shadow-sm mt-3 px-3 py-3">
@@ -30,7 +30,7 @@
                         <div class="card-footer">
                             <div class="row row-cols-2">
                             <div class="col text-center">
-                                <RouterLink :to="'/session/' + session.id" class="text-decoration-none"><p>Session details</p></RouterLink>
+                                <RouterLink :to="'/admin/library-place/session/' + session.id" class="text-decoration-none"><p>Session details</p></RouterLink>
                             </div>
                             <div class="col text-center">
                                 <a href="#" @click="endSession(session.id)" class="text-decoration-none" v-if="session.inUse === true"><p>End session</p></a>

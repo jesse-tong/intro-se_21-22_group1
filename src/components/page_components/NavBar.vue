@@ -79,7 +79,7 @@
                   <li class="dropdown-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/policies-settings" @click="closeSidebar">Policies/contacts settings</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/article-management" @click="closeSidebar">Article management</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/user-management" @click="closeSidebar">User management</RouterLink></li>
-                  <li class="dropdown-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/library-place" @click="closeSidebar">Library location/session management</RouterLink></li>
+                  <li class="dropdown-item" v-if="accountStore.isAdmin"><RouterLink class="nav-link" to="/admin/library-place" @click="closeSidebar">Library location/session management</RouterLink></li>
                 </ul>
               </li>
 

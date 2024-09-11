@@ -27,7 +27,7 @@ import UserManagement from './components/page_components/user_management_compone
 import PlaceList from './components/page_components/session_management_components/PlaceList.vue';
 import SessionList from './components/page_components/session_management_components/SessionList.vue';
 import SessionDetails from './components/page_components/session_management_components/SessionDetails.vue';
-
+import AdminLayout from './components/common/AdminLayout.vue';
 const routes = [
   { 
     path: '/', 
@@ -65,58 +65,79 @@ const routes = [
         }
       },
       {
-        path: 'admin/manage-borrow',
+        path: 'admin/',
         components: {
-          default: BorrowManagement
-        }
-      },
-      {
-        path: 'admin/manage-books',
-        components: {
-          default: BookManagement
-        }
-      },
-      {
-        path: 'admin/policies-settings',
-        components: {
-          default: LibraryPoliciesSettings
-        }
-      },
-      {
-        path: 'admin/article-management',
-        components: {
-          default: ArticleManagement
-        }
-      },
-      {
-        path: 'session/:sessionId',
-        components: {
-          default: SessionDetails
+          default: AdminLayout
         },
-        props: {
-          default: true
-        }
-      },
-      {
-        path: 'library-place/:placeId/session',
-        components: {
-          default: SessionList
-        },
-        props: {
-          default: true
-        }
-      },
-      {
-        path: 'library-place/session',
-        components: {
-          default: SessionList
-        },
-      },
-      {
-        path: 'library-place',
-        components: {
-          default: PlaceList
-        },
+        children: [
+          {
+            path: 'manage-borrow',
+            components: {
+              default: BorrowManagement
+            }
+          },
+          {
+            path: 'manage-books',
+            components: {
+              default: BookManagement
+            }
+          },
+          {
+            path: 'policies-settings',
+            components: {
+              default: LibraryPoliciesSettings
+            }
+          },
+          {
+            path: 'article-management',
+            components: {
+              default: ArticleManagement
+            }
+          },
+          
+          {
+            path: 'reports',
+            components: {
+              default: ReportPage
+            }
+          },
+          {
+            path: 'user-management',
+            components: {
+              default: UserManagement
+            }
+          },
+          {
+            path: 'library-place/:placeId/session',
+            components: {
+              default: SessionList
+            },
+            props: {
+              default: true
+            }
+          },
+          {
+            path: 'library-place/session',
+            components: {
+              default: SessionList
+            },
+          },
+          {
+            path: 'library-place',
+            components: {
+              default: PlaceList
+            },
+          },
+          {
+            path: 'library-place/session/:sessionId',
+            components: {
+              default: SessionDetails
+            },
+            props: {
+              default: true
+            }
+          },
+        ],
       },
       {
         path: 'login',
@@ -195,18 +216,7 @@ const routes = [
           default: LibraryPolicyPage
         }
       },
-      {
-        path: 'admin/reports',
-        components: {
-          default: ReportPage
-        }
-      },
-      {
-        path: 'admin/user-management',
-        components: {
-          default: UserManagement
-        }
-      },
+      
       {
         path: '',
         components: {

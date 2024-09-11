@@ -84,13 +84,13 @@
             <div class="col-md-3 ">
               <div class="form-group">
                 <label for="editedBorrowId">Editing Borrow ID:</label>
-                <input v-model="editedBorrowId" type="text" class="form-control" id="editedBorrowId" disabled>
+                <input v-model="editedBorrowId" type="text" class="form-control" id="editedBorrowId" readonly>
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="editedUserId">Editing User ID:</label>
-                <input v-model="editedUserId" type="text" class="form-control" id="editedUserId" disabled>
+                <input v-model="editedUserId" type="text" class="form-control" id="editedUserId" readonly>
               </div>
             </div>
             <div class="col-md-4">
@@ -147,19 +147,19 @@
             <div class="col-md-3 ">
               <div class="form-group">
                 <label for="selectedUserId">Selected User ID:</label>
-                <input v-model="selectedUserId" type="text" class="form-control" id="selectedUserId" disabled>
+                <input v-model="selectedUserId" type="text" class="form-control" id="selectedUserId" readonly>
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="selectedUserName">Selected User Name:</label>
-                <input v-model="selectedUserName" type="text" class="form-control" id="selectedUserName" disabled>
+                <input v-model="selectedUserName" type="text" class="form-control" id="selectedUserName" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="selectedUserEmail">Selected User Email:</label>
-                <input v-model="selectedUserEmail" type="text" class="form-control" id="selectedUserEmail" disabled>
+                <input v-model="selectedUserEmail" type="text" class="form-control" id="selectedUserEmail" readonly>
               </div>
             </div>
           </div>
@@ -168,19 +168,19 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label for="selectedBookId">Selected Book:</label>
-                <input v-model="selectedBookId" type="text" class="form-control" id="selectedBookId" disabled>
+                <input v-model="selectedBookId" type="text" class="form-control" id="selectedBookId" readonly>
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="selectedBookTitle">Selected Book title:</label>
-                <input v-model="selectedBookTitle" type="text" class="form-control" id="selectedBookTitle" disabled>
+                <input v-model="selectedBookTitle" type="text" class="form-control" id="selectedBookTitle" readonly>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="selectedBookIsbn">Selected Book ISBN:</label>
-                <input v-model="selectedBookIsbn" type="text" class="form-control" id="selectedBookIsbn" disabled>
+                <input v-model="selectedBookIsbn" type="text" class="form-control" id="selectedBookIsbn" readonly>
               </div>
             </div>
             

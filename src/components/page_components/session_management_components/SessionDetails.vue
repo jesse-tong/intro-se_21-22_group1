@@ -1,8 +1,8 @@
 <template>
 
-<div class="container">
+<div class="container mt-3">
     <div class="d-flex justify-content-between mb-2">
-        <h4>Session details</h4>
+        <h4 class="section-title bg-light-subtle text-primary px-3">Session Details</h4>
         <button class="btn btn-primary" @click="editing = !editing">Edit</button>
     </div>
     <hr />

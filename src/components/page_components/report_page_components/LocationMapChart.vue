@@ -2,6 +2,7 @@
     <div class="card">
         <div class="card-header">
             <h6>{{ 'Page view by country' }}</h6>
+            <a href='https://db-ip.com' class="text-secondary text-decoration-none">IP Geolocation by DB-IP</a>
         </div>
         <div class="card-body">
             <Choropleth :chart-data="chartData" :options="options" v-if="loaded" />

@@ -31,54 +31,54 @@
         <div class="col-12 col-md-4">
             <div class=" mb-2">
                 <label for="userId" class="form-label"><span>User ID: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.userId : 'N/A' " class="form-control" id="userId"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.userId : 'N/A' " class="form-control" id="userId"/>
             </div>
             <div class=" mb-2">
                 <label for="userEmail" class="form-label"><span>Email: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.email : 'N/A'" class="form-control" id="userEmail"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.email : 'N/A'" class="form-control" id="userEmail"/>
             </div>
             <div class=" mb-2">
                 <label for="userName" class="form-label"><span>Username: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.name : 'N/A'" class="form-control" id="userName"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.name : 'N/A'" class="form-control" id="userName"/>
             </div>
             <div class=" mb-2">
                 <label for="userAddress" class="form-label"><span>Address: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.address : 'N/A'" class="form-control" id="userAddress"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.address : 'N/A'" class="form-control" id="userAddress"/>
             </div>
             
             <div class=" mb-2">
                 <label for="userRole" class="form-label"><span>Account role: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.role : 'N/A'" class="form-control" id="userRole"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.role : 'N/A'" class="form-control" id="userRole"/>
             </div>
             <div class=" mb-2">
                 <label for="alternatePhone" class="form-label"><span>Alternate phone number: </span></label>
-                <input type="text" disabled :value="userInfo.alternatePhone ? userInfo.alternatePhone : 'N/A'" class="form-control" id="userRole"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo.alternatePhone ? userInfo.alternatePhone : 'N/A'" class="form-control" id="userRole"/>
             </div>
         </div>
         <div class="col-12 col-md-4">
             <div class=" mb-2">
                 <label for="userAge" class="form-label"><span>Age: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.age : 'N/A'" class="form-control" id="userAge"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.age : 'N/A'" class="form-control" id="userAge"/>
             </div>
             <div class="mb-2">
                 <label for="userGender" class="form-label"><span>Gender: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? (userInfo.gender ? userInfo.gender : 'Prefer not to say') : 'N/A' " class="form-control" id="userGender"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? (userInfo.gender ? userInfo.gender : 'Prefer not to say') : 'N/A' " class="form-control" id="userGender"/>
             </div>
             <div class=" mb-2">
                 <label for="userPhoneNumber" class="form-label"><span>Phone number: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.phone: 'N/A'" class="form-control" id="userPhoneNumber"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.phone: 'N/A'" class="form-control" id="userPhoneNumber"/>
             </div>
             <div class=" mb-2">
                 <label for="isAccountVerified" class="form-label"><span>Is account verified: </span></label>
-                <input type="text" disabled :value="userInfo !== null ? userInfo.isVerified: 'N/A'" class="form-control" id="isAccountVerified"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo !== null ? userInfo.isVerified: 'N/A'" class="form-control" id="isAccountVerified"/>
             </div>
             <div class=" mb-2">
                 <label for="alternateEmail" class="form-label"><span>Alternate email: </span></label>
-                <input type="text" disabled :value="userInfo.alternateEmail ? userInfo.alternateEmail : 'N/A'" class="form-control" id="alternateEmail"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo.alternateEmail ? userInfo.alternateEmail : 'N/A'" class="form-control" id="alternateEmail"/>
             </div>
             <div class=" mb-2">
                 <label for="zipCode" class="form-label"><span>Zip code: </span></label>
-                <input type="text" disabled :value="userInfo.zipCode ? userInfo.zipCode : 'N/A'" class="form-control" id="zipCode"/>
+                <input type="text" readonly aria-readonly="true" :value="userInfo.zipCode ? userInfo.zipCode : 'N/A'" class="form-control" id="zipCode"/>
             </div>
             <!--<div class=" mb-2">
                 <label for="userBorrowCount" class="form-label"><span>Borrow: </span></label>
