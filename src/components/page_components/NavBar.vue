@@ -3,7 +3,7 @@
   <nav class="navbar navbar-bottom-border navbar-expand-xl bg-light-subtle navbar-light shadow sticky-top p-0">
         <RouterLink to="/" class="navbar-brand d-flex align-items-center px-3 px-xl-3 py-0">
             <img src="/src/assets/EasyLib.svg" height="50" width="50" alt="EasyLib logo">
-            <h3 class="m-0 text-primary">EasyLib</h3>
+            <h3 class="m-0 text-primary">EasyLMS</h3>
         </RouterLink>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
             <span class="navbar-toggler-icon"></span>

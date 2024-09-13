@@ -4,7 +4,7 @@
       <div class="col mb-3 ps-4">
         <RouterLink class="d-flex align-items-center mb-1 link-body-emphasis text-decoration-none" to="/">
           <img :src="EasyLibLogo" height="70" width="70" alt="EasyLib logo" />
-          <h4 class="ms-2">EasyLib</h4>
+          <h4 class="ms-2">EasyLMS</h4>
         </RouterLink>
         <p class=" text-body-secondary">© 2024 
             <a href="https://github.com/jesse-tong/intro-se_21-22_group1" class="text-decoration-none"><span>Group 1</span></a>
@@ -12,7 +12,7 @@
       </div>
       <div class="col mb-3"></div>
       <div class="col mb-3">
-        <h5 class="ms-2">About EasyLib</h5>
+        <h5 class="ms-2">About EasyLMS</h5>
         <ul class="col">
             <li class="nav-item"><RouterLink to="/" class="nav-link"><span>Home</span></RouterLink></li>
             <li class="nav-item"><RouterLink to="/library-policies" class="nav-link"><span>Library policies</span></RouterLink></li>

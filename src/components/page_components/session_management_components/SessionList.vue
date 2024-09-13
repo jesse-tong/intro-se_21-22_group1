@@ -63,6 +63,7 @@ import { RouterLink } from 'vue-router';
     });
     onBeforeMount(() => {
         getSessionList();
+        document.title = 'Session List';
     });
     const notify = useNotification();
     const markInUse = (sessionId) => {

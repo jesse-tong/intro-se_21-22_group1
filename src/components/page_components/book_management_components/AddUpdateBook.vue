@@ -65,7 +65,7 @@
                     </div>
                     <div class="row-6 mt-3 ms-1">
                         <span>Authors: </span>
-                        <h6 class="badge text-bg-secondary" data-testid="authorBadge" v-for="author in authors">{{ author }}</h6>
+                        <h6 class="badge text-bg-secondary me-1" data-testid="authorBadge" v-for="author in authors">{{ author }}</h6>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="row-6 mt-3 ms-1">
                         <span>Genres: </span>
-                        <h6 class="badge text-bg-secondary" data-testid="genreBadge" v-for="genre in genres">{{ genre }}</h6>
+                        <h6 class="badge text-bg-secondary me-1" data-testid="genreBadge" v-for="genre in genres">{{ genre }}</h6>
                     </div>
                 </div>
             </div>
@@ -110,7 +110,7 @@
                     <div class="row-6 mt-3 ms-1">
                         <div>
                             <span><h6>Languages: </h6></span>
-                            <h6 class="badge text-bg-secondary" data-testid="languageBadge" v-for="language in languages">{{ language }}</h6>
+                            <h6 class="badge text-bg-secondary me-1" data-testid="languageBadge" v-for="language in languages">{{ language }}</h6>
                         </div>     
                     </div>
                 </div>

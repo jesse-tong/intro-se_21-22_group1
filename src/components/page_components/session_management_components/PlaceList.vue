@@ -139,6 +139,7 @@
 
     onBeforeMount(() => {
         getPlaceList();
+        document.title = 'Library Place List';
     });
     const getPlaceList = () => {
         axios.get('/library/place').then((response) => {

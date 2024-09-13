@@ -1,12 +1,11 @@
 <template>
     <div class="col max-width-vh-100 mt-3 border-2 rounded">
         <h4 class="row-1">Update image:</h4>
-        <img alt="" :src="newImage" class="row-9" @error="setEmptyImage" style="max-width: 300px; max-height: 100vh;" v-if="newImage !== null && newImage !== ''"/>
-        <img alt="" :src="apiSite + '/image/' + $props.bookId + '?id=' + getRandomUuid || emptyImage" class="row-9" @error="setEmptyImage" style="max-width: 300px; max-height: 100vh;" v-else/>
+        <img alt="" :src="newImage" class="row-9" @error="setEmptyImage" style="max-width: 100%; max-height: 100vh;" v-if="newImage !== null && newImage !== ''"/>
+        <img alt="" :src="apiSite + '/image/' + $props.bookId + '?id=' + getRandomUuid || emptyImage" class="row-9" @error="setEmptyImage" style="max-width: 100%; max-height: 100vh;" v-else/>
         <input accept="image/*" type="file" @change="previewFiles($event)" class="row-1 my-2 ms-2 ms-lg-0"/>
         <button class="btn btn-primary row" @click="updateImage"><span>Update book image</span></button>
     </div>
- 
 </template>
 
 <script>

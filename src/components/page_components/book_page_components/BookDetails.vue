@@ -150,7 +150,7 @@
           this.getRating(this.$props.bookId);
           this.getRelatedBooksByBorrow(this.$props.bookId);
           this.getFavoriteCount();
-          document.title = 'Book: ' + this.book.title;
+          
         },
         methods: {
           getBookData(bookId){
@@ -165,7 +165,8 @@
                   return;
                 }
                 if (response.data.success == true){
-                  this.book = response.data.result
+                  this.book = response.data.result;
+                  document.title = 'Book: ' + this.book.title;
                 }else {
                   this.$router.push({name: 'not-found-inner'});
                 }
