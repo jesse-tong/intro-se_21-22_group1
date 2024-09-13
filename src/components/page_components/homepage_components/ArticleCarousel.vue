@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css';
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import { v4 as uuidv4 } from 'uuid';
 import emptyImage from '../../../assets/empty_image.png';
 
@@ -67,15 +67,15 @@ export default {
             // 1024 and up
             1024: {
                 itemsToShow: 3,
-                snapAlign: 'center',
+                snapAlign: 'start',
             },
             1200: {
                 itemsToShow: 4,
-                snapAlign: 'center',
+                snapAlign: 'start',
             },
             1680: {
                 itemsToShow: 5,
-                snapAlign: 'center',
+                snapAlign: 'start',
             }
         }
     };
