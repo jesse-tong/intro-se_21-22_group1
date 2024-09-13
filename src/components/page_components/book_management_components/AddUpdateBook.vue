@@ -8,7 +8,7 @@
         <h4 v-if="$props.bookId !== null || $props.isEditPage === true" class="mb-2 mt-3 section-title bg-light-subtle">Update book data</h4>
         <h4 v-else class="mb-2 mt-3 section-title bg-light-subtle">Add book</h4>
         <div class="row">
-            <div v-if="$props.bookId !== null" class="col-12 col-md-6 col-lg-4">
+            <div v-if="$props.bookId !== null" class="col-12 col-md-6 col-xl-4">
                 <div class="input-group my-2">
                     <label for="editBookId" class="input-group-text" v-if="$props.bookId !== null"><span>Book ID: </span></label>
                     <input type="text" :value="bookId" @input="$emit('update:bookId', $event.target.value)" 
@@ -16,13 +16,13 @@
                 </div>
                 
             </div>
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-xl-4">
                 <div class="input-group my-2">
                     <label for="editBookISBN" class=" input-group-text"><span>ISBN:</span></label>
                     <input type="text" v-model="bookIsbn" id="editBookISBN" class="form-control"/>
                 </div> 
             </div>
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6 col-xl-4">
                 <div class="input-group my-2">
                     <label for="editBookStock" class="input-group-text"><span>Book stock in library: </span></label>
                     <input type="number" min="0" max="1000" id="editBookStock" v-model="stock" class="form-control"/>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-lg-6">
                 <div class="input-group my-2">
                     <label for="editPublishYear" class="input-group-text"><span>Publish year:</span></label>
                     <input type="number" v-model.number="publishYear" min="-2000" max="3000" id="editPublishYear" class="form-control"/>
