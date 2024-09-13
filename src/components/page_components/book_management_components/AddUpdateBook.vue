@@ -47,8 +47,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-12">
-                <div class="col border border-2 rounded p-3 mt-2 mt-lg-0">
+            <div class="col-xl-4 col-12">
+                <div class="col border border-2 rounded p-3 mt-2 mt-xl-0">
                     <div class="row-6 mt-2">
                         <div class="col-rows-3">
                             <label for="editAuthor" class="form-label"><h5>Add author</h5></label>
@@ -69,8 +69,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-12">
-                <div class="col border border-2 rounded p-3 mt-2 mt-lg-0">
+            <div class="col-xl-4 col-12">
+                <div class="col border border-2 rounded p-3 mt-2 mt-xl-0">
                     <div class="row-6 mt-2">
                         <div class="col-rows-3">
                             <label for="editGenre" class="form-label mx-2"><h5>Add genre</h5></label>
@@ -91,8 +91,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-12">
-                <div class="col border border-2 rounded p-3 mt-2 mt-lg-0">
+            <div class="col-xl-4 col-12">
+                <div class="col border border-2 rounded p-3 mt-2 mt-xl-0">
                     <div class="row-6 mt-2">
                         <div class="col-rows-3">
                             <label for="editLanguage" class="form-label mx-2"><h5>Add language</h5></label>
