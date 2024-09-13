@@ -35,7 +35,7 @@ CREATE TABLE `alembic_version` (
 LOCK TABLES `alembic_version` WRITE;
 /*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
 INSERT INTO `alembic_version` VALUES
-('8f930c6345ff');
+('a0cb5c19c077');
 /*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,8 +53,9 @@ CREATE TABLE `article` (
   `date` datetime DEFAULT NULL,
   `category` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `note` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `thumbnail` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,9 +65,10 @@ CREATE TABLE `article` (
 LOCK TABLES `article` WRITE;
 /*!40000 ALTER TABLE `article` DISABLE KEYS */;
 INSERT INTO `article` VALUES
-(1,'Introduction to Meditation','- Tuesdays at 10 a.m.\r\n- Location: Regional Branch Library\r\n- Type: Online\r\n- Audience:Adults\r\n- Category: Health & Wellness\r\n- Language: English\r\n\r\nRSVP:\r\n\r\nPlease email abc@easylib.com for the Zoom meeting link.\r\nDescription:\r\n\r\nJoin us via Zoom to experience a variety of calming meditation techniques presented by instructor Staci Mintz.\r\n \r\n\r\nFor ADA accommodations, call (213) 228-7430 at least 72 hours prior to the event.\r\n\r\nPara ajustes razonables según la ley de ADA, llama al (213) 228-7430 al menos 72 horas antes del evento.\r\n','2024-07-16 11:23:24','Event','Tuesdays at 10 a.m. - Location: Regional Branch Library'),
-(2,'New UI','This is the new UI for EasyLib 1.0.1, with a more modern UI.\r\n\r\nHowever, one of the regressions is dark mode can no longer work well.','2024-08-20 14:45:23','Library Update',NULL),
-(7,'Kaleidoscope Play & Learn @ Columbia Branch / በኮሎምቢያ የህዝብ ቤተ መጽሕፍ የካሊዶስኮፕ ጨዋታ እና ትምህርት ፕሮግራም','![DgDmZqnI9BRWvNdBMGJ28LYN.jpg](https://easylib.jesse-tong.work/uploaded-image/9 \"DgDmZqnI9BRWvNdBMGJ28LYN.jpg\")\r\n\r\nChildren listen to multilingual stories, sing songs and do simple crafts with their caregivers during the group time.\r\n\r\nThis program will be co-facilitated in English and አማርኛ (Amharic).\r\n------------------------------------------------------------------------------------------------------\r\n\r\nበዚህ ጊዜ ልጆች በቡድን የተለያዩ ታሪኮችን ይሰማሉ፣ ሙዚቃ ይዘፍናሉ እንዲሁም ከቤተሰቦቻቸዉ ወይም ከአሳዳጊዎቻቸዉ ጋር ቀላል እደ-ጥበብ ወይም ስእል ይስላሉ።\r\n\r\nይህ ፕሮግራም በእንግሊዘኛ እና በአማርኛ በጋራ የሚዘጋጅ ይሆናል።\r\n\r\nለመሳተፍ ወይም ለመምጣት ምዝገባ አያስፈልግም።\r\n\r\nColumbia Branch\r\nRegistration is not required.\r\nabout-AM-EN\r\nKaleidoscope play and learn offers a chance for children and their families to come play and have a good time. \r\n\r\nThere is also a play time for children to explore various toys and play activities.\r\n\r\nChildren learn and explore the use of art, music, toys and more. Families learn about their child\'s development and community resources available to them.\r\n\r\nThanks to our partner Denise Louie Education Center.\r\n\r\n-----------------------------------------------------\r\n\r\nየካሊዶስኮፕ ጨዋታ እና ትምህርት ክፍለ ጊዜ ልጆች እና ቤተሰቦቻቸው መጥተዉ በቡድን\r\n\r\nእንዲጫወቱ እና ጥሩ ጊዜ እንዲያሳልፉ እድል ይሰጣል።\r\n\r\nበተጨማሪም ልጆች በተለያዩ አሻንጉሊቶች እና የጨዋታ አይነቶች የሚጫወቱበት ሰዓት ተካቷል።\r\n\r\nልጆች ጥበብን፣ ሙዚቃን፣ መጫወቻዎችን ወይም አሻንጉሊቶችን እና የመሳሰሉትን ጠቀሜታቸዉን ይማራሉ በተጨማሪም ይመራመራሉ። ቤተሰቦች ስለልጆቻቸው እድገት እና ለእነሱ ስላሉ የህዝብ ሀብቶች ይማራሉ ያዉቃሉ ።\r\n\r\nየዚህ ፕሮግራም አዘጋጅ  ባልደረባችን Denise Louie Education Center/ ዴኒዝ ሉዊ የትምህርት ማእከል/  እናመሰግናለን።\r\ninformation-AM-EN\r\nThis group is open to children of all abilities, ages 0 to 5 years old.\r\n\r\n-----------------------------------------------------\r\n\r\nይህ ፕሮግራም እድሜያቸው ከ0ወር እስከ 5 አመት ለሆኑ ህጻናት ለሁሉም ክፍት ነው።\r\ncontact-AM-EN\r\nIf you have questions about this event, Ask Us or call 206-386-4636.\r\n\r\n-----------------------------------------------------\r\n\r\nበፕሮግራሙ ላይ አስተያየቶች እና ጥያቄዎች ካሉዎት ይጠይቁን ወይም በስልክ ቁጥር  206-386-4636 ይደውሉልን።\r\naccessibility-AM-EN\r\nWe can provide accommodations for people with disabilities at Library events. Please contact LEAP at least seven days before the event to request accommodations.\r\n\r\n-----------------------------------------------------\r\n\r\nበቤተ መጽሐፍ ዝግጅቶች ላይ ለአካል ጉዳተኞች ማረፊያ ቦታ እንሰጣለን። እባክዎ ከፈለጉ ዝግጅቱ ከመድረሱ ከሰባት ቀናት በፊት   LEAPን ያግኙ ። በስልክ ቁጥር  206-615-1380 ወይም በኢሜይል leap@spl.org ማግኘት ይችላሉ።','2024-08-25 20:07:43','Event','Monday, August 26, 2024, 10:30 a.m. – 12 p.m.');
+(1,'Introduction to Meditation','- Tuesdays at 10 a.m.\r\n- Location: Regional Branch Library\r\n- Type: Online\r\n- Audience:Adults\r\n- Category: Health & Wellness\r\n- Language: English\r\n\r\nRSVP:\r\n\r\nPlease email abc@easylib.com for the Zoom meeting link.\r\nDescription:\r\n\r\nJoin us via Zoom to experience a variety of calming meditation techniques presented by instructor Staci Mintz.\r\n \r\n\r\nFor ADA accommodations, call (213) 228-7430 at least 72 hours prior to the event.\r\n\r\nPara ajustes razonables según la ley de ADA, llama al (213) 228-7430 al menos 72 horas antes del evento.\r\n','2024-07-16 11:23:24','Event','Tuesdays at 10 a.m. - Location: Regional Branch Library',NULL),
+(2,'New UI','This is the new UI for EasyLib 1.0.1, with a more modern UI.\r\n\r\nHowever, one of the regressions is dark mode can no longer work well.','2024-08-20 14:45:23','Library Update',NULL,'https://easylib.jesse-tong.work/uploaded-image/10'),
+(7,'Kaleidoscope Play & Learn @ Columbia Branch','![DgDmZqnI9BRWvNdBMGJ28LYN.jpg](https://easylib.jesse-tong.work/uploaded-image/9 \"DgDmZqnI9BRWvNdBMGJ28LYN.jpg\")\r\n\r\nChildren listen to multilingual stories, sing songs and do simple crafts with their caregivers during the group time.\r\n\r\nThis program will be co-facilitated in English and አማርኛ (Amharic).\r\n------------------------------------------------------------------------------------------------------\r\n\r\nበዚህ ጊዜ ልጆች በቡድን የተለያዩ ታሪኮችን ይሰማሉ፣ ሙዚቃ ይዘፍናሉ እንዲሁም ከቤተሰቦቻቸዉ ወይም ከአሳዳጊዎቻቸዉ ጋር ቀላል እደ-ጥበብ ወይም ስእል ይስላሉ።\r\n\r\nይህ ፕሮግራም በእንግሊዘኛ እና በአማርኛ በጋራ የሚዘጋጅ ይሆናል።\r\n\r\nለመሳተፍ ወይም ለመምጣት ምዝገባ አያስፈልግም።\r\n\r\nColumbia Branch\r\nRegistration is not required.\r\nabout-AM-EN\r\nKaleidoscope play and learn offers a chance for children and their families to come play and have a good time. \r\n\r\nThere is also a play time for children to explore various toys and play activities.\r\n\r\nChildren learn and explore the use of art, music, toys and more. Families learn about their child\'s development and community resources available to them.\r\n\r\nThanks to our partner Denise Louie Education Center.\r\n\r\n-----------------------------------------------------\r\n\r\nየካሊዶስኮፕ ጨዋታ እና ትምህርት ክፍለ ጊዜ ልጆች እና ቤተሰቦቻቸው መጥተዉ በቡድን\r\n\r\nእንዲጫወቱ እና ጥሩ ጊዜ እንዲያሳልፉ እድል ይሰጣል።\r\n\r\nበተጨማሪም ልጆች በተለያዩ አሻንጉሊቶች እና የጨዋታ አይነቶች የሚጫወቱበት ሰዓት ተካቷል።\r\n\r\nልጆች ጥበብን፣ ሙዚቃን፣ መጫወቻዎችን ወይም አሻንጉሊቶችን እና የመሳሰሉትን ጠቀሜታቸዉን ይማራሉ በተጨማሪም ይመራመራሉ። ቤተሰቦች ስለልጆቻቸው እድገት እና ለእነሱ ስላሉ የህዝብ ሀብቶች ይማራሉ ያዉቃሉ ።\r\n\r\nየዚህ ፕሮግራም አዘጋጅ  ባልደረባችን Denise Louie Education Center/ ዴኒዝ ሉዊ የትምህርት ማእከል/  እናመሰግናለን።\r\ninformation-AM-EN\r\nThis group is open to children of all abilities, ages 0 to 5 years old.\r\n\r\n-----------------------------------------------------\r\n\r\nይህ ፕሮግራም እድሜያቸው ከ0ወር እስከ 5 አመት ለሆኑ ህጻናት ለሁሉም ክፍት ነው።\r\ncontact-AM-EN\r\nIf you have questions about this event, Ask Us or call 206-386-4636.\r\n\r\n-----------------------------------------------------\r\n\r\nበፕሮግራሙ ላይ አስተያየቶች እና ጥያቄዎች ካሉዎት ይጠይቁን ወይም በስልክ ቁጥር  206-386-4636 ይደውሉልን።\r\naccessibility-AM-EN\r\nWe can provide accommodations for people with disabilities at Library events. Please contact LEAP at least seven days before the event to request accommodations.\r\n\r\n-----------------------------------------------------\r\n\r\nበቤተ መጽሐፍ ዝግጅቶች ላይ ለአካል ጉዳተኞች ማረፊያ ቦታ እንሰጣለን። እባክዎ ከፈለጉ ዝግጅቱ ከመድረሱ ከሰባት ቀናት በፊት   LEAPን ያግኙ ። በስልክ ቁጥር  206-615-1380 ወይም በኢሜይል leap@spl.org ማግኘት ይችላሉ።','2024-08-25 20:07:43','Event','Monday, August 26, 2024, 10:30 a.m. – 12 p.m.','https://easylib.jesse-tong.work/uploaded-image/9'),
+(8,'Back to School 2024 with NYPL','Getting ready to head back to school? The Library can help you brush up on your skills, prepare for college or a career, find new books to read, and more. Plus, don’t miss our many resources for educators from NYPL’s Center for Educators and Schools.\r\n\r\nJump to resources for:\r\n\r\nKids\r\nTeens\r\nBabies & Toddlers\r\nAdults\r\nEducators\r\n','2024-08-28 22:17:44','Event','','');
 /*!40000 ALTER TABLE `article` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,7 +232,7 @@ INSERT INTO `bookborrow` VALUES
 (47,61,4,'2024-07-17 18:01:56','2024-08-01 16:59:59',1,'2024-07-18 12:20:00',1,1,1,0),
 (49,61,4,'2024-06-06 03:00:00','2024-07-07 03:00:00',1,'2024-07-17 10:30:00',0,1,1,0),
 (50,61,4,'2024-06-06 03:00:00','2024-07-07 03:00:00',1,'2024-07-17 03:00:00',0,1,0,0),
-(51,61,4,'2024-06-06 03:00:00','2024-06-07 03:00:00',1,'2024-08-23 09:04:53',0,1,0,0),
+(51,61,4,'2024-06-06 03:00:00','2024-06-07 03:00:00',1,'2024-08-23 09:04:53',0,1,1,0),
 (54,61,4,'2024-07-10 07:00:00','2024-07-21 13:00:00',1,'2024-08-21 03:00:00',0,1,1,0),
 (55,61,4,'2024-07-10 07:00:00','2024-08-04 13:00:00',0,NULL,0,0,0,1),
 (56,61,1,'2024-07-07 03:00:00','2024-07-21 03:00:00',0,NULL,0,0,0,0),
@@ -543,6 +545,111 @@ INSERT INTO `genre` VALUES
 UNLOCK TABLES;
 
 --
+-- Table structure for table `library_place`
+--
+
+DROP TABLE IF EXISTS `library_place`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `library_place` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `haveComputer` tinyint(1) DEFAULT NULL,
+  `room` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `library_place`
+--
+
+LOCK TABLES `library_place` WRITE;
+/*!40000 ALTER TABLE `library_place` DISABLE KEYS */;
+INSERT INTO `library_place` VALUES
+(1,1,'E2'),
+(3,1,'E2'),
+(4,1,'E2'),
+(5,1,'E2'),
+(6,1,'E3'),
+(7,1,'E1'),
+(8,1,'E1'),
+(9,1,'E1'),
+(10,1,'E1'),
+(11,1,'E1'),
+(12,0,'E1'),
+(13,0,'E1'),
+(14,1,'E1'),
+(15,1,'E3'),
+(21,1,'103');
+/*!40000 ALTER TABLE `library_place` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `library_session`
+--
+
+DROP TABLE IF EXISTS `library_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `library_session` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `placeId` int(11) DEFAULT NULL,
+  `inUse` tinyint(1) DEFAULT NULL,
+  `startDate` datetime DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `placeId` (`placeId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `library_session_ibfk_1` FOREIGN KEY (`placeId`) REFERENCES `library_place` (`id`),
+  CONSTRAINT `library_session_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `library_session`
+--
+
+LOCK TABLES `library_session` WRITE;
+/*!40000 ALTER TABLE `library_session` DISABLE KEYS */;
+INSERT INTO `library_session` VALUES
+(1,3,0,'2024-09-12 10:00:00',4),
+(3,3,0,'2024-09-21 10:00:00',4);
+/*!40000 ALTER TABLE `library_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `library_session_book`
+--
+
+DROP TABLE IF EXISTS `library_session_book`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `library_session_book` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sessionId` int(11) DEFAULT NULL,
+  `bookId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessionId` (`sessionId`),
+  KEY `bookId` (`bookId`),
+  CONSTRAINT `library_session_book_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `library_session` (`id`),
+  CONSTRAINT `library_session_book_ibfk_2` FOREIGN KEY (`bookId`) REFERENCES `book` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `library_session_book`
+--
+
+LOCK TABLES `library_session_book` WRITE;
+/*!40000 ALTER TABLE `library_session_book` DISABLE KEYS */;
+INSERT INTO `library_session_book` VALUES
+(1,1,15),
+(2,1,15),
+(3,1,1);
+/*!40000 ALTER TABLE `library_session_book` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `monthly_sessioncount`
 --
 
@@ -565,18 +672,18 @@ CREATE TABLE `monthly_sessioncount` (
 LOCK TABLES `monthly_sessioncount` WRITE;
 /*!40000 ALTER TABLE `monthly_sessioncount` DISABLE KEYS */;
 INSERT INTO `monthly_sessioncount` VALUES
-('704','country',14,'2024-08-26 22:53:25'),
+('704','country',36,'2024-09-13 14:16:03'),
 ('840','country',0,'2024-07-19 13:15:04'),
-('Android','os',1,'2024-08-25 18:30:09'),
+('Android','os',5,'2024-09-13 10:46:24'),
 ('Chrome','browser',1,'2024-07-19 00:56:36'),
-('Firefox','browser',47,'2024-08-26 22:53:25'),
-('Firefox Mobile','browser',1,'2024-08-25 18:30:09'),
+('Firefox','browser',31,'2024-09-13 14:16:03'),
+('Firefox Mobile','browser',5,'2024-09-13 10:46:24'),
 ('iOS','os',2,'2024-07-19 18:24:56'),
 ('Linux','os',2,'2024-07-19 02:26:31'),
 ('Mac OS X','os',1,'2024-07-19 00:56:19'),
 ('Mobile Safari','browser',2,'2024-07-19 18:24:56'),
 ('Safari','browser',1,'2024-07-19 00:56:19'),
-('Windows','os',47,'2024-08-26 22:53:25');
+('Windows','os',31,'2024-09-13 14:16:03');
 /*!40000 ALTER TABLE `monthly_sessioncount` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -598,7 +705,7 @@ CREATE TABLE `session` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `session_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -627,7 +734,24 @@ INSERT INTO `session` VALUES
 (19,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:b4cc:f9b5:bd20:72d9','2024-08-25 10:29:06'),
 (20,4,'Android','Firefox Mobile','https://easylib.jesse-tong.work/login','113.185.77.114','2024-08-25 18:30:09'),
 (21,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:a15b:68a5:7b0f:6442','2024-08-25 19:02:44'),
-(22,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:68f0:90ea:1ddd:d268','2024-08-26 17:28:30');
+(22,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:68f0:90ea:1ddd:d268','2024-08-26 17:28:30'),
+(23,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:c05c:898e:b5f3:855c','2024-08-27 10:00:42'),
+(24,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:38fd:c0df:713a:b9f0','2024-08-27 16:51:28'),
+(25,1,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:38fd:c0df:713a:b9f0','2024-08-27 17:10:09'),
+(26,4,'Android','Firefox Mobile','https://easylib.jesse-tong.work/login?error=You+must+log+in+first+before+update+password!','113.185.75.151','2024-08-28 10:13:53'),
+(27,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a470:f760:355f:db3c:a940:c5ff','2024-08-28 11:43:33'),
+(28,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a41a:e740:d983:81ba:b788:d763','2024-09-03 15:35:33'),
+(29,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a41a:e740:4d06:355e:a3f9:bd93','2024-09-04 15:00:58'),
+(30,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a41a:e740:8da9:dce2:f79d:d311','2024-09-05 08:40:12'),
+(31,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a41a:e740:3c58:387a:4d3e:e83c','2024-09-05 13:33:06'),
+(32,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a41a:e740:a9b8:8ffd:939a:428e','2024-09-07 11:35:22'),
+(33,4,'Android','Firefox Mobile','https://easylib.jesse-tong.work/login','113.185.76.99','2024-09-07 11:42:48'),
+(34,35,'Android','Firefox Mobile','https://easylib.jesse-tong.work/?userId=35&name=Khang%20T%E1%BB%91ng%20Nguy%E1%BB%85n%20Minh%20(21120263)&role=user','113.185.76.99','2024-09-07 11:50:38'),
+(35,35,'Windows','Firefox','https://easylib.jesse-tong.work/?userId=35&name=Khang%20T%E1%BB%91ng%20Nguy%E1%BB%85n%20Minh%20(21120263)&role=user','2405:4802:a41a:e740:a9b8:8ffd:939a:428e','2024-09-07 11:53:30'),
+(36,31,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a41a:e740:a9b8:8ffd:939a:428e','2024-09-07 11:55:20'),
+(37,4,'Windows','Firefox','http://localhost:5173/','2405:4802:a3f1:aaf0:d80e:e26d:75fb:d806','2024-09-11 15:14:42'),
+(38,4,'Windows','Firefox','https://easylib.jesse-tong.work/login','2405:4802:a47b:1c50:e49c:270a:ed53:6879','2024-09-13 08:32:04'),
+(39,4,'Android','Firefox Mobile','https://easylib.jesse-tong.work/login','113.185.78.56','2024-09-13 10:46:24');
 /*!40000 ALTER TABLE `session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -648,7 +772,7 @@ CREATE TABLE `user` (
   `isVerified` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -658,7 +782,7 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES
-(1,'jesse-tong@gmail.com','scrypt:32768:8:1$Np75qqYJfk5Dw5Tn$7084996e23ccc3350118ad41e5c9028325e48ceaf0586ef65549704c36b8b003dd86630dde514368bbe51cc1ef83b97c2fcd612bbc7c75e4ba2e95638a70a160','Jesse Tong','admin',0,0),
+(1,'jesse-tong@gmail.com','scrypt:32768:8:1$Np75qqYJfk5Dw5Tn$7084996e23ccc3350118ad41e5c9028325e48ceaf0586ef65549704c36b8b003dd86630dde514368bbe51cc1ef83b97c2fcd612bbc7c75e4ba2e95638a70a160','Jesse Tong','user',1,0),
 (2,'jesse-tong2@gmail.com','scrypt:32768:8:1$9JYSQ9qYvuCys34h$384ef4e9afee3dd63989b090478acdc34b334629e102b855f3fa5cc83017b725a7530745b2a898989d25767bd89376a2971cf9e5901ff06fec7af4ff7993b00f','Jesse Tong','user',0,0),
 (3,'some-email@gmail.com','scrypt:32768:8:1$PGeJpOZxpeeu61HB$9a6fcd91ed9ce51bb018c181165770aece093ad9c3b74e9ac33d1955e49518c306b0fe7d57a732d93f15bdee95ce95bbe83cbada30861464a05f2514ac58cb48','Test user','admin',0,0),
 (4,'jesse-tong3@gmail.com','scrypt:32768:8:1$nVLNRwXNYrezmgtw$05c8aab4745cae0a114288d5c19c9ca129d7c4c695bd7c4d5161cbbb205fcafe8b11249a550514031e13f4ae6e9ffc37f8e1c1ed425a2a92512f9c50a102f8eb','Test account 3','admin',0,0),
@@ -679,10 +803,11 @@ INSERT INTO `user` VALUES
 (27,'test4@gmail.com','scrypt:32768:8:1$j8FPsciMVQvp0sRH$58507b49c4cdf600400242bda170c941a7d70f892c4a8fef2931fd216d8821331a0c0dc08b394b2ecf0843eee857a62e6a325a74a1c73c0fe6a83de1703895e2','Demo user','user',0,0),
 (29,'voquocbao124@gmail.com',NULL,'Quốc Bảo Võ','user',0,0),
 (31,'ledohe7516@tiervio.com','scrypt:32768:8:1$AZw89goSEmI2vTsz$0969599da142421293ffc6f47ee3c728a6ec46c8ff8b9dd9240283b9c9e6a4c236c7649f40a0f74ddb426004618ca9dd24b51410309971c7cb2633877e99c148','jesse-tong3@gmail.com','admin',0,1),
-(32,'jehex73381@alientex.com','scrypt:32768:8:1$rIzGPM94798J8jo8$13677680cb3a75fb549411837c6355d07460387fed787096280ea09dcebd340b55259bd6d669e7592d89b07c3efb93fca70b8a42336f035d11eaa841bce757be','test','admin',0,0),
-(33,'todod11718@biscoine.com','scrypt:32768:8:1$W1DR9iNB6ZuSZJLG$8d66c53f7170a5884384b5deb59e115fb1e7622badb3369abda7ee8076d61801ef5ef7825e586e889681bd910154846498979a14d7388a6341c7f62b0d0bd052','test','admin',0,0),
-(34,'jabawo1794@alientex.com','scrypt:32768:8:1$jvX6etkuVHR2wzSa$90c1fb61c14a11159d41c7b0ceab34fb1d1a12602e51d90ee41340996af45167e08fcf5a1f47154b66a909dad15977c9c7b109002cae71cce31c305af511d5cf','test','admin',0,0),
-(35,'tongnguyenminhkhang21012020@gmail.com',NULL,'Khang Tống Nguyễn Minh (21120263)','user',0,0);
+(32,'jehex73381@alientex.com','scrypt:32768:8:1$rIzGPM94798J8jo8$13677680cb3a75fb549411837c6355d07460387fed787096280ea09dcebd340b55259bd6d669e7592d89b07c3efb93fca70b8a42336f035d11eaa841bce757be','test','user',0,0),
+(33,'todod11718@biscoine.com','scrypt:32768:8:1$W1DR9iNB6ZuSZJLG$8d66c53f7170a5884384b5deb59e115fb1e7622badb3369abda7ee8076d61801ef5ef7825e586e889681bd910154846498979a14d7388a6341c7f62b0d0bd052','test','user',0,0),
+(34,'jabawo1794@alientex.com','scrypt:32768:8:1$jvX6etkuVHR2wzSa$90c1fb61c14a11159d41c7b0ceab34fb1d1a12602e51d90ee41340996af45167e08fcf5a1f47154b66a909dad15977c9c7b109002cae71cce31c305af511d5cf','test','user',0,0),
+(35,'tongnguyenminhkhang21012020@gmail.com',NULL,'Khang Tống Nguyễn Minh (21120263)','user',0,0),
+(36,'cerako5892@avashost.com','scrypt:32768:8:1$RyEsbUDbjcpkMIrW$18b0692a3668b0ad7c4a6227b04cbaee32c6dae4e1e4d7e58c006886145ab56368f4e635027e4d774ee4377674e8521e0223eff2ac9e6c7e21fa1e5ea564c04e','test','user',0,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -728,7 +853,7 @@ CREATE TABLE `user_image` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_image_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -740,7 +865,8 @@ LOCK TABLES `user_image` WRITE;
 INSERT INTO `user_image` VALUES
 (4,4,'EasyLibNotificationClass.PNG'),
 (5,4,'Capture3.PNG'),
-(9,4,'DgDmZqnI9BRWvNdBMGJ28LYN.jpg');
+(9,4,'DgDmZqnI9BRWvNdBMGJ28LYN.jpg'),
+(10,4,'Capture.PNG');
 /*!40000 ALTER TABLE `user_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -761,6 +887,11 @@ CREATE TABLE `user_info` (
   `phone` varchar(20) DEFAULT NULL,
   `address` varchar(500) DEFAULT NULL,
   `imagePath` varchar(300) DEFAULT NULL,
+  `alternateEmail` varchar(100) DEFAULT NULL,
+  `alternatePhone` varchar(20) DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL,
+  `expires` datetime DEFAULT NULL,
+  `zipCode` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
@@ -774,12 +905,12 @@ CREATE TABLE `user_info` (
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` VALUES
-(1,1,21,'other',5,5,'0888888888','Some address','1003w-Ah-do4Y91lk-1.webp'),
-(2,4,21,NULL,5,5,'0988888888','Some address','Group 1 - Introduction to SE - EasyLib Register login user .png'),
-(3,22,21,'male',5,5,'089777777','Some address, HCM City',NULL),
-(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Group 1 - Introduction to SE - EasyLib.png'),
-(6,31,19,NULL,5,5,'0878668596','test',NULL),
-(7,35,21,NULL,5,5,'0987654321','Some address','1f6e29b7f11718cc.jpg');
+(1,1,21,'other',5,5,'0888888888','Some address','1003w-Ah-do4Y91lk-1.webp',NULL,NULL,'user',NULL,NULL),
+(2,4,21,'other',5,5,NULL,'Some address','Group 1 - Introduction to SE - EasyLib Register login user .png','tongnguyenminhkhang21012020@gmail.com',NULL,'user',NULL,NULL),
+(3,22,21,'male',5,5,'089777777','Some address, HCM City',NULL,NULL,NULL,'user',NULL,NULL),
+(5,4,21,'other',5,5,'0878668596','Some address',NULL,'tongnguyenminhkhang21012020@gmail.com',NULL,'library_card','2025-09-15 13:00:00',''),
+(6,31,19,NULL,5,5,'0878668596','test',NULL,NULL,NULL,'user',NULL,NULL),
+(7,35,21,NULL,5,5,'0987654321','Some address','1f6e29b7f11718cc.jpg',NULL,NULL,'user',NULL,NULL);
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -823,4 +954,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-27  0:33:36
+-- Dump completed on 2024-09-13 15:01:58
