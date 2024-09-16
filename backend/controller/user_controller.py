@@ -6,12 +6,13 @@ from sqlalchemy import func, update, case
 from sqlalchemy.dialects.mysql import insert as mysql_insert
 from global_vars.database_init import db
 from utils.email_utils import send_verification_email
-import re, jwt, datetime
+import re, jwt, datetime, os
 from datetime import timezone
 from ua_parser import user_agent_parser
 from global_vars.errors import *
-from flask_login import login_user, login_required, current_user, logout_user
+from flask_login import login_user, login_required, current_user, logout_user, login_manager
 
+jwt_secret = os.environ.get('JWT_SECRET')
 def check_user_authentication():
     return current_user.is_authenticated and current_user.isRestricted == False
 
@@ -21,7 +22,7 @@ async def send_verification_email_controller(user_id: int):
         return False, None, USER_NOT_EXIST
     email = user.email; name = user.name; role = user.role
     token = jwt.encode(payload={ 'id': user.id, 'email': email, 'name': name, 'role': role, 
-                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
+                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key=jwt_secret)
     try:
         await send_verification_email(token, email)
     except Exception as e:
@@ -52,7 +53,7 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
             db.session.commit()
             print(resend_verification_email)
             token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
-                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key")
+                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key=jwt_secret)
             try:
                 await send_verification_email(token, email)
             except Exception as e:
@@ -65,7 +66,7 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
             return False, None, ADD_ENTRY_ERROR
     else:
         token = jwt.encode(payload={ 'id': new_user.id, 'email': email, 'name': name, 'role': role, 
-                                    "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key="my_secret_key", algorithm='HS256')
+                                    "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=3600) }, key=jwt_secret, algorithm='HS256')
         try:
             await send_verification_email(token, email)
         except Exception as e:
@@ -73,9 +74,26 @@ async def register(email: str, password: str, name: str, role: str, resend_verif
             return False, None, 'Resend verification email failed!'
         return True, new_user, None
 
+def login_jwt(email: str, password: str, remember: bool):
+    user = User.query.filter_by(email = email).first()
+    if not user or not check_password_hash(user.password, password):
+        return False, None, INVALID_AUTH
+    
+    if user.isRestricted == True:
+        return False, None, BANNED_USER
+    
+    if remember == True:
+        token = jwt.encode(payload={ 'id': user.id, 'email': email, 'name': user.name, 'role': user.role, 
+                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=360000) }, key=jwt_secret)
+    else:
+        token = jwt.encode(payload={ 'id': user.id, 'email': email, 'name': user.name, 'role': user.role, 
+                                        "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=10800) }, key=jwt_secret)
+    return True, token, None
+
+
 def verify_email_address(token):
     try:
-        payload = jwt.decode(token, key="my_secret_key", algorithms=['HS256'], leeway=60.0)
+        payload = jwt.decode(token, key=jwt_secret, algorithms=['HS256'], leeway=60.0)
     except:
         return False, None, INVALID_AUTH
     if payload != None and payload.get('id') and payload.get('email'):

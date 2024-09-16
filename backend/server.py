@@ -1,5 +1,5 @@
 import os
-import flask
+import flask, jwt
 import simplejson as json
 from flask import Flask, request, render_template, url_for, jsonify
 from flask_cors import CORS
@@ -21,7 +21,7 @@ MAILTRAP_API_TOKEN = os.environ.get('MAILTRAP_API_TOKEN')
 MAILTRAP_DEFAULT_SENDER = os.environ.get('MAILTRAP_DEFAULT_SENDER')
 
 print(os.environ.get('SQL_URL'))
-
+jwt_secret = os.environ.get('JWT_SECRET')
 port = os.environ.get('PORT')
 if port == None:
     raise ValueError('PORT environment variable is not set!')
@@ -91,6 +91,23 @@ def create_app(test_config=None):
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return db.session.query(User).filter(User.id == int(user_id)).first()
 
+    @login_manager.request_loader
+    def load_user_from_request_auth_header(request):
+        auth_header = request.headers.get('Authorization')
+        if auth_header == None:
+            return None
+        try:
+            token = auth_header.replace('Bearer ', '', 1)
+            payload = jwt.decode(token, key=jwt_secret, algorithms=['HS256'], leeway=60.0)
+        except:
+            return None
+        
+        if payload != None and payload.get('id') and payload.get('email'):
+            user = db.session.query(User).filter(User.id == int(payload.get('id'))).filter(User.email == str(payload.get('email'))).first()
+            return user
+        else:
+            return None
+        
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)

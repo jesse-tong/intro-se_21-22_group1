@@ -6,7 +6,7 @@
             
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>-->
-        <LatestEventPanel :events="latestArticles"/>
+        <LatestEventPanel :events="latestEvents"/>
         <div class="mx-3 my-3 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-gap-3">
             <div class="col">
                 <div class="card bg-light-subtle shadow-sm">
@@ -228,6 +228,7 @@
                 weekendEnd: 'N/A',
 
                 latestArticles: [],
+                latestEvents: [],
                 map: null,
                 libraryCoordinate: null,
                 LibraryImage
@@ -278,6 +279,16 @@
             }
         },
         methods: {
+            getEventsFromArticles(articles){
+                let events = []; 
+                articles.forEach((article) => { 
+                    console.log('Article', article);
+                    if (String(article.category).match(/event/i) !== null){
+                       events.push(article); 
+                    } 
+                });
+                return events;
+            },
             initiateMap(libraryCoordinate){
                 if (libraryCoordinate !== null && this.tileServer !== null){
                     const markerIcon = L.icon({
@@ -372,6 +383,7 @@
                 axios.get('/api/article', { params: { page: 1, limit: 10}}).then(response => {
                     if (response.data !== undefined && response.data.success === true){
                         this.latestArticles = response.data.result;
+                        this.latestEvents = this.getEventsFromArticles(response.data.result);
                     }
                 })
             },

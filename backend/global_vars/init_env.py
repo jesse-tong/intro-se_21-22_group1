@@ -11,3 +11,6 @@ if os.environ.get('STRIPE_PUBLISHABLE_KEY') == None or os.environ.get('STRIPE_SE
 
 if os.environ.get('IP_TO_COUNTRY_DB') == None:
     raise EnvironmentError('IP_TO_COUNTRY_DB is not found, this is required for IP to country, please check the environment or .env file')
+
+if os.environ.get('JWT_SECRET') == None:
+    raise EnvironmentError('JWT_SECRET is not found, this is required for JWT, please check the environment or .env file')

@@ -5,8 +5,9 @@
                 <div class="card mb-3" style="max-width: 320px;">
                     <img class="card-img-top" style="height: 180px;" :src="article.thumbnail" :alt="'Image for artitle with title: ' + article.title" @error="($event) => setAltImg($event)"/>
                     <div class="card-body" style="height: 200px; overflow: auto">
+                        <p style="font-weight: 700; text-align: left;" class="text-secondary ms-1"><small>{{ article.category }}</small></p>
                         <router-link :to="'/article/' + article.id" class="card-title link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                            <h5 class="">{{ article.title }}</h5>
+                            <h5 style="text-align: left">{{ article.title }}</h5>
                         </router-link>
                         <p class="text-body-secondary mb-2 card-subtitle"><i class="bi bi-calendar3"></i><span class="ms-2">{{ article.date }}</span></p>
                         <RouterLink :to="'/article/' + article.id" class="btn btn-primary">View Article</RouterLink>

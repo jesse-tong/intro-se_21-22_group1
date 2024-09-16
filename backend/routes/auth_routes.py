@@ -107,6 +107,19 @@ def login_route():
     else:
         return get_status_object_json(result, user_obj, error), 401
 
+@auth.route('/auth/login/jwt', methods=['POST'])
+def login_jwt_route():
+    login_data = request.form
+    email = login_data.get('email')
+    password = login_data.get('password')
+    remember = True if login_data.get('remember') != None else False
+    
+    success, result, error = login_jwt(email, password, remember)
+    if success == True:
+        return get_status_object_json(success, result, error), 200
+    else:
+        return get_status_object_json(success, result, error), 401
+
 @auth.route('/auth/logout', methods=['GET', 'POST'])
 def logout_route():
     logout_user()

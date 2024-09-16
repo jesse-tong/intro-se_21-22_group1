@@ -54,9 +54,9 @@
                 </ul>
               </li>
               
-              <li class="nav-item my-auto">
+              <!--<li class="nav-item my-auto">
                 <RouterLink class="nav-link" aria-current="page" to="/" @click="closeSidebar">Home</RouterLink>
-              </li>
+              </li>-->
               <li class="nav-item dropdown my-auto">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Articles/ Events

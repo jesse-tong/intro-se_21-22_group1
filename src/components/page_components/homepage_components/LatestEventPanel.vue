@@ -4,7 +4,7 @@ v-if="$props.events && $props.events.length > 0">
     <div :class="['col-12', 'd-flex', 'g-0', $props.events.length >= 3 ? 'col-lg-8' : 'col-lg-12']" >
         <img class="" style="width: 50%; height: 100%; border-top-left-radius: 12px; border-bottom-left-radius: 12px" 
         :src="$props.events[0].thumbnail" :alt="'Image for artitle with title: ' + $props.events[0].title" @error="($event) => setAltImg($event)"/>
-        <div style="width: 50%; height: 100%; background-color: #06BBCC;" class="right-border">
+        <div style="width: 50%; height: 100%; background-color: #34ebcf;" class="right-border">
             <div class="m-auto px-3 py-4">
                 <router-link :to="'/article/' + $props.events[0].id" class="text-decoration-none">
                     <h2 class="text-white">{{ $props.events[0].title }}</h2>
@@ -16,8 +16,8 @@ v-if="$props.events && $props.events.length > 0">
     <div class="col-12 col-lg-4 g-0 d-none d-lg-block" v-if="$props.events.length >= 3">
         <div class="col">
             <div class="row-6 d-flex align-items-stretch">
-                <img class="align-self-stretch" style="width: 50%;" :src="$props.events[1].thumbnail" :alt="'Image for artitle with title: ' + $props.events[1].title" @error="($event) => setAltImg($event)"/>
-                <div style="width: 50%; background-color: #06BBCC; border-top-right-radius: 12px" class=" px-3 py-2">
+                <img class="align-self-stretch" style="width: 50%; border-left: 2px solid white;" :src="$props.events[1].thumbnail" :alt="'Image for artitle with title: ' + $props.events[1].title" @error="($event) => setAltImgSmall($event)"/>
+                <div style="width: 50%; background-color: #34ebcf; border-top-right-radius: 12px; border-bottom: 1px solid white;" class=" px-3 py-2">
                     <div class="m-auto">
                         <router-link :to="'/article/' + $props.events[1].id" class="text-decoration-none">
                             <h5 class="text-white">{{ $props.events[1].title }}</h5>
@@ -27,8 +27,8 @@ v-if="$props.events && $props.events.length > 0">
                 </div>
             </div>
             <div class="row-6 d-flex align-items-stretch">
-                <img class="align-self-stretch" style="width: 50%;" :src="$props.events[2].thumbnail" :alt="'Image for artitle with title: ' + $props.events[2].title" @error="($event) => setAltImg($event)"/>
-                <div style="width: 50%; background-color: #06BBCC; border-bottom-right-radius: 12px;" class="align-self-stretch px-3 py-2">
+                <img class="align-self-stretch" style="width: 50%; border-left: 2px solid white;" :src="$props.events[2].thumbnail" :alt="'Image for artitle with title: ' + $props.events[2].title" @error="($event) => setAltImgSmall($event)"/>
+                <div style="width: 50%; background-color: #34ebcf; border-bottom-right-radius: 12px; border-top: 1px solid white;" class="align-self-stretch px-3 py-2">
                     <div class="m-auto">
                         <router-link :to="'/article/' + $props.events[2].id" class="text-decoration-none">
                             <h5 class="text-white">{{ $props.events[2].title }}</h5>
@@ -49,7 +49,14 @@ export default {
         setAltImg(e) {
             e.target.onerror = null;
             e.target.src = EmptyImage;
-            e.target.style.backgroundImage = 'linear-gradient(135deg, #e66465, #9198e5)';
+            e.target.style.backgroundImage = 'linear-gradient(90deg, #06BBCC, #34ebcf)';
+            e.target.alt = 'Image not found';
+            e.target.title = 'Image not found';
+        },
+        setAltImgSmall(e){
+            e.target.onerror = null;
+            e.target.src = EmptyImage;
+            e.target.style.backgroundImage = 'linear-gradient(90deg, #16dbcc, #34ebcf)';
             e.target.alt = 'Image not found';
             e.target.title = 'Image not found';
         }
