@@ -5,27 +5,30 @@
             <div class="col-12 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentId' + comment.id" class="input-group-text"><span>Comment ID:</span></label>
-                    <input disabled type="number" class="form-control" v-model="commentId" :id="'commentId' + comment.id"/>
+                    <input readonly aria-readonly="true" type="number" class="form-control" v-model="commentId" :id="'commentId' + comment.id"/>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentBookId' + comment.bookId" class="input-group-text"><span>Book ID:</span></label>
-                    <input disabled type="number" class="form-control" v-model="commentBookId" :id="'commentBookId' + comment.bookId" aria-label="Comment's book ID"/>
+                    <input readonly aria-readonly="true" type="number" class="form-control" v-model="commentBookId" :id="'commentBookId' + comment.bookId" aria-label="Comment's book ID"/>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 mt-2">
+            <div class="col-12 col-md-12 col-lg-4 mt-2">
                 <div class="input-group">
                     <label :for="'commentUserId' + comment.userId" class="input-group-text"><span>User ID:</span></label>
-                    <input disabled type="number" class="form-control" v-model="commentUserId" :id="'commentUserId' + comment.userId" aria-label="Comment's user ID"/>
+                    <input readonly aria-readonly="true" type="number" class="form-control" v-model="commentUserId" :id="'commentUserId' + comment.userId" aria-label="Comment's user ID"/>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-12 mt-2 mb-2">
+            <div class="col-12 col-md-12 col-lg-12 mt-2 mb-2">
                 <div class="input-group">
                     <label :for="'commentUserName' + comment.name" class="input-group-text"><span>Username:</span></label>
-                    <input disabled type="text" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.id"  />
-                    <RouterLink :to="'/user/profile/' + comment.userId" role="link" class="btn btn-outline-secondary" ><span>Show profile</span></RouterLink>
+                    <input readonly aria-readonly="true" type="text" class="form-control" v-model="commentUsername" :id="'commentUserName' + comment.id"  />
+                    <RouterLink :to="'/user/profile/' + comment.userId" role="link" class="btn btn-outline-secondary d-none d-lg-block" ><span>Show profile</span></RouterLink>
                 </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-12 mt-2 mb-2 d-lg-none">
+                <RouterLink :to="'/user/profile/' + comment.userId" role="link" class="btn btn-outline-secondary" ><span>Show profile</span></RouterLink>
             </div>
         </div>
         <div class="input-group mb-2">

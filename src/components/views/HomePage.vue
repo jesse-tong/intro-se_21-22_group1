@@ -1,11 +1,12 @@
 <template>
 <div class="col">
     <div class="row-5">
-        <div class="library-homepage-container">
+        <!--<div class="library-homepage-container">
             <img :src="LibraryImage" style="width: 100%; max-height: 400px;" alt="Library image"/>
             
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
-        </div>
+        </div>-->
+        <LatestEventPanel :events="latestArticles"/>
         <div class="mx-3 my-3 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-gap-3">
             <div class="col">
                 <div class="card bg-light-subtle shadow-sm">
@@ -47,61 +48,61 @@
         <div class="row row-cols-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 mt-2 rounded-4 mx-3 border py-2 shadow-sm">
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Arts" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/palette.svg" class="icon" alt="Arts book category" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/palette.svg" class="icon" alt="Arts book category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Arts</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Biographies" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/book-cover.svg" class="icon" alt="Biographies" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/book-cover.svg" class="icon" alt="Biographies category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Biographies</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Recipes" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/chef-toque.svg" class="icon" alt="Recipes" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/chef-toque.svg" class="icon" alt="Recipes category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Recipes</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Medicine" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/caduceus.svg" class="icon" alt="Medicine" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/caduceus.svg" class="icon" alt="Medicine category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Medicine</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Plays" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/drama-masks.svg" class="icon" alt="Plays" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/drama-masks.svg" class="icon" alt="Plays category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Plays</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Musical" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/harp.svg" class="icon" alt="Musical" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/harp.svg" class="icon" alt="Musical category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Musical</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Romance" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/love-letter.svg" class="icon" alt="Romance" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/love-letter.svg" class="icon" alt="Romance category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Romance</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Science Fiction" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/ufo.svg" class="icon text-center" alt="Science Fiction" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/ufo.svg" class="icon text-center" alt="Science Fiction category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Science Fiction</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Science" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/microscope.svg" class="icon m-auto" alt="Science" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/microscope.svg" class="icon m-auto" alt="Science category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Science</i></p>
                 </RouterLink>
             </div>
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Fantasy" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-                    <img src="/src/assets/icons/tower-flag.svg" class="icon" alt="Fantasy" style="width: 50px; height: 50px;"/>
+                    <img src="/src/assets/icons/tower-flag.svg" class="icon" alt="Fantasy category icon" style="width: 50px; height: 50px;"/>
                     <p class="text-center text-secondary"><i>Fantasy</i></p>
                 </RouterLink>
             </div>
@@ -199,6 +200,7 @@
     import axios from 'axios';
     import BookCarousel from '../page_components/homepage_components/BookCarousel.vue';
     import ArticleCarousel from '../page_components/homepage_components/ArticleCarousel.vue';
+    import LatestEventPanel from '../page_components/homepage_components/LatestEventPanel.vue';
     import LibraryImage from '../../assets/library.jpg';
     import { useAccountStore } from '../stores/LoginInfoStore';
     import { mapStores } from 'pinia';
@@ -567,6 +569,7 @@
         components: {
             BookCarousel: BookCarousel,
             ArticleCarousel: ArticleCarousel,
+            LatestEventPanel: LatestEventPanel
         }
     }
 </script>

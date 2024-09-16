@@ -5,7 +5,7 @@
             <img src="/src/assets/EasyLib.svg" height="50" width="50" alt="EasyLib logo">
             <h3 class="m-0 text-primary">EasyLMS</h3>
         </RouterLink>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navbarOffcanvas" class="offcanvas offcanvas-start"  tabindex="-1" aria-labelledby="offcanvasNavbarLabel" ref="sidebar" >

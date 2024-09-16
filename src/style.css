@@ -205,3 +205,13 @@ a.hover::before {
 .object-fit-cover {
   object-fit: cover;
 }
+
+.carousel__pagination-button {
+  width: 25px;
+  height: 25px;
+  border-radius: 20%;
+}
+
+.carousel__slide [aria-hidden="true"] {
+  pointer-events: none;
+}
