@@ -43,7 +43,7 @@
         </div>
         <hr class="hr" />
         <h5 class="section-title bg-light-subtle text-primary pe-3 ms-1">Upload Image</h5>
-        <ImageUpload @select-image="onImageSelected" @select-image-thumbnail="onThumbnailSelected" class="card pt-2 pb-2"/>
+        <ImageUpload @select-image="onImageSelected" @select-image-thumbnail="onThumbnailSelected" class="card pt-2 pb-2 px-3"/>
     </div>
     
 </template>

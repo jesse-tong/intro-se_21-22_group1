@@ -1,8 +1,8 @@
 <template>
     <div class="">
-        <div class="row">
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3 " v-if="images.length > 0" v-for="image in images" :key="image.id" data-testid="imageCard">
-            <div class="mx-2 h-100 p-1">
+        <div class="row g-1">
+          <div class="col-12 col-md-6 col-lg-4 col-xxl-3 " v-if="images.length > 0" v-for="image in images" :key="image.id" data-testid="imageCard">
+            <div class="h-100 py-1">
               <div class="card h-100 mx-1 my-1 p-1" >
                   <div class="card-img-top">
                     <img :src="apiSite + '/uploaded-image/' + image.id" class="thumbnail" :alt="image.imagePath" >
