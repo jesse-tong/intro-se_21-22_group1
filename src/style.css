@@ -215,3 +215,7 @@ a.hover::before {
 .carousel__slide [aria-hidden="true"] {
   pointer-events: none;
 }
+
+#prevPageButton i, #nextPageButton i [data-bs-theme="dark"] {
+  color: #f0fbfc !important;
+}

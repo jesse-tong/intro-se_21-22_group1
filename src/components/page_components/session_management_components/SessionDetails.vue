@@ -4,8 +4,8 @@
     <div class="d-flex justify-content-between mb-2">
         <h4 class="section-title bg-light-subtle text-primary px-3">Session Details</h4>
         <div>
-            <button class="btn btn-primary mb-2" @click="editing = !editing">{{ editing ? 'Edit': 'Cancel edit'}}</button>
-            <RouterLink class="btn btn-primary ms-2 mb-2" :to="'/admin/library-place/' + session.place.id" v-if="session && session.place"><< Return</RouterLink>
+            <button class="btn btn-primary mb-2" @click="editing = !editing">{{ editing ? 'Cancel edit': 'Edit'}}</button>
+            <RouterLink class="btn btn-primary ms-2 mb-2" :to="'/admin/library-place/' + session.place.id + '/session'" v-if="session && session.place"><< Return</RouterLink>
         </div>
         
     </div>

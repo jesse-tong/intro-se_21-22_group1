@@ -21,7 +21,7 @@
                             </div>
                             <div class="row-3 border-top pt-2 mt-2">
                                 <div class="d-flex justify-content-between">
-                                <p class="card-text"><i class="bi bi-calendar2-date me-2"></i>{{ session.startDate }}</p>
+                                <p class="card-text"><i class="bi bi-calendar2-date me-2"></i>{{ new Date(session.startDate).toString() }}</p>
                                 <p class="card-text"><i class="bi bi-person-add me-2"></i>In use: {{ session.inUse }}</p>
                                 </div>
                             </div>
