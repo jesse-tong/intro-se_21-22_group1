@@ -46,7 +46,7 @@
     color: var(--dark);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 998px) {
     .site-search.site-search-persistent .site-search-inner {
       padding: 0 20px 0 0;
     }
@@ -190,11 +190,7 @@
     color: var(--primary);
 }
 
-@media (max-width: 1200px) {
-    .navbar-light .navbar-nav .nav-link  {
-        margin-right: 0;
-        padding: 10px 0;
-    }
+@media (max-width: 992px) {
 
     .navbar-light .navbar-nav {
         border-top: 1px solid #EEEEEE;
@@ -241,7 +237,7 @@
     background-color: #06BBCC;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 992px) {
     /*.navbar .nav-item .dropdown-menu {
         display: block;
         margin-top: 0;
