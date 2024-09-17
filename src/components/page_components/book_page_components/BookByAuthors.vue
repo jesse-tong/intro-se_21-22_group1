@@ -1,9 +1,12 @@
 <template>
     <div class="row mt-3 ms-2">
         <div class="col-12 col-md-4 col-lg-3 rounded g-0"  >
-            <h5 class="section-title bg-light-subtle text-start text-primary ms-3 ms-md-3 ms-lg-3 px-3">Authors</h5>
-            <div class="">
-                <ul class="author-list mt-2">
+            <h5 class="section-title bg-light-subtle text-start text-primary ms-3 ms-md-3 ms-lg-3 px-3">Book by authors</h5>
+            <div class="ps-1 shadow-sm">
+                <div class="mb-2 px-3">
+                    <input type="text" class="form-control" v-model="authorSearchQuery" placeholder="Search author" />
+                </div>
+                <ul class="author-list mt-2 pe-2" style="padding-left: 1rem;">
                     <li class="list-item" :class="{ active: isTabActive(author.id) }" v-for="author in authors" @click="selectedId = parseInt(author.id)"><span>{{ author.name }}</span></li>
                 </ul>
                 <nav aria-label="Author list navigation">
@@ -41,17 +44,22 @@
             return {
                 authors: [],
                 authorPage: 1,
-                selectedId: 0
+                selectedId: 0,
+                authorSearchQuery: ''
             }
         },
         
         methods: {
             getAuthors(page){
+                let params = {
+                    page: page,
+                    limit: 15
+                }
+                if (this.authorSearchQuery !== ''){
+                    params.name = this.authorSearchQuery;
+                }
                 axios.get('/api/get-authors', {
-                    params: {
-                        page: page,
-                        limit: 15
-                    }
+                    params: params
                 }).then(response=> {
                     if (!response.data || response.data == undefined || !response.data.success){
                         this.$notify({
@@ -93,6 +101,12 @@
                     this.getAuthors(newPage);
                 },
                 immediate: true
+            },
+            authorSearchQuery: {
+                handler(newQuery, oldQuery){
+                    this.getAuthors(this.authorPage);
+                },
+                immediate: false
             }
         },
         components: {
