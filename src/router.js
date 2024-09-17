@@ -28,6 +28,8 @@ import PlaceList from './components/page_components/session_management_component
 import SessionList from './components/page_components/session_management_components/SessionList.vue';
 import SessionDetails from './components/page_components/session_management_components/SessionDetails.vue';
 import AdminLayout from './components/common/AdminLayout.vue';
+import FavoriteBooks from './components/page_components/book_page_components/FavoriteBooks.vue';
+
 const routes = [
   { 
     path: '/', 
@@ -216,7 +218,12 @@ const routes = [
           default: LibraryPolicyPage
         }
       },
-      
+      {
+        path: 'favorite-books',
+        components:{
+          default: FavoriteBooks
+        }
+      },
       {
         path: '',
         components: {

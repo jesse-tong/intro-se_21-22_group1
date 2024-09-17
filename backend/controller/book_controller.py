@@ -248,7 +248,7 @@ def get_book_data(id: int):
 def get_genres(name: str = None, page: int = None, limit: int=None):
     try:
         if name != None:
-            query = db.session.query(Genre).filter(Genre.name.ilike('%{}%'.format(name))).distinct()
+            query = db.session.query(Genre).filter(Genre.name.ilike('%{}%'.format(name)))
         else:
             query = db.session.query(Genre).distinct()
         if page != None and limit != None:
@@ -262,7 +262,7 @@ def get_genres(name: str = None, page: int = None, limit: int=None):
 def get_authors(name: str = None, page: int = None, limit: int=None):
     try:
         if name != None:
-            query = db.session.query(Author).filter(Author.name.ilike('%{}%'.format(name))).distinct()
+            query = db.session.query(Author).filter(Author.name.ilike('%{}%'.format(name)))
         else:
             query = db.session.query(Author).distinct()
         if page != None and limit != None:

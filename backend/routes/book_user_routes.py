@@ -423,3 +423,27 @@ def favourite_book(book_id):
         success, favorite_status, error = remove_favorite(current_user.id, book_id)
         return get_status_object_json(success, favorite_status, error), 200
     
+@book_user.route('/api/favorite', methods=['GET'])
+def get_current_user_favorite():
+    if not check_user_authentication():
+        return get_status_object_json(False, None, NOT_AUTHENTICATED)
+    
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    try:
+        page = int(page) if page != None else None
+        limit = int(limit) if limit != None else None
+    except:
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    if page != None and limit != None and (page <= 0 or limit <= 0):
+        return get_status_object_json(False, None, INVALID_PARAM), 400
+    
+    current_user_id = current_user.id
+    query = db.session.query(Book).join(BookFavorite).filter(BookFavorite.bookId). \
+        filter(BookFavorite.userId == current_user_id)
+    
+    if page != None and limit != None:
+        query = query.offset((page - 1) * limit).limit(limit)
+
+    favourite_books = query.all()
+    return get_status_object_json(True, favourite_books, None), 200

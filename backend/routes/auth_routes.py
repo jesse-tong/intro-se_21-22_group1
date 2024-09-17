@@ -37,13 +37,11 @@ CORS(auth, supports_credentials=True, origins = r"https?:\/\/(?:w{1,3}\.)?[^\s.]
 def set_xsrf_cookie():
     csrf_token = generate_csrf()
     response = make_response(jsonify({'csrf_token': csrf_token}))
-    response.set_cookie('X-CSRFToken', csrf_token)
     response.headers.add('X-CSRFToken', csrf_token)
     return response
 
 @auth.route('/analytics', methods=['GET', 'POST'])
 def analytics():
-    
     user_agent = request.user_agent.string
     browser, os_family = parse_user_agent(user_agent)
     update_session_count(browser, 'browser')
