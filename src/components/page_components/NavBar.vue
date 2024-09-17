@@ -109,6 +109,7 @@
                 <ul class="dropdown-menu">
                   <li class="dropdown-item" v-if="accountStore.loggedIn">Welcome, {{ accountStore.name }}</li>
                   <li class="dropdown-item" ><RouterLink class="nav-link" to="/library-policies">Library's policies</RouterLink></li>
+                  <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/favorite-books" role="link" >Favorite books</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile" @click="closeSidebar">User profile</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings" @click="closeSidebar">User settings</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.notLoggedIn" ><RouterLink class="nav-link" to="/login" id="login-link" @click="closeSidebar">Log in</RouterLink></li>
@@ -116,11 +117,7 @@
                   <li class="dropdown-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <RouterLink class="nav-link" to="/favorite-books" role="link" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="fav-icon" src="/src/assets/heart-circle.svg" height="45" width="45" alt="Favorite books" />
-                </RouterLink>
-              </li>
+              
 
               <li class="nav-item d-xl-none">
                 <div class="nav-link" @click="() => { $emit('setTheme', 'light'); theme = 'light' }" style="cursor: pointer;" role="link" >
