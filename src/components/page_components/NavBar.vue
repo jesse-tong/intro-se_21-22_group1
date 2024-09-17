@@ -117,7 +117,7 @@
                 </ul>
               </li>
               <li class="nav-item d-xl-none">
-                <RouterLink class="nav-link dropdown-toggle" href="/favorite-books" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+                <RouterLink class="nav-link dropdown-toggle" to="/favorite-books" role="link" data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="/src/assets/heart-circle.svg" height="45" width="45" alt="Favorite books" />
                 </RouterLink>
               </li>
