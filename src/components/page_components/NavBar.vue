@@ -1,7 +1,7 @@
 <template>
   <!-- Navbar Start -->
-  <nav class="navbar navbar-bottom-border navbar-expand-xl bg-light-subtle navbar-light shadow sticky-top p-0">
-        <RouterLink to="/" class="navbar-brand d-flex align-items-center px-3 px-xl-3 py-0">
+  <nav class="navbar navbar-bottom-border navbar-expand-lg bg-light-subtle navbar-light shadow sticky-top p-0">
+        <RouterLink to="/" class="navbar-brand d-flex align-items-center px-3 px-lg-3 py-0">
             <img src="/src/assets/EasyLib.svg" height="50" width="50" alt="EasyLib logo">
             <h3 class="m-0 text-primary">EasyLMS</h3>
         </RouterLink>
@@ -15,12 +15,12 @@
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-2">      
-              <div class="nav-item d-flex mt-3 d-xl-none mt-xl-0 me-xl-4" role="search">
+              <div class="nav-item d-flex mt-3 d-lg-none mt-lg-0 me-lg-4" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search book here" aria-label="Search input" v-model="searchQuery" role="searchbox" >
                 <button class="btn btn-outline-success" type="submit" @click="searchTitle()" aria-label="Search button" role="search">Search</button>
               </div>
               
-              <li class="nav-item dropdown my-auto d-none d-xl-block" >
+              <li class="nav-item dropdown my-auto d-none d-lg-block" >
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Search <i class="bi bi-search"></i>
                 </a>
@@ -95,7 +95,7 @@
               </li>
               
 
-              <li class="nav-item mt-0 mt-xl-0 dropdown my-auto" >
+              <li class="nav-item mt-0 mt-lg-0 dropdown my-auto" >
                 
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" 
                 aria-expanded="false" v-if="accountStore.notLoggedIn">Login/Register</a>
@@ -119,18 +119,18 @@
               </li>
               
 
-              <li class="nav-item d-xl-none">
+              <li class="nav-item d-lg-none">
                 <div class="nav-link" @click="() => { $emit('setTheme', 'light'); theme = 'light' }" style="cursor: pointer;" role="link" >
-                  <i class="me-1 bi bi-sun"></i><span class="d-xl-none">Set light theme</span>
+                  <i class="me-1 bi bi-sun"></i><span class="d-lg-none">Set light theme</span>
                 </div>
               </li>
-              <li class="nav-item d-xl-none">
+              <li class="nav-item d-lg-none">
                 <div class="nav-link" @click="() => { $emit('setTheme', 'dark'); theme = 'dark' }" style="cursor: pointer;" role="link" >
-                  <i class="me-1 bi bi-moon-stars-fill" ></i><span class="d-xl-none">Set dark theme</span>
+                  <i class="me-1 bi bi-moon-stars-fill" ></i><span class="d-lg-none">Set dark theme</span>
                 </div>
               </li>
               
-              <li class="nav-item dropdown-center my-auto d-none d-xl-block">
+              <li class="nav-item dropdown-center my-auto d-none d-lg-block">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-moon-stars-fill" v-if="getColorTheme() === 'dark'"></i>
                   <i class="bi bi-sun-fill" v-else></i>
