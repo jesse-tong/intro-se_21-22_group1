@@ -216,6 +216,10 @@ a.hover::before {
   pointer-events: none;
 }
 
-#prevPageButton i, #nextPageButton i [data-bs-theme="dark"] {
-  color: #f0fbfc !important;
+#nextPageButton i [data-bs-theme="dark"] {
+  color: #1febfd !important;
+}
+
+#prevPageButton i [data-bs-theme="dark"] {
+  color: #1febfd !important;
 }
