@@ -94,15 +94,6 @@
                 </ul>
               </li>
               
-              <li class="nav-item dropdown my-auto" v-if="accountStore.loggedIn">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  User
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile" @click="closeSidebar">User profile</RouterLink></li>
-                  <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings" @click="closeSidebar">User settings</RouterLink></li>
-                </ul>
-              </li>
 
               <li class="nav-item mt-0 mt-xl-0 dropdown my-auto" >
                 
@@ -118,12 +109,19 @@
                 <ul class="dropdown-menu">
                   <li class="dropdown-item" v-if="accountStore.loggedIn">Welcome, {{ accountStore.name }}</li>
                   <li class="dropdown-item" ><RouterLink class="nav-link" to="/library-policies">Library's policies</RouterLink></li>
+                  <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/profile" @click="closeSidebar">User profile</RouterLink></li>
+                  <li class="dropdown-item" v-if="accountStore.loggedIn"><RouterLink class="nav-link" to="/user/settings" @click="closeSidebar">User settings</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.notLoggedIn" ><RouterLink class="nav-link" to="/login" id="login-link" @click="closeSidebar">Log in</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.notLoggedIn"><RouterLink class="nav-link" to="/register" id="register-link" @click="closeSidebar">Register</RouterLink></li>
                   <li class="dropdown-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
                 </ul>
               </li>
-              
+              <li class="nav-item d-xl-none">
+                <RouterLink class="nav-link dropdown-toggle" href="/favorite-books" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="/src/assets/heart-circle.svg" height="45" width="45" alt="Favorite books" />
+                </RouterLink>
+              </li>
+
               <li class="nav-item d-xl-none">
                 <div class="nav-link" @click="() => { $emit('setTheme', 'light'); theme = 'light' }" style="cursor: pointer;" role="link" >
                   <i class="me-1 bi bi-sun"></i><span class="d-xl-none">Set light theme</span>
@@ -159,7 +157,7 @@
     import EasyLibLogo from './../../assets/EasyLib.svg';
     import { useAccountStore } from '../stores/LoginInfoStore';
     import { onBeforeMount, ref } from 'vue';
-    import { useRouter, useRoute } from 'vue-router';
+    import { useRouter, useRoute, RouterLink } from 'vue-router';
     import { useNotification } from '@kyvg/vue3-notification';
     import { useSearchQueryStore } from '../stores/SearchQueryStore';
 

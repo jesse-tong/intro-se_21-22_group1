@@ -58,7 +58,7 @@ const fetchFavoriteBooks = (page) => {
                     type: "error"
                 });
             }
-            data.value = response.data.data;
+            data.value = response.data.result;
         }).catch(error => {
             this.$notify({
                 title: "Get favorite books failed!",
