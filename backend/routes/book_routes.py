@@ -340,22 +340,24 @@ def book_location_route():
 def get_genres_api():
     page = request.args.get('page')
     limit = request.args.get('limit')
+    name = request.args.get('name')
     try:
         page = int(page) if page != None else None; limit= int(limit) if limit != None else None
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
-    success, genres, error = get_genres(page, limit)
+    success, genres, error = get_genres(name, page, limit)
     return get_status_object_json(success, genres, error), 200
 
 @book_routes.route('/api/get-authors', methods=['GET'])
 def get_authors_api():
     page = request.args.get('page')
     limit = request.args.get('limit')
+    name = request.args.get('name')
     try:
         page = int(page) if page != None else None; limit= int(limit) if limit != None else None
     except:
         return get_status_object_json(False, None, INVALID_PARAM), 400
-    success, authors, error = get_authors(page, limit)
+    success, authors, error = get_authors(name, page, limit)
     return get_status_object_json(success, authors, error), 200
 
 @book_routes.route('/api/author/<author_id>/books', methods=['GET'])

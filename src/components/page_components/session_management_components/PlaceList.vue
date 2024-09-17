@@ -112,8 +112,8 @@
 </template>
 <script setup>
     import { ref, defineProps, onBeforeMount } from 'vue';
-    import Modal from '../../common/Modal.vue';
-    import SearchUser from '../borrow_management_components/SearchUser.vue';
+    import Modal from '@components/common/Modal.vue';
+    import SearchUser from '@page_components/borrow_management_components/SearchUser.vue';
     import axios from 'axios';
     import { useNotification } from '@kyvg/vue3-notification';
     const libraryPlaces = ref([]);

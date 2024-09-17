@@ -6,7 +6,7 @@
             <th>Article ID</th>
             <th colspan="3">Article category</th>
             <th colspan="5">Article title</th>
-            <th colspan="2">Article creation date</th>
+            <th colspan="2">Article last edited date</th>
             <th v-if="$props.actionVisible === true">Actions</th>
             <th v-else></th>
           </tr>
@@ -16,7 +16,7 @@
             <td>{{ article.id }}</td>
             <td colspan="3">{{ article.category ? article.category : '' }}</td>
             <td colspan="5">{{ article.title }}</td> 
-            <td colspan="2">{{ article.date }}</td>
+            <td colspan="2">{{ convertISODatetimeToLocal(article.date) }}</td>
             <td v-if="$props.actionVisible === true">
               <button class="btn btn-sm btn-primary me-2" @click="$emit('editArticle', article.id)">Edit</button>
               <button class="btn btn-sm btn-danger" @click="$emit('deleteArticle', article.id)" >Delete</button>
@@ -76,7 +76,19 @@ import { RouterLink } from 'vue-router';
               }
           }
       },
-  
+      methods: {
+        convertISODatetimeToLocal(localDatetimeString){
+            //Since input="local-datetime" only accept YYYY-mm-ddThh:ss, not YYYY-mm-ddThh:ssZ of ISO string
+            let currentLocalDate = new Date();
+            let localTimeOffset = currentLocalDate.getTimezoneOffset() * 60 * 1000; //Get local timezone offset to GMT by milliseconds
+
+            let gmtTime = new Date(localDatetimeString); 
+            let localTime = gmtTime - localTimeOffset; localTime = new Date(localTime);
+            let localString = localTime.toLocaleString();
+
+            return localString;
+        },
+      },
       emits: ['deleteArticle', 'editArticle', 'update:currentPage'],
     };
     </script>

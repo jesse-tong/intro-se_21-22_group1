@@ -52,7 +52,7 @@
     import { ref, defineProps, onBeforeMount } from 'vue';
     import axios from 'axios';
     import { useNotification } from '@kyvg/vue3-notification';
-import { RouterLink } from 'vue-router';
+
     const sessions = ref([]);
     const props = defineProps({
         placeId: {

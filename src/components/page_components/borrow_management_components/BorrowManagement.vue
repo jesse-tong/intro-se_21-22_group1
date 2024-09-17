@@ -340,7 +340,7 @@
           let timeWithTimezone = new Date(localDatetimeString);
           return timeWithTimezone.toISOString();
       },
-      convertLocalDatetimeToLocalInputString(localDatetimeString){
+      convertISODatetimeToLocalInputString(localDatetimeString){
           //Since input="local-datetime" only accept YYYY-mm-ddThh:ss, not YYYY-mm-ddThh:ssZ of ISO string
           let currentLocalDate = new Date();
           let localTimeOffset = currentLocalDate.getTimezoneOffset() * 60 * 1000; //Get local timezone offset to GMT by milliseconds
@@ -552,13 +552,13 @@
         this.editedBookId = borrow_status.bookId;
 
         this.editedStartedBorrow = borrow_status.startBorrow !== '' && borrow_status.startBorrow !== null 
-        ? this.convertLocalDatetimeToLocalInputString(borrow_status.startBorrow) : borrow_status.startBorrow;
+        ? this.convertISODatetimeToLocalInputString(borrow_status.startBorrow) : borrow_status.startBorrow;
         
         this.editedEndBorrow = borrow_status.endBorrow !== '' && borrow_status.endBorrow !== null
-        ? this.convertLocalDatetimeToLocalInputString(borrow_status.endBorrow): borrow_status.endBorrow;
+        ? this.convertISODatetimeToLocalInputString(borrow_status.endBorrow): borrow_status.endBorrow;
 
         this.editedReturnDate = borrow_status.returnDate !== '' && borrow_status.returnDate !== null ? 
-        this.convertLocalDatetimeToLocalInputString(borrow_status.returnDate): borrow_status.returnDate;
+        this.convertISODatetimeToLocalInputString(borrow_status.returnDate): borrow_status.returnDate;
 
         this.editedDamagedOrLost = borrow_status.isDamagedOrLost;
         this.editedIsApproved = borrow_status.isApproved;

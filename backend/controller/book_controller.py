@@ -245,9 +245,12 @@ def get_book_data(id: int):
     else:
         return False, None, INVALID_ID
 
-def get_genres(page: int = None, limit: int=None):
+def get_genres(name: str = None, page: int = None, limit: int=None):
     try:
-        query = db.session.query(Genre).distinct()
+        if name != None:
+            query = db.session.query(Genre).filter(Genre.name.ilike('%{}%'.format(name))).distinct()
+        else:
+            query = db.session.query(Genre).distinct()
         if page != None and limit != None:
             offset = (page - 1)*limit
             query = query.offset(offset).limit(limit)
@@ -256,9 +259,12 @@ def get_genres(page: int = None, limit: int=None):
     except:
         return False, None, DATABASE_ERROR
 
-def get_authors(page: int = None, limit: int=None):
+def get_authors(name: str = None, page: int = None, limit: int=None):
     try:
-        query = db.session.query(Author).distinct()
+        if name != None:
+            query = db.session.query(Author).filter(Author.name.ilike('%{}%'.format(name))).distinct()
+        else:
+            query = db.session.query(Author).distinct()
         if page != None and limit != None:
             offset = (page - 1)*limit
             query = query.offset(offset).limit(limit)

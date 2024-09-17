@@ -11,11 +11,11 @@
                 <option value="user">User</option>
             </select>
         </td>
-        <td class="text-center" v-if="editingIsRestricted === true"><h6 class="badge bg-danger">Is Restricted</h6></td>
-        <td class="text-center" v-else><h6 class="badge bg-primary">Not Restricted</h6></td>
+        <td class="text-center" v-if="editingIsRestricted === true"><h6 class="badge bg-danger">Banned</h6></td>
+        <td class="text-center" v-else><h6 class="badge bg-primary">Not Banned</h6></td>
         <td class="text-center">
-            <button class="btn btn-danger" v-if="editingIsRestricted === false && editing === true" @click="editingIsRestricted = true">Restrict user</button>
-            <button class="btn btn-success" v-if="editingIsRestricted === true && editing === true" @click="editingIsRestricted = false">Remove restriction</button>
+            <button class="btn btn-danger" v-if="editingIsRestricted === false && editing === true" @click="editingIsRestricted = true">Ban user</button>
+            <button class="btn btn-success" v-if="editingIsRestricted === true && editing === true" @click="editingIsRestricted = false">Remove ban</button>
         </td>
         <td>
             <button class="btn btn-primary" v-if="editing === false" @click="editing = true">Edit</button>

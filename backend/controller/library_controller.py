@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, datetime
 from global_vars.errors import *
 from dataclasses import asdict
 from dateutil.parser import ParserError
@@ -161,6 +161,7 @@ def add_article(title: str, content: str, category: str = None, note: str = None
         new_article.title = title; new_article.content = content
         new_article.category = category; new_article.note = note
         new_article.thumbnail = thumbnail
+        new_article.date = datetime.datetime.now(datetime.timezone.utc) #Current time in UTC
         db.session.add(new_article); db.session.commit()
     except:
         return False, None, DATABASE_ERROR
@@ -176,6 +177,7 @@ def edit_article(article_id: int, title: str, content: str,
     new_article = db.session.query(Article).filter(Article.id == article_id).first()
     new_article.title = title; new_article.content = content; new_article.category = category
     new_article.note = note; new_article.thumbnail = thumbnail
+    new_article.date = datetime.datetime.now(datetime.timezone.utc) #Current time in UTC
     db.session.commit()
     #except:
     #    return False, None, DATABASE_ERROR

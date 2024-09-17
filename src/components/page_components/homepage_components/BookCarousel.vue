@@ -39,7 +39,7 @@ import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-import emptyImage from '../../../assets/empty_image.png';
+import emptyImage from '@assets/empty_image.png';
 export default {
   props: {
     books: {

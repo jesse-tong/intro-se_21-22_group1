@@ -8,7 +8,7 @@
 </template>
 <script>
     import axios from 'axios';
-    import ArticleList from './ArticleList.vue';
+    import ArticleList from '@page_components/article_management_components/ArticleList.vue';
     export default {
         data(){
             return {

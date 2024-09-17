@@ -6,22 +6,24 @@
         <div class="col-12">
             <div class="mt-3 mx-3">
                 <SearchUser @search-user="searchUser" v-model:searchUserId="searchUserId" v-model:searchUserName="searchUserName" v-model:searchUserEmail="searchUserEmail"/>
-                <table class="table table-bordered mt-3">
-                    <thead>
-                        <tr>
-                            <th scope="col">User ID</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Restriction</th>
-                            <th scope="col">Restriction actions</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <UserTableRow v-for="user in searchResultUser" :user="user":key="user.id" @user-edited="searchUser"/>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">User ID</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Banned</th>
+                                <th scope="col">Ban actions</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <UserTableRow v-for="user in searchResultUser" :user="user":key="user.id" @user-edited="searchUser"/>
+                        </tbody>
+                    </table>
+                </div>
                 <ul class="component-pagination">
                     <li class="pagination-arrow arrow-left me-1">
                         <div class="page-link" @click="currentPage = currentPage > 1 ? currentPage - 1 : 1" id="prevPageButton"><i class="bi bi-chevron-left"></i></div>
@@ -39,8 +41,8 @@
     </div>  
 </template>
 <script>
-import SearchUser from '../borrow_management_components/SearchUser.vue';
-import UserTableRow from './UserTableRow.vue';
+import SearchUser from '@/components/page_components/borrow_management_components/SearchUser.vue';
+import UserTableRow from '@/components/page_components/user_management_components/UserTableRow.vue';
 import axios from 'axios';
 export default {
     components: {

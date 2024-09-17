@@ -3,7 +3,11 @@
 <div class="container mt-3">
     <div class="d-flex justify-content-between mb-2">
         <h4 class="section-title bg-light-subtle text-primary px-3">Session Details</h4>
-        <button class="btn btn-primary" @click="editing = !editing">Edit</button>
+        <div>
+            <button class="btn btn-primary mb-2" @click="editing = !editing">{{ editing ? 'Edit': 'Cancel edit'}}</button>
+            <RouterLink class="btn btn-primary ms-2 mb-2" :to="'/admin/library-place/' + session.place.id" v-if="session && session.place"><< Return</RouterLink>
+        </div>
+        
     </div>
     <hr />
     <div class="shadow-sm mt-3 px-3 py-3">
@@ -70,15 +74,15 @@
                 <label for="placeId">Session place ID</label>
                 <input type="number" class="form-control" id="placeId" v-model="sessionPlaceId">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label for="startDate">Session start date</label>
-                <input type="date" class="form-control" id="startDate" v-model="sessionStartDate">
+                <input type="datetime-local" class="form-control" id="startDate" v-model="sessionStartDate">
             </div>
             <button class="btn btn-primary" @click="updateSession">Update session</button>
             <h5>Search user</h5>
             <SearchUser @search-user="onSearchUserButtonClicked" v-model:searchUserId="searchUserId" v-model:searchUserEmail="searchUserEmail" v-model:searchUserName="searchUserName"/>
             <div class="table-responsive-lg mt-3 rounded">
-                <table class="table ">
+                <table class="table " v-if="searchResultUser">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -102,24 +106,26 @@
             <h5>Add book to session</h5>
             <SearchBook @search-book="onSearchBookButtonClicked" v-model:searchBookTitle="searchBookTitle" 
             v-model:searchBookId="searchBookId" v-model:searchBookIsbn="searchBookIsbn"/>
-            <table class="table table-responsive-lg mt-3 rounded">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">ISBN</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody >
-                    <tr v-for="book in bookSearchResult" v-if="session !== null" >
-                        <th class="bg-light-subtle">{{book.id }}</th> 
-                        <td class="bg-light-subtle">{{ book.title }}</td>
-                        <td class="bg-light-subtle">{{ book.isbn }}</td>
-                        <td class="bg-light-subtle"><button class="btn btn-primary" @click="addBookToSession(book.id)">Add book to session</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive-lg mt-3">
+                <table class="table" v-if="bookSearchResult">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">ISBN</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr v-for="book in bookSearchResult" v-if="session !== null" >
+                            <th class="bg-light-subtle">{{book.id }}</th> 
+                            <td class="bg-light-subtle">{{ book.title }}</td>
+                            <td class="bg-light-subtle">{{ book.isbn }}</td>
+                            <td class="bg-light-subtle"><button class="btn btn-primary" @click="addBookToSession(book.id)">Add book to session</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         
     </div>
@@ -129,8 +135,8 @@
 <script setup>
 import axios from 'axios';
 import { ref, onBeforeMount, defineProps, watch} from 'vue';
-import SearchUser from '../borrow_management_components/SearchUser.vue';
-import SearchBook from '../borrow_management_components/SearchBook.vue';
+import SearchUser from '@page_components/borrow_management_components/SearchUser.vue';
+import SearchBook from '@page_components/borrow_management_components/SearchBook.vue';
 import { useNotification } from '@kyvg/vue3-notification';
 
 const editing = ref(false);
@@ -172,7 +178,7 @@ const getSessionDetails = () => {
             session.value = response.data.result;
             sessionUserId.value = response.data.result.userId;
             sessionPlaceId.value = response.data.result.placeId;
-            sessionStartDate.value = localDate(response.data.result.startDate);
+            sessionStartDate.value = convertISODatetimeToLocalInputString(response.data.result.startDate);
         }else{
             notify.notify({
                 type: 'error',
@@ -322,10 +328,24 @@ const searchUser = (searchUserId, searchUserEmail, searchUserName) => {
         });
         
 }
-
-const localDate = (date) => {
-    return new Date(date).toISOString().split('Z')[0];
+const convertLocalDatetimeToISOString = (localDatetimeString)=>{
+    //Since the value of <input type="datetime-local" /> is always YYYY-mm-ddThh:ss
+    //and does not denotes any timezone, so parse it with new Date() and use toISOString() method will not work correctly
+    let timeWithTimezone = new Date(localDatetimeString);
+    return timeWithTimezone.toISOString();
 }
+const convertISODatetimeToLocalInputString = (localDatetimeString)=>{
+    //Since input="local-datetime" only accept YYYY-mm-ddThh:ss, not YYYY-mm-ddThh:ssZ of ISO string
+    let currentLocalDate = new Date();
+    let localTimeOffset = currentLocalDate.getTimezoneOffset() * 60 * 1000; //Get local timezone offset to GMT by milliseconds
+
+    let gmtTime = new Date(localDatetimeString); 
+    let localTime = gmtTime - localTimeOffset; localTime = new Date(localTime);
+    let localISOString = localTime.toISOString();
+
+    return localISOString.slice(0, -1); //Remove the last character of local string in ISO format
+}
+
 const searchBook = (searchBookTitle, searchBookIsbn, searchBookId, currentPage)=>{
             
     let searchParams = {};
@@ -376,7 +396,7 @@ const updateSession = () => {
         {
             userId: sessionUserId.value,
             placeId: sessionPlaceId.value,
-            startDate: sessionStartDate.value,
+            startDate: convertLocalDatetimeToISOString(sessionStartDate.value),
         }
     ).then((response) => {
         if (response.data && response.data.success && response.data.success == true){

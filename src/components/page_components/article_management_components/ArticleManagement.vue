@@ -96,6 +96,7 @@
             }
         },
         methods: {
+            
             onSaveArticle(md, html){
                 /*if (this.selectedArticleId === null){
                     this.onCreateNewArticle();
@@ -103,6 +104,7 @@
                     this.onSaveEditArticle(this.selectedArticleId);
                 }*/
             },
+
             onImageSelected(url){
                 this.articleContent += url;
             },
