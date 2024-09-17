@@ -223,3 +223,7 @@ a.hover::before {
 #prevPageButton i [data-bs-theme="dark"] {
   color: #1febfd !important;
 }
+
+.fav-icon [data-bs-theme="dark"]{
+  fill: white !important;
+}

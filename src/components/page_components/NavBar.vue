@@ -116,9 +116,9 @@
                   <li class="dropdown-item" v-if="accountStore.loggedIn" @click="logoutUser"><a class="nav-link" href="#" id="logout-link" @click="closeSidebar">Log out</a></li>
                 </ul>
               </li>
-              <li class="nav-item d-xl-none">
-                <RouterLink class="nav-link dropdown-toggle" to="/favorite-books" role="link" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="/src/assets/heart-circle.svg" height="45" width="45" alt="Favorite books" />
+              <li class="nav-item">
+                <RouterLink class="nav-link" to="/favorite-books" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img class="fav-icon" src="/src/assets/heart-circle.svg" height="45" width="45" alt="Favorite books" />
                 </RouterLink>
               </li>
 
