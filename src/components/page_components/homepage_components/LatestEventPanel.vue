@@ -1,5 +1,5 @@
 <template>
-<div class="row shadow-sm" style="width: 96%; max-height: 400px; margin: 18px 2% 15px 2%; border-radius: 12px;" 
+<div class="row shadow-sm" style="width: 96%; margin: 18px 2% 15px 2%; border-radius: 12px;" 
 v-if="$props.events && $props.events.length > 0">
     <div :class="['col-12', 'd-flex', 'g-0', $props.events.length >= 3 ? 'col-lg-8' : 'col-lg-12']" >
         <img class="" style="width: 50%; height: 100%; border-top-left-radius: 12px; border-bottom-left-radius: 12px" 

@@ -1,12 +1,14 @@
 <template>
-<div class="col">
-    <div class="row-5">
+<div class="">
+    <div>
+        <LatestEventPanel :events="latestEvents"/>
+    </div>
+    <div class="">
         <!--<div class="library-homepage-container">
             <img :src="LibraryImage" style="width: 100%; max-height: 400px;" alt="Library image"/>
             
             <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="library-homepage-image-text text-white display-1">Welcome to library</h1>
         </div>-->
-        <LatestEventPanel :events="latestEvents"/>
         <div class="mx-3 my-3 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-gap-3">
             <div class="col">
                 <div class="card bg-light-subtle shadow-sm">
@@ -45,7 +47,7 @@
             </div>
         </div>
         <h5 class="section-title bg-light-subtle text-start text-primary mt-3 ps-3 pe-3">Books by Genre</h5>
-        <div class="row row-cols-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 mt-2 rounded-4 mx-3 border py-2 shadow-sm">
+        <div class="row row-cols-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 row-cols-xxl-8 mt-2 rounded-4 mx-3 border py-2 shadow-sm">
             <div class="col">
                 <RouterLink to="/book/by-genre?genre=Arts" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
                     <img src="/src/assets/icons/palette.svg" class="icon" alt="Arts book category icon" style="width: 50px; height: 50px;"/>
@@ -116,10 +118,10 @@
         <BookCarousel :books="mostBorrowedBooks" :apiSite="apiSite" :carouselId="'mostBorrowedBooks'"/>
         
     </div>
-    <div class="row">
+    <div class="">
         <hr class="hr" />
     </div>
-    <div class="row-5">
+    <div class="">
         <div class="row">
             <div class="col-12 col-md-5 col-lg-4">
                 <div class="ps-4">
@@ -191,7 +193,7 @@
 
         </div>
     </div>
-    <div class="row">
+    <div class="">
         <hr class="hr" />
     </div>
 </div>
