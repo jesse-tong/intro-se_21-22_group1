@@ -5,12 +5,12 @@
     <BorrowModal :showModal="borrowModalShow" @closeModal="borrowModalShow = false" ref="borrowModal" :bookId="$props.bookId"/>
     <EbookModal :showModal="ebookModalShow" @closeEbookModal="ebookModalShow = false" ref="ebookModal" :bookId="$props.bookId" />
     <nav class="navbar bg-light-subtle fixed-bottom shadow-sm flex-wrap rounded-3 px-3 book-detail-navbar" id="scrollBar">
-        <a class="nav-link" href="#overview">Overview</a>
-        <a class="nav-link" href="#description">Description</a>
-        <a class="nav-link" href="#comments">Comments/Reviews</a>
-        <a class="nav-link" href="#related-books">Related Books</a>
+        <a class="nav-link" href="#overview" >Overview</a>
+        <a class="nav-link" href="#description" >Description</a>
+        <a class="nav-link" href="#comments" >Comments/Reviews</a>
+        <a class="nav-link" href="#related-books" >Related Books</a>
     </nav>
-    <div class="container rounded-3"  data-bs-spy="scroll" data-bs-target="#scrollBar">
+    <div class="container rounded-3"  data-bs-spy="scroll" data-bs-target="#scrollBar" ref="scrollspyContainer" data-offset="50">
       
       <div class="row row-cols-md-2">
         <div class="col col-12 col-md-4" >
@@ -95,6 +95,7 @@
     import CommentSection from '../comment_components/CommentSection.vue';
     import EbookModal from '../EbookModal.vue';
     import { v4 as uuidv4 } from 'uuid';
+    
     export default {
         data() {
             return {
@@ -298,8 +299,10 @@
             }).finally(() => {
               this.getFavoriteCount();
             });
-          }
+          },
+          
 
         },
+        
     }
 </script>

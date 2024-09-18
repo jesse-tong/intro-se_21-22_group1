@@ -58,5 +58,7 @@ const closeSidebar = () => {}
 .nav-item.active {
     background-color: #007bff;
     border-radius: 10px;
+    backdrop-filter: blur(10px);
+    opacity: 0.85;
 }
 </style>
